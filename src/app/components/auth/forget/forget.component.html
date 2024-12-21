@@ -1,0 +1,79 @@
+<div class="container forget-container"  [class.h-unset]="!db.otp_form" [class.ion-no-padding]="!db.otp_form">
+
+    <div class="w-100 mt-10" *ngIf="db.otp_form">
+   
+        <form [formGroup]="otp_form">
+            <div class="input-item">
+                <label class="input__title">Enter your email</label>
+                <div class="custom-input" [ngClass]="focus.foucs5?'focused':''">
+                    <ion-input (ionFocus)="focus.foucs5 = true" (ionBlur)="focus.foucs5 = false" (keyup.enter)="forget_password()" type="text" placeholder="Your email" name="email" formControlName="email"> </ion-input>
+                </div>
+                <div *ngIf="submitted && !email?.valid">
+                    <p class="error" *ngIf="email.errors.required">Email-Id is required</p>
+                    <p class="error" *ngIf="email.errors.email">Email-Id is not valid</p>
+                </div>
+            </div>
+
+            <div class="forget ion-text-right" (click)="db.otp_form = false">
+                <span class="m-o fnt-12 mouse">have an account? Please <span class="alternative">Login</span></span>
+            </div>
+        </form>
+
+        <div class="log-button ion-text-center">
+            <ion-button class="action-button" [ngClass]="shake?'shaking':''" fill="clear" expand="full" (click)="forget_password()">Submit</ion-button>
+            <div>
+                <p class="m-0 error" *ngIf="alert_message">user {{alert_message}}</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="w-100 change__password" *ngIf="!db.otp_form">
+        <h2 class="fnt-20 myAccount-titles" *ngIf="!db.ismobile">Change Password</h2>
+
+        <form class="p-10" [formGroup]="password_form">
+
+            <div class="input-item">
+                <label class="input__title">Old Password</label>
+                <div class="custom-input d__flex j-s" [ngClass]="focus.foucs1?'focused':''">
+                    <ion-input (ionFocus)="focus.foucs1 = true" (ionBlur)="focus.foucs1 = false" [type]="(show_pass_old)?'password':'text'" placeholder="Old password" name="old_password" formControlName="old_password"> </ion-input>
+                    <ion-icon (click)="show_pass_old ?show_pass_old = false: show_pass_old = true" [name]="(show_pass_old)? 'eye':'eye-off'"></ion-icon>
+                </div>
+                <div *ngIf="submitted && !old_password?.valid">
+                    <p class="error" *ngIf="old_password.errors.required">Old Password is required</p>
+                </div>
+            </div>
+
+            <div class="input-item">
+                <label class="input__title">New Password</label>
+                <div class="custom-input d__flex j-d" [ngClass]="focus.foucs2?'focused':''">
+                    <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" [type]="(show_pass_new)?'password':'text'" placeholder="password" name="password" formControlName="password"></ion-input>
+                    <ion-icon (click)="show_pass_new ?show_pass_new = false: show_pass_new = true" [name]="(show_pass_new)? 'eye':'eye-off'"></ion-icon>
+                </div>
+                <div *ngIf="submitted && !password?.valid">
+                    <p class="error" *ngIf="password.errors.required">New password is required</p>
+                </div>
+            </div>
+
+            <div class="input-item">
+                <label class="input__title ">Confirm Password</label>
+                <div class="custom-input  d__flex j-s" [ngClass]="focus.foucs3?'focused':''">
+                    <ion-input (ionFocus)="focus.foucs3 = true" (ionBlur)="focus.foucs3 = false" [type]="(show_pass_confirm)?'password':'text'" placeholder="confirm password" formControlName="c_password" name="c_password"></ion-input>
+                    <ion-icon (click)="show_pass_confirm ?show_pass_confirm = false: show_pass_confirm = true" [name]="(show_pass_confirm)? 'eye':'eye-off'"></ion-icon>
+                </div>
+                <div *ngIf="submitted && !c_password?.valid">
+                    <p class="error" *ngIf="c_password.errors.required">Confirm password is required</p>
+                </div>
+            </div>
+
+        </form>
+        <div class="mt-10" [ngClass]="db.ismobile?'ion-text-center':'ion-text-left'">
+            <ion-button class="action-button" [class.w-20]="!db.ismobile" fill="clear" (click)="update()">update</ion-button>
+        </div>
+
+    </div>
+
+
+
+</div>

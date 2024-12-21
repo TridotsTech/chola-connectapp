@@ -1,0 +1,18 @@
+<div class="parent">
+  <div class="div1">
+    <app-checkin-multiple [attendance]="true"></app-checkin-multiple>
+  </div>
+
+  <div class="div2">
+    <h5 class="card-title">Statistics</h5>
+    <div class="stats-list" *ngIf="attendance_statistics && attendance_statistics.length != 0">
+      <div class="stats-info" *ngFor="let item of attendance_statistics">
+        <p>{{item.label}} <strong>{{item.value}} <small>/ {{item.total_working_hours}} hrs</small></strong></p>
+        <div class="progress">
+          <div class="progress-bar bg-primary1 " [style.--progress-value]="item.value + '%'" role="progressbar"
+            aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

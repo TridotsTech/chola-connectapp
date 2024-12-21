@@ -1,0 +1,16 @@
+<div class="assignRelative mouse">
+
+  <div [class.small]="small" [class.mini]="mini" [class.left]="left" class="sec1 d__flex images">
+    <!-- (click)="db.ismobile ? openAssignees($event,assignTo) : null" -->
+    <div [class]="'img' + (i + 1) + ' image_div'"  *ngFor="let item of assignTo.slice(0,3);let i = index" (click)="openAssignees($event,assignTo)" (mouseenter)="!db.ismobile ? mouseHover(item) : null" (mouseleave)="!db.ismobile ? hoverName = undefined : null">
+     <img *ngIf="(item.user_image || item.assertImg)" [src]="item.assertImg ? item.assertImg : db.product_img(item.user_image)">
+     <p *ngIf="!(item.user_image || item.assertImg)" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}" class="avatar">{{item.user_name[0]}}</p>
+    </div> 
+    <span *ngIf="showCount && assignTo.length > 3" class="more_">{{assignTo.length - 3 }}+</span>
+  </div>
+
+  <div class="assignAbsolute" *ngIf="hoverName">
+    <p class="m-0 fnt-12 hover_name">{{hoverName}}</p>
+  </div>
+
+</div>

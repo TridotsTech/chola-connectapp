@@ -1,0 +1,32 @@
+<app-website-form-header [close_btn]="true" [Title]="'Filters'"></app-website-form-header>
+<div class="p-10">
+  <div *ngIf="page_route == 'Daily Work Summary Replies'" class="group_info">
+    <p class="m-0 mb-10 fnt-14">Group: </p>
+    <ion-input type="text" placeholder="Group" class="mouse" [(ngModel)]="selected_group" (click)="open_drop_down_options('Daily Work Summary Group','group')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+  </div>
+
+  <div *ngIf="page_route == 'Employee Exits'" class="group_info">
+    <p class="m-0 mb-10 fnt-14">Department: </p>
+    <ion-input type="text" placeholder="Department" class="mouse" [(ngModel)]="selected_department" (click)="open_drop_down_options('Department','department')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+  </div>
+
+  <div *ngIf="page_route == 'Employee Exits'" class="group_info">
+    <p class="m-0 mb-10 fnt-14">Designation: </p>
+    <ion-input type="text" placeholder="Designation" class="mouse" [(ngModel)]="selected_designation" (click)="open_drop_down_options('Designation','designation')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+  </div>
+
+  <div *ngIf="page_route == 'Employee Exits' || page_route == 'Employee Leave Balance Summary' || page_route == 'Employee Leave Balance'" class="group_info">
+    <p class="m-0 mb-10 fnt-14">Employee: </p>
+    <ion-input type="text" placeholder="Employee" class="mouse" [(ngModel)]="selected_employee" (click)="open_drop_down_options('Employee','employee')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+  </div>
+
+  <div *ngIf="page_route == 'Employees Working on a Holiday'" class="group_info">
+    <p class="m-0 mb-10 fnt-14">Holiday: </p>
+    <ion-input [class.w-20]="!db.ismobile" type="text" placeholder="Holiday" class="mouse" [(ngModel)]="selected_holiday" (click)="open_drop_down_options('Holiday List','holiday_list')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+  </div>
+</div>
+
+<div class="save_">
+  <ion-button class="clear_btn"  (click)="clear_filter()">Clear</ion-button>
+  <ion-button class="save_btn" (click)="save()">Apply</ion-button>
+</div>

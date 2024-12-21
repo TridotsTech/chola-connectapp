@@ -1,0 +1,46 @@
+<app-header back_route="attendance-list" [new_btn]="'Check In'" [new_btn_route]="'/forms/attendance-check'"></app-header>
+
+<ion-content>
+  <div class="container" *ngIf="attendance_field_details && attendance_field_details.length != 0" >
+    <div class="attendance">
+      <h6 class="m-0 fnt-16 fnt_w500">Attendance Details</h6>
+      <div class="d__flex just-s all_list">
+        <div>
+          <h6 class="m-0 fnt-16">Employee Name</h6>
+          <p class="m-0 fnt-16"> <span class="gray_clr">{{attendance_field_details.employee_name}}</span></p>
+        </div>
+        <div>
+          <h6 class="m-0 fnt-16">Name</h6>
+          <p class="m-0 fnt-16"> <span class="gray_clr">{{attendance_field_details.name}}</span></p>
+        </div>
+        <div>
+          <h6 class="m-0 fnt-16">Company</h6>
+          <p class="m-0 fnt-16"> <span class="gray_clr">{{attendance_field_details.company}}</span></p>
+        </div>
+        <div>
+          <h6 class="m-0 fnt-16">Attendance Date</h6>
+          <p class="m-0 fnt-16"> <span class="gray_clr">{{attendance_field_details.attendance_date}}</span></p>
+        </div>
+        <div>
+          <h6 class="m-0 fnt-16">Company</h6>
+          <p class="m-0 fnt-16"> <span class="gray_clr">{{attendance_field_details.company}}</span></p>
+        </div>
+      <div>
+        <h6 class="m-0 fnt-16">Status</h6>
+        <p class="m-0 fnt-16"> <span class="gray_clr">{{attendance_field_details.status}}</span></p>
+      </div>
+
+      <div>
+        <h6 class="m-0 fnt-16">Shift</h6>
+        <p class="m-0 fnt-16"> <span class="gray_clr">{{attendance_field_details.shift}}</span></p>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="footer">
+    <ion-toolbar>
+      <ion-button expand="full" [routerLink]="['/forms/attendance-check']" routerLinkActive="router-link-active"  class="ion-text-capitalize"  fill="clear" shape="round"> Check In</ion-button>
+    </ion-toolbar>
+  </div> -->
+</ion-content>

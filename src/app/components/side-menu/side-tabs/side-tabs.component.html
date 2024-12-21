@@ -1,0 +1,60 @@
+<div routerLink="/dashboard" (click)="db.profile_side_menu = false" *ngIf="type == 'menu' && db.website_settings" (mouseleave)="enableMultipleLogin = false;"
+  [class.column_img]="db.profile_side_menu" class="d__flex gap-10 header__d  image">
+
+  <!-- <ion-icon *ngIf="!db.profile_side_menu" name="apps-outline" (click)="enableMultipleLogin =! enableMultipleLogin" class="multipleLogin white mouse"></ion-icon> -->
+  <img *ngIf="!db.profile_side_menu; else page_header_1" class="home__logo mouse" [src]="'/assets/chola/chola-white-logo.svg'">
+
+  <ng-template #page_header_1>
+    <img class="home__logo mouse" [src]="db.getLogoSource()">
+  </ng-template>
+
+
+</div>
+<!-- flex -->
+<div [class.flex]="db.hr_manager_role">
+  <!-- false &&  -->
+  <ion-list *ngIf="false && db.hr_manager_role && type == 'menu' && !db.profile_side_menu" lines="none" [class.column]="db.profile_side_menu" class="s-my_profile_menu  mouse">
+
+    <div class="my_profile_menu height-s">
+      <div  (click)="getTabs(item)" *ngFor="let item of tabSection;let i = index" class="menu_item" [ngClass]="item['is_active'] ? 'active_menu' : 'menu_hover'">
+        <div class="con_ d__flex icon_clr_c">
+          <img class="Side_menu" [src]="item['is_active'] ? db.get_active_icon(item.name) : db.get_icon(item.name)"/>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div (click)="db.logout()" *ngIf="((db.employee_img && db.employee_img.user_image) || db.cust_name)" class="avatar">
+      <img *ngIf="db.employee_img && db.employee_img.user_image" alt="profile" class="img mouse" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) :  db.load_icon(db.cust_name)" />
+      <p *ngIf="!db.employee_img" class="m-0 fnt-14 img">{{db.cust_name}}</p>
+    </div>
+
+  </ion-list>
+
+  <!-- side_tab_dashboard -->
+   <div class="w-100">
+     <ion-list *ngIf="type == 'menu' && db.side_tab_dashboard && db.side_tab_dashboard.length != 0" lines="none" [class.column]="db.profile_side_menu" class="my_profile_menu mouse w-Name w-100">
+      <!-- (db.hr_manager_role ? side_tab_dashboard : db.side_tab_dashboard) -->
+       <div  (click)="db.doctype_select(item.page)" *ngFor="let item of db.side_tab_dashboard;let i = index"
+         (click)="scrolltoview(item.route)" (click)="var_false(item)" class="menu_item" [ngClass]="(item['is_active'] || (db.path && db.path == item.route)) ? 'active_menu' : 'menu_hover'"  [routerLink]="item.route">
+         <div [id]="'scroll' + item.route" [class.icon_clr_c]="(item['is_active'] )" class="con_ d__flex">
+           <!-- {{item['is_active'] | json}} -->
+           <img [id]="i + 'd'" class="Side_menu"
+             [src]="item['is_active'] || (db.path && db.path == item.route) ? db.get_active_icon(item.page) : db.get_icon(item.page)"/>
+
+           <p class="fnt-inter menu_name">{{(db.selfView && item.page_name == 'Employee') ? 'Directory' : item.page_name}}</p>
+         </div>
+   
+       </div>
+   
+     </ion-list>
+   
+   
+     <div [class.activeSelf]="db.selfView" *ngIf="db.show_selfView && db.side_tab_dashboard && db.side_tab_dashboard.length != 0" (click)="db.selfViewFn()" class="viewSec d__flex" [class.topBottomSelf]="db.profile_side_menu">
+       <label class="label-1 mouse">Self</label>
+       <label  class="label-2 mouse">{{db.reportView ? 'Team' : 'HR'}}</label>
+     </div>
+   </div>
+
+</div>

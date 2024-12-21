@@ -1,0 +1,14 @@
+.boxes_ {
+    padding: 10px;
+    border: 1px solid var(--border-col);
+    margin: 10px 0;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+ion-select {
+    min-height: 30px;
+    font-size: 14px;
+}

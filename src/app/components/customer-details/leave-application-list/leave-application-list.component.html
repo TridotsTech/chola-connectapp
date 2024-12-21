@@ -1,0 +1,86 @@
+<div class="bg_white leave_border">
+
+  <div *ngIf="detail_loader">
+    <div class="summary_sec" *ngIf="db.current_leave_segment == 'Leaves'">
+      <div *ngFor="let item of [0,1,2,3];index as i">
+        <app-skeleton-loader [index]="i == 3 ? -1 : i"
+          type="dashboard"></app-skeleton-loader>
+      </div>
+    </div>
+  </div>
+  
+  <app-common-dashboard *ngIf="db.current_leave_segment != 'Leave Requests'" [data]="data.dashboard" [icons]="icons_array" [doctype]="doctype"></app-common-dashboard>
+
+  <div *ngIf="db.ismobile" class="d__flex gap-10 just-s search_filter__">
+    <app-month-filter [showCalendar]="showCalendar" [selectedDate]="this.db.current_event_date" (getDateFromCalendar)="getDateFromCalendar($event)" (getFilters)="getFilters($event)" [search_data]="search_data" [search_filter]="search_filter"></app-month-filter>
+  </div>
+  
+  <div class="filter_sec" [class.border-t]="db.current_leave_segment != 'Leave Requests'"[class.border-b]="db.current_leave_segment == 'Leave Requests'"  *ngIf="module_tab && module_tab.length > 0">
+    <app-tabs-button [employee_detail_tab]="true" [no_mb]="true"  [no_next_btn]="true" [change_color_none]="true" [border_none]="true" (menu_name)="tabValue($event)" [bg_white]="false" [tabs_array]="module_tab" type="edit-profile"></app-tabs-button>
+  </div>
+  
+  <div class="d__flex gap-10 just-s search_filter__" [class.bt-none]="db.current_leave_segment == 'Leave Requests'">
+    <app-filters *ngIf="search_filter && search_filter.length != 0" [noPopup]="true" [noView]="true" (filterList)="filterList.emit($event)" [isNotModal]="true" [supplier_id]="supplier_id" [search_filter]="search_filter" [page_title]="page_title" [json_filter]="json_filter" [doctype]="doc_type"></app-filters>
+
+    <app-tab-filter [search]="false" (tab_filter)="tab_filter.emit($event)" ></app-tab-filter>
+  </div>
+
+  <div *ngIf="detail_loader">
+    <div>
+      <app-skeleton-loader [type]="'list'"></app-skeleton-loader>
+    </div>
+  </div>
+  
+  <!-- List -->
+  <div  #tabList
+      (scroll)="load_data.emit($event)" class="list_common_height" *ngIf="false && !detail_loader && data && data.data && data.data.length > 0">
+      <!-- click_data.emit({item:item,i:i}) db.load_popup -->
+    <div class="d__flex table_data mouse" (click)="load_popup.emit(item)" [id]="i + 1 + 'scroll'" *ngFor="let item of data.data;index as i">
+      <div class="p-1015 border-r">
+        <h5 class="m-0 fnt1">{{item.employee_name}}</h5>
+      </div>
+  
+      
+      <div class="p-1015 border-r">
+        <h5 class="m-0 fnt2">{{item.employee ? item.employee : item.work_from_date ? item.work_from_date : ' - '}}</h5>
+      </div>
+      
+      <div class="p-1015 border-r">
+        <h5 class="m-0 fnt2">{{item.from_date ? item.from_date : item.work_end_date ? item.work_end_date : ' - '}}</h5>
+      </div>
+      
+      <div class="p-1015 border-r">
+        <h5 class="m-0 fnt2" [ngClass]="item.reason ? 'webkit-text' : ''" [style.--line]="1">{{item.total_leave_days ? item.total_leave_days : item.reason ? item.reason : ' - '}}</h5>
+      </div>
+      
+      <div class="border-r p-1015">
+        <div class="d__flex gap-10 p-0-10" [class.wi-100]="item.docstatus == 1" *ngIf="db.hr_manager_role && db.current_leave_segment != 'Leave Requests'">
+          <div class="btn1 d__flex mouse" *ngIf="item.docstatus != 1" (click)="leave_confirm($event,item,'Reject',i)"><ion-icon src="/assets/leaves/close.svg" alt=""></ion-icon><span class="fnt3 m-0"></span></div>
+          <div class="btn2 d__flex mouse" *ngIf="item.docstatus != 1" (click)="leave_confirm($event,item,'Approve',i)"><ion-icon src="/assets/leaves/Check.svg" alt=""></ion-icon><span class="fnt3 m-0"></span></div>
+          <div *ngIf="item.docstatus == 1" class="wi-100"> <app-status [status]="item.status"></app-status> </div>
+        </div>
+
+        <div class="wi-100 p-1015" *ngIf="!db.hr_manager_role && db.current_leave_segment != 'Leave Requests'">
+          <app-status [status]="item.status"></app-status>
+        </div>
+
+        <div *ngIf="db.current_leave_segment == 'Leave Requests'" class="p-0-10" [class.wi-100]="db.current_leave_segment == 'Leave Requests'">
+          <h5 class="m-0 fnt2">{{item.leave_type}}</h5>
+        </div>
+      </div>
+
+      <!-- border-l -->
+      <div class="capitalize fnt2 m-0 p-1015  modified__">
+        <p class="m-0 fnt2">{{item.modified ? db.getTimecal(item.modified) : '-'}}</p>
+      </div>
+    </div>
+  </div>
+
+  <app-common-grid-table height="calc(100vh - 320px)" (leaveConfirm)="leaveConfirm.emit($event)" [detailPopup]="true" (load_popup)="load_popup.emit($event)" [list_data]="data" [headerData]="leave_application_table" [doctype]="doc_type"></app-common-grid-table>
+
+
+  <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+  *ngIf="!detail_loader && ((!skeleton && !data.data) || (!skeleton && data.data && data.data && data.data.length == 0) && !db.ismobile)"
+  [column]="true" height="calc(100vh - 360px)" [heading]="'No record found'"
+  [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>

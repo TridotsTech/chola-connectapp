@@ -1,0 +1,101 @@
+.year-month-picker {
+    z-index: 100;
+    background: var(--white);
+    width: 95%;
+    margin: 0 auto;
+    
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.parent {
+    display: flex;
+    gap: 30px;
+    padding: 10px 15px;
+}
+
+label {
+    margin-right: 5px;
+}
+
+select {
+    padding: 5px;
+}
+
+.picker {
+    .month-year {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+
+    .year-month-picker {
+        width: 400px !important;
+    }
+}
+
+.activeMonth {
+    border: 1px solid var(--CRM-primary-color);
+    border-radius: 10px;
+
+    // transition: all 0.5s ease-in-out;
+    h6 {
+        color: var(--CRM-primary-color);
+        font-weight: 600;
+    }
+}
+
+.pickers {
+    height: 300px;
+    width: 50%;
+    overflow: auto;
+
+    h6 {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+    }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.p-5 {
+    padding: 5px !important;
+    margin: 5px 0;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Ensure it appears above other elements */
+}
+
+.save-btn {
+    box-shadow: 0 4px 5px 5px #a5a5a56e;
+    // padding: 15px 20px;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+    ion-button{
+        background: var(--CRM-primary-color);
+        color: var(--white);
+        border-radius: 7px;
+        width: 100%;
+    }
+}

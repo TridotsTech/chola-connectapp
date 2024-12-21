@@ -1,0 +1,49 @@
+ <div>
+  <form class="otp-form p-10" [formGroup]="otp_form" >
+    <div class="d__flex just-c otp-container">
+      <div class="mobile-input d__flex w-100" >
+        <!-- <ion-icon *ngIf="!otp_verifyy" name="call-outline"></ion-icon> -->
+        <ion-select *ngIf="!otp_verifyy" value="+91" formControlName="country_code" class="country_code">
+          <!--  [(ngModel)]="default_code" -->
+          <ion-select-option *ngFor="let code of country_codes" value="{{code}}">{{code}}</ion-select-option>
+        </ion-select>
+        <ion-input *ngIf="!otp_verifyy" type="tele" class="otp-input" placeholder="Mobile number" formControlName="mobile_no"  (keyup.enter)="sendLoginCode()"  name="mobile_no" [(ngModel)]="mobile_no"> <span *ngIf="false"> +91 </span></ion-input>
+        <!-- <ion-icon *ngIf="otp_verifyy" name="call-outline"></ion-icon> -->
+        <ion-input *ngIf="otp_verifyy" type="tele" class="otp-input" placeholder="OTP" name="otp" formControlName="otp" (keyup.enter)="verify_otp()" [(ngModel)]="otp"> </ion-input>
+      </div>
+      <div *ngIf="false">
+        <ion-button class="mobile-button" [ngClass]="shake?'shaking':''"  expand="full" fill="clear" (click)="verificationId?verify_otp():sendLoginCode()"><ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+      </div>  
+    </div>
+    <div *ngIf="otp_verify" class="resend mouse" (click)="resend()">Resend OTP</div>
+    <div class="error-container">
+      <p class="m-0 error" *ngIf="otp_submit && !phonenumber.valid && phonenumber.errors.required">Enter Your Mobile Number</p>
+      <p class="m-0 error" *ngIf="otp_submit && !phonenumber.valid && phonenumber.errors.pattern">Enter a valid Mobile Number</p>
+    </div>
+  </form>
+  <div class="log-button ion-text-center">
+    <ion-button expand="full" class="action-button" [ngClass]="shake ? 'shaking':''" fill="clear" (click)="verificationId?verify_otp():sendLoginCode()">Login</ion-button>
+  </div>
+
+</div> 
+
+<div *ngIf="false" class="d__flex paymentMethod"> 
+  <ion-button *ngIf="!otp_verify" fill="clear" (click)="sendLoginCode()">Send OTP</ion-button>
+  <div *ngIf="otp_verify" class="d__flex grid">
+     <form [formGroup]="otp_form" class="custom-input">
+      <ion-input *ngIf="otp_verifyy" type="tele" class="otp-input" placeholder="Enter OTP" name="otp" formControlName="otp" (keyup.enter)="verify_otp()" [(ngModel)]="otp"> </ion-input>
+     </form>
+  <div class="d__flex">   
+    <ion-button fill="clear" (click)="verify_otp()">Verify OTP</ion-button>
+    <ion-button fill="clear" (click)="resend()">Resend OTP</ion-button>
+  </div>   
+   </div>
+   <div  class="d__flex verifield_container">
+    <ion-icon  src="/assets/chops_daily/check-mark.svg"></ion-icon>
+     <p class="verifield m-0">Verified</p>
+   </div>
+</div>
+
+<div>
+  <div id="sign-in-button"></div>
+</div>  

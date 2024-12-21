@@ -1,0 +1,134 @@
+
+<div #modalContent class="updateTimesheet">
+
+  <div class="d__flex gap-10 header">
+    <ion-icon class="mouse" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white capitalize">{{doctype == 'Job Applicant' ? employeeDetail.applicant_name : employeeDetail.employee_name}}</p>
+  </div>
+
+  <div *ngIf="doctype == 'Job Applicant'" class="body_sec">
+
+    <div class="employeeDetail-s">
+      <div class="d__flex gap-10 just-s employeeDetails">
+        <img class="blue" src="/assets/timesheet/blue.svg" /> 
+        <img class="yellow" src="/assets/timesheet/yellow.svg" /> 
+        <div class="d__flex m-0 details w-100">
+          <div class="imageDiv">
+            <img *ngIf="employeeDetail.image" [src]="db.product_img(employeeDetail.image)" />
+            <h4 *ngIf="!employeeDetail.image" class="m-0 fnt-15 fnt_w500">{{employeeDetail?.applicant_name[0]}}</h4>
+          </div>
+          <div class="w-100">
+            <div class="d__flex title just-s w-100">
+              <h4 class="fnt-14 fnt_w500 m-0 name webkit-text capitalize" [style.--line]="1">{{employeeDetail?.applicant_name}}</h4>
+              <app-status [status]="employeeDetail.status"></app-status>
+            </div>
+            <h4  *ngIf="employeeDetail.name" class="fnt-13 fnt_w500 m-0 id gray_clr">{{employeeDetail?.name}}</h4>
+            <h4 *ngIf="employeeDetail.department" class="d__flex gap-5 role m-0">
+              <img class="workIcon" src="/assets/timesheet/work.svg" /> 
+              <span class="fnt-12 fnt_w400 m-0 gray_clr">{{employeeDetail.designation ? employeeDetail?.designation : '-'}}</span>
+          </h4>
+          </div>
+        </div>  
+      </div>
+    </div>
+
+    <h2 class="fnt-15 fnt_w500 p-10">Employee Details</h2>
+
+    <div class="d__flex detailViewJob p-10">
+      <h4 class="m-0">Email</h4>
+      <h4 (click)="employeeDetail.email_id ? social('mail', employeeDetail.email_id) : null"  class="m-0 mouse text-transform-lower">
+        <ion-icon [class.opacity]="!employeeDetail.email_id" class="fnt-25 mouse"  slot="start" src="/assets/img/mail.svg"></ion-icon>
+        {{(employeeDetail.email_id ? employeeDetail.email_id : '-' | lowercase)}}
+      </h4>
+      <h4 class="m-0">Phone Number</h4>
+      <h4 (click)="employeeDetail.phone_number ? social('call', employeeDetail.phone_number) : null" class="m-0 mouse">
+        <ion-icon [class.opacity]="!employeeDetail.phone_number"  class="fnt-25 mouse" slot="start" src="/assets/img/call.svg"></ion-icon>
+        {{employeeDetail.phone_number ? employeeDetail.phone_number : '-'}}
+      </h4>
+      <h4 class="m-0">What's App</h4>
+      <h4 (click)="employeeDetail.phone_number ? social('whatsapp', employeeDetail.phone_number) : null"  class="m-0 mouse">
+        <ion-icon [class.opacity]="!employeeDetail.phone_number"  class="fnt-25 mouse" slot="start" src="/assets/img/whatsapp.svg"></ion-icon>
+        {{employeeDetail.phone_number ? employeeDetail.phone_number : '-'}}
+      </h4>
+
+      <h4 class="m-0">Cover Letter</h4>
+      <h4  class="m-0">{{employeeDetail.cover_letter ? (employeeDetail.cover_letter) : '-'}}</h4>
+      <h4 class="m-0 ">Resume Link</h4>
+      <h4 (click)="openUrl(employeeDetail.resume_link)" class="m-0 resume mouse">{{employeeDetail.resume_link ? employeeDetail.resume_link : '-'}}</h4>
+      <h4 class="m-0">Resume Attachement</h4>
+      <h4 (click)="openUrl(employeeDetail.resume_attachment)" class="m-0 resume mouse">{{employeeDetail.resume_attachment ? employeeDetail.resume_attachment : '-'}}</h4>
+        
+    </div>
+  </div> 
+
+  <div *ngIf="doctype != 'Job Applicant'" class="body_sec">
+    <div class="d__flex gap-10 just-s employeeDetails">
+      <img class="blue" src="/assets/timesheet/blue.svg" /> 
+      <img class="yellow" src="/assets/timesheet/yellow.svg" /> 
+      <div class="d__flex m-0 details w-100">
+        <div class="imageDiv">
+          <img *ngIf="employeeDetail.image" [src]="db.product_img(employeeDetail.image)" />
+          <h4 *ngIf="!employeeDetail.image" class="m-0 fnt-15 fnt_w500">{{employeeDetail?.employee_name[0]}}</h4>
+        </div>
+        <div class="w-100">
+          <div class="d__flex title just-s w-100">
+            <h4 class="fnt-14 fnt_w500 m-0 name webkit-text" [style.--line]="1">{{employeeDetail?.employee_name}}</h4>
+            <label *ngIf="employeeDetail.date_of_joining" class="label">{{getDateDifference(employeeDetail.date_of_joining)}}</label>
+          </div>
+          <h4  *ngIf="employeeDetail.name" class="fnt-13 fnt_w500 m-0 id gray_clr"># {{employeeDetail?.name}}</h4>
+          <h4 *ngIf="employeeDetail.department" class="d__flex gap-5 role m-0">
+            <img class="workIcon" src="/assets/timesheet/work.svg" /> 
+            <span class="fnt-12 fnt_w400 m-0 gray_clr">{{employeeDetail?.department}}</span>
+        </h4>
+        </div>
+      </div>  
+    </div>
+
+    <div *ngIf="employeeDetail.leave_balance && employeeDetail.leave_balance.length != 0">
+      <h2 class="fnt-15 fnt_w500 p-10">Leave Details</h2>
+  
+      <div class="leavesDetails">
+        <div *ngFor="let itemLeaves of employeeDetail.leave_balance;let i = index;let last = last;" class="box__">
+          <p class="m-0 fnt-14">{{itemLeaves.label}}</p>
+          <p class="m-0 fnt-14 fnt_w500">{{itemLeaves.count}}</p>
+        </div>
+       </div>
+    </div>
+
+    <h2 class="fnt-15 fnt_w500 p-10">Employee Details</h2>
+
+    <div class="detailView p-10">
+      <div class="d__flex gap-20 mb-10">
+        <h4 class="m-0 heading">Email</h4>
+        <div (click)="employeeDetail.personal_email ? social('mail', employeeDetail.personal_email) : null"  class="d__flex gap-5 w-70">
+          <ion-icon [class.opacity]="!employeeDetail.personal_email" class="fnt-25 mouse"  slot="start" src="/assets/img/mail.svg"></ion-icon>
+          <h4 class="webkit-text text-transform-lower m-0 w-85" [style.--line]="2">{{employeeDetail.personal_email ? employeeDetail.personal_email : '-'}}</h4>
+        </div>
+      </div>
+      <div class="d__flex gap-20 mb-10">
+        <h4 class="m-0 heading">Phone Number</h4>
+        <h4 (click)="employeeDetail.cell_number ? social('call', employeeDetail.cell_number) : null" class="m-0 w-70 d__flex">
+          <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/call.svg"></ion-icon>
+          {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
+        </h4>
+      </div>
+      <div class="d__flex gap-20 mb-10">
+        <h4 class="m-0 heading">What's App</h4>
+        <h4 (click)="employeeDetail.cell_number ? social('whatsapp', employeeDetail.cell_number) : null"  class="m-0 w-70 d__flex">
+          <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/whatsapp.svg"></ion-icon>
+          {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
+        </h4>
+      </div>
+      <div class="d__flex gap-20 mb-10">
+        <h4 class="m-0 heading">Date Of Birth</h4>
+        <h4 class="m-0  w-70">{{employeeDetail.date_of_birth ? (employeeDetail.date_of_birth | date: 'MMM d, y') : '-'}}</h4>
+      </div>
+      <div class="d__flex gap-20 mb-10">
+        <h4 class="m-0 heading">Designation</h4>
+        <h4 class="m-0  w-70">{{employeeDetail.designation ? employeeDetail.designation : '-'}}</h4>
+      </div>
+    </div>
+
+  </div> 
+
+</div>

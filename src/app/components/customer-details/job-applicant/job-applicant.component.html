@@ -1,0 +1,60 @@
+
+<div [class.big_box]="!db.ismobile" >
+
+  <div *ngIf="db.ismobile">
+      <app-common-search placeholder="Search" (call_clear_txt)="call_clear_txt.emit('')" [showSort]="true" (search_txt_value)="search_txt_value.emit($event)" (tab_filter)="tab_filter.emit($event)"  (supplier_filter)="supplier_filter.emit('')" (open_filter)="open_filter($event)"></app-common-search>
+  </div>
+
+  <div *ngIf="db.search_filter && db.search_filter.length != 0 && !db.ismobile"  class="search_filter__ w-100 d__flex just-s">
+    <app-filters (filterList)="filterList.emit($event)" [isNotModal]="true" [supplier_id]="supplier_id" [search_filter]="db.search_filter" [page_title]="page_title" [json_filter]="json_filter" [doctype]="doc_type"></app-filters>
+    <app-tab-filter [search]="false" [noSort]="false" [noSortUp]="true"  [noView]="true" [noLeft]="true" [noRight]="true" (tab_filter)="tab_filter.emit($event)"></app-tab-filter>
+  </div>
+  
+  <div (scroll)="db.ismobile ? load_data($event) : null" *ngIf="!db.listSkeleton && list_data && list_data.length != 0" class="scroll_"  >
+    <div #tabList [class.grid_view]="view == 'web'">
+      <div [class.employee_list_data]="db.employee_role" class="list_data mouse"  *ngFor="let item of list_data;let i = index" (click)="openDirectory(item)" >
+        <div class="d__flex gap-10 employee_">
+          
+          <div class="w-100">
+            <p class="m-0 mb-5 fnt-14 fnt_w500 webkit-text capitalize" [style.--line]="1">{{item.applicant_name}}</p>
+            <div class="d__flex just-s">
+              <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+              <app-status [status]="item.status"></app-status>
+            </div>
+            <div class="d__flex just-s">
+              <div class="d__flex gap-5">
+                <ion-icon class="fnt-16" slot="start" src="/assets/img/designation.svg"></ion-icon>
+                <p class="m-0 fnt-12 gray_clr webkit-text w-100" [style.--line]="1">{{item.designation ? item.designation : '-'}}</p>
+              </div>
+              <div class="d__flex gap-5">
+                <ion-icon class="fnt-16 gray_clr" name="call-outline"></ion-icon>
+                <p class="m-0 fnt-12 gray_clr webkit-text w-100" [style.--line]="1">{{item.phone_number ? item.phone_number : '-'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="db.listSkeleton" [class.employeeSection-h]="db.employee_role" class="section-h">
+    <div class="d__flex skeleton">
+      <div class="d__flex box_ gap-10" *ngFor="let i of [1, 2, 3, 4 ,5, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3, 4 ,5, 1, 6]">
+        <ion-skeleton-text animated style="width: 90px; height: 70px;border-radius: 5px;"></ion-skeleton-text>
+        <div class="w-100">
+          <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <app-no-record-found *ngIf="list_data && list_data.length == 0 && !db.listSkeleton"
+  [column]="true" [height]="db.ismobile ? 'calc(100vh - 250px)' : 'calc(100vh - 260px)'" [heading]="'No record found'"
+  [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+</div>

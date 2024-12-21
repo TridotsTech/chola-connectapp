@@ -1,0 +1,193 @@
+<app-header title="Today Check In" [model]="false"></app-header>
+<app-sidemenu-header *ngIf="!db.ismobile" heading="Today Check In"></app-sidemenu-header>
+
+<ion-content [fullscreen]="true">
+
+
+  <div *ngIf="!db.ismobile" style="padding: 15px 20px 10px 20px">
+    <div class="d__flex gap-10 pb-10 attendance_title">
+      <ion-icon class="fnt-20" slot="start" src="/assets/img/grip-horizontal.svg"></ion-icon>
+      <p class="m-0 fnt-16 fnt_w500 border-right-txt">Today Check In</p>
+    </div>
+  </div>
+
+  <div *ngIf="!skeleton" class="full_sec">
+    <div *ngIf="db.ismobile" class="bg_primary">
+      <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+      [bg_white]="db.ismobile ? false : true" [tabs_array]="options" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+    </div>
+    
+    <div class="month-filter"> 
+      <app-month-filter [noSort]="true" [showCalendar]="showCalendar" [selectedDate]="current_date" (getDateFromCalendar)="getDateFromCalendar($event)" (getFilters)="getFilters($event)" [search_data]="{}" [search_filter]="[]"></app-month-filter>
+      
+      <div class="d__flex gap-10" *ngIf="viewType == 'List'" >
+        <div (click)="applyFilter(item, i)" [class.activebtnUif]="item['isActive']" *ngFor="let item of filtersLabel;let i = index" class="btnUif d__flex">
+         <ion-icon class="icon" [src]="item['isActive'] ? item.activeIcon : item.icon"></ion-icon>
+        </div>
+      </div>
+    </div>
+  
+    <h6 class="m-0 today_employee" *ngIf="viewType == 'Overview' && today_employee">Today Number of Employee :<span>{{today_employee}}</span></h6>
+    
+    <div id="chart" *ngIf="viewType == 'Overview' && chartOptions">
+      <!-- <apx-chart 
+        [series]="chartOptions.series" 
+        [chart]="chartOptions.chart" 
+        [labels]="chartOptions.labels"
+        [responsive]="chartOptions.responsive">
+      </apx-chart> -->
+  
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [plotOptions]="chartOptions.plotOptions"
+        [labels]="chartOptions.labels"
+      ></apx-chart>
+    
+      <ng-container *ngIf="listData && listData.length != 0">
+    
+        <div class="d__flex just-s header-cs">
+          <h4 class="m-0 fnt-14 fnt_w500">Check In Details</h4>
+          <h4 *ngIf="listData.length > 10" (click)="go_list()" class="m-0 d__flex gap-5 fnt-12 fnt_w400">
+            <span class="fnt-12 fnt_w400">View All</span>
+            <ion-icon class="fnt-13" name="chevron-forward-outline"></ion-icon>
+          </h4>
+        </div>
+    
+        <div class="min-h">
+          <div class="box-sec">
+            <div class="list_data mouse" *ngFor="let item of listData.slice(0,10);let i = index" >
+              <div class="d__flex gap-10 employee_">
+                <div [class.image_div]="item.image" class="absolute_">
+                  <!-- <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div> -->
+                  <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+                  <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+                </div>
+                <div class="w-100">
+                  <p class="m-0 mb-5 fnt-13 fnt_w500 webkit-text" [style.--line]="2">{{item.employee_name}}</p>
+                  <div class="d__flex just-s w-100">
+                    <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+                    <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+                  </div>
+                </div>
+              </div>
+      
+            </div>
+          </div>
+        </div>
+ 
+  
+  
+        <!-- <div *ngFor="let item of listData.slice(0,10)" class="w-100 employee_att">
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-15 fnt_w500">{{item.attendance_date | date:'MMM d, y'}}</h3>
+            <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours) : ' - '}}</h2>
+          </div>
+    
+          <div class="s-1 mb-10">
+            <h3 *ngIf="db.selfView" class="m-0 fnt-14 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/company.svg" class="fnt-20"></ion-icon>{{item.company ? item.company : ' - '}}</h3>
+            <h3 *ngIf="!db.selfView" class="m-0 fnt-14 gray_clr w-80 d__flex gap-5 webkit-text" [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
+            <app-status [status]="item.status"></app-status>
+          </div>
+      
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&& item.last_checkout!= "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+          </div>
+        </div> -->
+  
+      </ng-container>
+    
+    </div>
+    
+    
+    
+    <div (scroll)="scrollEvent($event)" class="liststyle" *ngIf="viewType == 'List'">
+    
+      <div *ngIf="skeleton">
+        <app-skeleton-loader [type]="'left3_right1'" [list_len_count]="'20'" ></app-skeleton-loader>
+      </div>
+    
+      <ng-container *ngIf="!skeleton && listData.length != 0">
+  
+        <div class="list_data mouse" *ngFor="let item of listData;let i = index" >
+          <div class="d__flex gap-10 employee_">
+            <div [class.image_div]="item.image" class="absolute_">
+              <!-- <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div> -->
+              <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+              <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+            </div>
+            <div class="w-100">
+              <p class="m-0 mb-5 fnt-13 fnt_w500 webkit-text" [style.--line]="2">{{item.employee_name}}</p>
+              <div class="d__flex just-s w-100">
+                <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+                <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+  
+        <!-- <div *ngFor="let item of listData" class="w-100 employee_att">
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-15 fnt_w500">{{item.attendance_date | date:'MMM d, y'}}</h3>
+            <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours) : ' - '}}</h2>
+          </div>
+      
+          <div class="s-1 mb-10">
+            <h3 *ngIf="db.selfView" class="m-0 fnt-14 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/company.svg" class="fnt-20"></ion-icon>{{item.company ? item.company : ' - '}}</h3>
+            <h3 *ngIf="!db.selfView" class="m-0 fnt-14 gray_clr w-80 d__flex gap-5 webkit-text" [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
+            <app-status [status]="item.status"></app-status>
+          </div>
+    
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&& item.last_checkout!= "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+          </div>
+      
+        </div> -->
+      </ng-container>
+    
+      <app-no-record-found *ngIf="!skeleton && listData.length == 0" [column]="true" height="calc(100vh - 100px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    </div>
+
+
+    <div *ngIf="!db.ismobile" class="d__flex w-100 just-s pagination_sec">
+      <div class="d__flex border">
+        <p *ngFor="let item of pagination_count;let i = index" [class.select_pagination]="item.selected" class="m-0 fnt-14 box__ mouse" (click)="send_pagination(item,i)">{{item.count}}</p>
+      </div>
+      <ion-button class="load-more" expand="block" fill="clear" (click)="add_pagination()">Load More</ion-button>
+    </div>
+
+  </div>
+  
+  <!-- Skeleton Loader -->
+  <div *ngIf="skeleton" class="full_sec">
+
+    <div *ngIf="db.ismobile" class="tab_skeleton">
+      <div *ngFor="let val of [1,2]">
+        <app-skeleton-loader type="tabs" ></app-skeleton-loader>
+      </div>
+    </div>
+
+    <div style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 25px;">
+      <ion-skeleton-text [animated]="true" style="height: 30px; width: 200px;border-radius: 5px;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="height: 150px; width: 150px;border-radius: 50%;"></ion-skeleton-text>
+    </div>
+
+    <ion-skeleton-text [animated]="true" style="height: 50px; width: 100%;border-radius:0px; margin: 0 0 15px 0;"></ion-skeleton-text>
+
+    <div class="box-sec">
+      <div *ngFor="let i of [1,2,3,4,5,6,7,9,9,9,1,1,1,1,1,1]" class="list_data">
+        <ion-skeleton-text  [animated]="true" style="height: 55px; width: 65px;border-radius: 50%; margin: 0 8px 0 0;"></ion-skeleton-text>
+        <div class="w-100">
+          <ion-skeleton-text  [animated]="true" style="height: 17px; width: 70%;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text  [animated]="true" style="height: 13px; width: 55%;border-radius: 5px; margin: 6px 0 0 0;"></ion-skeleton-text>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  
+</ion-content>

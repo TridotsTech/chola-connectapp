@@ -1,0 +1,47 @@
+<div *ngIf="!db.ismobile" class="forms__">
+  <div class="d__flex gap-10 mar-0-10">
+    <ion-icon class="mouse" (click)="modal.dismiss()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white">Customize Form</p>
+  </div>
+</div>
+
+<app-header title="Customize Form"  [model]="false"></app-header>
+<!-- back_route="settings" -->
+<ion-content>
+  <!-- <ion-list *ngIf="form_fields && form_fields.length != 0">
+    <ion-item *ngFor="let item of form_fields">
+      <ion-label>{{item.label}}</ion-label>
+      <ion-toggle [checked]="true" justify="end"></ion-toggle>
+    </ion-item>
+  </ion-list> -->
+
+  <div *ngIf="form_fields && form_fields.length == 0 && !loader">
+    <app-no-record-found  [column]="true" height="calc(100vh - 310px)" heading="No Fields Found" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+  </div>
+
+  <div class="align_center" *ngIf="loader">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div  cdkDropList *ngIf="form_fields && form_fields.length != 0" [class.enable_height]="!db.ismobile" class="example-list" (cdkDropListDropped)="drop($event)">
+    <!-- || item.hidden == 1 -->
+      <ion-item *ngFor="let item of form_fields" (click)="disabled = true" [class.hidden_f]="(item.fieldtype == 'Section Break' || item.fieldtype == 'Page Break' || item.fieldtype == 'Column Break' || item.reqd == 1)" lines="none" button class="example-box" (click)="update_field(item)"  cdkDrag>
+        <div class="example-handle" cdkDragHandle>
+          <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg>
+        </div>
+        <ion-label>{{item.label}}</ion-label>
+        <ion-toggle [checked]="item.hidden == 0" slot="end"></ion-toggle>
+      </ion-item>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="button_">
+      <ion-button [disabled]="!disabled" (click)="save()">Save</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

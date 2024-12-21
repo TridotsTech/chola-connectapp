@@ -1,0 +1,21 @@
+<div class="sideFilterSection">
+  <div *ngFor="let item of search_filter">
+    <div *ngIf="item.fieldtype == 'Data'">
+      <div class="DataSearch">
+        <ion-input class="hideInput fnt-14 capitalize" [ngModel]="item.values" (ionInput)="sendTypeValue($event,item)" [placeholder]="'Search ' + item.fieldname.replaceAll('_', ' ')" type="text"><ion-icon slot="end" *ngIf="item.values" (click)="clearText(item)" class="fnt-16 gray_clr" name="close-outline"></ion-icon></ion-input>
+      </div>
+    </div>
+    <div *ngIf="item.fieldtype == 'Select' || item.fieldtype == 'Link'">
+      <div class="projectTypeFilter">
+        <p class="m-0 fnt-16 fnt_w500 mb-10 capitalize">{{item.fieldname.replaceAll('_', ' ')}}</p>
+        <div *ngFor="let itemValues of item.values; let i = index" (click)="sendFinalValues(itemValues,item,i)">
+          <div class="d__flex gap-10 mouse">
+            <input type="radio" [checked]="itemValues.isSelected" class="styled-checkbox">
+            <label for="checkbox-{{i}}" class="checkbox-label"></label>
+            <p class="m-0 fnt-14 webkit-text" [style.--line]="1">{{itemValues.label}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

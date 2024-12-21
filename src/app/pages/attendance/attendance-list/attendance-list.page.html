@@ -1,0 +1,50 @@
+<app-mobile-header title="Attendance List" back_route="dashboard" ></app-mobile-header>
+
+<ion-content>
+  <!-- <ion-segment value="check" (ionChange)="segment($event)">
+    <ion-segment-button [class.selected]="segment_value == 'check'" value="check">
+      <ion-label class="m-0">Today</ion-label>
+      <p class="m-0">{{changedDate}}</p>
+    </ion-segment-button>
+    <ion-segment-button [class.selected]="segment_value == 'attendance'" value="attendance">
+      <ion-label>Attendance</ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+  <!-- *ngIf="segment_value == 'check'" -->
+  <div >
+    <div class="align_center">
+      <div class="check_button" *ngIf="db.current_address && time">
+        <div class="text-c time">
+          <h6>{{checkin_time ? checkin_time : time}}</h6>
+        </div>
+        <div class="location">
+          <ion-icon slot="start" name="location-outline"></ion-icon>
+          <p class="fnt-14">{{db.current_address}}</p>
+        </div>
+        <div class="d__flex button_">
+          <ion-icon *ngIf="!checkin" name="checkmark-done-circle-sharp"></ion-icon>
+          <ion-button [disabled]="!checkin" fill="clear" (click)="check_In('IN')"><ion-spinner *ngIf="spinner" name="circular"></ion-spinner> <span *ngIf="!spinner">Check In</span></ion-button>
+        </div>
+      </div>
+      <div class="check_button" *ngIf="db.current_address && time && !checkin">
+        <div class="text-c time">
+          <h6>{{checkout_time ? checkout_time : time }}</h6>
+        </div>
+        <div class="location">
+          <ion-icon slot="start" name="location-outline"></ion-icon>
+          <p class="fnt-14">{{db.current_address}}</p>
+        </div>
+        <div class="d__flex button_">
+          <ion-icon *ngIf="!checkout" name="checkmark-done-circle-sharp"></ion-icon>
+          <ion-button [disabled]="!checkout" fill="clear" (click)="check_In('OUT')"><ion-spinner *ngIf="spinner" name="circular"></ion-spinner> <span *ngIf="!spinner">Check Out</span></ion-button>
+        </div>
+      </div>
+      
+      <!-- <ion-button fill="clear"> <ion-label>Check {{ logIn_type ? 'In' : 'Out'}}</ion-label> </ion-button> -->
+    </div>
+  </div>
+  <!-- <div *ngIf="segment_value == 'attendance'">
+    <app-common-list [attendance_list]="attendance_list" (openMenu)="openMenu($event)" [loader]="loader" [no_products]="no_products" (load_more)="loadData($event)"></app-common-list>
+  </div> -->
+</ion-content>
+

@@ -1,0 +1,122 @@
+.department_emp {
+    .department_list {
+        width: 25%;
+        border-right: 1px solid var(--border-col);
+        height: 100%;
+        /* overflow: auto; */
+        position: sticky;
+        top: 55px;
+        z-index: 99;
+
+        .heading {
+            border-bottom: 1px solid var(--border-col);
+        }
+
+        .dept_name {
+            // border-left: 1px solid var(--border-col);
+            padding-left: 10px;
+        }
+    }
+
+    .dept_employees {
+        width: 75%;
+        // height: calc(100vh - 250px);
+        // overflow: auto;
+
+        .select_dept {
+            margin: 0px;
+            padding: 0px 10px;
+            background: #DDDFFF;
+            color: #5461FF;
+            width: max-content;
+            border-radius: 7px;
+        }
+    }
+}
+
+.search_bar {
+    width: 17%;
+    padding: 10px;
+    border: 1px solid var(--border-col);
+    height: 35px !important;
+    border-radius: 10px;
+
+    ion-icon {
+        font-size: 16px;
+        color: var(--gray-color);
+    }
+
+    .search_input {
+        --padding-start: 10px;
+        font-size: 13px;
+    }
+}
+
+.employee_list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    .employee_image {
+        flex: 0 0 15%;
+
+        img {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            border-radius: 50px;
+        }
+
+        .image_none {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f1f1;
+            border-radius: 50px;
+        }
+    }
+
+    .employees {
+        padding: 10px;
+        box-shadow: 0 0 5px #ddd;
+        border-radius: 7px;
+    }
+}
+
+.active_dept {
+    color: #007EE5;
+    border-left: 3px solid var(--primary-color);
+    background-color: #007EE50D;
+}
+
+.department_list::-webkit-scrollbar {
+    display: none;
+}
+
+.dept_employees::-webkit-scrollbar {
+    display: none;
+}
+
+.d___flex {
+    display: flex;
+}
+
+.bg-H{
+    background: #EBF6FF;
+    margin: 10px;
+    padding:10px;
+    border-radius:8px;
+    .box1{
+      width: 95%;
+       .icon{
+        font-size:30px;
+       }
+    }
+
+    .chevronIcon{
+        width: 5%;
+        font-size:15px;
+    }
+}

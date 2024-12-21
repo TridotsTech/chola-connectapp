@@ -1,0 +1,159 @@
+@media only screen and (max-width: 768px) {
+
+    .Notification{
+        height: 100%;
+        overflow: auto;
+    }
+    .title_ {
+        position: sticky;
+        top: 0px;
+        z-index: 12;
+        font-weight: 600;
+        padding: 20px;
+        line-height: 14px;
+        border-bottom: 1px solid var(--border-color);
+        background-color: #fff;
+        border-radius: 12px 12px 0 0 / 12px 12px 0px 0px;
+    }
+
+    .date_title {
+        padding: 5px 0 0 20px;
+        font-weight: 600;
+        font-size: 12px;
+        color: #757575;
+    }
+
+    .fnt-12 {
+        line-height: 20px;
+        font-size: 12px;
+    }
+
+    .notification_content {
+        padding: 15px;
+        background-color: #fff;
+        border-bottom: 1px solid var(--border-color);
+
+        .avatar_image {
+            position: relative;
+            gap: 15px;
+            align-items: flex-start;
+
+            .notification_avatar {
+                position: relative;
+
+                img {
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    object-fit: contain;
+                }
+            }
+
+            .profile_name_text {
+                .notify {
+                    .inner_title {
+                        font-weight: 600;
+                        font-size: 12px;
+
+                        .role_badge {
+                            padding: 3px 10px;
+                            color: #7c7d80;
+                            font-size: 12px;
+                            border-radius: 5px;
+                            font-weight: 600;
+                            letter-spacing: -.02em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+
+    ion-content{
+        --background: var(--light-color);
+    }
+
+    .Notification {
+        border-radius: 10px;
+        margin: 20px;
+        background: #fff;
+        height: calc(100vh - 95px);
+        overflow: auto;
+    }
+
+    .title_ {
+        position: sticky;
+        top: 0px;
+        z-index: 12;
+        font-weight: 600;
+        padding: 20px;
+        line-height: 14px;
+        border-bottom: 1px solid var(--border-color);
+        background-color: #fff;
+        border-radius: 12px 12px 0 0 / 12px 12px 0px 0px;
+    }
+
+    .date_title {
+        padding: 5px 0 0 20px;
+        font-weight: 600;
+        font-size: 16px;
+        color: #757575;
+    }
+
+    .fnt-12 {
+        line-height: 20px;
+        font-size: 12px;
+    }
+
+    .notification_content {
+        padding: 15px;
+        background-color: #fff;
+        border-bottom: 1px solid var(--border-color);
+
+        .avatar_image {
+            position: relative;
+            gap: 15px;
+            align-items: flex-start;
+
+            .notification_avatar {
+                position: relative;
+
+                img {
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    object-fit: contain;
+                }
+            }
+
+            .profile_name_text {
+                .notify {
+                    .inner_title {
+                        font-weight: 600;
+                        font-size: 16px;
+
+                        .role_badge {
+                            padding: 3px 10px;
+                            color: #7c7d80;
+                            font-size: 12px;
+                            border-radius: 5px;
+                            font-weight: 600;
+                            letter-spacing: -.02em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .notification_content:hover{
+        background: #f1f1f1;
+    }
+}
+
+.Notification::-webkit-scrollbar{
+    display: none;
+}

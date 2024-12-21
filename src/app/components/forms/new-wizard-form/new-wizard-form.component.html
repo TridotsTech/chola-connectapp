@@ -1,0 +1,848 @@
+<!-- Created by Gopi -->
+
+<!-- Header Section -->
+
+<div *ngIf="loaderEnabled" [style.height]="loaderEnabledHeight" class="">
+  <!-- <ion-spinner name="circles"></ion-spinner> -->
+  <div *ngIf="loaderTabs" class="d__flex gap-10 search-skeleton">
+    <ion-skeleton-text  *ngFor="let i of [1,2,3,4,5,6]" animated style="width: 100px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+  </div>
+
+  <div class="formUi">
+    <div *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,1,2,3,4,5,6]">
+      <ion-skeleton-text  animated style="width: 50%; height: 20px;border-radius: 5px;margin:7px 0;"></ion-skeleton-text>
+      <ion-skeleton-text  animated style="width: 95%; height: 40px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loaderEnabled">
+  <div *ngIf="createForm || (!db.ismobile && enable_header && (profile_menu && profile_menu[0] && profile_menu[0].name == '') && !tabs_array)" [ngClass]="custom_header_css ? custom_header_css : ''" class="forms__header">
+    <div class="d__flex just-s mar-0-10">
+      <p *ngIf="doctype != 'Material Request'" class="fnt_w500 fnt-14 ion-text-capitalize primary_clr m-0">{{change_header(forms_route)}}</p>
+      <p *ngIf="doctype == 'Material Request' && edit_form_values"
+        class="fnt_w500 fnt-14 ion-text-capitalize primary_clr">{{edit_form_values.title}}</p>
+      <div class="d__flex gap-5">
+        <div class="status_w_create" *ngIf="(doctype && (enable_create_option && edit_form_values && ((doctype == 'Request for Quotation' && edit_form_values.status == 'Submitted') || (doctype == 'Expense Claim' && edit_form_values.status != 'Draft' && edit_form_values.status == 'Paid'))) || (enable_create_option && doctype != 'Request for Quotation' && doctype != 'Expense Claim'))">
+          <div class="d__flex gap-5 just-e w-100">
+            <ion-button slot="end" (click)="open_pop_up_create()" fill="clear">
+              <ion-icon name="add-outline"></ion-icon>
+              <span>Create</span>
+            </ion-button>
+          </div>
+        </div>
+        <ion-icon *ngIf="doctype == 'Bug Sheet'" class="mouse primary_clr" (click)="assign_user()" name="share-social-outline"></ion-icon>
+        <ion-icon class="fnt-25 primary_clr mouse" (click)="close_detail()" name="close-circle-outline"></ion-icon>
+        <ion-icon class="icon menu head mouse" (click)="open_attachment()" src="/assets/icon/menu-blue.svg"></ion-icon>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!db.ismobile && enable_header && (tabs_array && tabs_array.length == 0) && !profile_menu" [ngClass]="custom_header_css ? custom_header_css : ''" class="forms__header">
+    <div class="d__flex just-s mar-0-10">
+      <p class="fnt_w500 fnt-14 ion-text-capitalize primary_clr">Add {{change_header(forms_route)}}</p>
+      <div class="d__flex gap-5">
+        <div class="status_w_create" *ngIf="(doctype && (enable_create_option && edit_form_values && ((doctype == 'Request for Quotation' && edit_form_values.status == 'Submitted') || (doctype == 'Expense Claim' && edit_form_values.status != 'Draft' && edit_form_values.status == 'Paid'))) || (enable_create_option && doctype != 'Request for Quotation' && doctype != 'Expense Claim'))">
+          <!-- *ngIf="(doctype && (enable_create_option && (doctype == 'Request for Quotation' || doctype == 'Expense Claim' ) && edit_form_values && edit_form_values.status == 'Submitted') || (enable_create_option && doctype != 'Request for Quotation' && doctype != 'Expense Claim' ))"> -->
+          <div class="d__flex gap-5 just-e w-100">
+            <ion-button slot="end" (click)="open_pop_up_create()" fill="clear">
+              <ion-icon name="add-outline"></ion-icon>
+              <span>Create</span>
+            </ion-button>
+          </div>
+        </div>
+        <ion-icon class="fnt-25 primary_clr mouse" (click)="close_detail()" name="close-circle-outline"></ion-icon>
+        <ion-icon class="icon menu head mouse" (click)="open_attachment()" src="/assets/icon/menu-blue.svg"></ion-icon>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!db.ismobile && (forms_route == 'activity-task' || forms_route == 'event-form')" class="forms__">
+    <div class="d__flex gap-10 mar-0-10">
+      <ion-icon class="mouse" (click)="backbtn()" name="chevron-back-outline"></ion-icon>
+      <p class="fnt_w500 fnt-14 white"> {{forms_route == 'activity-task' ? 'Add Task' : 'Add Event'}}</p>
+    </div>
+  </div>
+  
+  <div [class.removeHeight]="removeHeight" [class.registerCss]="registerCss" [class.d__flex]="(!tabs_top || (tabs_top && tabs_top == 0))" class="h-100 container__ main-width">
+    <div *ngIf="(profile_menu && profile_menu.length > 1) && (tabs_top && tabs_top == 1) && profile_menu && profile_menu[0] && profile_menu[0].name != ''"
+      [class.enable_bg]="enable_header" [style.top]="stricky_top ? stricky_top : null"   [class.tabSticky]="tabs_top && tabs_top == 1"  [class.tabs_top]="db.ismobile && !registerCss"
+      [class.tab_section]="db.enable_detail && !db.ismobile">
+     
+      <!-- Tab Buttons -->
+      <app-tabs-button [employee_detail_tab]="next_without_saving"  [no_next_btn]="true" [change_color_none]="true" [border_none]="next_without_saving ? false : true"
+        (menu_name)="menu_name($event)" [enable_br]="enable_header ? true : false"
+        [bg_white]="(!db.ismobile || registerCss) ? true : false" [tabs_array]="profile_menu" type="edit-profile"></app-tabs-button>
+   
+  
+        <div *ngIf="enable_header" class="d__flex gap-5">
+         <div class="status_w_create" *ngIf="(doctype && (enable_create_option && doctype == 'Request for Quotation' && edit_form_values && edit_form_values.status == 'Submitted') || (enable_create_option && doctype != 'Request for Quotation'))">
+          <div class="d__flex gap-5 just-e w-100">
+            <ion-button slot="end" (click)="open_pop_up_create()" fill="clear">
+              <ion-icon name="add-outline"></ion-icon>
+              <span>Create</span>
+            </ion-button>
+          </div>
+         </div>
+  
+         <!-- <ion-button class="h-35" *ngIf="((edit_form_values && edit_form_values.status == 'To Receive and Bill') && db.vendor_role)">Create Purchase Invoice</ion-button> -->
+         <ion-icon class="fnt-25 primary_clr mouse" (click)="close_detail()" name="close-circle-outline"></ion-icon>
+         <ion-icon class="icon menu head mouse" (click)="open_attachment()" src="/assets/icon/menu-blue.svg"></ion-icon>
+      </div>
+  
+    </div>
+  
+    <!-- doctype == 'Lead' || doctype == 'Opportunity' ||  -->
+    <div class="tab_section" [class.enable_bg]="enable_header" *ngIf="!db.ismobile && edit_form_values && !edit_new_form && edit_form_values.title !='New Opportunity' && ((next_value == 'next_previous' ? doctype == 'Event' || doctype == 'Task' || doctype == 'ToDo' : '') )">
+      
+      <app-tabs-button  [no_next_btn]="true" [Lead_detail]="true" [enable_br]="enable_header ? true : false" (click)="onClose.emit()"
+        (lead_tabs)="menu_name($event)" [border_none]="true" [overflow]="true" [bg_white]="(!db.ismobile || registerCss) ? true : false"
+        [tabs_array]="tabs_array"></app-tabs-button>
+      <div *ngIf="!db.ismobile" class="d__flex gap-5">
+        <div *ngIf="this.modal && edit_form_values && edit_form_values.status && !db.ismobile && db.enable_detail && !edit_new_form && doctype != 'HD Ticket'" class="edit_form_values">
+          <!-- <p class="m-0 fnt-13 status_box webkit-text text-c" [ngClass]="db.get_style(edit_form_values.status)">{{edit_form_values.status}}</p> -->
+           <app-status [reverse]="true" [status]="edit_form_values.status"></app-status>
+        </div>
+        <ion-icon class="fnt-25 primary_clr mouse" (click)="close_detail()" name="close-circle-outline"></ion-icon>
+        <ion-icon *ngIf="enable_header" class="icon menu head mouse" (click)="open_attachment()"
+          src="/assets/icon/menu-blue.svg"></ion-icon>
+      </div>
+    </div>
+  
+    <!-- [class.submitBtn]="!db.ismobile && submitBtn" -->
+    <div class="h-100 side_two" [class.detail_input_gray]="next_without_saving" [class.webform__container_2]="quickForm && quickForm == 1"  [class.add_frm_web]="!db.ismobile" [class.create_frm_web]="createForm"  [class.detail_container]="Detail_height && lead_tab_name == 'Info'">
+      <!-- [class.modalHeightForm]="modal" -->
+      <div class="h-100 webform__container" [class.custom_bug_h]="edit_form_values && !db.ismobile && (forms_route == 'bug-sheet' || forms_route == 'Project')" [class.submittedH]="enabled_read_only" [class.show_button_none]="!show_button" [class.employee_detail_container]="next_without_saving" [class.without_submit_height]="enabled_read_only && !submitBtn" [class.convert_container]="enable_height" 
+        [class.webform__container1]="new_form && profile_menu && profile_menu[0] && profile_menu[0].name == ''"
+        [class.webform__container_tab]="new_form && profile_menu && profile_menu[0] && profile_menu[0].name != ''">
+        
+        <div *ngIf="!removeSubmitButton && !this.modal && edit_form_values && edit_form_values.status && !db.ismobile && db.enable_detail && !edit_new_form && doctype != 'HD Ticket'" class="edit_form_values">
+          <!-- <p class="m-0 fnt-13 status_box webkit-text text-c" [ngClass]="db.get_style(edit_form_values.status)">{{edit_form_values.status}}</p> -->
+          <app-status [reverse]="true" [status]="edit_form_values.status"></app-status>
+        </div>
+  
+        <div *ngIf="section_break_data && section_break_data_2 && section_break_name && section_break_name.length > 0 && info.length > 0" class="h-100" [class.form-full-container]="!next_without_saving">
+  
+             
+          <div class="h-100 form-container enable-border">
+            <form class="" [formGroup]="form_data">
+              <!-- [class.employee_detail_pad]="next_without_saving" -->
+              <div class="h-100 form-data"  [class.popup_centre_data]="popup_centre" [class.d_unset]="!db.ismobile &&  (edit_values && (forms_route == 'event' || forms_route == 'todo'))"  [class.web-form-data]="web_forms && (forms_route == 'lead' || forms_route == 'Opportunity' || forms_route == 'Quotation' || forms_route == 'Customer' || forms_route == 'activity-task' || forms_route == 'event-form')" [class.height_mobile_form]="db.ismobile && forms_route != 'activity-task'"
+                [class.Task_height]="db.ismobile && !db.event_list_form && !action_meet && (forms_route == 'event-form' || forms_route == 'event')">
+           
+                <div class="align__c" [class.employee_detail_gap]="next_without_saving" [class.rows-container1]="add_new_form" [class.lead-rows-container]="!web_forms && ((doctype == 'Lead' && forms_route == 'lead') || (forms_route == 'todo' || forms_route == 'event' || forms_route == 'Opportunity' || forms_route == 'Quotation' || forms_route == 'Customer' || forms_route == 'customer')  && ((section_break_data_2 && (section_break_data && !section_break_data[section].label)) ||( section_break_data_2 && section_break_data[section] && section_break_data[section].label)))"
+                [class.hidden]="get_hidden(section_break_data,section)" [ngClass]="{'rows-container': !edit_web_forms && ((forms_route != 'lead' || forms_route != 'todo' || forms_route != 'event' || forms_route != 'Opportunity' || forms_route != 'Quotation' || forms_route != 'Customer') ) && ((section_break_data_2 && (section_break_data && !section_break_data[section].label)) || ( section_break_data_2 && section_break_data[section] && section_break_data[section].label)) }"
+                  *ngFor="let section of section_break_name">
+                  
+                  <!-- Section Header -->
+                  <div class="d__flex w-100" *ngIf="forms_route == 'Customer' && section_break_data[section].label">
+                    <h3 class="m-0 Heading">{{section_break_data[section].label}}
+                    </h3>
+                    <!-- <ion-icon class="Heading" slot="end" name="chevron-forward-outline"></ion-icon> -->
+                  </div>
+                  
+                  <h3 class="m-0 Heading" *ngIf="section_break_data[section].label && forms_route != 'Customer'">
+                    {{section_break_data[section].label}}
+                  </h3>
+  
+                 <!-- Form fields -->
+                  
+                  <!-- [class.section_break_web]="db.enable_detail && each.fieldtype != 'Table' && each.fieldtype != 'Text Editor' && each.fieldtype != 'Text' && each.fieldtype != 'Small Text' && forms_route != 'activity-task' && forms_route != 'Quotation' && forms_route != 'event-form'" -->
+                  <!-- [class.section_break_web_side]="db.enable_detail && db.profile_side_menu" -->
+                  <!-- [style.flex]="each.fieldtype == 'Check' ? '0 0 calc(100% - 10px)' : section_break_data[section].flex" -->
+                  <div [style.margin-right]="((db.ismobile || modal) && (!next_without_saving && !db.ismobile) ) ? '10px' : null"
+                    [ngStyle]="{'margin-right': next_without_saving ? '0px' : '5px'}"
+                    [ngClass]="{'data-manl-div-check':(each.fieldtype == 'Check'),'data-manl-div':(each.fieldtype != 'Check'),'data-manl-div-flex':(doctype == 'Opportunity' && (each.fieldname =='status' || each.fieldtype == 'Select' || each.fieldname =='source' || each.fieldname =='City'|| each.fieldname =='State')),'data-manl-div-flex-l':(doctype == 'Lead' && (each.fieldname =='status' || each.fieldtype == 'Select' || each.fieldname =='source' || each.fieldname =='city'|| each.fieldname =='state'))}"
+                    *ngFor="let each of section_break_data[section]" [style.flex]='section_break_data[section].flex'
+                    [id]="each.fieldname" [class.hidden]="each.hidden == 1 || ((each.fieldname == 'completed_by' || each.fieldname == 'completed_on') && !completed_by_on)">
+                    <p *ngIf="each.fieldtype == 'Data'" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <!-- Data fieldtype -->
+                    <!-- [ngModelOptions]="{standalone: true}" [ngModel]="each.inputValue ? each.inputValue : ''"  -->
+                    <div class="custom-input" *ngIf="!each.inputValue && each.fieldtype == 'Data' && each.options != 'Email' && each.fieldname != 'whatsapp_no'">
+                      <ion-input [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="text"
+                        [placeholder]="each.placeholder" [formControlName]="each.fieldname"
+                        class="form-input"></ion-input>
+                    </div>
+  
+                    <div class="custom-input 1224" *ngIf="(each.inputValue) && each.fieldtype == 'Data' && each.options != 'Email' && each.fieldname != 'whatsapp_no'">
+                      <ion-input [class.readOnlyClass]="each.read_only == 1" [ngModel]="each.inputValue" [readonly]="each.read_only == 1 ? true : false" type="text"
+                        [placeholder]="each.placeholder"
+                        class="form-input"></ion-input>
+                    </div>
+  
+                    <div class="search__" *ngIf="each.fieldtype == 'Data' && each.options != 'Email' && each.fieldname == 'whatsapp_no'">
+                      <div class="search_bar d__flex">
+                        <ion-input [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="text"
+                          [placeholder]="each.placeholder" [formControlName]="each.fieldname"
+                          class="form-input search_input"></ion-input>
+                        <!-- <ion-icon name="search-outline" (click)="contacts()"></ion-icon> -->
+                      </div>
+                    </div>
+  
+                    <!-- !(setValue && setValue[each.fieldname]) &&  -->
+                    
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Data' && each.options == 'Email'">
+                      <ion-input [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="text"
+                        [placeholder]="each.placeholder" (input)="checkEmail($event,each)" [formControlName]="each.fieldname"
+                        class="form-input"></ion-input>
+                    </div>
+  
+                    <!-- <div class="custom-input" *ngIf="(setValue && setValue[each.fieldname]) && each.fieldtype == 'Data' && each.options == 'Email'">
+                      <ion-input [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="text"
+                        [placeholder]="each.placeholder" [(ngModel)]="setValue[each.fieldname]"  (input)="checkEmail($event,each)" 
+                        class="form-input"></ion-input>
+                    </div> -->
+  
+                    <p *ngIf="each.fieldtype == 'Link_multi_select'" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <p *ngIf="each.fieldtype == 'Rating'" class="label-1"> {{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <p *ngIf="each.fieldname == 'feedback' && doctype == 'HD Ticket' && rating_feedback_option && rating_feedback_option.length != 0" class="label-1"> {{each.label}}
+                      <span class="impt-star"  *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div *ngIf="rating_feedback_option && each.fieldname == 'feedback'" class="feedback_rating">
+                      <div *ngFor="let item of rating_feedback_option;let i=index" (click)="rating_select_option(item,i)" [ngClass]="item['isSelect'] ? 'rating_option_select' : ''" class="rating_options mouse">
+                        <p class="m-0">{{item.label}}</p>
+                      </div>
+                    </div>
+  
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Rating'">
+                      <div  class="d__flex gap-5" *ngIf="!edit_form_values">
+                        <ion-icon (click)="get_rating(i,each)" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i as index" [class.active_star]="i <= rating_value" [name]="i <= rating_value ? 'star' : 'star-outline'"></ion-icon>
+                      </div>
+                      <div  class="d__flex gap-5" *ngIf="edit_form_values">
+                        <ion-icon (click)="!edit_form_values ? get_rating(i,each) : null" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1]; let i = index" [class.active_star]="i <= rating_value" [name]="i <= rating_value ? 'star' : 'star-outline'"></ion-icon>
+                      </div>
+                    </div>
+               
+                    <div class="custom-input-check" *ngIf="each.fieldtype == 'Check'">
+  
+                      <ion-checkbox [formControlName]="each.fieldname"
+                        [checked]="each.default == '1' || each.default == 1 ? 'true' : 'false'" color="primary"
+                        (ionChange)="check_box($event,each,section)"></ion-checkbox>
+                    </div>
+                    <p *ngIf="each.fieldtype == 'Check'" class="label-12">{{each.label}}{{each.description}}<span
+                        class="impt-star" *ngIf="each.reqd == 1"> *</span></p>
+  
+                    <p *ngIf="(each.fieldtype == 'Link' || each.fieldtype == 'Select') && each.fieldname != 'completed_by' && each.fieldname != 'feedback'" class="label-1">{{each.label}}
+                      <span *ngIf="each.reqd == 1 && (each.fieldname == 'status' && !(dailyUpdateDetail && dailyUpdateDetail.is_updated) && doctype == 'Daily Update Log Item');else required" class="impt-star" > </span>
+                      <ng-template #required>
+                        <span  class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                      </ng-template>
+                    </p>
+  
+                    <p *ngIf="(each.fieldtype == 'Link' || each.fieldtype == 'Select') && (each.fieldname == 'completed_by' && completed_by_on)" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+                   
+                    <div class="custom-input link_field_mouse" *ngIf="each.fieldtype == 'Link'">
+  
+                      <ion-input *ngIf="each.fieldname != 'completed_by' && each.fieldname != 'feedback'" [readonly]="each.read_only == 1 ? true : false" [class.readOnlyClass]="each.read_only == 1"  placeholder="{{each.label}}" type="text"  id="project"
+                        (ionChange)="ng_select_change($event,each)"
+                        [formControlName]="each.fieldname"
+                        (click)="open_drop_down_option(each.options, each.fieldname, 'name')"
+                        [ngModel]="db.drop_down_value[each.fieldname] ? (each.fieldname == 'parent_task' && db.drop_down_value['parent_task_name'] ? db.drop_down_value['parent_task_name'] : db.drop_down_value[each.fieldname]) : each.value ? each.value : ''"
+                        class="mouse 789 form-input h-100" (ionFocus)="select_value($event)" >
+                        <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+                      </ion-input>
+
+
+                      <!-- [ngModel]="db.drop_down_value[each.fieldname] ? db.drop_down_value[each.fieldname] : each.value ? each.value : ''" -->
+  
+                      <ion-input *ngIf="each.fieldname == 'completed_by' && completed_by_on" [readonly]="each.read_only == 1 ? true : false" [class.readOnlyClass]="each.read_only == 1"  placeholder="{{each.label}}" type="text"  id="project"
+                        (ionChange)="ng_select_change($event,each)"
+                        (click)="open_drop_down_option(each.options, each.fieldname, 'name')"
+                        [formControlName]="each.fieldname"
+                        [ngModel]="db.drop_down_value[each.fieldname] ? (each.fieldname == 'parent_task' && db.drop_down_value['parent_task_name'] ? db.drop_down_value['parent_task_name'] : db.drop_down_value[each.fieldname]) : each.value ? each.value : ''"
+                        class="mouse 789 form-input" (ionFocus)="select_value($event)">
+                        <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+                      </ion-input>
+                     
+                    </div>
+                    <div class="custom-input link_field_mouse" *ngIf="each.fieldtype == 'Select'">
+                      <ion-input [class.readOnlyClass]="each.read_only == 1" placeholder="Select" type="text"
+                        (click)="open_drop_down_option(each.options, each.fieldname, 'name')" [readonly]="each.read_only == 1 ? true : false"
+                        [formControlName]="each.fieldname"
+                        [ngModel]="db.drop_down_value[each.fieldname] ? db.drop_down_value[each.fieldname] : each.value ? each.value : ''"
+                        class="mouse 789 form-input" (ionFocus)="select_value($event)">
+                        <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+                      </ion-input>
+                      
+                    </div>
+                   
+                    <p *ngIf="each.fieldtype == 'Geo Location'" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div class="loaction" *ngIf="each.fieldtype == 'Geo Location'">
+                      <div class="maps-container">
+                        <div class="location__input">
+                          <div class="location__search w-100">
+                            <input readonly *ngIf="!db.current_address" class="input" placeholder="Search your location"
+                              type="text">
+                            <p *ngIf="db.current_address" class="current_address gray_clr">{{db.current_address}}</p>
+                          </div>
+                          <ion-button *ngIf="!db.current_address" fill="clear"
+                            class="m-0 location-button-wb ion-text-capitalize"> <ion-icon
+                              name="locate-outline"></ion-icon> </ion-button>
+                        </div>
+                        <div><app-maps [get_map_fields]="true"></app-maps></div>
+                      </div>
+                    </div>
+                   
+                    <p *ngIf="sub_category && (each.fieldtype == 'Link' || each.fieldtype == 'Select') && (each.options =='Job Category') && ((each.label == 'Job sub category'))" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+                   
+                    <p *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Phone' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Phone' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'">
+                     
+                      <ion-input (ionChange)="float_value($event,each)" [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false"
+                        id="inputBox" min="0" type="number" [placeholder]="each.placeholder"
+                        [formControlName]="each.fieldname"  class="form-input">
+                      </ion-input>
+  
+                      
+                    </div>
+  
+                    <p id="attach" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'"
+                      class="label-1">
+                      {{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div class="image-div_" *ngIf="(each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image') && doctype != 'Bug Sheet'">
+                      <input multiple #file_upload class="image-d" (change)="changeListener($event,each)" type="file" [formControlName]="each.fieldname" class="form-input">
+                      <div [class.attached]="each.file_url" class="d__flex browser">
+                        <div (click)="file_upload.click()" class="mouse d__flex name">
+                          <img src="/assets/icon/file_upload.svg">
+                        </div>
+                        <div class="d__flex value_div just-s">
+                          <!-- *ngIf="each.file_url"  -->
+                          <!-- !each.file_url && each.value -->
+                          <div>
+                            <a *ngIf="!each.value" (click)="each.read_only == 1 ? null : each.file_url ? db.preview_image(db.product_img(each.file_url)) : file_upload.click()" class="m-0 mouse value_ webkit-text" [style.--line]="1">{{each.file_url ? each.file_url : 'Upload a file'}}</a>
+                            <a *ngIf="each.value" (click)="each.read_only == 1 ? null : each.value ? db.preview_image(db.product_img(each.value)) : file_upload.click()" class="m-0 mouse value_ webkit-text" [style.--line]="1">{{each.value ? each.value : 'Upload a file'}}</a>
+                          </div>
+                          <!-- *ngIf="each.value || each.file_url"  -->
+                          <ion-icon *ngIf="each.value || each.file_url" class="flex-auto" (click)="downloadLetter($event,each)" name="cloud-download-outline"></ion-icon>
+                        </div>
+  
+                      </div>
+                     
+                    </div>
+
+                    <div class="image-div_" *ngIf="(each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image') && doctype == 'Bug Sheet'">
+                      <input multiple #file_upload class="image-d" (change)="changeListenerBugSheet($event,each)" type="file" [formControlName]="each.fieldname" class="form-input">
+                      <div [class.attached]="each.file_url" class="browser d__flex">
+                        <div (click)="each.read_only == 1 ? null : file_upload.click()" class="mouse d__flex name">
+                          <img src="/assets/icon/file_upload.svg">
+                        </div>
+                        <div class="d__flex value_div" (click)="each.read_only == 1 ? null : file_upload.click()">
+                          <a class="m-0 mouse value_ webkit-text" [style.--line]="1">{{'Upload a file'}}</a>
+                        </div>
+                      </div>
+
+                      <div *ngIf="multiple_array && multiple_array.length != 0" class="bugSheetFiles">
+                        <!-- <div *ngFor="let item of multiple_array;let i = index">
+                          <div class="d__flex gap-10 imgUrls">
+                            <p class="m-0 white" (click)="each.read_only == 1 ? null : item.file_url ? db.preview_image(db.product_img(item.file_url)) : file_upload.click()">{{item.file_url}}</p>
+
+                            <ion-icon class="white" (click)="remove_img(item,i)" name="close-outline"></ion-icon>
+                          </div>
+                        </div> -->
+
+                        <!-- id="lightgallery" Gallery -->
+                        <!-- <div  class="lightgallery">
+                          <div class="img_cont" *ngFor="let item of multiple_array;let i = index">
+                            <a [href]="db.product_img(item.file_url)">
+                              <img class="img" [src]="db.product_img(item.file_url)"  alt=""  />
+                            </a>
+                            <ion-icon class="mouse remove_img" (click)="remove_img(item,i)" name="close-outline"></ion-icon>
+                          </div>
+                        </div> -->
+
+                        <lightgallery [settings]="lightGallerySettings" class="lightgallery">
+                          <div class="img_cont" *ngFor="let item of multiple_array; let i = index">
+                            <a [href]="db.product_img(item.file_url)">
+                              <img class="img" [src]="db.product_img(item.file_url)" alt="" />
+                            </a>
+                            <ion-icon class="mouse remove_img" (click)="remove_img(item, i)" name="close-outline"></ion-icon>
+                          </div>
+                        </lightgallery>
+                      </div>
+                     
+                    </div>
+                    
+                    <p *ngIf="each.fieldtype == 'Date' && each.fieldname != 'completed_on'" class="label-1" [class.hide_date]="(doctype == 'Compensatory Leave Request' || doctype == 'Leave Application') && each.fieldname == 'half_day_date' && !half_day_hide">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <p *ngIf="each.fieldtype == 'Date' && each.fieldname == 'completed_on' && completed_by_on" class="label-1" [class.hide_date]="(doctype == 'Compensatory Leave Request' || doctype == 'Leave Application') && each.fieldname == 'half_day_date' && !half_day_hide">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Date'" [class.hide_date]="(doctype == 'Compensatory Leave Request' || doctype == 'Leave Application') && each.fieldname == 'half_day_date' && !half_day_hide">
+                      <!-- <ion-input (ionChange)="datePicker($event, each)" *ngIf="each.fieldname != 'completed_on'" [min]="each.fieldname == 'half_day_date' ?  fromDate : ''" [max]="each.fieldname == 'half_day_date' ? toDate : ''" [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="date"
+                      [formControlName]="each.fieldname" class="form-input"></ion-input> -->
+
+
+                      <app-custom-calendar *ngIf="each.fieldname != 'completed_on'" web_form="true" [each]="each" format="Date" [selectedDate]="each.value" (onChange)="datePickerChange($event)"  [minValue]="each.fieldname == 'half_day_date' ?  fromDate : ''" [maxValue]="each.fieldname == 'half_day_date' ? toDate : ''" ></app-custom-calendar>
+
+  
+                      <ion-input *ngIf="each.fieldname == 'completed_on' && completed_by_on" [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="date"
+                      [formControlName]="each.fieldname" class="form-input"></ion-input>
+                    </div>
+  
+    
+                    <p *ngIf="each.fieldtype == 'Datetime'" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Datetime'">
+                      <!-- <ion-input [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="datetime-local"
+                        [formControlName]="each.fieldname" class="form-input"></ion-input> -->
+
+                        <app-custom-calendar web_form="true" [each]="each" format="Date and Time" [selectedDate]="each.value" (onChange)="datePickerChange($event)"></app-custom-calendar>
+                    </div>
+                    <p *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'">
+                      <ion-textarea *ngIf="(doctype != 'Task' && doctype != 'Bug Sheet')" class="text-area" [readonly]="each.read_only" [formControlName]="each.fieldname" placeholder="Enter Your {{each.label}} Here..." ></ion-textarea>
+                      <quill-editor *ngIf="(doctype == 'Task' || doctype == 'Bug Sheet')" class="text-editor" [formControlName]="each.fieldname" [styles]="{height: '285px'}"></quill-editor>
+                    </div>
+  
+  
+                    <p *ngIf="each.fieldtype == 'Time'" class="label-1">{{each.label}}
+                      <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+                    </p>
+  
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Time'">
+                      <ion-input [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="time"
+                        [formControlName]="each.fieldname" class="form-input">
+                      </ion-input>
+                    </div>
+                    
+                    <p *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'" class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></p>
+                    
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'">
+                      <ion-textarea id="text_area" [class.read-only]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" class="text-area" [formControlName]="each.fieldname" placeholder="Enter Your {{each.label}} Here..." ></ion-textarea>
+                    </div>
+  
+                    <p *ngIf="each.fieldtype == 'Password'" class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1">*</span></p>
+                   
+                    <div class="custom-input" *ngIf="each.fieldtype == 'Password'">
+                      <ion-input [class.readOnlyClass]="each.read_only == 1" [readonly]="each.read_only == 1 ? true : false" type="Password"
+                        [formControlName]="each.fieldname" class="form-input"></ion-input>
+                    </div>
+  
+                    <p *ngIf="each.fieldtype == 'Table' && doctype != 'Expense Claim' && doctype != 'Quotation' && doctype != 'Event' && doctype != 'Opportunity'" class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></p>
+                    <div class="d__flex just-s gap-25" *ngIf="each.fieldtype == 'Table' && (doctype == 'Quotation' || doctype == 'Opportunity' )">
+                      <p class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></p>
+                      <div class="d__flex gap-10" (click)="!enabled_read_only ? clearCartItem(test_child_data[each.fieldname]) : null" *ngIf="!enabled_read_only && test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0">
+                        <p class="alert fnt-13 m-0">Delete all items</p>
+                        <ion-icon src="/assets/form/delete.svg" class="fnt-15"></ion-icon>
+                      </div>
+                    </div>
+  
+                    <div class="d__flex just-s gap-25" *ngIf="each.fieldtype == 'Table' && doctype == 'Event'">
+                      <p class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></p>
+                      <div class="d__flex gap-10" (click)="delete_all_event(test_child_data[each.fieldname],each.fieldname)" *ngIf="!enabled_read_only && test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0">
+                        <p class="alert fnt-13 m-0">Delete All</p>
+                        <ion-icon src="/assets/form/delete.svg" class="fnt-15"></ion-icon>
+                      </div>
+                    </div>
+                  
+                    <div class="Null_tabless_ tablessDiv" *ngIf="((each.fieldtype == 'Table' && doctype != 'Expense Claim' && doctype != 'Quotation' && doctype != 'Event' && doctype != 'Opportunity') && (!test_child_data[each.fieldname] || test_child_data[each.fieldname].length == 0))">
+                      
+                      <div class="tableView">
+                        <div class="tabless_">
+                          <table>
+                            <tr>
+                              <th> S.No </th>
+                              <th *ngFor="let head of each.child_header">{{head.label}}</th>
+                              <th>Edit</th>
+                            </tr>
+                          </table>
+                        </div>
+    
+                        <div class="no-data-image">
+                          <div class="no-image">
+                            <ion-icon name="alert-circle-outline"></ion-icon>
+                          </div>
+                          <div class="no-data">No Data</div>
+                        </div>
+                      </div>
+  
+                      <div class="delete-add-btn">
+                        <ion-button [disabled]="(this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft') ?  false : enabled_read_only" class="child-table-btn" (click)="enabled_read_only ? null : addRow(each)">Add Row</ion-button>
+                      </div>
+                      
+                    </div>
+  
+                    <div class="tablessDiv" *ngIf="(each.fieldtype == 'Table' && doctype != 'Expense Claim' && doctype != 'Quotation' && doctype != 'Event' && doctype != 'Opportunity') && test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0">
+                      <div class="tabless_" [class.tabless__overflow]="test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0">
+                        <table *ngIf="test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0">
+                          <tr>
+                            
+                             <!-- || (this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft') -->
+                            <th (click)="(!this.enabled_read_only) ? selectAndUnselect(test_child_data[each.fieldname],each) : ''">
+                               <!-- || (this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft') -->
+                              <ion-icon *ngIf="(!this.enabled_read_only) && test_child_data[each.fieldname]  && (!test_child_data[each.fieldname].select_all || test_child_data[each.fieldname].select_all != 1) && test_child_data[each.fieldname].length > 0 ;" name="square-outline"></ion-icon>
+                              <ion-icon *ngIf="test_child_data[each.fieldname]  && test_child_data[each.fieldname].select_all && test_child_data[each.fieldname].select_all==1" name="checkbox-outline"></ion-icon>
+                              S.No
+                            </th>
+    
+                            <th *ngFor="let head of each.child_header.slice(0,7)">{{head.label}}</th>
+                            <th *ngIf="!enabled_read_only">Edit</th>
+    
+                          </tr>
+                          <tr *ngFor="let dt of test_child_data[each.fieldname].slice(0,6);let k=index;">
+                             <!-- || (this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft') -->
+                            <td (click)="(!this.enabled_read_only) ? (dt.select ? select_unselect(dt,test_child_data[each.fieldname],k) : select_unselect(dt,test_child_data[each.fieldname],k)) : ''">
+                               <!-- || (this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft') -->
+                              <ion-icon *ngIf="(!this.enabled_read_only)"
+                                [name]="dt.select ? 'checkbox-outline' : 'square-outline'"></ion-icon>
+                              {{k+1}}
+                            </td>
+                            <td (click)="enabled_read_only ? null : edit_child_modal(test_child_data[each.fieldname],each.options,each.fieldname,k)"
+                              class="mouse" *ngFor="let head of each.child_header">
+                              <p class="m-0 fnt-14" [class.w-400px]="head.fieldname == 'expected_result' || head.fieldname == 'procedure' || head.fieldname == 'subject'" [class.webkit-text]="head.fieldname == 'expected_result' || head.fieldname == 'procedure'" innerHtml="{{(head.fieldname == 'from_time' || head.fieldname == 'to_time') ? db.formatDateTo12Hour(dt[head.fieldname]) : dt[head.fieldname] ? dt[head.fieldname] : '-'}}"></p>
+                            </td>
+                            <td *ngIf="!enabled_read_only">
+                              <ion-button class="edit-btn-con"
+                                (click)="enabled_read_only ? null : edit_child_modal(test_child_data[each.fieldname],each.options,each.fieldname,k)">
+                                <ion-icon name="create-outline">
+                                </ion-icon>
+                              </ion-button>
+                            </td>
+                          </tr>
+                        </table>
+    
+                        <!-- <div *ngIf="!enabled_read_only" class="delete-add-btn">
+                          <div class="delete-child-btn d__flex just-c"
+                            (click)="delete_records($event,test_child_data[each.fieldname],each.fieldname)"
+                            *ngIf="test_child_data[each.fieldname] && test_child_data[each.fieldname].select && test_child_data[each.fieldname].select==1">
+                            <ion-icon name="trash-outline"></ion-icon>
+                          </div>
+                          <ion-button [disabled]="enabled_read_only" class="child-table-btn" (click)="addRow(each)">Add Row</ion-button>
+                        </div>
+                        
+                        <div *ngIf="enabled_read_only || (enabled_read_only && this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft')" class="delete-add-btn">
+                          <div class="delete-child-btn d__flex just-c"
+                            (click)="delete_records($event,test_child_data[each.fieldname],each.fieldname)"
+                            *ngIf="test_child_data[each.fieldname] && test_child_data[each.fieldname].select && test_child_data[each.fieldname].select==1">
+                            <ion-icon name="trash-outline"></ion-icon>
+                          </div>
+                          <ion-button [disabled]="(this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft') ?  false : enabled_read_only" *ngIf="!enabled_read_only || (this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft')" class="child-table-btn" (click)="addRow(each)">Add Row</ion-button>
+                        </div> -->
+                      </div>
+  
+                      <div *ngIf="!enabled_read_only" class="delete-add-btn">
+                        <div class="delete-child-btn d__flex just-c"
+                          (click)="delete_records($event,test_child_data[each.fieldname],each.fieldname)"
+                          *ngIf="test_child_data[each.fieldname] && test_child_data[each.fieldname].select && test_child_data[each.fieldname].select==1">
+                          <ion-icon name="trash-outline"></ion-icon>
+                        </div>
+                        <ion-button [disabled]="enabled_read_only" class="child-table-btn" (click)="enabled_read_only ? null : addRow(each)">Add Row</ion-button>
+                      </div>
+                      
+                      <div *ngIf="enabled_read_only || (enabled_read_only && this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft')" class="delete-add-btn">
+                        <div class="delete-child-btn d__flex just-c"
+                          (click)="delete_records($event,test_child_data[each.fieldname],each.fieldname)"
+                          *ngIf="test_child_data[each.fieldname] && test_child_data[each.fieldname].select && test_child_data[each.fieldname].select==1">
+                          <ion-icon name="trash-outline"></ion-icon>
+                        </div>
+                        <ion-button [disabled]="(this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft') ?  false : enabled_read_only" *ngIf="!enabled_read_only || (this.edit_form_values && this.edit_form_values.status && this.edit_form_values.status == 'Draft')" class="child-table-btn" (click)="enabled_read_only ? null : addRow(each)">Add Row</ion-button>
+                      </div>
+  
+                    </div>
+  
+  
+                    <!-- Expense Claim Tables -->
+  
+                    <div *ngIf="each.fieldname == 'expenses'" class="expenseDiv">
+                       
+                      <div class="d__flex just-s mb-5">
+                        <h6 class="title m-0">Expense <span class="impt-star" *ngIf="each.reqd == 1"> *</span></h6>
+                        <div (click)="enabled_read_only ? null : addRow(each)" class="add_btn mouse">
+                          <ion-icon name="add-outline"></ion-icon>
+                        </div>
+                      </div>
+
+                      <div (click)="enabled_read_only ? null : addRow(each)" class="emptyDiv emptyDivExpense mouse" *ngIf="(!(test_child_data && test_child_data[each.fieldname])) || (test_child_data && test_child_data[each.fieldname] && test_child_data[each.fieldname].length == 0)">
+                          <img src="/assets/Employee-Home/ExpenseClaim.svg">
+                          <h5 class="m-0 gray_clr fnt-13 fnt_w500">Click here to add a new expense</h5>
+                      </div>
+                       
+                      <div class="boxUI" *ngIf="test_child_data && test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0">
+                        <div (click)="enabled_read_only ? null : edit_child_modal(test_child_data[each.fieldname],each.options,each.fieldname,k)" class="box__ d__flex just-s mouse" *ngFor="let dt of test_child_data[each.fieldname];let k=index;">
+                          <div class="box-1">
+                            <h5 class="m-0 title-1">{{dt.expense_type}}</h5>
+                            <h5 class="title-2 mb-0 mt-5 gray_clr"><span class="span">Sanctioned Amount : </span>{{(dt.sanctioned_amount ? dt.sanctioned_amount : '0.00')  | currency:db.website_settings.currency}} </h5>
+                            <span class="expense_date gray_clr" *ngIf="dt.expense_date">{{dt.expense_date | date:'MMM d, y'}}</span>
+                          </div>
+                          <div class="box-2 d__flex deleteDiv">
+                             <h3 class="m-0 fnt-14">{{(dt.amount ? dt.amount : '0.00')  | currency:db.website_settings.currency}}</h3>
+                             <div *ngIf="!enabled_read_only" (click)="delete_expense_records($event,test_child_data[each.fieldname],each.fieldname,dt)" class="delete_t-btn mouse"><ion-icon name="trash-outline"></ion-icon></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="each.fieldname == 'advances'" class="expenseDiv">
+                      <div class="d__flex just-s">
+                       <h6 class="title m-0 mb-5">Advance <span class="impt-star" *ngIf="each.reqd == 1"> *</span></h6>
+                       <!-- <div (click)="enabled_read_only ? null : addRow(each)" class="add_btn">
+                         <ion-icon name="add-outline"></ion-icon>
+                       </div> -->
+                      </div>
+
+                      <div class="emptyDiv" *ngIf="(!(test_child_data && test_child_data[each.fieldname])) || (test_child_data && test_child_data[each.fieldname] && test_child_data[each.fieldname].length == 0)">
+                        <img src="/assets/Employee-Home/ExpenseClaim.svg">
+                        <h5 class="m-0 gray_clr fnt-13 fnt_w500">No record found</h5>
+                      </div>
+                     
+                     <div class="boxUI" *ngIf="test_child_data && test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0">
+                      <!-- (click)="enabled_read_only ? null : edit_child_modal(test_child_data[each.fieldname],each.options,each.fieldname,k)" -->
+                      <div  class="box__ d__flex just-s" *ngFor="let dt of test_child_data[each.fieldname];let k=index;">
+                        <div class="box-1">
+                          <div (click)="enabled_read_only ? null : selectAdvances($event, dt, test_child_data[each.fieldname], k)" class="d__flex gap-10 mouse">
+                            <!-- dt.allocated_amount > 0 ||  -->
+                            <ion-checkbox [disabled]="enabled_read_only" [checked]='(dt.selected) ? true : false'></ion-checkbox>
+                            <h5 class="m-0 title-1">{{dt.employee_advance}}</h5>
+                          </div>
+                          <h5 class="title-2 mb-0 mt-5 gray_clr"><span class="span">Paid Amount : </span>{{(dt.advance_paid ? dt.advance_paid : '0.00')  | currency:db.website_settings.currency}} </h5>
+                          <h5 class="title-2 mb-0 mt-5 gray_clr"><span class="span">Unclaimed Amount : </span>{{(dt.unclaimed_amount ? dt.unclaimed_amount : '0.00')  | currency:db.website_settings.currency}} </h5>
+                        
+                        </div>
+                        <div class="box-2 d__flex deleteDiv">
+                           <ion-input [id]="'myInput' + k" type="number" [readonly]="enabled_read_only" (input)="advance($event, dt)" (ionFocus)="ionFocus($event,k)" (ionBlur)="handleBlur($event, dt)" [ngModelOptions]="{standalone: true}" [(ngModel)]="dt.allocated_amount"></ion-input>
+                           <!-- <div (click)="delete_records($event,test_child_data[each.fieldname],each.fieldname)" class="delete_t-btn"><ion-icon name="trash-outline"></ion-icon></div> -->
+                        </div>
+                      </div>
+
+                    </div>
+                    </div>
+
+                    <!-- CRM Quotation -->
+                    <div class="qtationTab" *ngIf="((each.fieldtype == 'Table' && (doctype == 'Quotation' || doctype == 'Event' || doctype == 'Opportunity')) && (!test_child_data[each.fieldname] || test_child_data[each.fieldname]))">
+  
+                    <div *ngIf="doctype != 'Event'">
+                      
+                        <app-product-box [data]="test_child_data[each.fieldname]"  (addto_cart)="add_cart($event)" [readOnly]="enabled_read_only" (removeto_cart)="removetocart($event)" (add_wish)="addtowish($event)" (remove_wish)="addtowish($event)"></app-product-box>
+                     
+                    </div>
+  
+                    
+                    
+                      <div class="d__flex gap-15 qtycrm" *ngIf="!enabled_read_only" (click)="addRow(each)">
+                        <div class="qty__add">
+                          <ion-icon class="mouse icon" name="add-outline"></ion-icon>
+                        </div>
+    
+                        <p class="add_title">{{doctype != 'Event' ? 'Add Items' : 'Add'}}</p>
+                      </div>
+                    
+                      <div class="price_container" *ngIf="test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0 && (doctype == 'Quotation')">
+                        <div class="d__flex gap-15 just-s pb-10">
+                          <div class="d__flex gap-5 ">
+                            <ion-icon class="big_icon" src="/assets/form/check.svg"></ion-icon>
+                            <p>Items Count</p>
+                          </div>
+                          
+                            <p>{{test_child_data[each.fieldname].length + " Nos"}}</p>
+                          
+                        </div>
+  
+                        <div class="d__flex gap-15 just-s pb-10">
+                          <div class="d__flex gap-5 ">
+                            <ion-icon class="icon" src="/assets/form/edit.svg"></ion-icon>
+                            <p>Subtotal</p>
+                          </div>
+                          
+                          <p class="inter_">{{form_ctrl_data['total']['value'] | currency:db.website_settings.currency}}</p>
+                        </div>
+  
+                        <div class="d__flex gap-15 just-s last">
+                          <div class="d__flex gap-5 ">
+                            <ion-icon class="icon" src="/assets/form/edit.svg"></ion-icon>
+                            <p>Total</p>
+                          </div>
+  
+                          <p class="inter_">{{form_ctrl_data['grand_total']['value'] | currency:db.website_settings.currency}}</p>
+                        </div>
+                        
+                      </div>
+  
+                      <div *ngIf="test_child_data[each.fieldname] && test_child_data[each.fieldname].length != 0 && doctype == 'Event'">
+                        <div class="child_event p-10">
+                          <h6>Event Participants</h6>
+                          <div *ngFor="let item of test_child_data[each.fieldname];let i = index" class="event_row">
+                            <div class="d__flex just-s mb-10" *ngIf="item.reference_doctype">
+                              <p class="m-0 fnt_w500 fnt-13">Reference Doctype</p>
+                              <p class="m-0 fnt-13 d__flex gap-10">{{item.reference_doctype}} <span><img *ngIf="!enabled_read_only" (click)="delete_event_row(test_child_data[each.fieldname],item,i)" class="delete" src="/assets/deleteIcon.svg"></span></p>
+                            </div>
+                            <div class="d__flex just-s mb-10" *ngIf="item.reference_docname">
+                              <p class="m-0 fnt_w500 fnt-13">Reference Docname</p>
+                              <p class="m-0 fnt-13">{{item.reference_docname}}</p>
+                            </div>
+                            <div class="d__flex just-s" *ngIf="item.email">
+                              <p class="m-0 fnt_w500 fnt-13">Email</p>
+                              <p class="m-0 fnt-13">{{item.email}}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    
+                    
+                    </div>
+
+
+                    <!-- help message -->
+                    <p *ngIf="each.help" class="help_msg m-0">{{each.help}}</p>
+                    <!-- Error msg required field and mail field-->
+                    <div class="error-msg"
+                      *ngIf="submitted && each.reqd == 1 && ((form_data.get(each.fieldname) && form_data.get(each.fieldname).errors) || (form_data.get(each.fieldname) && form_data.get(each.fieldname).status))">
+                      <p class="error-msg-alert"
+                        *ngIf="form_data.get(each.fieldname).errors && form_data.get(each.fieldname).errors.required">
+                        {{each.label == ' ' ? each.placeholder : each.label}} is required *</p>
+                      <p class="error-msg-alert"
+                        *ngIf="form_data.get(each.fieldname).errors && form_data.get(each.fieldname).errors.email && form_data.get(each.fieldname).status=='INVALID'">
+                        Please Enter Valid {{each.label}} *</p>
+                    </div>
+                    <div class="error-msg"
+                      *ngIf="submitted && each.reqd != 1 && ((form_data.get(each.fieldname) && form_data.get(each.fieldname).errors) || (form_data.get(each.fieldname) && form_data.get(each.fieldname).status) )">
+                      <p class="error-msg-alert"
+                        *ngIf="form_data.get(each.fieldname).errors && form_data.get(each.fieldname).errors.email && form_data.get(each.fieldname).status=='INVALID'">
+                        Please Enter Valid {{each.label}} *</p>
+                    </div>
+                    <div class="error-msg"
+                      *ngIf="submitted && (each.reqd != 1 || each.reqd == 1) && ((form_data.get(each.fieldname) && form_data.get(each.fieldname).errors && form_data.get(each.fieldname).errors.pattern))">
+                      <p class="error-msg-alert"
+                        *ngIf="form_data.get(each.fieldname).errors && form_data.get(each.fieldname).errors.pattern && form_data.get(each.fieldname).status=='INVALID'">
+                        Please Enter Valid {{each.label}} *</p>
+                    </div>
+                    <!-- End error -->
+                  </div>
+
+                  <!-- </ion-row> -->
+                </div>
+
+                <div class="w-100 m-0 label-S" *ngIf="doctype == 'Expense Claim'">
+                  <div class="w-100" [ngClass]="db.ismobile ? 'p-10_15':'p-10_25'">
+                  <!-- {{form_ctrl_data | json}} -->
+                    <h6>Total</h6>
+                    <div class="event_row">
+                      <div class="d__flex just-s mb-10">
+                        <p class="m-0 fnt_w500 fnt-13">Grand Total</p>
+                        <p class="m-0 fnt-13">{{ (form_data.get('grand_total') && form_data.get('grand_total').value ) ? (form_data.get('grand_total')?.value | currency:db.website_settings.currency) : ('0.00' | currency:db.website_settings.currency) }}</p>
+                        <!-- <p class="m-0 fnt-13 d__flex gap-10">{{ form_data.get('grand_total')?.value | currency:db.website_settings.currency }}</p> -->
+                      </div>
+                      <div class="d__flex just-s mb-10" >
+                        <p class="m-0 fnt_w500 fnt-13">Total Claimed Amount</p>
+                        <p class="m-0 fnt-13">{{ (form_data.get('total_claimed_amount') && form_data.get('total_claimed_amount').value ) ? (form_data.get('total_claimed_amount')?.value | currency:db.website_settings.currency) : ('0.00' | currency:db.website_settings.currency) }}</p>
+                      </div>
+                      <div class="d__flex just-s">
+                        <p class="m-0 fnt_w500 fnt-13">Total Sanctioned Amount</p>
+                        <p class="m-0 fnt-13">{{ (form_data.get('total_sanctioned_amount') && form_data.get('total_sanctioned_amount').value) ? (form_data.get('total_sanctioned_amount')?.value | currency:db.website_settings.currency) :('0.00' | currency:db.website_settings.currency) }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div *ngIf="false" class="alert__scam__message d__flex align__c">
+                <div class="terms-condition">
+                  <ion-checkbox formControlName="terms_condt" checked='false' color="primary"></ion-checkbox>
+                  <h6> I Agree with the <a class="terms-condti mouse" routerDirection="back" target="_blank"
+                      href="/terms/terms-and-condition">terms and conditions</a></h6>
+                </div>
+     
+              </div>
+  
+              <div *ngIf="!removeSubmitButton && nextBtn && (profile_menu && profile_menu.length > 1) && !next_without_saving"
+                [class.button_positions_end]="button_positions == 'end'" [class.employeeSubmit]="doctype == 'Employee' && db.ismobile" class="submit-btn-new d__flex just-s">
+                <div *ngIf="navigation_count == 0"></div>
+                <ion-button *ngIf="navigation_count > 0" fill="clear" class="navigation_btn_back btn tertiary-btn" (click)="back()">
+                  <ion-icon name="chevron-back-outline"></ion-icon>
+                </ion-button>
+  
+                <ion-button *ngIf="wizard_json.length - 1 != navigation_count" fill="clear"
+                  class="navigation_btn btn next-btn primary-btn" (click)="next()">Next</ion-button>
+  
+                  
+                <ion-button *ngIf="(!enabled_read_only) && wizard_json.length - 1 == navigation_count" fill="clear" class="btn submit_primary-btn primary-btn" (click)="buttonLoader ? '' : (db.save_button ? save_details1('save') : save_details1(''))">
+                  <p *ngIf="!buttonLoader">{{ db.save_button ? 'Save' : 'Submit'}}</p>
+                  <ion-spinner name="circular" *ngIf="buttonLoader"></ion-spinner>
+                </ion-button>
+  
+                  <!-- <ion-button *ngIf="(!enabled_read_only) && wizard_json.length - 1 == navigation_count" fill="clear" class="btn primary-btn" 
+                (click)="((doctype == 'Timesheet' || doctype == 'Task' || doctype == 'Issue' || doctype == 'Project' || doctype == 'Customer' || doctype == 'Purchase Order' || doctype == 'Purchase Receipt' || doctype == 'Sales Order' || doctype == 'Customer' || doctype == 'Opportunity' ) && (add_new_form || form_is_edited || save_details_only)) ? save_details1('save') : save_details1('')">{{((doctype == 'Timesheet' || doctype == 'Task' || doctype == 'Issue' || doctype == 'Project' || doctype == 'Purchase Order' || doctype == 'Customer' || doctype == 'Purchase Receipt' || doctype == 'Sales Order' || doctype == 'Customer' || doctype == 'Opportunity') && (add_new_form || form_is_edited || save_details_only)) ? 'Save' : 'Submit'}}</ion-button> -->
+              </div>
+          
+              <div *ngIf="!removeSubmitButton && !next_without_saving && show_button && !registerCss  && (profile_menu && profile_menu.length == 1)" [class.quickviewSection]="quickForm == 1" class="d__flex just-s">
+              
+                <div *ngIf="quickForm == 1" [class.button_positions_end]="button_positions == 'end'" [class.submit_full]="new_form" class="submit edit-btn d__flex just-s">
+                  <ion-button fill="clear" class="btn submit_primary-btn primary-btn" (click)="editFormDetail()">Edit Full Form</ion-button>
+                </div>
+  
+                <!-- || submitBtn -->
+                <!-- && (profile_menu && profile_menu.length == 1 || (profile_menu && profile_menu.length == 0))  -->
+  
+                <div *ngIf="(!enabled_read_only || (edit_form_values && edit_form_values.status == 'Draft')) && forms_route != 'whatsapp-form'"
+                  [class.button_positions_end]="button_positions == 'end'" [class.submit_full]="new_form"
+                  [class.submit]="quickForm == 1" [class.submit-btn]="!quickForm" class="submit d__flex just-s">
+                  <!-- <ion-button fill="clear" class="btn submit_primary-btn primary-btn" (click)="((doctype == 'Timesheet' || doctype == 'Task' || doctype == 'Issue' || doctype == 'Project' || doctype == 'Customer' || doctype == 'Expense Claim'|| doctype == 'Material Request' || doctype == 'Sales Invoice' || doctype == 'Item' || doctype == 'Project' || doctype == 'Task' || doctype == 'Issue' || doctype == 'Bug Sheet' || doctype == 'Event' || doctype == 'ToDo' || doctype == 'Lead' || doctype == 'Customer' || doctype == 'Opportunity' ) && (add_new_form || form_is_edited || save_details_only)) ? save_details1('save') : save_details1('')">{{((doctype == 'Timesheet' || doctype == 'Task' || doctype == 'Issue' || doctype == 'Project' || doctype == 'Expense Claim' || doctype == 'Customer' || doctype == 'Material Request' || doctype == 'Sales Invoice' || doctype == 'Item' || doctype == 'Project' || doctype == 'Customer' || doctype == 'Task' || doctype == 'Issue' || doctype == 'Bug Sheet' || doctype == 'Event' || doctype == 'ToDo' || doctype == 'Lead' || doctype == 'Opportunity' ) && (add_new_form || form_is_edited || save_details_only)) ? 'Save' : 'Submit'}}</ion-button> -->
+  
+                  
+                  <ion-button  fill="clear" class="btn submit_primary-btn primary-btn" (click)="buttonLoader ? '' : (db.save_button ? save_details1('save') : save_details1(''))">
+                    <p *ngIf="!buttonLoader">{{ db.save_button ? 'Save' : 'Submit'}}</p>
+                    <ion-spinner name="circular" *ngIf="buttonLoader"></ion-spinner>
+                  </ion-button>
+  
+                </div>
+              </div>
+       
+  
+              <div *ngIf="!registerCss && !enabled_read_only && (profile_menu && profile_menu.length == 1) && (forms_route == 'Quotation' &&( enable_save || (edit_form_values && edit_form_values.status != 'Draft')))"
+                [class.button_positions_end]="button_positions == 'end'" class="submit-btn d__flex just-s">
+                <ion-button fill="clear" class="btn submit_primary-btn primary-btn"
+                  (click)="save_details1('save')">Save</ion-button>
+              </div>
+              <div
+              *ngIf="!enabled_read_only && (profile_menu && profile_menu.length == 1) && forms_route == 'whatsapp-form'"
+              [class.button_positions_end]="button_positions == 'end'" class="submit-btn d__flex just-e">
+              <ion-button class="navigation_btn btn next-btn primary-btn just-s" (click)="send_details()">Send
+                <ion-icon slot="end" class="send_icon" name="send-sharp"></ion-icon></ion-button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+  <!-- Alert Msg -->
+  <div *ngIf="alert_animatings && alert_animatings.length != 0 " class="alert_msg tostifyy success__alert">
+    <div class="tostify d__flex" *ngFor="let item of alert_animatings;let i = index"
+      (click)="alert_animatings.splice(i,1)">
+      <div class="success-txt"> <span class="innerhtml" [innerHTML]="item"></span> </div>
+      <ion-icon name="close-outline"></ion-icon>
+    </div>
+  </div>
+</div>

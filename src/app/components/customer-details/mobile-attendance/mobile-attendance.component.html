@@ -1,0 +1,90 @@
+<div>
+  <div *ngIf="db.ismobile" class="bg_primary">
+    <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+      [bg_white]="db.ismobile ? false : true" [tabs_array]="options"
+      [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+  </div>
+
+  <app-checkin-multiple *ngIf="viewType == 'today'" [attendance]="true"></app-checkin-multiple>
+
+  <div *ngIf="viewType == 'overview'">
+    <!-- New UI -->
+    <div *ngIf="attendance_dashboard && attendance_dashboard.length != 0" class="attendance_dashboard">
+      <div *ngFor="let item of attendance_dashboard;let i = index" class="over_flow">
+        <div class="w-100 d__flex just-s first_sec mb-5">
+          <ion-icon [src]="attendance_dashboard_icon[i].icon" class="fnt-30"></ion-icon>
+          <p class="m-0 fnt-16 fnt_w500" [ngStyle]="{'color': get_count_color(item.label)}">{{item.count}}</p>
+        </div>
+        <p class="m-0 fnt-12 fnt_w500 label">{{item.label}}</p>
+      </div>
+    </div>
+
+    <div *ngIf="view == 'list'">
+      <app-month-filter [doctype]="doc_type" [showCalendar]="showCalendar" [selectedDate]="db.current_event_date"
+        (getDateFromCalendar)="getDateFromCalendars.emit($event)" (getFilters)="getFilters.emit($event)"
+        [search_data]="search_data" [search_filter]="search_filter"></app-month-filter>
+    </div>
+
+    <div class="bg_primary__">
+      <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name1($event)" [bg_white]="true"
+        bg_color="#f6f7f9" [tabs_array]="options1" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+    </div>
+
+
+    <div *ngIf="view == 'calendar'" class="p-10">
+      <div class="d__flex w-100 just-s header" (click)="show_att_cal.emit('')">
+        <h5 class="m-0 fnt-15">Monthly Attendance</h5>
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </div>
+
+      <div *ngIf="show_attendance" class="calendar_att1">
+        <app-month-calendar [highlightedDates]="highlightedDates"
+          (onChange)="getCalendarDate.emit($event)"></app-month-calendar>
+      </div>
+
+    </div>
+
+    <div *ngIf="view == 'list' && (list_data && list_data.data && list_data.data.length != 0)"
+      [class.attendanceHeight]="db.ismobile" (scroll)="loadMore.emit($event)">
+      <div [class.selected_item]="db.selectedId == item.name" *ngFor="let item of list_data.data; let i = index"
+        [id]="i + 1 + 'scroll'" class="d__flex expense_sec" (click)="do_to_details(item)">
+        <div class="d__flex w-100 gap-10">
+          <div class="w-100 employee_att">
+            <div class="s-1 mb-5">
+              <h3 class="m-0 fnt-15 fnt_w500">{{transform_att_date(item.attendance_date)}}</h3>
+              <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours)
+                : ' - '}}</h2>
+            </div>
+
+            <div class="s-1 mb-5">
+              
+              <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5">{{item.name ? item.name : ' -
+                '}}</h3>
+
+              <h3 *ngIf="!db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5 webkit-text"
+                [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
+              <app-status [status]="item.status"></app-status>
+            </div>
+
+            <div class="s-1 mb-5">
+             
+              <h3 class="m-0 fnt-12 gray_clr fnt_w400 d__flex gap-5"><ion-icon
+                  src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin &&
+                item.first_checkin != "00:00") ? (item.first_checkin | date: 'h:mm a') : ' - '}}</h3>
+
+              <h3 class="m-0 fnt-12 gray_clr fnt_w400 d__flex gap-5"><ion-icon
+                  src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&&
+                item.last_checkout!= "00:00") ? (item.last_checkout | date: 'h:mm a') : ' - '}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+      *ngIf="list_data && list_data.data && list_data.data.length == 0" [column]="true"
+      [height]="db.ismobile ? 'calc(100vh - 300px)' : 'calc(100vh - 600px)'" [heading]="'No record found'"
+      [image]="'assets/icon/empty.svg'"></app-no-record-found>
+  </div>
+
+</div>

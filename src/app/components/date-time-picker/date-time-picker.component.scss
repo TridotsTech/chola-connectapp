@@ -1,0 +1,130 @@
+.datetime-picker-container {
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+}
+
+.datetime-display {
+    padding: 6px;
+    border: 1px solid var(--border-col);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 180px;
+}
+
+.datetime-picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid var(--border-col);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 10;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.nav-button {
+    border: none;
+    background: #007bff;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+
+    ion-icon {
+        color: #fff;
+    }
+}
+
+.nav-button:hover {
+    background-color: #0056b3;
+}
+
+.calendar {
+    margin-bottom: 15px;
+}
+
+.calendar-days,
+.calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.day-label {
+    text-align: center;
+    color: #007bff;
+    font-size: 12px;
+}
+
+.calendar-dates div {
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.calendar-dates div.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.calendar-dates div.not-current-month {
+    color: #ccc;
+    cursor: default;
+}
+
+.calendar-dates div:hover:not(.not-current-month) {
+    background-color: #f0f0f0;
+}
+
+.time-picker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-select {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.time-button {
+    border: 1px solid #007bff;
+    background: #ffffff;
+    color: #007bff;
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.time-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.time-select span {
+    font-size: 16px;
+    font-weight: bold;
+}

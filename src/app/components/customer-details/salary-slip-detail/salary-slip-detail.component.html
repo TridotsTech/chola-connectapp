@@ -1,0 +1,273 @@
+<div *ngIf="employeeDetail" class="employeeDetail_section" [@fadeInOut]>
+  <div class="w-100 d__flex just-s p-10-15">
+    <div class="d__flex gap-10">
+      <ion-icon class="fnt-20" slot="start" src="/assets/img/grip-horizontal.svg"></ion-icon>
+    </div>
+
+    <div class="d__flex gap-10 buttons_save">
+      <ion-button [disabled]="button_loader" class="next_prev" expand="block" fill="clear"
+        (click)="next_doc(1)"><ion-icon class="gray_clr" name="chevron-back-outline"></ion-icon></ion-button>
+      <ion-button [disabled]="button_loader" class="next_prev" expand="block" fill="clear"
+        (click)="next_doc(0)"><ion-icon class="gray_clr" name="chevron-forward-outline"></ion-icon></ion-button>
+      <ion-button class="save-btn" *ngIf="employeeDetail.status != 'Submitted' && db.hr_manager_role" expand="block" fill="clear"
+        (click)="save_details()">Save</ion-button>
+      <ion-icon class="fnt-25 primary_clr mouse" (click)="close_detail()" name="close-circle-outline"></ion-icon>
+    </div>
+  </div>
+
+  <div class="border-box">
+    <div class="border-r">
+      <div *ngIf="employeeDetail.image" class="image_div">
+        <img [src]="db.product_img(employeeDetail.image)" alt="">
+      </div>
+      <p *ngIf="!employeeDetail.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">
+        {{employeeDetail.employee_name[0]}}</p>
+    </div>
+    <div class="detail">
+      <div class="upper_sec">
+        <div>
+          <div class="d__flex gap-20 mb-5">
+            <p class="m-0 fnt-15 fnt_w500">{{employeeDetail.employee_name}}</p>
+            <p class="m-0 fnt-14 d__flex gap-10"
+              [ngStyle]="{'color': employeeDetail.status == 'Active' ? '#28A713' : '#E21B22'}"><ion-icon slot="start"
+                src="/assets/img/active-dot.svg"></ion-icon>{{employeeDetail.status}}</p>
+          </div>
+          <p class="m-0 fnt-14 d__flex gap-5 rewards_"><ion-icon slot="start" src="/assets/img/rewards.svg"></ion-icon>
+            2 Rewards</p>
+        </div>
+        <div class="d__flex gap-10">
+          <div class="rounded-10 mouse d__flex" (click)="download_payroll()">
+            <ion-icon src="/assets/printer.svg" class="fnt-20"></ion-icon>
+          </div>
+
+          <ion-icon class="fnt-30 mouse" slot="start" src="/assets/img/mail.svg"></ion-icon>
+          <ion-icon class="fnt-30 mouse" (click)="call.emit(employeeDetail.cell_number)" slot="start"
+            src="/assets/img/call.svg"></ion-icon>
+          <ion-icon class="fnt-30 mouse" (click)="openWhatsApp.emit(employeeDetail.cell_number)" slot="start"
+            src="/assets/img/whatsapp.svg"></ion-icon>
+        </div>
+      </div>
+      <div class="bottom_sec">
+        <div class="box__">
+          <p class="m-0 fnt-12 gray_clr mb-5">Employee ID</p>
+          <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.employee}}</p>
+        </div>
+        <div class="box__">
+          <p class="m-0 fnt-12 gray_clr mb-5">Company</p>
+          <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.company}}</p>
+        </div>
+        <div class="box__">
+          <p class="m-0 fnt-12 gray_clr mb-5">Designation</p>
+          <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.designation ? employeeDetail.designation : '-'}}</p>
+        </div>
+        <div class="box__">
+          <p class="m-0 fnt-12 gray_clr mb-5">Department</p>
+          <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.department ? employeeDetail.department : '-'}}</p>
+        </div>
+        <div class="box__">
+          <p class="m-0 fnt-12 gray_clr mb-5">Experience</p>
+          <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.date_of_joining ?
+            getDateDifference(employeeDetail.date_of_joining) : '-'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+
+
+  <!-- *ngIf="segment_name == 'Overview'" -->
+  <div *ngIf="db.hr_manager_role;else employee">
+    <div class="overview_section">
+      <app-new-wizard-form [loaderEnabled]="true" [enabled_read_only]="employeeDetail.status == 'Submitted'" loaderEnabledHeight="calc(100vh - 250px)" [edit_form]="1" [forms_route]="forms_route" [tabs_top]="1"
+        [edit_form_values]="employeeDetail"></app-new-wizard-form>
+    </div>
+
+  </div>
+
+  <ng-template #employee>
+    <div class="vh-100">
+      <div class="d__flex just-s border-b p-1510">
+        <div class="d__flex gap-10">
+          <h5 class="m-0 fnt-15 pr-10 border-r">Salary Slip</h5>
+          <p class="m-0 fnt-2 pb-0 pl-5">Posting Date/ {{employeeDetail.posting_date}}</p>
+        </div>
+      </div>
+  
+      <div class="grid-cols-3 gap-10 p-10">
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Journal Entry</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.journal_entry ? employeeDetail.journal_entry : ' - '}}</h6>
+        </div>
+
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Bank Name</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.bank_name ? employeeDetail.bank_name : ' - '}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Bank Account No</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.bank_account_no ? employeeDetail.bank_account_no : ' - '}}</h6>
+        </div>
+
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Bank Account Name</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.bank_account_name ? employeeDetail.bank_account_name : ' - '}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Payroll Frequency</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.payroll_frequency ? employeeDetail.payroll_frequency : ' - '}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Start Date</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.start_date ? employeeDetail.start_date : ' - '}}</h6>
+        </div>
+  
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">End Date</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.end_date ? employeeDetail.end_date : ' - '}}</h6>
+        </div>
+  
+      </div>
+  
+
+      <div class="working_day">
+        <div class="border-r border-l p-10">
+          <p class="m-0 fnt-13 fnt-2">Working Days</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.total_working_days}}</h6>
+        </div>
+  
+        <div class="border-r p-10">
+          <p class="m-0 fnt-13 fnt-2">Absent Days</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.absent_days}}</h6>
+        </div>
+  
+        <div class="border-r p-10">
+          <p class="m-0 fnt-13 fnt-2">Leave Without Pay</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.leave_without_pay}}</h6>
+        </div>
+  
+        <div class="border-r p-10">
+          <p class="m-0 fnt-13 fnt-2">Payment Days</p>
+          <h6 class="m-0 fnt-14">{{employeeDetail.payment_days}}</h6>
+        </div>
+  
+      </div>
+    
+      <div class=" earnings">
+        
+        <div *ngIf="employeeDetail.earnings && employeeDetail.earnings.length != 0" class="">
+          <h4 class="m-0 fnt-15 fnt_w500 headig-p pb-10 ">Earnings</h4>
+          <div class="table">
+            <table>
+              <tr>
+                <th>S.No</th>
+                <th>Components</th>
+                <th>Amount</th>
+              </tr>
+              <tr *ngFor="let item of employeeDetail.earnings;let i = index">
+                <td>{{ i + 1}}</td>
+                <td>{{item.salary_component}}</td>
+                <td>{{item.year_to_date | currency:db.website_settings.currency}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+  
+        <!-- class="my-20" -->
+        <div *ngIf="employeeDetail.deductions && employeeDetail.deductions.length != 0" >
+          <h4 class="m-0 fnt-15 fnt_w500 headig-p pb-10 ">Deductions</h4>
+          <div class="table">
+            <table>
+              <tr>
+                <th>S.No</th>
+                <th>Components</th>
+                <th>Amount</th>
+              </tr>
+              <tr *ngFor="let item of employeeDetail.deductions;let i = index">
+                <td>{{ i + 1}}</td>
+                <td>{{item.salary_component}}</td>
+                <td>{{item.year_to_date | currency:db.website_settings.currency}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+  
+        <div *ngIf="employeeDetail.leave_details && employeeDetail.leave_details.length != 0" class="leave_item">
+          <h4 class="m-0 fnt-15 fnt_w500 headig-p pb-10 ">Leave Details</h4>
+          <div class="table">
+            <table class="margin-last">
+              <tr>
+                <th>S.No</th>
+                <th>Leave Type</th>
+                <th>Total Allocated Leave(s)</th>
+                <th>Expired Leave(s)</th>
+                <th>Used Leave(s)</th>
+                <th>Leave(s) Pending Approval</th>
+                <th>Available Leave(s)</th>
+  
+              </tr>
+              <tr *ngFor="let item of employeeDetail.leave_details;let i = index">
+                <td>{{ i + 1}}</td>
+                <td>{{item.leave_type}}</td>
+                <td>{{item.total_allocated_leaves}}</td>
+                <td>{{item.expired_leaves}}</td>
+                <td>{{item.used_leaves}}</td>
+                <td>{{item.pending_leaves}}</td>
+                <td>{{item.available_leaves}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+  
+      <div class="grid-cols-3 gap-10 p-10">
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Total deduction</p>
+          <h6 class="m-0 fnt-14 inter_">{{employeeDetail.total_deduction | currency:db.website_settings.currency}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Gross Pay</p>
+          <h6 class="m-0 fnt-14 inter_">{{employeeDetail.gross_pay | currency:db.website_settings.currency}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Gross year to date</p>
+          <h6 class="m-0 fnt-14 inter_">{{employeeDetail.gross_year_to_date | currency:db.website_settings.currency}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Net Pay</p>
+          <h6 class="m-0 fnt-14 inter_">{{employeeDetail.net_pay | currency:db.website_settings.currency}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Year to date</p>
+          <h6 class="m-0 fnt-14 inter_">{{employeeDetail.year_to_date | currency:db.website_settings.currency}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Total in words</p>
+          <h6 class="m-0 fnt-14 inter_">{{employeeDetail.total_in_words}}</h6>
+        </div>
+  
+        <div>
+          <p class="m-0 fnt-13 fnt-2">Rounded total</p>
+          <h6 class="m-0 fnt-14 inter_">{{employeeDetail.rounded_total | currency:db.website_settings.currency}}</h6>
+        </div>
+  
+      </div>
+    </div>
+
+  </ng-template>
+</div>
+
+<div *ngIf="skeleton && !db.ismobile" class="align_center">
+  <ion-spinner name="circles"></ion-spinner>
+</div>
+
+<app-no-record-found [height]="'calc(100vh - 100px)'" *ngIf="!employeeDetail" [column]="true"
+  [heading]="'No Detail found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>

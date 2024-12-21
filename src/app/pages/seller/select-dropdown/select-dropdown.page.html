@@ -1,0 +1,62 @@
+<div class="list">
+  <app-website-form-header *ngIf="!db.ismobile" [Title]="'Select a ' + title"></app-website-form-header>
+  <div class="header" *ngIf="db.ismobile">
+    <div class="d__flex just-s user__">
+      <ion-title class="bold_name">Select a {{title}}</ion-title>
+      <div class="d__flex gap-5">
+        <ion-icon class="icon__" name="close-outline" (click)="modalCtrl.dismiss()"></ion-icon>
+      </div>
+    </div>
+  </div>
+  <!-- type == 'Task' && fieldname != 'parent_task' -->
+   <ion-fab [class.bottom_fab]="title == 'Task'" *ngIf="type == 'Address' || (type == 'Task') || type == 'Module' || type == 'Screen'">
+      <ion-fab-button class="fab_btn" (click)="createNewAddress()">  
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+   </ion-fab>
+
+
+  <div class="search__">
+    <div class="search_bar d__flex">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-input *ngIf="type != 'reference_doctype'" class="search_input" [(ngModel)]="search_txt"
+        (input)="load_search($event)" placeholder="Search"></ion-input>
+      <ion-input *ngIf="type == 'reference_doctype'" class="search_input" (input)="get_text($event)"
+        placeholder="Search"></ion-input>
+      <ion-icon *ngIf="search_txt || search_text_ref" name="close-outline" (click)="clear_txt()"></ion-icon>
+    </div>
+    <!-- <div class="add_bar" (click)="new_form(type)">
+      <ion-icon slot="end" name="add-outline"></ion-icon>
+    </div> -->
+  </div>
+
+  <div  (scroll)="!this.no_products ? loadData($event) : null" class="box_sec" *ngIf="is_loaded">
+    <div *ngIf="(type == 'Lead' || type == 'Opportunity') && db.selected_list && db.selected_list.page != 'Issue'">
+      <!-- this.db.all_link_opts[this.type + this.fieldname] -->
+      <div [class.active]="item['isActive']" (click)="add(item)" *ngFor="let item of list_values" class="d__flex mouse boxs">
+        <div>
+          <h6 class="m-0 name_">{{item.label ? item.label : item.name}}</h6>
+          <!-- <h6 class="m-0 name_">{{item.name}}</h6> -->
+        </div>
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </div>
+    </div>
+    <div *ngIf="(type != 'Lead' || type != 'Opportunity')">
+      <!-- list_values -->
+      <div [class.active]="item['isActive']" (click)="add(item)" *ngFor="let item of list_values"
+        class="d__flex mouse boxs">
+        <h6 class="m-0 name_">{{type == 'Department' ? item.name : item.label ? item.label : item.name ? item.name : item.address ? item.address : item.lable}}</h6>
+        <!-- <h6 *ngIf="type == 'Account'" class="m-0 name_">{{item.value ? item.value : ''}}</h6> -->
+        <!-- <h6 class="m-0 name_">{{item.lable}}</h6> -->
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!is_loaded" class="ske_sec">
+    <ion-skeleton-text *ngFor="let item of [1,2,3,4,5,7,8,9,10,1,1,1,1,1,1]" [animated]="true" class="loader"></ion-skeleton-text>
+  </div>
+  
+  <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false" *ngIf="is_loaded && list_values && list_values.length == 0" [column]="true" height="calc(100vh - 170px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+</div>

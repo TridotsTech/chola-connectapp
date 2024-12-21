@@ -1,0 +1,94 @@
+.formHeight {
+    height: calc(100vh - 100px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.title {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.custom-input {
+
+    ion-input,
+    ion-select {
+        border: 1px solid var(--border-col);
+        border-radius: 7px;
+        height: 40px;
+        min-height: 40px !important;
+        padding: 0 10px !important;
+        font-size: 13px;
+    }
+
+    ion-textarea {
+        border: 1px solid var(--border-col);
+        border-radius: 7px;
+        font-size: 13px;
+    }
+}
+
+.section2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+}
+
+.submit-btn {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    z-index: 99999;
+    border-top: 1px solid var(--border-col);
+
+    ion-button {
+        width: 100%;
+    }
+}
+
+ion-checkbox {
+    --checkbox-background-checked: var(--primary-color);
+    // margin-left: 10px;
+    // height: 100%;
+    --size: 13px;
+}
+
+ion-checkbox::part(container) {
+    border: 2px solid var(--primary-color);
+}
+
+.impt-star {
+    color: #DE0A0A;
+    font-size: 13px;
+    margin: 0;
+}
+
+.evaluationMain {
+    border: 1px solid var(--border-col);
+    border-radius: 5px;
+
+    .title {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 10px;
+        border-bottom: 1px solid var(--border-col);
+    }
+
+    .values {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 10px;
+        border-bottom: 1px solid var(--border-col);
+    }
+}
+
+.active_star {
+    color: #ffbf00;
+}

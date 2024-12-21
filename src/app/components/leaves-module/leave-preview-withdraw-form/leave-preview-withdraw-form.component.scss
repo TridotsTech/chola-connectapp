@@ -1,0 +1,38 @@
+.custom-input {
+    border: 1px solid var(--border-col);
+    border-radius: 7px;
+    padding: 0 10px !important;
+
+    ion-input,
+    ion-textarea {
+        font-size: 13px !important;
+    }
+}
+
+label {
+    font-size: 14px;
+    margin: 0;
+}
+
+ion-select {
+    height: 40px;
+    min-height: 40px;
+    border: 1px solid var(--border-col);
+    border-radius: 5px;
+    padding: 0 10px;
+}
+
+.submit-btn {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    z-index: 99999;
+    border-top: 1px solid var(--border-col);
+
+    ion-button {
+        width: 100%;
+    }
+}

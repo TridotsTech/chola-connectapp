@@ -1,0 +1,18 @@
+<div  class="forms__">
+  <div class="d__flex gap-10 mar-0-10">
+    <ion-icon class="mouse" (click)="db.modalCtrl.dismiss()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white">Select</p>
+  </div>
+</div>
+<div class="list">
+
+  <!-- <div class="header_line">
+    <div (click)="close_modal()" class="line"></div>
+  </div> -->
+
+  <div class="box_sec">
+    <div  (click)="add(item)" *ngFor="let item of warehouse_list" class="d__flex mouse boxs">
+      <h6 class="m-0 name_">{{item.label}}</h6>
+    </div>
+  </div>
+</div>

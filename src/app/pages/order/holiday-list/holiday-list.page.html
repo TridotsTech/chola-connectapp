@@ -1,0 +1,157 @@
+<app-header title="Holiday List" [model]="false" [showYear]="false" [showMonth]="true"></app-header>
+
+<app-sidemenu-header *ngIf="!db.ismobile" heading="Holiday List"></app-sidemenu-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Mobile Skeleton -->
+  <div *ngIf="skeleton && (!list_data || (list_data.data && list_data.data.length == 0)) && db.ismobile">
+
+    <!-- Image Section  -->
+    <app-skeleton-loader type="img_sec"></app-skeleton-loader>
+
+    <!-- Common Dashboard -->
+    <div class="Common_dashboardSkeleton">
+      <div class="small_box" *ngFor="let item of [0,1];index as i">
+        <app-skeleton-loader type="dashboard"></app-skeleton-loader>
+      </div>
+    </div>
+
+    <app-skeleton-loader type="search"></app-skeleton-loader>
+
+    <app-skeleton-loader type="holiday_list" [list_len]="[0,1,2,3,4,5]" [list_len_count]="6"></app-skeleton-loader>
+
+  </div>
+
+
+  <!-- (clear_txt)="call_clear_txt.emit('')" (searchTxtValue)="load_search.emit($event)" -->
+  <!-- (holidaySearch)="holidaySearch($event)" (load_data)="load_data($event)" -->
+  <app-holiday-lists *ngIf="list_data" [list_data]="list_data" [holiday_type]="holiday_type"
+    (searchTxtValue)="searchTxtValue($event)" (menu_name_month)="menu_name_month($event)" (menu_name)="menu_name($event)" [options]="options" (clear_txt)="searchTxtValue($event)"></app-holiday-lists>
+
+</ion-content>
+
+<!-- <ion-content [fullscreen]="true">
+  <div *ngIf="db.ismobile">
+    
+
+    <div class="full_d">
+      <ul class="smooth_" #tabList  class="d__flex box_" >
+        <li *ngFor="let tab of months;let i=index" [id]="i + 1 + 'scroll'" [class.active_container]="tab['selected']" class="container mouse dummy_" (click)="select_month(tab,i)">
+          <label class="label d__flex" role="button">
+            <span class="title mouse">{{tab.name}}</span>
+            <div class="slider">
+              <div class="slider_indic"></div>
+            </div>
+          </label>
+        </li>
+      </ul>
+    </div>
+  
+    <ion-list lines="full" *ngIf="!skeleton && holiday_list && holiday_list.length != 0 && db.ismobile" class="holiday_list_">
+      <ion-item *ngFor="let item of holiday_list;let i = index" >
+        <div class="d__flex w-100 just-s">
+          <div class="avatar">
+              <div class="employee_avtr" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">
+                  <p class="m-0 mt-5 fnt-14 fnt_w500 ion-text-capitalize white">{{item.date | date: 'dd'}}</p>
+                  <p class="m-0 fnt-14 fnt_w500 ion-text-capitalize white">{{item.Description ? item.Description.slice(0, 3) : ''}} </p>
+              </div>
+              <div><p class="right_line"></p></div>
+              <div>
+                  <p class="m-0 fnt-15 fnt_w600" [innerHtml]="item.Description"></p>
+                  <p class="m-0 fnt-14 fnt_w500 gray_clr">{{item.date | date : 'MMM d'}}</p>
+              </div>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  
+    <ion-list *ngIf="skeleton" class="holiday_skeleton">
+      <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6]">
+        <div class="d__flex gap-10 skel_">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text [animated]="true" style="width: 300px; height: 15px;"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text [animated]="true" style="width: 60%; height: 10px;"></ion-skeleton-text>
+            </p>
+            
+          </ion-label>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="!db.ismobile">
+    <div class="d__flex gap-20" *ngIf="false">
+      <div class="box_1">
+        <div class="d__flex w-100 just-s">
+          <div>
+            <p>Holiday List</p>
+          </div>
+          <div>
+
+          </div>
+        </div>
+        <div *ngIf="months && months.length != 0" class="months_filter" #tabList>
+          <div class="month_name mouse" [class.select_item]="item['selected']" *ngFor="let item of months;let i = index" [id]="i + 1 + 'scroll'">
+            <p [class.white]="item['selected']" [id]="'scroll' + item.value" (click)="select_month(item,i)" class="m-0 fnt_w500 primary_clr">{{item.name}}</p>
+            <p class="circle_" [class.select_circle]="item['selected']"></p>
+          </div>
+        </div>
+
+        <ion-list lines="none" *ngIf="!skeleton && holiday_list && holiday_list.length != 0 && !db.ismobile" class="holiday_list_">
+          <ion-item *ngFor="let item of holiday_list;let i = index" >
+            <div class="d__flex w-100 just-s">
+              <div class="avatar">
+                  <div>
+                      <p class="employee_avtr" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">{{item.Description ? item.Description[0] : ''}} </p>
+                  </div>
+                  <div>
+                      <p class="m-0 fnt-15">{{item.Description}}</p>
+                      <p class="m-0 fnt-14 fnt_w500 gray_clr">Date: <span>{{item.date}}</span></p>
+                  </div>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+      
+        <ion-list *ngIf="skeleton" class="holiday_skeleton">
+          <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6]">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>
+                <ion-skeleton-text [animated]="true" style="width: 80%; height: 15px;"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text [animated]="true" style="width: 60%; height: 10px;"></ion-skeleton-text>
+              </p>
+              
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+      <div class="working_days" *ngIf="leave_dashboard">
+        <div class="d__flex working_">
+          <div class="working_day_count">
+            <p class="m-0 fnt-15 fnt_w500 gray_clr">Total Working Days</p>
+            <p class="m-0 fnt-20 fnt_w600 green_">{{leave_dashboard.working_days}}</p>
+          </div>
+          <div class="holiday_count">
+            <p class="m-0 fnt-15 fnt_w500 gray_clr">Holiday</p>
+            <p class="m-0 fnt-20 fnt_w600 orange_">{{leave_dashboard.leave_days}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="coming_soon">
+      <p>Coming Soon...</p>
+    </div>
+  </div>
+</ion-content> -->

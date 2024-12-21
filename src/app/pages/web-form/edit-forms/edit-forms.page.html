@@ -1,0 +1,21 @@
+<!-- <app-header *ngIf="db.ismobile" [title]="db.purchase_order_id ? 'Payment Entry' : page_route == 'return-sales-order' ? 'Return ' : 'Create Sales Invoice'"></app-header> -->
+<app-website-form-header *ngIf="(title == 'Edit Event' || title == 'Edit Task' || title == 'Edit Customer')" [close_btn]="true" [Title]="title"></app-website-form-header>
+<app-header *ngIf="db.ismobile && (title != 'Edit Event' && title != 'Edit Task' && title != 'Edit Customer')" [title]="title" [model]="true"></app-header>
+<div *ngIf="!db.ismobile && title != 'Edit Event'" class="forms__">
+  <div class="d__flex just-s mar-0-10">
+    <div class="d__flex gap-10">
+      <ion-icon class="mouse back_" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+      <p class="fnt_w500 fnt-14 white capitalize">Edit {{title}}</p>
+    </div>
+    <ion-icon *ngIf="title == 'bugsheet'" class="mouse" (click)="assign_user()" name="share-social-outline"></ion-icon>
+  </div>
+</div>
+
+<ion-content>
+  <div *ngIf="order_detail">
+    <app-new-wizard-form [forms_route]="page_route" [reference_id]="reference_id"
+      [sale_order_id]="sale_order_id ? sale_order_id : name" [enabled_read_only]="enabled_read_only" [tabs_top]="1" [modal]="modal"
+      [edit_form]="1" [edit_form_values]="order_detail" [task_doctype]="task_doctype" [edit_web_forms]="db.edit_web_forms" [web_forms]="web_forms" [edit_values]="(page_route == 'todo' || page_route == 'event') ? true : false "
+      [enable_height]="(page_route == 'todo' || page_route == 'event') ? true : false" [add_new_form]="(page_route == 'todo' || page_route == 'event') ? true : false" [new_form]="(page_route == 'todo' || page_route == 'event') ? true : false"></app-new-wizard-form>
+  </div>
+</ion-content>

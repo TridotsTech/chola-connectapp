@@ -1,0 +1,31 @@
+<div *ngIf="!skeleton">
+
+  <div *ngIf="order_detail && order_detail.employee_name" class="d__flex avatar_s p_e">
+    <div class="avatar">{{order_detail.employee_name[0]}}</div>
+    <div>
+      <h4 class="m-0 fnt-14 fnt_w500 webkit-text" [style.--line]="2">{{order_detail.employee_name}} </h4>
+      <div class="d__flex just-s p_e" [class.border-b]="order_detail && !order_detail.employee_name"
+        *ngIf="order_detail">
+        <div class="d__flex gap-10 mt-5">
+          <h4 class="m-0 fnt-12 fnt_w500 title ">{{order_detail.name}}</h4>
+          <app-status [status]="order_detail.status"></app-status>
+        </div>
+      </div>
+    </div>
+
+    <ion-icon (click)="modalctrl.dismiss()" class="close mouse" name="close-outline"></ion-icon>
+  </div>
+
+  <app-website-form-header *ngIf="!(order_detail && order_detail.employee_name)" [close_btn]="true" [Title]="doctype"
+    [doctype]="doctype" ></app-website-form-header>
+
+  <app-new-wizard-form [modal]="true" [enable_reference]="enable_reference" [forms_route]="page_route"
+    [reference_id]="id" [sale_order_id]="order_id ? order_id : undefined" [tabs_top]="1" [edit_form]="1"
+    [new_form]="enabled_read_only ? false : true" [enabled_read_only]="enabled_read_only" [items_values]="items_values"
+    [edit_form_values]="order_detail" [convertedStatusTo]="convertedStatusTo"
+    [save_details_only]="(this.db.selected_list && this.db.selected_list.page && (this.db.selected_list.page == 'Customer')) ? true : false"></app-new-wizard-form>
+</div>
+
+<div *ngIf="skeleton" class="align_center">
+  <ion-spinner name="circles"></ion-spinner>
+</div>

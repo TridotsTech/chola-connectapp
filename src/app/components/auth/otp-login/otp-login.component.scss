@@ -1,0 +1,97 @@
+.otp-form{
+    padding: 20px 0px;
+ }
+
+ .otp-form{
+     
+     .otp-container{
+        //  margin: 10px 10px 0 10px;S
+     }
+     .error-container{
+         margin-left: 10px;
+     }
+ }
+ 
+ .resend{
+     font-size: 12px;
+     text-align: right;
+     margin: 10px 10px 0 10px;
+ }
+ 
+ 
+
+// OTP button
+.mobile-button{
+    margin-left: 15px;
+    border-radius: 104px;
+    overflow: hidden;
+    width: 46px;
+    height: 46px;
+    --background: var(--secondary-bg) !important;
+    ion-icon{
+        color: #fff;
+    }
+}
+
+.mobile-input {
+    border: 1px solid var(--border-col);
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 0px 10px;
+    ion-input{
+        font-size: 15px;
+    }
+    ion-icon{
+        font-size: 15px;
+    }
+}
+
+ion-button{
+    border-radius: 3px;
+    background: var(--primary-color);
+}
+
+.paymentMethod{
+    // padding-top: 10px;
+    // align-items: unset;
+    // flex-direction: column;
+    ion-button{
+      max-width: max-content;
+      border-radius: 5px;
+    }
+    .custom-input { 
+      // width: 20%;
+       margin: 5px;
+        ion-input {
+        --padding-start: 15px;
+        border: 1px solid var(--border-col);
+       }
+     }
+     .verifield_container{
+         background: #acdf87a6;
+        //  opacity: 0.3;
+        padding: 5px 15px;
+        border-radius: 3px;
+        .verifield{
+            font-size: 14px;
+            font-weight: 500;
+            color: #449733;
+        }
+        ion-icon{
+            padding-right: 5px;
+        }
+     }
+  }
+
+  .error{
+    font-size: 10px;
+    color: red;
+  }
+
+  @media only screen and (max-width: 768px) {
+      .grid{
+          flex-direction: column;
+          width: 80%;
+          margin: 0 auto;
+      }
+  }

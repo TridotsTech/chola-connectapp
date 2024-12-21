@@ -1,0 +1,19 @@
+.forms__ {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+
+    .mar-0-10 {
+        margin: 0 10px;
+    }
+
+    .back_ {
+        background: var(--dynamic-color);
+        border-radius: 50%;
+        padding: 5px;
+        color: #ffff;
+    }
+
+    .white {
+        color: var(--dynamic-color);
+    }
+}

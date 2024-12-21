@@ -1,0 +1,112 @@
+<app-common-dashboard *ngIf="!skeletonDashboard" [daysInMonth]="daysInMonth"
+    [year]="year" [month]="month" [month_change_section]="true" [icons]="icons" [data]="employee_shift"
+    (month_goToPreviousDay)="goToPreviousDay()"
+    (month_goToNextDay)="goToNextDay()"></app-common-dashboard>
+
+<div *ngIf="skeletonLoad" class="table-container details-table skeleton">
+  <table class="fixed-table">
+
+    <tr class="mouse">
+      <th class="fixed-column fixed-column-first">
+        <ion-skeleton-text animated style="width: 100%; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+      </th>
+
+      <th class="scrollable-column" *ngFor="let item of loaderTable;let i = index">
+        <ion-skeleton-text animated style="width: 42px; height: 44px;border-radius: 5px;"></ion-skeleton-text>
+      </th>
+
+      <th class="fixed-column fixed-column-last">
+        <ion-skeleton-text animated style="width: 100%; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+      </th>
+    </tr>
+
+    <tr *ngFor="let item of loaderTableCount;let i = index" class="mouse">
+      <td class="fixed-column fixed-column-first">
+        <ion-skeleton-text animated style="width: 100%; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+      </td>
+
+      <td class="scrollable-column" *ngFor="let item of loaderTable;let i = index">
+        <ion-skeleton-text animated style="width: 42px; height: 44px;border-radius: 5px;"></ion-skeleton-text>
+      </td>
+
+      <td class="fixed-column fixed-column-last">
+        <ion-skeleton-text animated style="width: 100%; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+      </td>
+    </tr>
+
+  </table>
+
+</div>
+
+<div class="search_filter" *ngIf="!skeletonLoad">
+  <app-filters *ngIf="search_filter && search_filter.length != 0" (filterList)="filterList($event)" [multipleView]="false" [isNotModal]="true" [search_filter]="search_filter" [page_title]="'attendance'" [doctype]="'Attendance'"></app-filters>
+</div>
+
+<div class="tableContainer" *ngIf="!skeletonLoad" #tableScroll>
+
+
+  <table *ngIf="attendanceDetails && attendanceDetails.length != 0">
+    <tr>
+      <th *ngFor="let item of tableHeaders;let i = index" [class.activeDate]="current_date == item.date_" id="{{item.date_ ? item.date_ : item.title}}" [class.sticky-right]="tableHeaders.length - 1 == i" [class.sticky-column1]="i == 0" [class.date-column1]="i != 0">
+          <h5 class="m-0 fnt-14 fnt_w500" *ngIf="item.title" [class.text-c]="tableHeaders.length - 1 == i">
+            {{item.title}} <label *ngIf="i == 0 && total_count" class="label-s">{{total_count}}</label></h5>
+          <h5 class="date m-0 fnt-14 text-c gray_clr" *ngIf="item.date">{{item.date}}</h5>
+          <h5 class="day m-0 fnt-12 fnt_w500 text-c gray_clr" *ngIf="item.day">{{item.day}}</h5>
+      </th>
+    </tr>
+
+    <tr *ngFor="let item of attendanceDetails; let i = index" (mouseenter)="item['showArrowIcon'] = true;" (mouseleave)="item['showArrowIcon'] = false;">
+      <td class="sticky-column1" *ngIf="item.employee_details">
+        <div class="iconRelativeL d__flex gap-10">
+          <div class="employeeImage">
+            <img class="profile_img flex-15" *ngIf="item.employee_details.image" [src]="db.product_img(item.employee_details.image)" alt="">
+            <p class="no_img fnt-15 fnt_w600 capitalize" *ngIf="!item.employee_details.image">{{item.employee_details.employee_name[0]}}</p>
+          </div>
+          <p class="m-0 fnt-13">{{item.employee_details.employee_name}}</p>
+          <ion-icon *ngIf="item['showArrowIcon']" (click)="sctollTo('pre', 'tableScroll', $event)" class="scroll-btn mouse" name="chevron-back-outline"></ion-icon>
+        </div>
+      </td>
+      <td *ngFor="let dates of item.attendance_details" class="toolTipHeader" (mouseleave)="dates['enableToolTip'] = false;">
+        <div *ngIf="!dates.holiday">
+          <p class="m-0 fnt-13 statusIndicate mouse capitalize" (mouseenter)="openTooltip(dates)" *ngIf="dates.status" [ngStyle]="getColors(dates.status)">{{dates.status.slice(0, 2)}}</p>
+          <!-- <p class="m-0 fnt-13 statusIndicate noStatus" *ngIf="!dates.status">{{dates.addendance_date | date : 'd'}}</p> -->
+        </div>
+
+        <div *ngIf="dates.holiday" (mouseenter)="openTooltip(dates)">
+          <p class="m-0 holidayIndicate mouse">H</p>
+        </div>
+
+        <div class="toolTipSection" *ngIf="dates['enableToolTip'] && dates.check_in_details && !dates.holiday">
+          <div *ngIf="!dates.holiday">
+            <p class="m-0 fnt-12"><span class="fnt-12 fnt_w500">Check In: </span>{{dates.check_in_details.first_checkin}}</p>
+            <p class="m-0 fnt-12"><span class="fnt-12 fnt_w500">Check Out: </span>{{dates.check_in_details.last_checkout}}</p>
+            <div class="d__flex gap-10">
+              <p class="m-0 fnt-12 fnt_w500">Status: </p>
+              <app-status [reverse]="true" [status]="dates.status"></app-status>
+            </div>
+          </div>
+        </div>
+
+        <div class="toolTipSectionDesc" *ngIf="dates['enableToolTip'] && dates.check_in_details && dates.holiday">
+          <p class="m-0 fnt-12" *ngIf="dates.description"><span class="fnt-12 fnt_w500">Holiday: </span>{{dates.description}}</p>
+        </div>
+      </td>
+      <td class="sticky-right">
+        <div class="iconRelativeR">
+          <ion-icon *ngIf="item['showArrowIcon']" (click)="sctollTo('next', 'tableScroll',$event)" class="scroll-btn-r mouse" name="chevron-forward-outline"></ion-icon>
+          <p class="m-0 fnt-13 text-c">{{item.employee_working_days}} / {{item.working_days}}</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <app-no-record-found [height]="'calc(100vh - 330px)'" *ngIf="attendanceDetails && attendanceDetails.length == 0" [column]="true" [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+</div>
+
+<div class="d__flex w-100 just-s pagination_sec">
+  <div class="d__flex border">
+    <p *ngFor="let item of pagination_count;let i = index" [class.select_pagination]="item.selected" class="m-0 fnt-12 box__ mouse" (click)="send_pagination(item,i)">{{item.count}}</p>
+  </div>
+  <ion-button class="load-more" expand="block" fill="clear" (click)="add_pagination()">Load More</ion-button>
+</div>

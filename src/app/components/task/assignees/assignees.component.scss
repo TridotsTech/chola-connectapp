@@ -1,0 +1,35 @@
+.user_list_ {
+    height: calc(100vh - 270px);
+    overflow: auto;
+
+    .box_ {
+        gap: 10px;
+        padding: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        .image {
+            margin: 0 5px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .userImage {
+                height: 43px;
+                width: 43px;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+        }
+
+        .head_ {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .sub_head {
+            font-size: 13px;
+            font-weight: 400;
+            margin: 5px 0 0 0;
+        }
+    }
+}

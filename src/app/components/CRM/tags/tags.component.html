@@ -1,0 +1,34 @@
+<app-website-form-header *ngIf="!db.ismobile" [Title]="'Add Tag'"></app-website-form-header>
+<div class="tags_section">
+  <div *ngIf="db.ismobile" class="mobile_header">
+    <h5  class="Header">Add Tag</h5>
+
+  </div>
+
+  <div class="body_sec">
+    <div class="input_div">
+      <ion-input class="input-msg" name="input" type="text" placeholder="Start Typing" [(ngModel)]="inputValue"></ion-input>
+      <p *ngIf="inputValue" class="add_tag" (click)="insert_comment()"><ion-icon src="/assets/icon/Tags/Tag.svg"></ion-icon> Add Tag</p>
+    </div>
+    <div *ngIf="tags && tags.length != 0" >
+      <div class="Other_tags_" *ngIf="tags && tags.length !=0">
+        <p class="title">Tags</p>
+        <div class="Selected_tag_Chips">
+          <p *ngFor="let item of tags;index as i"  [ngClass]="item && item.value != 1 ? 'unselected_tag' : 'selected_tag'" class="d__flex mouse m-0 fnt-12" (click)="toggleTagSelection(item)">{{item.tag}} </p>
+       </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="d__flex conversation">
+    <div class="conversation-compose">
+      
+      <ion-button class="navigation_btn done-btn" fill="outline" (click)="Select_tags()">
+        <ion-spinner name="circular" *ngIf="buttonLoader"></ion-spinner>
+        <span *ngIf="!buttonLoader">Done</span>
+      </ion-button>
+
+    </div>
+  </div>
+</div>
+

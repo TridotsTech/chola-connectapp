@@ -1,0 +1,14 @@
+<app-header *ngIf="db.ismobile" title="Settings" [back_route]="'/settings'"></app-header>
+
+
+<ion-content [fullscreen]="true">
+  <app-website-form-header *ngIf="!db.ismobile" [close_btn]="true" [Title]="'Pages'"></app-website-form-header>
+  <ion-list lines="full" *ngIf="db.dashboard_values" class="p-0">
+    <ion-item *ngFor="let item of db.dashboard_values" [routerLink] = "'/customize/' + item.page" >
+      <div class="d__flex just-s w-100">
+        <ion-label class="fnt-15 fnt_w500">{{item.page}}</ion-label>
+        <ion-icon class="gray_clr" name="chevron-forward-outline"></ion-icon>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

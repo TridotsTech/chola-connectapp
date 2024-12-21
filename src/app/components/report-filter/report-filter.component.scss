@@ -1,0 +1,39 @@
+.group_info {
+
+    margin-bottom: 10px;
+
+    ion-input {
+        height: 35px;
+        font-size: 14px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        min-height: 35px !important;
+        padding: 10px !important;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.save_ {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 0 5px #ddd;
+
+    ion-button {
+        width: 40%;
+    }
+}
+
+.save_ {
+    .clear_btn {
+        background: #aeaeae;
+        --background: #aeaeae;
+        // color: #000;
+    }
+}

@@ -1,0 +1,18 @@
+<div [class.primary_bg]="primary_bg" class="forms__" *ngIf="db.ismobile">
+  <div class="d__flex gap-10 mar-0-10" [class.just-s]="close_btn">
+    <ion-icon *ngIf="!close_btn" class="mouse" (click)="dismiss()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w600 fnt-16 white title_c">{{Title}}</p>
+    <ion-icon *ngIf="close_btn" class="mouse closeBtn" (click)="dismiss()" name="close-outline"></ion-icon>
+  </div>
+</div>
+
+<div class="forms__" *ngIf="!db.ismobile">
+  <div class="d__flex gap-10 mar-0-10" [class.just-s]="close_btn">
+    <ion-icon *ngIf="!noBackBtn && !close_btn" class="mouse back_" (click)="dismiss()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w600 fnt-16 white title_c">{{Title}}</p>
+    <div class="d__flex gap-10">
+      <ion-icon *ngIf="doctype == 'Bug Sheet'" class="mouse primary_clr mouse fnt-18 p-10" (click)="assign_user.emit()" name="share-social-outline"></ion-icon>
+      <ion-icon *ngIf="!noBackBtn && close_btn" class="mouse p-10 closeBtn" (click)="dismiss()" name="close-outline"></ion-icon>
+    </div>
+  </div>
+</div>

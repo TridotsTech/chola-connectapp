@@ -1,0 +1,865 @@
+<!-- <app-header back_route="dashboard" [new_btn]="this.detail_doc['name']" [new_btn_route]="this.detail_doc['route']" [model]="false" [title]="page_title"></app-header> -->
+<ion-header [translucent]="true" *ngIf="routers && (routers == 'Customer' || routers == 'Lead')">
+  <ion-toolbar>
+    <div class="child_title d__flex just-s">
+      <h4 class="table_title">{{ routers == 'Customer' ? 'Customer' : 'Lead'}}</h4>
+      <div class="close-icon-div">
+        <ion-icon class="close-icon" (click)="db.close_modal()" name="close-circle-outline"></ion-icon>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-header *ngIf="doc_type == 'Job Applicant' && db.ismobile" class="mobile-header ion-no-border">
+
+  <ion-toolbar>
+    <div class="d__flex back_btn gap-10">
+      <ion-icon class="back" (click)="go_back()" name="arrow-back"></ion-icon>
+      <!-- <h6 class="m-0 head webkit-text capitalize title" [style.--line]="1">{{pageTitle}}</h6> -->
+
+      <div *ngIf="designationValue" class="d__flex just-s projectDetailSection" (click)="openPopup()">
+        <div>
+          <p class="fnt-15 m-0 white fnt_w600 webkit-text" [style.--line]="1">{{db.jobOpeningName}}</p>
+          <!-- <p class="fnt-12 m-0 white">{{projectDetail.name}}</p> -->
+        </div>
+        <ion-icon class="white" name="chevron-down-outline"></ion-icon>
+      </div>
+
+    </div>
+  </ion-toolbar>
+
+</ion-header>
+
+<!-- <ion-header [translucent]="true" *ngIf="doc_type == 'Lead'">
+  <ion-toolbar>
+    <div class=" d__flex just-s">
+      <ion-segment value="Lead">
+        <ion-segment-button value="Lead">
+          <ion-label>Lead</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Opportunity">
+          <ion-label>Opportunity</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <div class="close-icon-div">
+        <ion-icon class="close_icon" (click)="db.close_modal()" name="close-circle-outline"></ion-icon>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header> && doc_type != 'Lead'-->
+<!-- {{doc_type}} -->
+<!-- page_title != 'Salary Slip' && -->
+<!-- [showYear]="( page_title != 'Attendance') ? false : 'getYear'" -->
+<!-- || this.doc_type ==  'Event' -->
+<app-header *ngIf="routers != 'Customer' && routers != 'Lead' && doc_type != 'Job Applicant'" [back_route]="!supplier_route ? ((doc_type == 'Job Applicant') ? '/job-applicant-list' : '/tabs/dashboard') : null"
+  (select_change)="select_change($event)" [projects]="(db.get_saleslist && db.get_saleslist.projects) ? db.get_saleslist.projects : []" [model]="false"
+  [showMonth]="(doc_type && (doc_type ==  'Attendance' && !db.employee_role)) ? true : false"
+  [showYear]="(doc_type && (doc_type == 'Employee Advance' || this.doc_type ==  'Expense Claim' || (this.doc_type ==  'Attendance' && !db.employee_role) || this.doc_type == 'Salary Slip')) ? 'getYear': false"  [title]="page_title" (filters)="supplier_filter('')" (toggleKanban)="toggleKanbans()" (toggleKanban_task)="toggleKanbans_task()" [doc_type]="doc_type"></app-header>
+
+<ion-content>
+  <div class="side_menu_sticky" >
+
+   <app-sidemenu-header *ngIf="!db.ismobile && (routers != 'Customer' && routers != 'Lead')" [heading]="page_title"
+    (toggleKanban)="toggleKanbans()" (toggleKanban_task)="toggleKanbans_task()" [doc_type]="doc_type" [kanban]="kanban"></app-sidemenu-header>
+    <!-- [class.enable_fab4]="db.enable_detail && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length <= 5" [class.enable_fab_hd_ticket]="db.enable_detail && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length <= 5 && doc_type == 'HD Ticket'" -->
+   <ion-fab [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)" *ngIf="db.ismobile && !kanban && detail_doc && detail_doc['route'] && !db.hd_ticket_show && !db.full_width && doc_type != 'Employee' && doc_type != 'Attendance'">
+      <ion-fab-button class="fab_btn" (click)="createNew(detail_doc)">  
+        <!-- (click)="db.ismobile ? createNew(this.detail_doc) : open_route(detail_doc)" -->
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+   </ion-fab>
+
+   <ion-fab [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)" *ngIf="db.ismobile && (this.db.hr_manager_role && doc_type == 'Employee')">
+    <ion-fab-button class="fab_btn" (click)="createNew(detail_doc)">  
+      <!-- (click)="db.ismobile ? createNew(this.detail_doc) : open_route(detail_doc)" -->
+    <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+   </ion-fab>
+   <!-- page_title == 'Salary Slip' ||  -->
+   <!-- <div *ngIf="(page_title == 'Attendance')">
+    <app-calendar (getMonth)="getMonth($event)" ></app-calendar>
+  </div> -->
+
+  <!-- [class.filter_]="db.get_saleslist && (search_filter && search_filter.length != 0)" -->
+  
+  <div [class.without_tab_filter]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0 && search_filter && search_filter.length != 0 && db.selected_list.page_name != 'Customer'" [class.tab_Bg_color]="db.currentRole == 'HR'" class="tab-s filter_" *ngIf="db.ismobile && ((page_title != 'Salary Slip' || (db.employee_role || db.hr_manager_role)) && page_title != 'Attendance' && page_title != 'Employee'  && page_title != 'Project') && !kanban && routers != 'Lead' && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0 && doc_type != 'Project'">
+    <div *ngIf="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0 && segment_value != 'hide_show_list'"
+      class="tab_section tabfilter">
+      <app-tabs-button [no_initial_active]="(doc_type == 'Expense Claim' || doc_type == 'Employee Advance') ? true : false" [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+        [bg_white]="db.ismobile ? false : true" [tabs_array]="db.get_saleslist.options" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+    </div>
+    <!-- && supplier_route -->
+    <!-- <div *ngIf="db.get_saleslist  && (search_filter && search_filter.length != 0) && segment_value != 'hide_show_list' && page_title != 'Customer'" class="filter mouse" (click)="supplier_filter()">
+      <ion-icon name="funnel-outline"></ion-icon>
+    </div> -->
+  </div>
+
+
+  <!-- Tab ( Mobile ) -->
+  <!-- <div class="tab_skeleton" *ngIf="skeleton && !db.get_saleslist.data&& db.ismobile && (this.db.selected_list && this.db.selected_list.page) &&  (this.db.selected_list.page != 'Employee' && this.db.selected_list.page != 'Salary Slip' && this.db.selected_list.page !='Quality Feedback' && this.db.selected_list.page !='Report' && this.db.selected_list.page != 'Attendance' && this.db.selected_list.page != 'Leave Request' && this.db.selected_list.page != 'Supplier' && this.db.selected_list.page != 'Customer') && !kanban && routers != 'Lead'" >
+    <div *ngFor="let val of [1,2,3,4,5,6]">
+      <ion-skeleton-text [animated]="true" style="width:60px;height:20px;margin:0px;border-radius:5px"></ion-skeleton-text>
+    </div>
+  </div> -->
+
+  <!-- Dashboard ( Mobile ) -->
+  <!-- <div  class="Common_dashboardSkeleton" *ngIf="skeleton && (!db.get_saleslist.data|| (db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile && (this.db.selected_list && this.db.selected_list.page) &&  (this.db.selected_list.page == 'Employee' || this.db.selected_list.page == 'Salary Slip') && !kanban && routers != 'Lead'" >
+    <div class="boxs" *ngFor="let val of [1,2,3,4,5,6]">
+      <div class="d__flex just-s s-1">
+        <ion-skeleton-text [animated]="true" style="width:30px;height:30px;margin:0px;border-radius:50%"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:30px;height:30px;margin:0px;border-radius:5px"></ion-skeleton-text>
+      </div>
+
+      <ion-skeleton-text [animated]="true" style="width:150px;height:18px;margin:0;border-radius:5px"></ion-skeleton-text>
+    </div>
+  </div> -->
+
+  <!-- Count exp ( Mobile ) ( Expense Claim ) -->
+  <!-- <div  class="Common_dashboardSkeleton_count" *ngIf="skeleton && (!db.get_saleslist.data|| (db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile && (this.db.selected_list && this.db.selected_list.page) &&  (this.db.selected_list.page == 'Employee Advance' || this.db.selected_list.page == 'Expense Claim') && !kanban && routers != 'Lead'">
+
+      <div class="d__flex box_ui gap-10">
+        <ion-skeleton-text animated style="width: 65px; height: 65px;border-radius: 5px;margin: 0;"></ion-skeleton-text>
+        <div style="width: 100px;"></div>
+        <div style="width: 150px;">
+          <ion-skeleton-text animated style="width: 70%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 85%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+  </div> -->
+
+  <!-- Month filter ( Mobile ) -->
+  <!-- <div class="d__flex just-s monthSkeleton" *ngIf="skeleton && (!db.get_saleslist.data|| (db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile && (this.db.selected_list && this.db.selected_list.page) &&  (this.db.selected_list.page == 'Employee Advance' || this.db.selected_list.page == 'Expense Claim') && !kanban && routers != 'Lead'">
+      <ion-skeleton-text animated style="width: 150px; height: 35px;border-radius: 5px;margin: 0;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width:35px; height: 35px;border-radius: 5px;margin: 0;"></ion-skeleton-text>
+  </div> -->
+
+  <!-- <ion-segment *ngIf="doc_type && doc_type == 'Attendance'" value="show_list" (ionChange)="segment($event)">
+    <ion-segment-button [class.selected]="segment_value == 'hide_show_list'" value="hide_show_list">
+      <ion-label class="m-0">Today</ion-label>
+      <p class="m-0">{{changedDate}}</p>
+    </ion-segment-button>
+    <ion-segment-button [class.selected]="segment_value == 'show_list'" value="show_list">
+      <ion-label>Attendance</ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+
+  <app-checkin-checkout *ngIf="!skeleton && segment_value == 'hide_show_list'" [time]="time"
+    [changedDate]="changedDate"></app-checkin-checkout>
+
+    <!-- Search ( Mobile ) -->
+  <!-- <div class="searchSkeleton" *ngIf="skeleton && (!db.get_saleslist.data|| (db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile && (doc_type && doc_type != 'Employee Advance')">
+    <ion-skeleton-text [animated]="true" style="width:100%;height:35px;margin:8px 0 0 0;border-radius:5px"></ion-skeleton-text>
+  </div> -->
+
+  <!-- *ngIf="(!skeleton || search_text) && ((db.get_saleslist && db.get_saleslist.data)  || (event_data || task_data) ) && db.ismobile && !kanban && segment_value != 'hide_show_list' && !db.sales_manager_role" -->
+<!-- doc_type != 'Expense Claim' -->
+  <div *ngIf="(!skeleton || search_text) && db.ismobile && !kanban && segment_value != 'hide_show_list' && !db.sales_manager_role && (doc_type == 'Bug Sheet' || doc_type == 'Test Case') && !db.tab_filter && doc_type != 'Project' && doc_type != 'Attendance' && doc_type != 'Employee'"
+    [ngClass]="page_title == 'Customer' ? 'search_customer' : (routers == 'Customer' || routers == 'Lead') ? 'search___':'search__'"
+    [class.no_tab_search]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0">
+    <div class="search_bar d__flex">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-input class="search_input" [(ngModel)]="search_text" (input)="load_search($event)" placeholder="Search for {{page_title}}"></ion-input>
+      <ion-icon name="close-outline" *ngIf="search_text" (click)="clear_txt('')"></ion-icon>
+    </div>
+    <!-- <div *ngIf="db.get_saleslist  && (search_filter && search_filter.length != 0) && segment_value != 'hide_show_list' && page_title != 'Customer' && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0" class="filter_search mouse" (click)="supplier_filter()">
+      <ion-icon name="funnel-outline"></ion-icon>
+    </div> -->
+    <div *ngIf="(db.get_saleslist || event_data || task_data)  && (search_filter && search_filter.length != 0) && segment_value != 'hide_show_list'" class="filter mouse filter_search" (click)="supplier_filter('')">
+      <ion-icon name="funnel-outline"></ion-icon>
+      <p class="m-0 count_filter" *ngIf="selected_filter_numbers != 0">{{selected_filter_numbers}}</p>
+    </div>
+    <div *ngIf="doc_type == 'HD Ticket' && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0" class="mouse notification_icon" (click)="open_notification_focus()">
+      <ion-icon name="notifications-outline"></ion-icon>
+      <p class="m-0 count_filter" *ngIf="db.total_notification_count != 0">{{db.total_notification_count}}</p>
+    </div>
+  </div>
+
+  <div *ngIf="db.ismobile && (db.sales_manager_role || getSearchScreens()) && !kanban && (!skeleton || db.bodySkeleton || search_text) ">
+    <app-common-search [search_filter]="search_filter" placeholder="Search for {{page_title}}" [noFilter]="(search_filter && search_filter.length == 0) ? true : false" (call_clear_txt)="clear_txt('')" (search_txt_value)="load_search($event)" (open_filter)="supplier_filter('')"></app-common-search>
+  </div>
+
+  <div *ngIf="db.get_saleslist && db.get_saleslist.data && !db.ismobile && !kanban && segment_value != 'hide_show_list' && routers && (routers == 'Customer' || routers == 'Lead')"
+    [ngClass]="page_title == 'Customer' ? 'search_customer' : (routers == 'Customer' || routers == 'Lead') ? 'search___':'search__'"
+    [class.no_tab_search]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0">
+    <div class="search_bar d__flex">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-input class="search_input" (input)="load_search($event)" placeholder="Search for {{page_title}}"></ion-input>
+    </div>
+
+    
+  </div>
+    
+</div>
+
+<div [class.seperateBugSheet]="doc_type == 'Bug Sheet'">
+  <div class="projectBugList" *ngIf="doc_type == 'Bug Sheet'"> 
+    <app-project-bug-sheet-list [showScreenFilter]="true" [modal]="false" (receiveBugscreenFilter)="receiveBugscreenFilter($event)" (receiveBugFilter)="changeBugSheetFilter($event)"></app-project-bug-sheet-list>
+  </div>
+  <div class="order_list" [ngStyle]="!db.ismobile ? db.apply_padding(doc_type) : null" [class.seperate_detail]="!db.ismobile && (db.enable_detail) && !db.hd_ticket_show" *ngIf="!db.full_width">
+    <div [class.w-33]="!db.ismobile && (db.enable_detail) && doc_type != 'HD Ticket'" [class.flex-10_cust]="!db.ismobile && (db.enable_detail) && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0" [class.display_none]="db.hd_ticket_show" [class.flex-hd_ticket]="!db.ismobile && (db.enable_detail) && doc_type == 'HD Ticket'" class="">
+      <div class]="!db.enable_detail && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0 && !routers ? 'commonHeader' : !routers ? 'bb-5' : null" [class.filter_]="supplier_route && (search_filter && search_filter.length != 0)" [class.project_filter]="doc_type == 'Task' && !db.enable_detail" *ngIf="false && !db.ismobile && !kanban && segment_value != 'hide_show_list' && doc_type != 'Employee' && doc_type != 'Project' && doc_type != 'HD Ticket' && doc_type != 'Issue' && doc_type != 'Timesheet' && ((db.ismobile || !db.ismobile) && (doc_type != 'Leave Application' && doc_type != 'Salary Slip' && doc_type != 'Holiday List' && doc_type != 'Employee Advance' && doc_type != 'Expense Claim' && doc_type != 'Employee Grievance' && doc_type != 'Attendance'))">
+        <div *ngIf="!kanban && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0 && routers != 'Lead' && (doc_type != 'HD Ticket' && doc_type != 'Issue' && doc_type != 'Timesheet');else emptyDiv"
+          class="tab_section tabfilter">
+          <app-tabs-button *ngIf="doc_type != 'Leave Application'" [no_initial_active]="(doc_type == 'Expense Claim' || doc_type == 'Employee Advance') ? true : false"  [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)" [scroll_unique]="true"
+            [bg_white]="db.ismobile ? false : true" [tabs_array]="db.get_saleslist.options"></app-tabs-button>
+        </div>
+        <ng-template #emptyDiv>
+          <div [class.emptyDiv]="db.ismobile" ></div>
+        </ng-template>
+        <!-- && supplier_route -->
+        <div *ngIf="db.get_saleslist && (search_filter && search_filter.length != 0) && !db.enable_detail" [class.without_tab_filter]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0 && search_filter && search_filter.length != 0" class="filter mouse mt-5" (click)="supplier_filter('')">
+          <ion-icon name="funnel-outline"></ion-icon>
+        </div>
+        <div *ngIf="doc_type == 'Task' && !db.enable_detail" class="filter mouse" (click)="task_filter()">
+          <ion-icon name="funnel-outline"></ion-icon>
+        </div>
+        <div *ngIf="doc_type == 'HD Ticket' && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0" class="mouse notification_icon" (click)="open_notification =! open_notification">
+          <ion-icon name="notifications-outline" ></ion-icon>
+          <p class="m-0 count_filter" *ngIf="db.total_notification_count != 0">{{db.total_notification_count}}</p>
+        </div>
+      </div>
+
+      <!-- Notification Section -->
+      <div *ngIf="open_notification && db.notification_key" class="notification_popmenu" >
+        <div class="message_top_menu d__flex">
+          <h6 class="m-0 notification_title">Notification</h6>
+          <div class="popup_menu d__flex">
+            <h6 class="m-0">Unread</h6>
+          </div>
+        </div>
+        <div class="notify_height" (scroll)="db.load_more_notification($event)">
+          <div *ngFor="let item of db.notification_key" >
+            <div *ngFor="let items of db.all_notification_list[item]" class="mouse" routerLink="/notification">
+              <div class="notification_item">
+                <div class="notification_img">
+                  <img class="profile_image" src="/assets/icon/profile_upload.svg">
+                </div>
+                <div class="noti_content">
+                  <h6 class="m-0 notification_username">{{items.edited_by_name}}<span class="role_badge">{{items.creation}}</span></h6>
+                  <p class="m-0 notification_message webkit-text" style="--line: 2;">{{items.content}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- {{ kanban | json}} {{ skeleton | json}} {{ segment_value | json}} -->
+      <!-- {{doc_type | json}} -->
+      <!-- {{event_data | json}} -->
+
+      <!-- && (list_keys) -->
+
+      <div *ngIf="open_notification && db.hasClass">
+        <ion-backdrop (ionBackdropTap)="open_notification = false"></ion-backdrop>
+      </div>
+
+      <!-- <div *ngIf="doc_type == 'Request for Quotation' && !db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Layout 6' && !db.enable_material">
+        <div id="datatable"></div>
+        <revo-grid class="revo-report revo-border" #revoGrid *ngIf="db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0" [canFocus]="true" [source]="db.get_saleslist.data" [columns]="db.get_saleslist.keys" theme="material" [exporting]="true" readonly="true" rowGrouping="employee"></revo-grid>
+      </div> -->
+
+      <!-- !db.employee_role &&  -->
+      <!-- back_gray -->
+      <div class="d__flex just-s p-0-10 h-45" [ngClass]="doc_type == 'Expense Claim' && db.ismobile ? '' : ''" *ngIf="!db.enable_detail && !db.ismobile">
+        <div *ngIf="!db.enable_detail && doc_type && !db.ismobile" class="d__flex gap-10">
+          <ion-icon class="fnt-20 headerIcon" slot="start" [src]="db.get_active_icon(doc_type)"></ion-icon>
+          <p class="m-0 fnt-16 fnt_w600 primary_clr border-right-txt">{{doc_type}}</p>
+        </div>
+
+        
+        <div class="d__flex gap-20">
+
+          <div (click)="freezeEvent('')" *ngIf="false && doc_type != 'Attendance' && doc_type != 'Holiday List'" class="filter mouse" >
+            <!-- <ion-icon class="white fnt-15" src="assets/freeze.svg" ></ion-icon> -->
+            <ion-icon class="icon fnt-15" src="/assets/salary/grid.svg"></ion-icon>
+          </div>
+
+          <!-- doc_type == 'ToDo' || -->
+          <div *ngIf="( doc_type == 'Project' || doc_type == 'Task' || doc_type == 'Employee' || doc_type == 'Attendance' || doc_type == 'Holiday List' || doc_type == 'Lead') && !db.project_emp_role" class="d__flex gap-5 views__">
+            <ion-icon class="mouse" [class.selectedViewList]="item['isSelected']" *ngFor="let item of viewList;let i = index" (click)="sendViewType(item,i)" [name]="item.icon"></ion-icon>
+          </div>
+          <!-- && !kanban && !skeleton -->
+
+          <!-- <div *ngIf="!db.ismobile && doc_type == 'Job Applicant'">
+            <ion-button (click)="openJobApplicant()" fill="clear" class="addNew mouse ">Jobs</ion-button>
+          </div> -->
+
+          <ion-button *ngIf="!db.ismobile && !db.enable_detail && detail_doc && detail_doc['route'] && !db.hd_ticket_show && !db.full_width" (click)="createNew(detail_doc)" fill="clear" class="addNew mouse ">
+            <ion-icon slot="start" name="add-outline"></ion-icon>Add
+          </ion-button>
+        </div>
+      </div>
+
+      <div [class.border-t]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0 && !db.enable_detail" *ngIf="(db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0) && !db.ismobile && (doc_type == 'Task' || doc_type == 'Bug Sheet' || doc_type == 'Project' || doc_type == 'Employee Grievance' || doc_type == 'Lead' || doc_type == 'Opportunity' || doc_type == 'Quotation') && (db.viewListType != 'Grid' && db.viewListType != 'Kanban' && db.viewListType != 'Gallery') && !kanban" [class.border-b]="db.enable_detail" class="">
+        <app-tabs-button [employee_detail_tab]="true"  [border_none]="true" [no_mb]="true"  [overflow]="true" (menu_name)="menu_name($event)"
+           [tabs_array]="(db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0) ? db.get_saleslist.options : ''"></app-tabs-button>
+      </div>
+
+      <div *ngIf="db.get_saleslist && !db.ismobile && !kanban && db.enable_detail"
+        [ngClass]="(routers == 'Customer' || routers == 'Lead') ? 'search___':'search__'" class="gap-5">
+        <div class="search_bar d__flex">
+          <ion-icon name="search-outline"></ion-icon>
+          <ion-input class="search_input" (input)="load_search($event)" placeholder="Search for {{page_title}}"></ion-input>
+        </div>
+
+        
+        <div *ngIf="(search_filter && search_filter.length != 0) && segment_value != 'hide_show_list'" class="filter mouse filter_search" (click)="supplier_filter('')">
+          <ion-icon name="funnel-outline"></ion-icon>
+          <p class="m-0 count_filter" *ngIf="selected_filter_numbers != 0">{{selected_filter_numbers}}</p>
+        </div>
+
+        <div *ngIf="doc_type == 'Bug Sheet'" class="filter mouse filter_search" (click)="createNew(detail_doc)">
+          <ion-icon name="add-outline"></ion-icon>
+        </div>
+      </div>
+    
+      <!-- doc_type == 'Expense Claim' -->
+      <!-- [ngClass]="(db.employee_role || db.tab_filter) ? '' : 'big_box_advance'" -->
+
+      <div class="back_white" [class.big_box_advance]="!db.enable_detail && !db.ismobile && doc_type != 'Project' && db.viewListType != 'Table' && db.viewListType != 'Gallery'" [class.border-t]="!db.enable_detail && !db.ismobile && (db.viewListType == 'Table' || db.viewListType == 'Gallery') && doc_type != 'Project' " [class.bug_sheet_cls]="!db.ismobile && doc_type == 'Bug Sheet' && db.app_name == 'Go1 Project'" [class.removeListHeight]="(db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length < 10)">
+        <!-- && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0 -->
+        <!-- {{db.tab_filter}} -->
+        <div *ngIf="db.viewListType != 'Gallery' && !db.enable_detail && (hideFilters && !db.ismobile && !kanban && doc_type != 'Attendance' || ((doc_type == 'Project' || doc_type == 'Task' || doc_type == 'Employee') && (db.viewListType != 'Grid' && db.viewListType != 'Kanban')) && !db.ismobile)" class="d__flex gap-10 just-s search_filter" [class.border-b]="db.viewListType == 'Table' || checkBorderB()" [class.border-b-unset]="(doc_type == 'Bug Sheet' || doc_type == 'Project') && db.viewListType != 'Table'" [class.border-t]="doc_type == 'Project'">
+          <app-filters *ngIf="db.get_saleslist && (search_filter && search_filter.length != 0)" [noPopup]="true" (filterList)="filterList($event)" [isNotModal]="true" [supplier_id]="supplier_id" [search_filter]="search_filter" [page_title]="page_title" [json_filter]="json_filter" [doctype]="doc_type"></app-filters>
+          <div *ngIf="(search_filter && search_filter.length == 0)"></div>
+          <!-- <div class="d__flex gap-10" *ngIf="skeleton">
+            <ion-skeleton-text *ngFor="let i of [1,2,3]" animated style="width: 135px; height: 28px; border-radius:5px"></ion-skeleton-text>
+          </div> -->
+          <app-tab-filter [search]="false" (freezeEvent)="freezeEvent($event)" [actionButton]="doc_type == 'Bug Sheet' ? true : false" [noView]="(doc_type == 'Attendance' || doc_type == 'Bug Sheet' || doc_type == 'Event') ? true: false" (tab_filter)="tab_filter($event)" ></app-tab-filter>
+        </div>
+
+        <!-- !db.enable_detail && -->
+        <app-orders (load_more)="load_more($event)" (changeDate)="changeDate($event)" (tab_filter)="tab_filter($event)" (load_search)="load_search($event)"
+        (filterList)="filterList($event)" [supplier_id]="supplier_id" [search_filter]="search_filter" [page_title]="page_title" [json_filter]="json_filter"
+        *ngIf="!kanban && (!skeleton && !db.skeletonLoader) && segment_value == 'show_list' && (((db.get_saleslist && db.get_saleslist.data && (db.get_saleslist.data.length == 0 || db.get_saleslist.data.length != 0)) || (doc_type == 'Employee' || doc_type == 'Project' || doc_type == 'Attendance') ) || (event_data && event_data.length != 0) || ((task_data && task_data.length != 0) || (task_data && task_data.length == 0)) || (doc_type == 'HD Ticket') || (db.tab_filter))"
+        [no_tabs]="((db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == []) || (this.doc_type == 'Employee Advance' || this.doc_type == 'Expense Claim')) ? true : false" (get_tempate_and_datas)="get_tempate_and_datas($event)"
+        (do_to_details)="db.ismobile && (routers == 'Customer' || routers == 'Lead') ? share_Customer($event) : db.ismobile ? navigateToDetails($event) :null"
+        (click_data)=" (routers == 'Customer' || routers == 'Lead') ? share_Customer($event) : get_list_detail($event)"  [list_data]="db.get_saleslist" 
+        [height_val]="height_val" [no_products]="no_products" [old_list]='routers' (WhatsApp)="openWhatsApp($event)" (call)="call($event)" [doc_type]="doc_type" (edit_event)="edit_event($event)" (edit_list_task)="edit_task($event)"  
+        (delete_event)="delete_event($event)" (delete_list_task)="delete_task($event)" [cus_height]="doc_type == 'Customer' ? true : false" [event_list]="event_data" [task_list]="task_data"[list_keys]="list_keys" [kanban]="kanban" (createNew)="createNew(detail_doc)" (menu_name_ext)="menu_name($event)"
+        [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)" [dashboard]="dashboard" (clear_txt)="clear_txt($event)" (supplier_filter)="supplier_filter($event)"
+        [bg_white]="db.ismobile ? false : true" [tabs_array]="(db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length != 0) ? db.get_saleslist.options : []" [skeleton]="skeleton" (send_pagination_count)="send_pagination_count($event)"
+        (getFilters)="getFilters($event)" (getDateFromCalendar)="getDateFromCalendar($event)"
+        (call_clear_txt)="clear_txt('')" (search_txt_value)="load_search($event)" [search_data]="search_data"
+        [showCalendar]="showCalendar" (toggleKanban_task)="toggleKanbans_task()" (filtermeetingDate)="filtermeetingDate($event)" (receiveSmartData)="receiveSmartData($event)"
+        [task_table1]="task_table1"
+        (getCalendarDate)="getCalendarDate($event)" [attendance_dashboard]="attendance_dashboard" [highlightedDates]="highlightedDates" (getDateFromCalendars)="getDateFromCalendars($event)" 
+        ></app-orders>
+
+        <app-kanban-view *ngIf="kanban && !skeleton && segment_value == 'show_list' && doc_type == 'Lead'" (click_data)="get_list_detail($event)"
+        [doc_type]="this.db.selected_list.page" (info_navigate)="info($event)" (Kanban_false)="toggle_list()" (WhatsApp)="openWhatsApp($event)" (call)="call($event)" ></app-kanban-view>
+
+        <app-task-kanban *ngIf="kanban && (doc_type == 'Task' || doc_type == 'ToDo')" [kanban]="kanban" (createNew)="createNew(detail_doc)" (Kanban_false)="toggle_list()" (click_data)="get_list_detail($event)" [doc_type]="db.selected_list.page" (toggleKanban_task)="toggleKanbans_task()"></app-task-kanban>
+      
+        <app-timesheet-kanban *ngIf="kanban && !skeleton && doc_type == 'Timesheet'" (Kanban_false)="toggle_list()" (click_data)="get_list_detail($event)" [doc_type]="db.selected_list.page"></app-timesheet-kanban>
+
+        <app-project-kanbanview *ngIf="kanban && !skeleton && (doc_type == 'Project')" (Kanban_false)="toggle_list()" (click_data)="get_list_detail($event)" [doc_type]="db.selected_list.page"></app-project-kanbanview>
+
+
+        <!-- Skeleton Sections -->
+
+        <div *ngIf="!db.enable_material && !db.enable_detail && (skeleton || db.bodySkeleton) && !db.ismobile" class="pl10" >
+          <!-- <div *ngIf="!skeleton_value && (doc_type == 'Employee Advance' || doc_type == 'Expense Claim' || doc_type == 'Employee Grievance' || doc_type == 'Lead' || doc_type == 'Opportunity' || doc_type == 'Customer Feedback')">
+            <div class="skeleton_s" *ngFor="let i of [0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,7,8]">
+                <h3 class="d__flex just-s m-0 gap-5">
+                  <div class="d__flex gap-10" style="width: 30%">
+                    <ion-skeleton-text *ngIf="doc_type == 'Employee Advance' || doc_type == 'Expense Claim' || doc_type == 'Lead' || doc_type == 'Opportunity' || doc_type == 'Customer Feedback'" animated style="width: 40px; height: 40px"></ion-skeleton-text> 
+                    <ion-skeleton-text animated style="width: 80%; height: 20px"></ion-skeleton-text> 
+                  </div>
+                  <div style="width: 15%; height: 16px"><ion-skeleton-text animated style="width: 90%; height: 16px"></ion-skeleton-text></div>
+                  <div style="width: 15%; height: 16px"><ion-skeleton-text animated style="width: 90%; height: 16px"></ion-skeleton-text></div>
+                  <div style="width: 15%; height: 16px"><ion-skeleton-text animated style="width: 90%; height: 16px"></ion-skeleton-text></div>
+                  <div style="width: 20%; height: 16px"><ion-skeleton-text animated style="width: 90%; height: 16px"></ion-skeleton-text></div>
+                  <div style="width: 5%; height: 16px"><ion-skeleton-text animated style="width: 90%; height: 16px"></ion-skeleton-text></div>
+                </h3>
+
+                <h3 *ngIf="doc_type != 'Employee Advance' && doc_type != 'Expense Claim' && doc_type != 'Employee Grievance' && doc_type != 'Lead' && doc_type != 'Opportunity' && doc_type != 'Customer Feedback'" class="d__flex just-s">
+                  <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 10%; height: 16px"></ion-skeleton-text>
+                </h3>
+            </div>
+          </div> -->
+
+  <!-- class="summary_skeleton" -->
+
+          <div  *ngIf="!db.ismobile && skeleton_value && doc_type != 'Task'">
+            <div [class.border-t]="doc_type == 'Project'" [class.summary_sec]="skeleton_value.enable_dashboard" *ngIf="!db.bodySkeleton && skeleton_value.enable_dashboard">
+              <div [class.border-r]="skeleton_value.date_dash" *ngIf="skeleton_value.date_dash">
+                <app-skeleton-loader [type]="'date-dashboard'" ></app-skeleton-loader>
+              </div>
+          
+              <div *ngFor="let item of skeleton_value.dash_len;index as i">
+                <app-skeleton-loader [index]="i == skeleton_value.dash_len.length - 1 ? -1 : i" type="dashboard" ></app-skeleton-loader>
+              </div>
+            </div>
+
+            <div [ngClass]="skeleton_value.filters ? 'p-1015 border-b' : ''" *ngIf="!db.bodySkeleton && skeleton_value.filters && skeleton_value.doc_type == 'Project'">
+              <app-skeleton-loader [filter_len]="skeleton_value.filter_len" type="filter" ></app-skeleton-loader>
+            </div>
+  
+            <div [ngClass]="skeleton_value.filters ? 'p-1015 border-b' : ''" *ngIf="!db.bodySkeleton && skeleton_value.filters">
+              <app-skeleton-loader [filter_len]="skeleton_value.filter_len" type="filter" ></app-skeleton-loader>
+            </div>
+    
+            <div>
+              <app-skeleton-loader [list_len_count]="skeleton_value.list_len_count" [type]="skeleton_value.custom_list ? skeleton_value.doc_type : 'list'" ></app-skeleton-loader>
+              <!-- <app-skeleton-loader [type]="(skeleton_value.doc_type == 'Employee' || skeleton_value.doc_type == 'Project') ?  skeleton_value.doc_type : 'list'" ></app-skeleton-loader> -->
+            </div>
+          </div>
+
+          <div *ngIf="!db.ismobile && skeleton_value && doc_type == 'Task'" class="align_center">
+            <ion-spinner name="lines-sharp"></ion-spinner>
+          </div>
+
+          <!-- <div *ngIf="skeleton_value && doc_type == 'Project' && !db.ismobile">
+            <div  [class.summary_sec]="skeleton_value.enable_dashboard" *ngIf="!db.bodySkeleton && skeleton_value.enable_dashboard">
+              <div [class.border-r]="skeleton_value.date_dash" *ngIf="skeleton_value.date_dash">
+                <app-skeleton-loader [type]="'date-dashboard'" ></app-skeleton-loader>
+              </div>
+          
+              
+              <div *ngFor="let item of skeleton_value.dash_len;index as i" >
+                <app-skeleton-loader [index]="i == skeleton_value.dash_len.length - 1 ? -1 : i" type="dashboard" ></app-skeleton-loader>
+              </div>
+            </div>
+        
+            <div [ngClass]="skeleton_value.filters ? 'p-1015 border-b' : ''" *ngIf="!db.bodySkeleton && skeleton_value.filters && skeleton_value.doc_type == 'Project'">
+              <app-skeleton-loader [filter_len]="skeleton_value.filter_len" type="filter" ></app-skeleton-loader>
+            </div>
+        
+            <div [ngClass]="skeleton_value.filters ? 'p-1015 border-b' : ''" *ngIf="!db.bodySkeleton && skeleton_value.filters">
+              <app-skeleton-loader [filter_len]="skeleton_value.filter_len" type="filter" ></app-skeleton-loader>
+            </div>
+        
+            <div>
+              <app-skeleton-loader [type]="skeleton_value.custom_list ?  skeleton_value.doc_type : 'list'" ></app-skeleton-loader>
+            </div>
+           </div> -->
+  
+        </div>
+
+       </div>
+        <div [class.pagination_sec1]="db.enable_detail && !db.ismobile" *ngIf="(!db.enable_detail && !db.ismobile && !kanban && !skeleton && ((db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0) || (event_data && event_data.length != 0)) && doc_type != 'Holiday List' && doc_type != 'Timesheet' && this.doc_type != 'Attendance' && this.doc_type != 'Project' && this.doc_type != 'Task') || (this.doc_type == 'Attendance' && db.viewListType != 'Table' && !db.ismobile) || (this.doc_type == 'Task' && db.viewListType == 'Table' && !db.ismobile && !db.enable_detail) || (this.doc_type == 'Project' && db.viewListType == 'Table' && !db.ismobile)" class="d__flex w-100 just-s pagination_sec">
+          <!-- {{'Test 1'}} -->
+          <div class="d__flex border">
+            <p *ngFor="let item of pagination_count;let i = index" [class.select_pagination]="item.selected" class="m-0 fnt-12 box__ mouse" (click)="send_pagination(item,i)">{{item.count}}</p>
+          </div>
+          <ion-button class="load-more" expand="block" fill="clear" (click)="add_pagination()">Load More</ion-button>
+        </div>
+
+        <div *ngIf="db.enable_detail">
+         <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+          *ngIf="(!db.ismobile && segment_value == 'show_list') && (((!skeleton && !db.get_saleslist.data) || ((!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && (task_data && task_data.length == 0)))"
+          [column]="true" height="calc(100vh - 117px)" [heading]="'No record found'"
+          [image]="'assets/icon/empty.svg'"></app-no-record-found>
+        </div>
+
+      <!-- <ion-list *ngIf="db.enable_material && skeleton && db.enable_detail" [class.skeleton_height]="db.enable_detail">
+        <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6]">
+          <ion-label>
+            <h3>
+              <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list> -->
+
+      <!-- <div class="expenceSketon" *ngIf="skeleton && !db.ismobile && db.enable_material && db.enable_detail && (this.db.selected_list && (this.db.selected_list.page && this.db.selected_list.page == 'Expense Claim' || this.db.selected_list.page == 'Compensatory Leave Request' || this.db.selected_list.page == 'Customer'))">
+        <div class="divF d__flex just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+          <div class="b-1 d__flex">
+            <ion-skeleton-text [animated]="true" style="width:70px;height:52px;border-radius:50%;margin:0 8px 0 0"></ion-skeleton-text>
+            <div class="b-2">
+              <ion-skeleton-text [animated]="true" style="width:100%;height:17px;margin:0 0 8px 0"></ion-skeleton-text>
+              <ion-skeleton-text [animated]="true" style="width:80%;height:15px"></ion-skeleton-text>
+              
+            </div>
+          </div>
+    
+          <div *ngIf="(this.db.selected_list.page == 'Expense Claim' ||  this.db.selected_list.page == 'Customer')" class="b-2 b-3">
+            <ion-skeleton-text [animated]="true" style="width: 65%;height:15px;margin:0 0 8px 0"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:45%;height:13px"></ion-skeleton-text>
+          </div>
+    
+         </div>
+      </div>  -->
+
+
+
+      
+  <!-- <div *ngIf="skeleton && (db.ismobile || (!db.ismobile && db.enable_material && db.enable_detail)) && (this.db.selected_list && this.db.selected_list.page != 'Employee' && doctype != 'ToDo' && doctype != 'Event' && this.db.selected_list.page != 'Employee Grievance' && this.db.selected_list.page != 'Employee Advance' && this.db.selected_list.page != 'Lead' && this.db.selected_list.page != 'Opportunity' && this.db.selected_list.page != 'Customer Feedback' && this.db.selected_list.page != 'Timesheet' && this.db.selected_list.page != 'Expense Claim' && this.db.selected_list.page != 'Compensatory Leave Request' && this.db.selected_list.page != 'Lead' && this.db.selected_list.page != 'Opportunity' && this.db.selected_list.page != 'Quotation' && this.db.selected_list.page != 'Customer' && this.db.selected_list.page != 'Attendance' && this.db.selected_list.page != 'Salary Slip' && this.db.selected_list.page != 'Project')">
+    <div class="divF d__flex gap-5 just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+      <div class="b-1">
+          <ion-skeleton-text [animated]="true" style="width:90%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:70%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="b-2">
+        <ion-skeleton-text [animated]="true" style="width: 65%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:45%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+     </div>
+  </div> -->
+
+  <div class="normalSketonProject" *ngIf="skeleton && (this.db.selected_list && this.db.selected_list.page == 'Project') && db.ismobile">
+
+    <div class="d__flex gap-10 p-10" *ngIf="db.hr_manager_role">
+      <ion-skeleton-text *ngFor="let val of [1,2,3]" [animated]="true" style="width:40%;height:100px;margin:0px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+
+    <div class="p-10" *ngIf="db.employee_role">
+      <ion-skeleton-text [animated]="true" style="width:100%;height:90px;margin:0px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+
+    <!-- <div class="p-10">
+      <ion-skeleton-text [animated]="true" style="width:100%;height:40px;margin:0px;border-radius: 5px;"></ion-skeleton-text>
+    </div> -->
+
+    <div *ngIf="db.hr_manager_role">
+      <div class="divF d__flex gap-5 just-s border m-10" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+        <div class="b-1">
+          <div class="w-100 d__flex just-s">
+            <ion-skeleton-text [animated]="true" style="width:30%;height:18px;margin:0px;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:40%;height:25px;margin:0px;border-radius: 5px;"></ion-skeleton-text>
+          </div>
+            <ion-skeleton-text [animated]="true" style="width:40%;height:16px;border-radius: 5px;margin-bottom: 8px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:50%;height:16px;border-radius: 5px;margin-bottom: 8px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:60%;height:16px;border-radius: 5px;margin-bottom: 8px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:70%;height:16px;border-radius: 5px;margin-bottom: 8px;"></ion-skeleton-text>
+        </div>
+  
+       </div>
+    </div>
+
+    <div class="normalSketon" *ngIf="db.employee_role">
+      <div class="divF d__flex gap-5 just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+        <div class="b-1">
+            <ion-skeleton-text [animated]="true" style="width:90%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:70%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+  
+        <div class="b-2">
+          <ion-skeleton-text [animated]="true" style="width: 65%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:45%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+  
+       </div>
+    </div> 
+
+  </div>
+
+  <!-- Splitted 2 column -->
+  <!-- <div class="normalSketon" *ngIf="skeleton && (db.ismobile || (!db.ismobile && db.enable_material && db.enable_detail)) && (this.db.selected_list && this.db.selected_list.page == 'Employee Advance'|| this.db.selected_list.page == 'Salary Slip' || this.db.selected_list.page == 'Expense Claim' || this.db.selected_list.page == 'Employee Grievance' )">
+    <div class="divF" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+      <div class="d__flex just-s">
+          <ion-skeleton-text [animated]="true" style="width:55%;height:15px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text *ngIf="this.db.selected_list.page != 'Employee Grievance'" [animated]="true" style="width:80px;height:15px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="d__flex just-s">
+        <ion-skeleton-text [animated]="true" style="width: 45%;height:15px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text  [animated]="true" style="width:150px;height:15px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="d__flex just-s">
+        <ion-skeleton-text [animated]="true" style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text *ngIf="this.db.selected_list.page != 'Employee Grievance'" [animated]="true" style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+     </div>
+  </div>  -->
+
+  <!-- employee -->
+
+  <!-- <div class="normalSketon" *ngIf="skeleton && (db.ismobile || (!db.ismobile && db.enable_material && db.enable_detail)) && (this.db.selected_list && this.db.selected_list.page == 'Employee')">
+    <div class="d__flex employeeSkeleton">
+      <div class="d__flex box_ gap-10" *ngFor="let i of [1, 2, 3, 4 ,5, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]">
+        <ion-skeleton-text animated style="width: 90px; height: 70px;border-radius: 5px;"></ion-skeleton-text>
+        <div class="w-100">
+          <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  </div>   -->
+
+
+  <!-- <div class="expenceSketon" *ngIf="skeleton && (db.ismobile || (!db.ismobile && db.enable_material && db.enable_detail)) && (this.db.selected_list && (this.db.selected_list.page && this.db.selected_list.page == 'Attendance' || this.db.selected_list.page == 'Compensatory Leave Request'))">
+    <div class="divF d__flex just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+      <div class="b-1 d__flex">
+        <ion-skeleton-text [animated]="true" style="width:70px;height:52px;border-radius:50%;margin:0 8px 0 0"></ion-skeleton-text>
+        <div class="b-2">
+          <ion-skeleton-text [animated]="true" style="width:100%;height:17px;margin:0 0 8px 0"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:80%;height:15px"></ion-skeleton-text>
+        </div>
+      </div>
+
+      <div *ngIf="(this.db.selected_list.page == 'Expense Claim' || this.db.selected_list.page == 'Attendance' || this.db.selected_list.page == 'Customer')" class="b-2 b-3">
+        <ion-skeleton-text [animated]="true" style="width: 65%;height:15px;margin:0 0 8px 0"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:45%;height:13px"></ion-skeleton-text>
+      </div>
+
+     </div>
+  </div>     -->
+  
+  <div *ngIf="false && skeleton && (db.ismobile || (!db.ismobile && db.enable_material && db.enable_detail)) && this.db.selected_list && this.db.selected_list.page && (this.db.selected_list.page == 'Lead' || this.db.selected_list.page == 'Opportunity' || this.db.selected_list.page == 'Quotation')" class="expenceSketon">
+    <div class="divF" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+      <div class="d__flex just-s" >
+        <div class="b-1 d__flex">
+          <ion-skeleton-text [animated]="true" style="width:72px;height:50px;border-radius:50%;margin:0 8px 0 0"></ion-skeleton-text>
+          <div class="b-2">
+            <ion-skeleton-text [animated]="true" style="width:100%;height:17px;margin:0 0 8px 0"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:80%;height:15px"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:60%;height:12px"></ion-skeleton-text>
+          </div>
+        </div>
+  
+        <div class="b-2 b-3">
+          <ion-skeleton-text [animated]="true" style="width: 65%;height:15px;margin:0 0 8px 0"></ion-skeleton-text>
+        </div>
+  
+       </div>
+
+       <div style="margin:15px 0 0px 0" class="b-2 d__flex just-s">
+        <ion-skeleton-text [animated]="true" style="width:35%;height:17px;margin:0 0 8px 0"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:35%;height:17px;margin:0 0 8px 0"></ion-skeleton-text>
+      </div>
+
+    </div>
+  </div>    
+
+  <div class="timesheetSketeton" *ngIf="skeleton && (db.ismobile || (!db.ismobile && db.enable_material && db.enable_detail)) && (this.db.selected_list && this.db.selected_list.page == 'Timesheet')">
+    <div class="divF" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+     
+      <div class="b-1-b">
+        <div class="d__flex just-s">
+         <div class="b-1">
+           <ion-skeleton-text [animated]="true" style="width: 65%;height:20px;margin:0 0 8px 0"></ion-skeleton-text>
+           <ion-skeleton-text [animated]="true" style="width: 30%;height:15px;margin:0 0 8px 0"></ion-skeleton-text>
+         </div>
+         <ion-skeleton-text [animated]="true" style="width: 30%;height:15px"></ion-skeleton-text>
+        </div>
+
+        <div class="b-1 d__flex just-s">
+         <ion-skeleton-text [animated]="true" style="width: 40%;height:15px"></ion-skeleton-text>
+         <ion-skeleton-text [animated]="true" style="width: 30%;height:15px"></ion-skeleton-text>
+       </div>
+      </div>
+
+      <div class="b-2">
+        <ion-skeleton-text [animated]="true" style="width: 65%;height:20px;margin:5px 0"></ion-skeleton-text>
+
+        <div *ngFor="let i of [1,2,3]" class="b-3 d__flex">
+          <div class="box_">
+            <ion-skeleton-text [animated]="true" style="width: 65%;height:20px;margin:0 0 8px 0"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 30%;height:15px"></ion-skeleton-text>
+          </div>
+
+          <div class="box_">
+            <ion-skeleton-text [animated]="true" style="width: 65%;height:20px;margin:0 0 8px 0"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 30%;height:15px"></ion-skeleton-text>
+          </div>
+
+          <div class="box_">
+            <ion-skeleton-text [animated]="true" style="width: 65%;height:20px;margin:0 0 8px 0"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 30%;height:15px"></ion-skeleton-text>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Mobile Skeleton -->
+
+  <div *ngIf="(skeleton || db.bodySkeleton || db.skeletonLoader) && (!db.get_saleslist.data || (db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && skeleton_value && db.ismobile">
+    <!-- Image Section  -->
+     <div *ngIf="!db.bodySkeleton && skeleton_value && skeleton_value.img_sec">
+      <app-skeleton-loader type="img_sec" ></app-skeleton-loader>
+     </div>
+
+    <!-- Tabs -->
+    <div [class.tab_skeleton]="skeleton_value.tabs" *ngIf="!db.bodySkeleton && skeleton_value.tabs && !db.get_saleslist.data">
+      <div *ngFor="let val of skeleton_value.tabs_len">
+        <app-skeleton-loader type="tabs" ></app-skeleton-loader>
+      </div>
+    </div>
+
+    <!-- Common Dashboard -->
+    <div  [class.Common_dashboardSkeleton]="skeleton_value.enable_dashboard" *ngIf="!db.bodySkeleton && skeleton_value.enable_dashboard">
+      <div class="small_box" *ngFor="let item of skeleton_value.dash_len;index as i">
+        <app-skeleton-loader type="dashboard" ></app-skeleton-loader>
+      </div>
+    </div>
+
+    <div *ngIf="!db.bodySkeleton && skeleton_value.dashboard_count">
+      <app-skeleton-loader type="dashboard_count" ></app-skeleton-loader>
+    </div>
+
+    <div *ngIf="!db.bodySkeleton && skeleton_value.month_filter">
+      <app-skeleton-loader type="month_filter" ></app-skeleton-loader>
+    </div>
+
+    <div *ngIf="!db.bodySkeleton && skeleton_value.search">
+      <app-skeleton-loader  type="search" ></app-skeleton-loader>
+    </div>
+
+    <!-- <div [ngClass]="skeleton_value.filters ? 'p-1015 border-b' : ''" *ngIf="skeleton_value.filters">
+      <app-skeleton-loader [filter_len]="skeleton_value.filter_len" type="filter" ></app-skeleton-loader>
+    </div> -->
+
+    <div *ngIf="skeleton_value.list">
+      <app-skeleton-loader [type]="skeleton_value.list_type" [list_len]="skeleton_value.list_len ? skeleton_value.list_len : []" [list_len_count]="skeleton_value.list_len_count" ></app-skeleton-loader>
+    </div>
+  </div>
+
+
+      <!-- <div class="bubbleLoader" *ngIf="spinner_loader">
+        <ion-spinner name="bubbles"></ion-spinner>
+      </div> -->
+
+    </div>
+    <!-- {{db.enable_detail | json}} {{db.mail_send_to | json}} -->
+    <!-- [ngClass]="db.enable_detail && doc_type == 'Bug Sheet' ? 'full_detail' : ''" -->
+    <div [class.sideActive]="!db.hd_ticket_show"   [class.sticky__]="db.enable_detail" [class.flex_35]="!db.ismobile && !db.hd_ticket_show"
+      *ngIf="db.enable_detail && (db.load_name || db.mail_send_to) && !db.ismobile">
+      
+      
+      <!-- <ion-list *ngIf="skeleton_detail && false" class="ion_list">
+        <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6]">
+          <ion-label>
+            <h3>
+              <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list> -->
+
+      <!-- <div *ngIf="skeleton_detail" class="align_center">
+        <ion-spinner name="circles"></ion-spinner>
+      </div> -->
+
+      <div *ngIf="db.skeleton_detail" class="align_center">
+        <ion-spinner name="circles"></ion-spinner>
+      </div>
+      <!-- && doc_type != 'HD Ticket' -->
+      <!-- [class.border]="db.enable_detail && doc_type == 'Bug Sheet'" -->
+      <div *ngIf="!skeleton_detail && doc_type != 'HD Ticket'"  class="sideActive_detail">
+        
+        <!-- <app-wizard-forms [enable_reference]="enable_reference" [forms_route]="page_route" [enable_header]="true"
+          [reference_id]="order_detail.name" [sale_order_id]="order_detail.name ? order_detail.name : undefined"
+          [tabs_top]="1" [edit_form]="1" [enabled_read_only]="enabled_read_only"
+          [edit_form_values]="order_detail"></app-wizard-forms> -->
+
+        <app-detail *ngIf="(page_route != 'Lead' && page_route != 'Opportunity' && page_route != 'employee') && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0" [detail_route_name]="db.detail_route_name" [load_name]="db.load_name" (updateDetails)="updateDetails($event)"></app-detail>
+        <app-detail-view *ngIf="(page_route == 'Lead' || page_route == 'Opportunity') && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0" [detail_route_name]="db.detail_route_name"></app-detail-view>
+
+        <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+        *ngIf="db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
+        [column]="true" height="calc(100vh - 50px)" [heading]="'No Detail found'"
+        [image]="'assets/icon/empty.svg'"></app-no-record-found>  
+      </div>
+
+      <div *ngIf="(!skeleton_detail || db.mail_send_to) && doc_type == 'HD Ticket'" [class.centered_content]="doc_type == 'HD Ticket'">
+        <app-ticket-details ></app-ticket-details>
+      </div>
+      
+    </div>
+
+  </div>
+</div>
+
+  <div *ngIf="db.full_width" class="order_list" [ngStyle]="!db.ismobile ? db.apply_padding(doc_type) : null">
+    <app-employee-detail *ngIf="doc_type == 'Employee' || doc_type == 'Project'" [doctype]="doc_type" [search_filter]="search_filter" (openWhatsApp)="openWhatsApp($event)" (call)="call($event)" [detail_route_name]="db.detail_route_name" [list_data]="db.get_saleslist" (call_clear_txt)="clear_txt('')" (search_txt_value)="load_search($event)"  (supplier_filter)="supplier_filter($event)" (filterList)="filterList($event)" [load_name]="db.load_name" [current_navigation_tab]="current_navigation_tab"></app-employee-detail>
+    <app-lead-detail *ngIf="doc_type == 'Lead' || doc_type == 'Opportunity'" [doctype]="doc_type" (openWhatsApp)="openWhatsApp($event)" (call)="call($event)" [load_name]="db.load_name"></app-lead-detail>
+    <app-ticket-list [doc_type]="doc_type" *ngIf="doc_type == 'HD Ticket' && db.get_saleslist && !db.hd_ticket_show" (menu_name)="menu_name($event)" [bg_white]="db.ismobile ? false : true" [tabs_array]="db.get_saleslist.options"  [data]="db.get_saleslist" (click_data)="load_all($event)" (load_data)="load_more($event)"></app-ticket-list>
+    <app-timesheet-list *ngIf="doc_type == 'Timesheet' && !db.ismobile && !db.hd_ticket_show && !kanban" [search_filter]="search_filter" (createNew)="createNew(detail_doc)"></app-timesheet-list>
+    <app-salary-slip-detail *ngIf="doc_type == 'Salary Slip'" [doc_type]="doc_type" [detail_route_name]="db.detail_route_name" [load_name]="db.load_name" [current_navigation_tab]="current_navigation_tab" ></app-salary-slip-detail>
+    <ion-fab *ngIf="doc_type == 'HD Ticket' && !db.hd_ticket_show" [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)">
+      <ion-fab-button class="fab_btn" (click)="createNew(detail_doc)">   
+       <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <div *ngIf="(!skeleton_detail || db.mail_send_to) && doc_type == 'HD Ticket' && db.hd_ticket_show" [class.centered_content]="doc_type == 'HD Ticket'">
+     <app-ticket-details ></app-ticket-details>
+    </div>
+
+    <app-task-page-list [doc_type]="doc_type" *ngIf="doc_type == 'Task' && !db.ismobile" (createNew)="createNew($event)" (toggleKanban_task)="toggleKanbans_task()"></app-task-page-list>
+    <!-- <app-ticket-list *ngIf="doc_type == 'HD Ticket'" [border_none]="border_none" [overflow]="overflow" (menu_name)="menu_name($event)"[bg_white]="db.ismobile ? false : true" [tabs_array]="tabs_array"  [data]="list_data" (click_data)="load_all($event)" (load_data)="load_data($event)"></app-ticket-list> -->
+
+    <div *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0 && doc_type == 'HD Ticket'" class="d__flex w-100 just-s pagination_sec">
+      <!-- {{'Test 2'}} -->
+      <div class="d__flex border">
+        <p *ngFor="let item of pagination_count;let i = index" [class.select_pagination]="item.selected" class="m-0 fnt-12 box__ mouse" (click)="send_pagination(item,i)">{{item.count}}</p>
+      </div>
+      <ion-button class="load-more" expand="block" fill="clear" (click)="add_pagination()">Load More</ion-button>
+    </div>
+  </div>
+
+  <div *ngIf="db.viewListType == 'Gallery' && !db.ismobile" >
+    <app-gallery-view [viewListType]="db.viewListType"></app-gallery-view>
+  </div>
+  <!-- <div class="sideActive"> -->
+
+
+  <!-- </div> -->
+
+  <!-- <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+    *ngIf="!db.tab_filter && (segment_value == 'show_list' && (doc_type && doc_type != 'Timesheet' && doc_type != 'Expense Claim' && doc_type != 'Employee' && doc_type != 'Salary Slip' && doc_type != 'Project' && (event_data && event_data.length == 0) && (task_data && task_data.length == 0)) && (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.enable_detail)"
+    [column]="true" height="calc(100vh - 170px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found> -->
+
+    <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+    *ngIf="!db.tab_filter && (segment_value == 'show_list' && (doc_type && doc_type != 'Attendance' && doc_type != 'Compensatory Leave Request' && doc_type != 'Employee Grievance' && doc_type != 'Job Applicant'  && doc_type != 'Timesheet' && doc_type != 'Expense Claim' && doc_type != 'Employee' && doc_type != 'Salary Slip' && doc_type != 'Project' && doc_type != 'Test Case' && doc_type != 'Event' && doc_type != 'Task' && doc_type != 'Bug Sheet' && (event_data && event_data.length == 0) && (task_data && task_data.length == 0)) && (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.enable_detail) || (!db.ismobile && doc_type == 'Task' && db.viewListType == 'Table' && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)"
+    [column]="true" height="calc(100vh - 170px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>  
+
+  <!-- <ion-list *ngIf="skeleton && db.ismobile && (this.db.selected_list && this.db.selected_list.page != 'Timesheet' && this.db.selected_list.page != 'Expense Claim')">
+    <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6]">
+      <ion-label>
+        <h3>
+          <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list> -->
+
+  <div *ngIf="!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0 && (db.ismobile && doc_type != 'Holiday List' && doc_type != 'Employee' && doc_type != 'Attendance') " class="pagination">
+    <ion-infinite-scroll *ngIf="!no_products" threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText=""></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+  <div *ngIf="!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0 && !db.ismobile && false" class="pagination">
+    <ion-infinite-scroll *ngIf="!no_products" threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText=""></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+</ion-content>

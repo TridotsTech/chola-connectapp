@@ -1,0 +1,179 @@
+.section {
+    // flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px 8px;
+    // margin: 15px 0;
+    // border-bottom: 4px solid #f1f1f1;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .box_1 {
+        border: 1px solid var(--border-col);
+        padding: 0 10px 5px 10px;
+        // padding: 5px 5px 5px;
+        border-radius: 8px;
+        // flex: 0 0 calc(36% - 10px);
+        flex: 0 0 calc(40% - 10px);
+        // flex: 0 0 calc(45% - 10px);
+
+        .m-7 {
+            // margin: 7px 0;
+            padding: 7px 0 10px 0;
+        }
+
+        .icon {
+            // background: var(--colors);
+            // background: #dddfff;
+            padding: 7px;
+            border-radius: 50%;
+        }
+    }
+
+}
+
+.color_1 {
+    background: #dddfff;
+
+}
+
+.color_2 {
+    background: #f9e7cc;
+
+}
+
+.color_3 {
+    background: #dae9de;
+
+}
+
+.color_4 {
+    background: #f2d0d0;
+
+}
+
+.text_2 {
+    color: #00000099;
+    font-weight: 400;
+}
+
+.bg_1 {
+    background: #CCCCCC;
+    padding: 2px 6px;
+    border-radius: 10px;
+
+    h6 {
+        color: #626262;
+    }
+}
+
+.dash_board {
+    position: relative;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    /* margin: 0 10px; */
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    // justify-content: space-between;
+    // height: 100px;
+    // align-items: center;
+}
+
+
+.detail_img {
+    height: 70px;
+    object-fit: contain;
+}
+
+.leave {
+    color: #5461FF;
+}
+
+
+.body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    // padding-top: 10px;
+}
+
+.section_3 {
+    height: 100%;
+    overflow: auto;
+    padding: 10px;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.custom-input {
+    border: 1px solid var(--border-col);
+    border-radius: 7px;
+    padding: 0 10px !important;
+
+    ion-input,
+    ion-textarea {
+        font-size: 13px !important;
+    }
+}
+
+.impt-star {
+    color: #DE0A0A;
+    font-size: 13px;
+    margin: 0;
+}
+
+label {
+    font-size: 14px;
+    margin: 0;
+}
+
+.submit-btn {
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+
+    ion-button {
+        width: 100%;
+    }
+}
+
+.mini-label {
+    color: #5D5D5D;
+    font-size: 12px;
+    margin: 0;
+}
+
+.box {
+    border: 1px solid var(--border-col);
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 7px 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.leavePreview {
+    .boxes_ {
+        padding: 10px;
+        border: 1px solid var(--border-col);
+        margin: 10px 0;
+        border-radius: 7px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    ion-select {
+        min-height: 30px;
+        font-size: 14px;
+    }
+}

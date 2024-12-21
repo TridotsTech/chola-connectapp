@@ -1,0 +1,6 @@
+<app-mobile-header *ngIf="db.ismobile" [create]="create" (create_btn)="create_btn.emit($event)" [projects]="projects"
+    (get_project_name)="get_project_name.emit()" [modal_control]="modal_control" [model]="model" [notify]="notify"
+    [tab_array]="tab_array" [new_btn]="new_btn" [new_btn_route]="new_btn_route" [return]="return"
+    (load_detail)="load_detail.emit($event)" (menu_name)="menu_name.emit($event)"
+    (select_change)="select_change.emit($event)" [home]="home" [back_route]="back_route" [order_detail]="order_detail"
+    [no_home]="no_home" [showYear]="showYear" [showMonth]="showMonth" [freeze]="freeze" [title]="title" [doc_type]="doc_type" [kanban]="kanban" (toggleKanban)="toggleKanban.emit()" (toggleKanban_task)="toggleKanban_task.emit()" (filters)="filters.emit()" (freezeEvent)="freezeEvent.emit()" [no_filter]="no_filter"></app-mobile-header>

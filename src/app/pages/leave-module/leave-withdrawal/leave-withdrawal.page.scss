@@ -1,0 +1,106 @@
+.section_3 {
+    height: calc(100vh - 108px);
+    overflow: auto;
+    padding: 10px;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.custom-input {
+    border: 1px solid var(--border-col);
+    border-radius: 7px;
+    padding: 0 10px !important;
+
+    ion-input,
+    ion-textarea {
+        font-size: 13px !important;
+    }
+}
+
+.impt-star {
+    color: #DE0A0A;
+    font-size: 13px;
+    margin: 0;
+}
+
+label {
+    font-size: 14px;
+    margin: 0;
+}
+
+.submit-btn {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    position: sticky;
+    bottom: 0px;
+    background: #fff;
+    z-index: 99999;
+    border-top: 1px solid var(--border-col);
+
+    ion-button {
+        width: 100%;
+    }
+}
+
+.leavePreview {
+    .boxes_ {
+        padding: 10px;
+        border: 1px solid var(--border-col);
+        margin: 10px 0;
+        border-radius: 7px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    ion-select {
+        min-height: 30px;
+        font-size: 14px;
+    }
+}
+
+.withdrawBtn {
+    .delete_icon {
+        padding: 8px;
+        background: #ff00003d;
+        border-radius: 5px;
+    }
+
+    .add_icon {
+        padding: 8px;
+        background: var(--primary-color);
+        border-radius: 5px;
+        color: #ffff;
+    }
+
+    ion-button {
+        min-height: 30px;
+        height: 33px;
+    }
+}
+
+ion-checkbox {
+    --checkbox-background-checked: var(--primary-color);
+    // margin-left: 10px;
+    // height: 100%;
+    --size: 13px;
+}
+
+ion-checkbox::part(container) {
+    border: 2px solid var(--primary-color);
+}
+
+.no_record {
+    margin: 10px 0;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-col);
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 500;
+}

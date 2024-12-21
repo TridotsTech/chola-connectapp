@@ -1,0 +1,70 @@
+<div id="header"  class="header__d stricky d__flex just-s">
+  <!-- [ngStyle]="{'background': db.sales_manager_role ? 'var(--CRM-primary-color)' : 'var(--primary-color)'}" -->
+  <div class="logo_ d__flex just-s w-100">
+    <!-- <img  routerLink="/" *ngIf="logo && db.website_settings && db.website_settings.theme_settings" class="home__logo mouse"  [src]="db.product_img(db.website_settings.theme_settings.website_logo)" > -->
+    <!-- <img  routerLink="/" class="home__logo mouse"  > -->
+    <div class="d__flex gap-5">
+      <p class="mouse fnt-12 fnt_w500 m-0 d__flex gap-5 white" (click)="route_home()">Home<ion-icon name="chevron-forward-outline" class="fnt-14 white"></ion-icon></p>
+      <p class="fnt-12 fnt_w500 mouse m-0 white capitalize" [class.primary_clr]="!db.detail_route_bread" (click)="navigate_url(heading)"><ion-icon *ngIf="back_route_icon" class="profile_icon white"
+          name="chevron-back-outline"></ion-icon> {{heading}}</p>
+      <p *ngIf="db.detail_route_bread" class="mouse fnt-12 fnt_w500 m-0 d__flex gap-5 white capitalize"><ion-icon name="chevron-forward-outline" class="fnt-14 white"></ion-icon>{{db.detail_route_bread}}</p>
+    </div>
+
+    <div class="d__flex gap-10" *ngIf="false">
+      <ion-icon class="fnt-18 changeButton" name="chevron-back-outline"></ion-icon>
+      <ion-icon class="fnt-18 changeButton" name="chevron-forward-outline"></ion-icon>
+      <div class="search_Bar_data" (mouseleave)="enable_search_data = false">
+        <div class="search__" [class.br-5]="enable_search_data">
+          <div class="search_bar d__flex">
+            <ion-icon name="search-outline"></ion-icon>
+            <!-- (click)="enable_search()"  -->
+            <ion-input [(ngModel)]="search_txt" (keyup.enter)="onEnterPressed()" (ionInput)="load_search($event)" class="search_input" placeholder="Search"></ion-input>
+            <ion-icon *ngIf="search_txt" name="close-outline" (click)="clear_txt()"></ion-icon>
+          </div>
+        </div>
+        <div *ngIf="enable_search_data" class="search_data">
+          <div *ngFor="let item of permission_details;let i = index">
+            <p [routerLink]="item.route" (click)="enable_search_data = false" class="highlight fnt-14 fnt_w500 mar-8 mouse">{{item.page_name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d__flex gap-10">
+      <!-- <div class="filter" (click)="toggleKanban.emit()"
+        *ngIf="doc_type && doc_type == 'Lead' && (db.sales_dashboard == 'Sales User' || db.sales_manager_role || db.sales_dashboard == 'Employee') && heading =='Lead'">
+        <ion-icon class="mouse primary_clr" [src]="kanban ? '/assets/Header/kanban.svg' : '/assets/Header/list.svg'"></ion-icon>
+      </div> -->
+      <!-- doc_type == 'Task' ||  -->
+      <div class="filter" (click)="toggleKanban_task.emit()"
+        *ngIf="doc_type && doc_type != 'Project' && (doc_type == 'Timesheet')" >
+        <ion-icon class="mouse primary_clr" [src]="kanban ? '/assets/Header/task-kanban.svg' : '/assets/Header/task-list.svg'"></ion-icon>
+      </div>
+      
+      <ion-icon src="/assets/icon/setting.svg"
+      *ngIf="(db.path?.split('/')[1] == 'list' || db.path?.split('/')[1] == 'detail') && heading!='Lead' && heading!='Opportunity' && heading!='Quotation'" class="settings mouse" slot="end"
+      (click)="open_customize()"></ion-icon>
+
+      <div class="d__flex gap-10 mouse logout" (click)="db.logout()">
+        <p class="m-0 fnt-15 fnt_w500 white">Logout</p>
+        <div class="avatar">
+          <!-- *ngIf="db.employee_img && db.employee_img.user_image"  -->
+          <img alt="profile" class="img mouse" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) :  db.load_icon(db.cust_name)" />
+        </div>
+        <!-- <ion-icon name="person-outline"></ion-icon> -->
+      </div>
+      
+    </div>
+
+    <div *ngIf="false" class="d__flex gap-20">
+      <!-- <ion-spinner *ngIf="loader" name="crescent"></ion-spinner> -->
+      <ion-button fill="clear" (click)="next_doc(1)" class="back_button"><ion-icon
+          name="chevron-back-outline"></ion-icon></ion-button>
+      <ion-button fill="clear" (click)="next_doc(0)" class="back_button"><ion-icon
+          name="chevron-forward-outline"></ion-icon></ion-button>
+    </div>
+
+  </div>
+
+  <!-- <app-myprofile-dropdown *ngIf="db.profile_info" [data]="db.profile_info"></app-myprofile-dropdown> -->
+</div>

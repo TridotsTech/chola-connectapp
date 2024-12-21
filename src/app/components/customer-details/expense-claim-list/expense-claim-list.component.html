@@ -1,0 +1,48 @@
+
+<!-- dashboard -->
+<div class="p-10">
+  <div class="dash_board">
+    <img class="blue" src="/assets/timesheet/blue.svg" /> 
+    <img class="yellow" src="/assets/timesheet/yellow.svg" /> 
+    <ion-icon [src]="advance ? '/assets/expense-claim/employee-advance.svg' : '/assets/expense-claim/expense_dash.svg'" class="icon"></ion-icon>
+  
+    <div>
+      <h6 class="m-0 fnt-14 pb-10">{{advance ? 'Employee Advance' : 'Totally Claimed Expenses'}}</h6>
+      <h6 class="m-0 bold_name inter_">{{((db.dashboardValues && db.dashboardValues.total_claimed_amount) ?  db.dashboardValues.total_claimed_amount : (db.dashboardValues && (dashboard && dashboard.advance_amount)) ? dashboard.advance_amount : 0) | currency:db.website_settings.currency}}</h6>
+    </div>
+  </div>
+</div>
+
+
+<div class="!db.bodySkeleton">
+  <app-month-filter doctype="Expense Claim" [titleName]="(type == 'expense' ? 'Expense Claim for ' : 'Advances for ') + this.db.monthLists[db.selectedMonth - 1].label" [hideDate]="true" [showCalendar]="showCalendar" [selectedDate]="this.db.current_event_date" (getFilters)="getFilters.emit($event)" (getDateFromCalendar)="getDateFromCalendar.emit($event)" [search_data]="{}" [search_filter]="[]"></app-month-filter>
+</div>
+
+
+<!-- List  -->
+
+<div *ngIf="!skeleton && data && data.data && data.data.length > 0">
+  <div class="list-container" (click)="do_to_details.emit(item)" *ngFor="let item of data.data;index as i">
+    <div class="d__flex gap-10 just-s pb-5">
+      <h6 class="m-0 fnt-13 webkit-text w-85" [style.--line]=2>{{item.title ? item.title : item.employee_name ? item.employee_name : ''}}</h6>
+      <p class="m-0 text_2 fnt-13 flex-auto">{{db.getTimecal(item.modified)}}</p>
+    </div>
+  
+    <div class="d__flex gap-10 just-s pb-5">
+      <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-12">{{item.name}}</span></p>
+      <p class="m-0 flex-auto bold_name-13 inter_">{{(item.total_sanctioned_amount ? item.total_sanctioned_amount : advance ? item.advance_amount : 0) | currency:db.website_settings.currency}}</p>
+    </div>
+  
+    <div class="d__flex gap-10 just-s pb-5">
+      <p class="m-0 d__flex gap-5"><ion-icon class="fnt-14" src="/assets/leaves/calendar.svg"></ion-icon><span class="m-0 text_2 fnt-12">{{item.posting_date | date:'MMM d, y'}}</span></p>
+     
+      <div class="flex-auto">
+        <app-status [status]="item.status" [tick]="db.hr_manager_role && db.ismobile ? true : false"></app-status>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-no-record-found [Lead_detail]="false"
+*ngIf="(!db.bodySkeleton && !skeleton && !data) || (!db.bodySkeleton && !skeleton && data && data.data && data.data.length == 0) && db.ismobile" [column]="true"
+height="calc(100vh - 270px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>

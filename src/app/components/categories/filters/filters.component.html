@@ -1,0 +1,171 @@
+<div [class.isNotModal]="isNotModal" class="filter_popup" *ngIf="!projects"
+  [ngClass]="db.ismobile ? 'mobile_filter_popup' : 'web_filter_popup'">
+
+  <app-website-form-header *ngIf="!isNotModal" [close_btn]="true" [Title]="'Filters'"></app-website-form-header>
+
+  <div class="body" [class.wrap]="projectDetail" *ngIf="search_filter && search_filter.length != 0 && (db.selected_list && db.selected_list.page)">
+    <div *ngFor="let item of search_filter" [class.flex-33]="projectDetail" [class.d_none]="item.fieldtype == 'Data' && projectDetail && item.fieldname == 'project_name'">
+      <div *ngIf="item.fieldtype == 'Data' " class="mb-20">
+        <h6 class="m-0 filter_title">{{(db.selected_list.page == 'Lead' && item.label == 'Title') ? 'Name' : item.label
+          }}</h6>
+        <div class="search__">
+          <div class="search_bar d__flex">
+            <ion-icon class="search-outline" name="search-outline"></ion-icon>
+            <ion-input [type]="(db.selected_list.page == 'Lead' && item.fieldname == 'mobile_no') ? 'number' : null"
+              class="search_input"
+              (keydown)="(db.selected_list.page == 'Lead' && item.fieldname == 'mobile_no') ? filterKeyEvent($event) : null"
+              [ngModel]="(search_data && search_data[item.fieldname]) ? search_data[item.fieldname] : ''"
+              (ionInput)="load_search($event,item)"
+              [placeholder]="(db.selected_list.page == 'Lead' && item.label == 'Title') ? 'Name' : item.label">
+              <ion-icon *ngIf="search_data && search_data[item.fieldname]" class="mouse close-outline"
+                name="close-outline" (click)="clear_txt($event,item)" slot="end"></ion-icon>
+            </ion-input>
+
+          </div>
+        </div>
+        <p class="m-0 mobile_number_err"
+          *ngIf="db.selected_list.page == 'Lead' && mobile_error && item.fieldname == 'mobile_no'">Enter a Valid Mobile
+          Number</p>
+      </div>
+
+      <div *ngIf="item.fieldtype == 'Link'" class="mb-20">
+        <h6 class="m-0 filter_title">{{item.label}}</h6>
+        <div *ngIf="!noPopup" class="search__">
+          <div class="search_bar d__flex">
+            <!-- link_values[item.fieldname] =  -->
+            <ion-icon class="search-outline" name="search-outline"></ion-icon>
+            <ion-input class="search_input" [placeholder]="item.label" readonly="true"
+              [ngModel]="(search_data && search_data[item.fieldname]) ? search_data[item.fieldname] : link_values[item.fieldname]"
+              (click)="supplier_filter(item.options,item.fieldname)">
+
+              <ion-icon *ngIf="search_data && search_data[item.fieldname]" class="mouse close-outline"
+                name="close-outline" (click)="clear_txt($event,item)" slot="end"></ion-icon>
+
+            </ion-input>
+
+          </div>
+        </div>
+
+        <ng-select [class.custom_select]="!isNotModal" *ngIf="noPopup" [id]="item.fieldname + 'ng-select'" #select
+          [items]="db.all_link_opts[item.options + item.fieldname] ? db.all_link_opts[item.options + item.fieldname] : []"
+          class="medium_name ng_select" appendTo="body" [clearable]="true" [searchable]="false" [bindLabel]="'label' || 'name'"
+          [bindValue]="'name'" [multiple]="false"  [searchFn]=" null" [placeholder]="item.options"
+          (click)="focusof($event,item)" (search)="db.onSearch($event)" [virtualScroll]="true"
+          (scrollToEnd)="db.get_master_value(item.options,item.fieldname)" (change)="ng_select_change($event,item)">
+          <ng-template ng-header-tmp>
+            <div class="custome_input d__flex gap-5 just-s">
+              <input #customInput style="width: 100%;line-height: 25px; border:unset" [placeholder]="'search'"
+                type="text" (input)="db.search_master_value($event,item.options,item.fieldname)"
+                (change)="$event.stopPropagation()" (keydown)="select.handleKeyDown($event)" />
+              <img style="width: 15px;" src="../../../../assets/icon/search.svg">
+            </div>
+          </ng-template>
+        </ng-select>
+        
+      </div>
+
+      <div *ngIf="item.fieldtype == 'Select'" class="mb-20">
+        <h6 class="m-0 filter_title">{{item.label}}</h6>
+        <div class="search__" *ngIf="!noPopup">
+          <div class="search_bar d__flex">
+            <ion-icon class="search-outline" name="search-outline"></ion-icon>
+            <ion-input class="search_input" [placeholder]="item.label" readonly="true"
+              [ngModel]="(search_data && search_data[item.fieldname]) ? search_data[item.fieldname] : link_values[item.fieldname]"
+              (click)="selectFilters(item.options,item.fieldname)">
+
+              <ion-icon *ngIf="search_data && search_data[item.fieldname]" class="mouse close-outline"
+                name="close-outline" (click)="clear_txt($event,item)" slot="end"></ion-icon>
+
+            </ion-input>
+
+          </div>
+        </div>
+        <!-- [items]="item.options ? db.all_link_opts[getSelectItem(item.options)] : []" -->
+        <ng-select [class.custom_select]="!isNotModal" *ngIf="noPopup" [id]="item.fieldname + 'ng-select'" #select
+          [items]="selectedDropdownValue ? selectedDropdownValue : []"
+          class="medium_name ng_select" appendTo="body" [clearable]="true" [searchable]="false" [bindLabel]="'label' || 'name'"
+          [bindValue]="'name'" [multiple]="false"  [searchFn]=" null" [placeholder]="item.label"
+          (click)="focusof($event,item)" (search)="db.onSearch($event)" [virtualScroll]="true"
+          (scrollToEnd)="db.get_master_value(item.options,item.fieldname)" (change)="ng_select_change($event,item)">
+          <ng-template ng-header-tmp>
+            <div class="custome_input d__flex gap-5 just-s">
+              <input #customInput style="width: 100%;line-height: 25px; border:unset" [placeholder]="'search'"
+                type="text" (input)="db.search_master_value($event,item.options,item.fieldname)"
+                (change)="$event.stopPropagation()" (keydown)="select.handleKeyDown($event)" />
+              <img style="width: 15px;" src="../../../../assets/icon/search.svg">
+            </div>
+          </ng-template>
+        </ng-select>
+        
+      </div>
+
+      <div *ngIf="item.fieldtype == 'Date'" class="mb-20">
+        <h6 class="m-0 filter_title">{{item.label}}</h6>
+        <!-- class="date-input" -->
+        <ion-input class="search_input date_input" type="date"
+          [ngModel]="(search_data && search_data[item.fieldname]) ? search_data[item.fieldname] :''"
+          (ionInput)="load_search($event,item)"></ion-input>
+      </div>
+
+      <div *ngIf="item.fieldtype == 'Check'" class="mb-20">
+        <h6 class="m-0 filter_title">{{item.label}}</h6>
+        <div (click)="selectCheck(item)" class="d__flex gap-10">
+          <ion-checkbox [checked]="(search_data && search_data[item.fieldname]) == 1 ? 'true' : 'false'" color="primary"></ion-checkbox>
+          <h6 class="m-0 fnt-14 fnt_w400">{{item.label}}</h6>
+        </div>
+      </div>
+
+      <div *ngIf="item.fieldtype == 'Currency'" class="mb-20">
+        <h6 class="m-0 filter_title">{{item.label}}</h6>
+        <div class="search__">
+          <div class="search_bar d__flex">
+            <ion-icon class="search-outline" name="search-outline"></ion-icon>
+            <ion-input class="search_input"
+              [ngModel]="(search_data && search_data[item.fieldname]) ? search_data[item.fieldname] :''"
+              (ionChange)="load_search($event,item)" [placeholder]="item.label">
+
+              <ion-icon *ngIf="search_data && search_data[item.fieldname]" class="mouse close-outline"
+                name="close-outline" (click)="clear_txt($event,item)" slot="end"></ion-icon>
+            </ion-input>
+
+          </div>
+        </div>
+      </div>
+
+    </div> 
+
+    <div class="clearBtn" *ngIf="clearFilterCondition() && !noClearButton">
+      <ion-button class="d__flex" fill="clear" (click)="clearFilter()">
+        <h6 class="m-0 fnt-13">Clear</h6>
+        <ion-icon name="close-outline" class="fnt-15"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="save_" *ngIf="!projects && !isNotModal">
+    <ion-button class="clear_btn" (click)="clear_filter()">Clear</ion-button>
+    <ion-button class="save_btn" (click)="save()">Apply</ion-button>
+  </div>
+
+
+</div>
+
+
+
+<div *ngIf="projects" class="project_height">
+  <!-- <div class="forms__">
+    <div class="d__flex gap-10 mar-0-10">
+      <ion-icon class="mouse" (click)="dismiss()" name="chevron-back-outline"></ion-icon>
+      <p class="fnt_w500 fnt-14 white">Filters</p>
+    </div>
+  </div> -->
+
+  <div class="project_overflow">
+    <div class="project_name d__flex just-s mouse"
+      [class.selected_name]="item['selected'] || item.name == selected_project"
+      *ngFor="let item of projects; let i = index" (click)="selected_projects(item,i)">
+      <p class="m-0 fnt-14">{{item.label}}</p>
+      <ion-icon class="fnt-20" name="checkmark-circle-outline"></ion-icon>
+    </div>
+  </div>
+</div>

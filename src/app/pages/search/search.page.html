@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button  slot="start" (click)="back_route()" ></ion-back-button>
+      <div class="search__">
+        <div class="search_bar d__flex">
+          <ion-icon name="search-outline"></ion-icon>
+          <ion-input class="search_input" [(ngModel)]="search_txt" (ionInput)="load_search($event)"
+            placeholder="Search"></ion-input>
+          <ion-icon *ngIf="search_txt" name="close-outline" (click)="clear_txt()"></ion-icon>
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div *ngIf="permission_details && permission_details.length == 0">
+    <app-no-record-found  [column]="true" height="calc(100vh - 310px)" heading="No Fields Found" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+  </div>
+
+  <!-- <app-mobile-menu [search]="true"></app-mobile-menu> -->
+  <div *ngFor="let item of permission_details" (click)="db.doctype_select(item.page)">
+
+    <div *ngIf="item.enable == 1" >
+      <ion-item button lines="none" (click)="router_(item.route)" >
+        <ion-icon  class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+        <ion-label>{{item.page_name}}</ion-label>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

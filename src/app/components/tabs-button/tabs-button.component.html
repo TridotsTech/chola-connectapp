@@ -1,0 +1,48 @@
+<!-- Style 2 -->
+
+<div [class.border_none]="border_none" [class.bg_custom]="bg_custom" [class.tabs_main]="!db.ismobile && bg_white" *ngIf="!employee_detail_tab">
+  <div class="d__flex gap-7">
+    <!-- <ion-icon *ngIf="db.enable_detail && !db.ismobile && !no_next_btn" id="prev" class="mouse primary_clr" (click)="navigateTabs('prev')"  name="chevron-back-circle-outline"></ion-icon> -->
+    <!-- <button class="arrow-button left-arrow">&#8592;</button> -->
+    <ul class="smooth_" #tabList [class.dis_mar-r]="enable_br" [class.background_wht1]="bg_white && bg_color" [class.background_wht]="!bg_custom && (bg_white && !bg_color)" [class.enable_width_mobile]="db.enable_detail && !db.ismobile" [class.sticky]="sticky" [class.lead_box]="Lead_detail"  class="d__flex" [ngClass]="Lead_seg ? 'box_lead' : 'box_'" [ngStyle]="{'padding' : padding ? padding: null, 'background': bg_color ? bg_color : null}"
+      [class.border_none]="border_none">
+      <li *ngFor="let tab of tabs_array;let i=index" [id]="i + 1 + 'scroll'"  [class.textColor]="(db.currentRole == 'HR' || db.currentRole == 'Vendor' || db.currentRole == 'Projects')"  [class.active_container]="tab.isActive"
+        class="container mouse dummy_" (click)="check_active(tabs_array,i,tab)">
+        <label class="label d__flex" role="button" [class.enable_max_width]="db.enable_detail && !db.ismobile">
+          <span [ngClass]="db.sales_manager_role ? 'title_crm' : 'title'" class="title mouse capitalize">{{tab.name == 'ALL' ? 'All' : tab.name}}</span>
+          <span *ngIf="tab.count" [ngStyle]="{'background':'#E7EEF6','color':'#7C7C7C'}"
+            class="count_label">{{tab.count}}</span>
+          <div *ngIf="!removeActiveLine" class="slider">
+            <div class="slider_indic"></div>
+          </div>
+        </label>
+      </li>
+    </ul>
+    <!-- <ion-icon id="next" class="mouse primary_clr" *ngIf="db.enable_detail && !db.ismobile && !no_next_btn" (click)="navigateTabs('next')" name="chevron-forward-circle-outline"></ion-icon> -->
+    <!-- <button  class="arrow-button right-arrow">&#8594;</button> -->
+  </div>
+</div>
+
+<!-- Employee Detail page Tab -->
+
+<div [class.border_none]="border_none" [class.tabs_main_employee]="!db.ismobile" *ngIf="employee_detail_tab">
+  <div class="d__flex gap-7 pr-10">
+    <ul class="smooth_" #tabList [class.dis_mar-r]="enable_br" [class.no_mb]="no_mb" [class.background_wht_employee]="bg_white" [class.enable_width_mobile]="db.enable_detail && !db.ismobile" [class.sticky]="sticky" [class.lead_box]="Lead_detail"  class="d__flex" [ngClass]="Lead_seg ? 'box_lead' : 'box_employee'" [ngStyle]="{'padding' : padding ? padding: null}"
+      [class.border_none]="border_none">
+      <li *ngFor="let tab of tabs_array;let i=index" [id]="i + 1 + 'scroll'"  [class.active_container_employee]="tab.isActive"
+        class="container mouse dummy_" (click)="check_active(tabs_array,i,tab)">
+        <label class="label d__flex gap-5" role="button" [class.enable_max_width]="db.enable_detail && !db.ismobile">
+          <div [class.d__flex]="tab.icon" [class.gap-5]="tab.icon">
+            <ion-icon *ngIf="tab.icon" class="fnt-18" [src]="tab.isActive ? tab.active_icon : tab.icon"></ion-icon>
+            <span class="title mouse capitalize">{{tab.name == 'ALL' ? 'All' : tab.name}}</span>
+          </div>
+          <span *ngIf="tab.count" [ngStyle]="{'background':'#E7EEF6','color':'#7C7C7C'}"
+            class="count_label">{{tab.count}}</span>
+          <div *ngIf="!removeActiveLine" class="slider">
+            <div class="slider_indic"></div>
+          </div>
+        </label>
+      </li>
+    </ul>
+  </div>
+</div>

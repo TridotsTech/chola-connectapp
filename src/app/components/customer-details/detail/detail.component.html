@@ -1,0 +1,61 @@
+<div class="hcctvsdvgsdx">
+  <ion-header *ngIf="db.ismobile">
+    <div *ngIf="db.order_detail"
+      [ngStyle]="{'min-height':(this.detail_doc && this.detail_doc['name'] && !db.scroll_event.detail_head) ? '80px' : '80px'}"
+      class="secondary-head">
+
+      <div class="d__flex gap-10 just-s">
+
+        <div class="d__flex back_btn">
+          <!--  -->
+          <!-- <ion-icon *ngIf="!db.scroll_event.detail_head" class="back" (click)="location.back()" name="chevron-back-outline"></ion-icon> -->
+          <ion-icon class="back" (click)="location.back()" name="chevron-back-outline"></ion-icon>
+          <img class="logo_" src="assets/icon/logo-w.svg">
+
+        </div>
+        <div>
+          <ion-icon class="headers_search_icon" routerLink="/search" name="search-outline"></ion-icon>
+          <ion-icon src="/assets/icon/setting.svg" class="settings" slot="end" routerLink="/customize"></ion-icon>
+        </div>
+
+      </div>
+
+      <div class="d__flex just-s">
+        <div>
+          <div class="d__flex">
+            <ion-icon class="icon menu head flex-25" (click)="openMenu()" src="/assets/icon/menu.svg"></ion-icon>
+            <h6 class="m-0 head webkit-text" [style.--line]="1">{{db.order_detail.title}}</h6>
+          </div>
+          <p *ngIf="creation && db.order_detail.status" class="m-0 fnt-10 status_style status_box webkit-text"
+            [ngClass]="db.get_style(db.order_detail.status)">{{db.order_detail.status}}</p>
+        </div>
+        <div *ngIf="creation" class="d__flex gap-20">
+          <!-- <ion-spinner *ngIf="loader" name="crescent"></ion-spinner> -->
+          <ion-button [disabled]="loader" [class.disabled]="loader" fill="clear" (click)="next_doc(1)"
+            class="back_button"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
+          <ion-button [disabled]="loader" [class.disabled]="loader" fill="clear" (click)="next_doc(0)"
+            class="back_button"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
+        </div>
+      </div>
+
+    </div>
+  </ion-header>
+
+  <div class="h-100" *ngIf="db.order_detail">
+    <!--Task and Events-->
+
+    <div *ngIf="!db.skeleton_detail ">
+      <app-new-wizard-form [enable_reference]="enable_reference" [forms_route]="page_route"
+        [reference_id]="sale_order_id" [enable_header]="true"
+        [save_details_only]="(doctype == 'Issue'|| doctype == 'Customer') ? true : false"
+        [enable_create_option]="(db.order_detail && detail_doc && detail_doc['name'] && !db.scroll_event.detail_head) ? true : false"
+        [sale_order_id]="order_id ? order_id : undefined" [tabs_top]="1" [edit_form]="1" (open_pop_up)="open_pop_up()"
+        [enabled_read_only]="enabled_read_only" [items_values]="items_values" [edit_form_values]="db.order_detail"
+        (lead_tabs)="menu_name($event)" (updateDetails)="updateDetails.emit($event)" [enable_activities]="true"
+        [custom_header_css]="custom_header_css ? 'h-46' : ''" [enable_leadcomment]="false"
+        ></app-new-wizard-form>
+    </div>
+
+  </div>
+
+</div>

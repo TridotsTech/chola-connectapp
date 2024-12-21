@@ -1,0 +1,14 @@
+<div [ngStyle]="{'height': height ? height : null,'background': bg_color ? bg_color : null,'border-radius': border_radius  ? '5px' : null,'border-right': border_r ? border_r : null,'margin-top': margin_top ? '25%' : null}"   class="d__flex list_box no_value_found">
+  <div  class="emp_box d__flex" [class.column]="column">
+    <div *ngIf="image || icon"  [ngClass]="Lead_detail ? 'lead_image' : 'image'">
+      <img *ngIf="image" class="img" [src]="image" >
+      <ion-icon *ngIf="icon" [name]="icon"></ion-icon>
+    </div>
+    <div class="d__flex " [ngClass]="Lead_detail ? 'lead_content' : 'content'">
+      <h6 *ngIf="heading"class="m-0 h6" [ngClass]="heading == '+ Add' ? 'CRM_detail' : null">{{heading}}</h6>
+      <p *ngIf="content" class="m-0 p">{{content}}</p>
+      <h6 *ngIf="router" routerLink="/edit-profile/objective" class="m-0 router mouse">{{router}}</h6>
+    </div>
+  </div>
+
+</div>

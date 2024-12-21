@@ -1,0 +1,52 @@
+<app-header *ngIf="db.ismobile" title="Notification" [home]="false"></app-header>
+<app-sidemenu-header *ngIf="!db.ismobile" heading="Notification"></app-sidemenu-header>
+<ion-content [fullscreen]="true" *ngIf="db.ismobile" >
+  <!-- <h6 class="m-0 title_">Notifications</h6> -->
+  <div *ngIf="db.notification_key" class="Notification" (scroll)="db.load_more_notification($event)">
+    <div *ngFor="let item of db.notification_key">
+      <div>
+        <p class="date_title m-0">{{item}}</p>
+      </div>
+      <div *ngFor="let items of db.all_notification_list[item]" (click)="go_to_details(items)">
+        <div class="notification_content mouse">
+          <div class="d__flex avatar_image">
+            <div class="notification_avatar"><img class="profile_image" src="/assets/icon/profile_upload.svg">
+            </div>
+            <div class="profile_name_text">
+              <div class="notify">
+                <h6 class="m-0 inner_title">{{items.edited_by_name}}<span class="role_badge">{{items.creation}}</span></h6>
+              </div>
+              <p class="m-0 mt-5 fnt-12 fnt-400 content fade_text">{{items.data}}</p>
+              <p class="m-0 mt-5 fnt-12 fnt-400 content fade_text">{{items.content}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="!db.ismobile" >
+  <div *ngIf="db.notification_key" class="Notification" (scroll)="db.load_more_notification($event)">
+    <div *ngFor="let item of db.notification_key">
+      <div>
+        <p class="date_title m-0">{{item}}</p>
+      </div>
+      <div *ngFor="let items of db.all_notification_list[item]" (click)="go_to_details(items)">
+        <div class="notification_content mouse">
+          <div class="d__flex avatar_image">
+            <div class="notification_avatar"><img class="profile_image" src="/assets/icon/profile_upload.svg">
+            </div>
+            <div class="profile_name_text">
+              <div class="notify">
+                <h6 class="m-0 inner_title">{{items.edited_by_name}}<span class="role_badge">{{items.creation}}</span></h6>
+              </div>
+              <p class="m-0 mt-5 fnt-12 fnt-400 content fade_text">{{items.data}}</p>
+              <p class="m-0 mt-5 fnt-12 fnt-400 content fade_text">{{items.content}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

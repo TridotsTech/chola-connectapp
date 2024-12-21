@@ -1,0 +1,14 @@
+
+  <div class="container_">
+
+    <div [class.w-100]="!db.ismobile">
+        <app-new-signup></app-new-signup>
+    </div>
+    
+    <div class="container-desc-header ion-text-center">
+      <div class="line"></div>
+      <div class="rergister_ mouse" (click)="db.registerform = false" (click)="check()">
+        <p class="m-0">Already have an account ? <span class="user-select alternative">Login here</span></p>
+      </div>
+    </div>
+  </div>

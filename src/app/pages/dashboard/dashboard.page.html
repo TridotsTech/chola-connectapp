@@ -1,0 +1,658 @@
+<app-header  *ngIf="db.ismobile && db.sales_dashboard" title="Dashboard" [home]="true"></app-header>
+
+<ion-content [fullscreen]="true" *ngIf="!db.employee_role && !db.hr_manager_role && !db.sales_manager_role && !db.project_role && db.ismobile ">
+
+  <!-- <div *ngIf="db.ismobile && !db.sales_manager_role && !db.loader" class="head_ d__flex just-s w-100"> -->
+  <div *ngIf="!db.loader">
+    <div class="profile_rel">
+      <div class="profile_" [class.margin-b-30]="(db.currentRole == 'HR' || db.currentRole == 'Vendor' || db.currentRole == 'Projects' || db.currentRole == 'Go1 Desk')">
+        <div class="d__flex gap-10">
+          <div class="imageDiv">
+            <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+          </div>
+          <div>
+            <div class="d__flex gap-5" *ngIf="db.cust_name">
+              <p class="m-0 profile_name">{{db.cust_name}}</p>
+              <img src="/assets/icon/blue-tick.svg" alt="">
+            </div>
+            <p [class.header_txt]="(db.currentRole == 'HR' || db.currentRole == 'Vendor' || db.currentRole == 'Projects' || db.currentRole == 'Go1 Desk')" class="m-0 profile_mail mbt-3" *ngIf="db.cust_email">{{db.cust_email}}</p>
+            <div class="d__flex gap-5" *ngIf="db.cust_role">
+              <img class="work_img" src="/assets/icon/work-1-white.svg" alt="">
+              <p class="m-0 profile_role">{{db.cust_role}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="d__flex gap-5 p-10" *ngIf="db.currentRole != 'HR'">
+          <img src="/assets/home-genie/hi.svg" alt="">
+          <!-- {{db.cust_name ? db.cust_name : ''}}  -->
+          <p class="m-0 fnt_w500"><span class="fnt-13 fnt_w500 header_txt_clr" > HI, Welcome</span><span class="fnt-13 fnt_w500 header_txt_clr"> Back To Work!</span></p>
+        </div>
+      </div>
+      <img class="link_icon" src="/assets/icon/link-header.png" alt="">
+    </div>
+  </div>
+
+  <div>
+
+    <div class="get_start" *ngIf="!db.loader && db.ismobile && db.employee_role && !db.sales_manager_role">
+      <!-- <div class="get_start" *ngIf="!db.loader && db.ismobile && db.hr_manager_role && false"> -->
+      <div class="d__flex just-s mar-10-0">
+        <p class="m-0 fnt_w500 fnt-14">Let’s get to work</p>
+        <p class="fnt-12 fnt_w500 m-0 primary_clr">{{show_time}}</p>
+      </div>
+      <div >
+        <p class="m-0 fnt-13 fnt_w500 title-name">{{greeting}},<span class="capitalize m-0 fnt-13 fnt_w500"> {{db.cust_name ? db.cust_name : ''}}</span></p>
+        <!-- <p class=" capitalize m-0 fnt-13 fnt_w500"></p> -->
+        <p class="checkInOutDetail gray_clr" *ngIf="db.checkInOutDetail">{{db.checkInOutDetail}}</p>
+
+      </div>
+      <div>
+        <ion-button *ngIf="db.checkin" class="checkin_btn" fill="clear" (click)="check_In('IN')"><span class="white fnt-12" >Check In</span></ion-button>
+        <ion-button *ngIf="!db.checkin" class="checkout_btn" fill="clear" (click)="check_In('OUT')"><span class="white fnt-12" >Check Out</span></ion-button>
+        <!-- <ion-button *ngIf="checkin" class="checkin_btn" [disabled]="!checkin" fill="clear" (click)="check_In('IN')"><span class="white fnt-12" >Check In</span></ion-button>
+        <ion-button *ngIf="!checkin" class="checkout_btn" [disabled]="!checkout" fill="clear" (click)="check_In('OUT')"><span class="white fnt-12" >Check Out</span></ion-button> -->
+      </div>
+    </div>
+
+    <div *ngIf="db.dashboard_cards_value && db.dashboard_cards_value.length != 0 && db.ismobile && !db.sales_manager_role" class="dashboard_tabs_">
+      <div *ngFor="let item of db.dashboard_cards_value;index as i" class="tabs_items" >
+        <div [routerLink]="item.route ? item.route : null">
+          <div class="box_">
+            <div class="d__flex just-s w-100">
+              <p class="m-0 fnt-17 fnt_w500" >{{item.page_name}}</p>
+              <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+            </div>
+            <p [ngStyle]="{'color': db.color_list[(i % db.color_list.length)]}" class="m-0 fnt-16 fnt_w500">{{item.count}}</p>
+          </div>
+        </div>
+        <!-- <img src="/assets/dashboard/chart-increase.png" alt=""> -->
+      </div>
+    </div>
+
+   
+
+    <div class="busi_s section-b" *ngIf="!db.loader && db.ismobile">
+      
+      <h4 *ngIf="db.sales_dashboard != 'Sales User' && !db.sales_manager_role" class="m-0 fnt-16 fnt_w600 ptr-10-0">Business Summary </h4>
+     
+      <!-- <h4 *ngIf="!db.sales_manager_role" class="m-0 fnt-16 fnt_w600 ptr-10-0">Lead Summary</h4> -->
+
+        <div>
+          <div *ngIf="db.sales_dashboard != 'Sales User' && !db.sales_manager_role"
+            class="buttons_sec">
+            <div class="d__flex buttons_ mouse" *ngFor="let data of db.dashboard_values"  (click)="db.doctype_select(data.page)" [routerLink]="data.route ? data.route : null">
+              <ion-icon [class.fnt_60]="db.project_role" [src]="db.get_icon(data.page)"></ion-icon>
+              <h6 class="h-6 webkit-text" [style.--line]="2">{{data.page_name}}</h6>
+              <!-- {{db.get_icon(data.page)}} -->
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+</ion-content>
+
+<ion-content *ngIf="db.employee_role && db.ismobile">
+  <div>
+    <div class="placesLocation">
+      <img class="w-100" [src]="(db.appScreen && db.appScreen.screen_attachment) ? db.product_img(db.appScreen.screen_attachment) : '/assets/Employee-Home/Frame.png'" alt="">
+
+        <div class="employeeDetails">
+          <div class="d__flex gap-10 p-10">
+            <div class="imageDiv">
+              <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+            </div>
+            <div style="flex: 0 0 calc(80% - 10px);">
+              <div class="d__flex just-s mb-5">
+                <p class="m-0 fnt-12 webkit-text flex-60" [style.--line]="2">{{db.cust_name}}</p>
+                <p class="m-0 fnt-12 text-e">{{formattedDate}}</p>
+              </div>
+              <p *ngIf="db.cust_designation" class="m-0 fnt-12 d__flex gap-5 mb-5"><ion-icon src="/assets/Employee-Home/designation.svg"></ion-icon>{{db.cust_designation}}</p>
+              <!-- <p class="m-0 fnt-12 d__flex gap-5 mb-5"><ion-icon src="/assets/Employee-Home/location.svg"></ion-icon>{{'Tridots tech ,Porur,Chennai - 600 116'}}</p> -->
+            </div>
+          </div>
+          <div class="checkInButton mouse">
+            <ion-icon class="fnt-20 checkInHand" src="/assets/Employee-Home/to-do-notes.svg"></ion-icon>
+            
+            <ion-button *ngIf="db.checkin" class="checkin_btn" fill="clear" (click)="check_In('IN')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{db.checkInOutTime ? (db.checkInOutTime + ' - Click to Check In') : 'Click to Check In'}}</span></ion-button>
+            <ion-button *ngIf="!db.checkin" class="checkout_btn" fill="clear" (click)="check_In('OUT')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{db.checkInOutTime ? (db.checkInOutTime + ' - Click to Check Out') : 'Click to Check Out'}}</span></ion-button>
+            
+            <!-- <ion-button *ngIf="db.checkin" class="checkin_btn" fill="clear" (click)="check_In('IN')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{getCurrentTime() + '- Click to Check In'}}</span></ion-button>
+            <ion-button *ngIf="!db.checkin" class="checkout_btn" fill="clear" (click)="check_In('OUT')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{getCurrentTime() + '- Click to Check Out'}}</span></ion-button> -->
+          </div>
+        </div>
+    </div>
+  
+    <div class="businessSummary">
+      <div class="d__flex just-s w-100 mb-20">
+        <h5 class="m-0">Quick Links</h5>
+        <ion-icon class="fnt-20" (click)="editQuick()" src="/assets/Employee-Home/more.svg"></ion-icon>
+      </div>
+      <div class="buttonsSection">
+        <div class="d__flex buttons_ mouse" *ngFor="let data of db.dashboard_values" (click)="db.doctype_select(data.page)"
+          [routerLink]="data.route ? data.route : null">
+          <ion-icon [src]="db.get_home_icon(data.page)"></ion-icon>
+          <h6 class="h-6 webkit-text" [style.--line]="2">{{data.page_name}}</h6>
+        </div>
+      </div>
+    </div>
+  
+    <div class="TaskSummary" *ngIf="false && ess_dashboard_data && ess_dashboard_data.tasks && ess_dashboard_data.tasks.length != 0">
+      <div class="d__flex just-s w-100 mb-20">
+        <h5 class="m-0">Tasks</h5>
+        <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+      </div>
+      <div class="todayTask" >
+        <div class="d__flex just-s m-10 border-bottom">
+          <div>
+            <p class="m-0 fnt-14 primary_clr">Today Tasks</p>
+            <p class="m-0 fnt-16 d__flex gap-5">{{(ess_dashboard_data && ess_dashboard_data.task_count) ? ess_dashboard_data.task_count : '0'}}<span class="fnt-16 gray_clr fnt_w500">tasks are availabe</span></p>
+          </div>
+          <ion-icon class="fnt-60" src="/assets/Employee-Home/today-task.svg"></ion-icon>
+        </div>
+        <div (click)="openWebFormPopup(item)" *ngFor="let item of ess_dashboard_data.tasks.slice(0, 1)" class="p-10">
+          <p class="fnt-12 gray_clr m-0 capitalize">{{item.subject}}</p>
+          <div class="d__flex just-s">
+            <p class="m-0 fnt-14 description webkit-text" [style.--line]="2" [innerHtml]="item.description ? item.description : '-'"></p>
+            <div *ngIf="item.priority" class="d__flex gap-5 bg_high" [ngClass]="item.priority == 'Low' ? 'low_bg' : item.priority == 'Medium' ? 'medium_bg' : 'high_bg'">
+              <ion-icon [name]="check_priority(item.priority)"></ion-icon>
+              <p class="m-0">{{item.priority}}</p>
+            </div>
+          </div>
+          <div class="d__flex just-s">
+            <p class="fnt-12 d__flex gap-5 mb-5 webkit-text" [style.--line]="1"><ion-icon class="fnt-20" src="/assets/img/user-tag.svg"></ion-icon>{{item.owner}}</p>
+            <p class="m-0 d__flex gap-5 fnt-14 gray_clr"><ion-icon class="fnt-20" src="/assets/img/clock-gray.svg"></ion-icon>{{item.expected_time ? item.expected_time : '0 Hr'}}</p>
+          </div>
+        </div>
+        <div class="d__flex just-s showMoreTask">
+          <p routerLink="/forms/task" class="m-0 fnt-13 primary_clr d__flex gap-10"><ion-icon class="fnt-20" src="/assets/Employee-Home/add-task.svg"></ion-icon>New Task</p>
+          <p class="m-0 fnt-13" routerLink="/task-list">Show More</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="leaveBalance" *ngIf="ess_dashboard_data && ess_dashboard_data.leave_balance && ess_dashboard_data.leave_balance.length != 0" >
+      <div class="d__flex just-s w-100 mb-20">
+        <h5 class="m-0">Leave Balance</h5>
+        <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+      </div>
+      <div class="attendance_dashboard">
+        <div *ngFor="let item of ess_dashboard_data.leave_balance;let i = index" class="over_flow">
+          <div class="bigDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div>
+          <div class="smallDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div>
+          <div class="w-100 d__flex just-s first_sec mb-5" [routerLink]="'/leave-application-detail/' + db.employee_id">
+            <ion-icon [src]="get_leaves_icon(item.label)" class="fnt-30"></ion-icon>
+            <p [ngStyle]="{'color':get_leaves_color(item.label)}" class="m-0 fnt-14 fnt_w500">{{item.count}}</p>
+          </div>
+          <p class="m-0 fnt-12 fnt_w500 label">{{item.label.replaceAll('Leaves', ' ')}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="salarySlip"  *ngIf="ess_dashboard_data && ess_dashboard_data.salary_slip && ess_dashboard_data.salary_slip.name">
+      <div class="d__flex just-s w-100 mb-20">
+        <h5 class="m-0">Salary Slip</h5>
+        <p class="m-0 fnt-12" routerLink="/list/salary-slip">Show More</p>
+      </div>
+      <div (click)="open_salary_slip(ess_dashboard_data.salary_slip.name)">
+        <div class="SalaryList">
+          <div class="d__flex just-s mb-10">
+            <div class="d__flex gap-5"><span class="fnt-13 m-0">{{ess_dashboard_data.salary_slip.creation | date: "MMMM "}}</span>
+              <div class="dot dot-2"></div>
+              <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{ess_dashboard_data.salary_slip.creation | date: 'M-d-yy'}}</h6>
+            </div>
+            <app-status [status]="ess_dashboard_data.salary_slip.status"></app-status>
+          </div>
+
+          <div class="d__flex gap-10 just-s pb-5">
+            <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-13">{{ess_dashboard_data.salary_slip.name}}</span></p>
+            <p class="m-0 flex-auto bold_name-13 inter_">{{ ess_dashboard_data.salary_slip.net_pay ? ( ess_dashboard_data.salary_slip.net_pay |
+              currency:db.website_settings.currency) : 0 }}</p>
+          </div>
+
+          <div class="d__flex gap-10 just-s pb-5">
+            <!-- <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-13">{{' - '}}</span></p> -->
+            <div class="flex-auto">
+              <p class="m-0 fnt-12 fnt_w500 gray_clr mt-5 inter_"><span style="color: #E21B22;">- </span>{{(ess_dashboard_data.salary_slip.total_deduction ?
+                ess_dashboard_data.salary_slip.total_deduction : 0) | currency:db.website_settings.currency}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="attendanceSummary">
+      <div class="d__flex just-s w-100 mb-20">
+        <h5 class="m-0">Attendance</h5>
+        <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+      </div>
+      <div class="calendar_att">
+        <!-- <ion-datetime mode="ios" presentation="date" (ionChange)="getCalendarDate($event)" [highlightedDates]="highlightedDates"></ion-datetime> -->
+
+        <app-month-calendar [highlightedDates]="highlightedDates" (onChange)="getCalendarDate($event)" ></app-month-calendar>
+      </div>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-content *ngIf="db.hr_manager_role && db.ismobile">
+  
+  <div *ngIf="db.ismobile">
+
+    <div class="profile_rel_hr">
+      <div class="profile_">
+        <div class="d__flex gap-10">
+          <div class="imageDiv">
+            <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+          </div>
+          <div>
+            <div class="d__flex gap-5 mb-5" *ngIf="db.cust_name">
+              <p class="m-0 profile_name">{{db.cust_name}}</p>
+              <img src="/assets/icon/blue-tick.svg" alt="">
+            </div>
+            <div class="d__flex gap-5 mb-5" *ngIf="db.cust_role">
+              <img class="work_img" src="/assets/icon/work-1-white.svg" alt="">
+              <p class="m-0 profile_role">{{db.cust_role}}</p>
+            </div>
+            <!-- <div class="d__flex gap-5 mb-5">
+              <img src="/assets/home-genie/hi.svg" alt="">
+              <p class="m-0 fnt-12 fnt_w500 white">Welcome Back To Work!</p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- <img class="link_icon" src="/assets/HR-Home/water.png" alt=""> -->
+    </div>
+
+    <div class="hr_sec">
+
+      <div class="d__flex gap-5 mb-10">
+        <img src="/assets/home-genie/hi.svg" alt="">
+        <p class="m-0 fnt-12 fnt_w500">Welcome Back To Work!</p>
+      </div>
+
+      <div *ngIf="false" class="attendanceStatus">
+        <img src="/assets/HR-Home/attendance-guide.svg" alt="">
+        <div class="attendanceCount" *ngIf="db.hr_dashboard_data && db.hr_dashboard_data.attendance_details && db.hr_dashboard_data.attendance_details.length != 0">
+          <div *ngFor="let item of db.hr_dashboard_data.attendance_details" class="border-r">
+            <p class="m-0 fnt-14 fnt_w400 text-c gray_clr">{{item.label}}</p>
+            <p class="m-0 fnt_w500 fnt-15 text-c" [ngStyle]="{'color': getStatusColor(item.label)}">{{item.count}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="false" class="viewAttendance mouse" routerLink="/list/attendance">
+        <p>View Attendance</p>
+      </div>
+
+      <div class="hrOverview">
+        <!-- <div class="d__flex just-s w-100 mb-20">
+          <h5 class="m-0">Overview</h5>
+          <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+        </div> -->
+        <div class="attendanceEntries" *ngIf="db.hr_dashboard_data && db.hr_dashboard_data.dashboard_details && db.hr_dashboard_data.dashboard_details.length != 0">
+          <div (click)="routeToSpecificPage(item)" class="box_1" *ngFor="let item of db.hr_dashboard_data.dashboard_details; let i = index">
+            <div>
+              <p class="m-0 fnt-12">{{item.label}}</p>
+              <div class="d__flex just-s">
+                <p class="m-0 fnt-18 fnt_w500">{{item.count}}</p>
+                <ion-icon class="fnt-50" [src]="attendanceEntry[i]"></ion-icon>
+              </div>
+              <div class="d__flex via gap-5">
+                <div [class.green]="item.new_count > item.old_count" class="d__flex red gap-5">
+                  <ion-icon class="fnt-12" [name]="item.new_count > item.old_count ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+                  <span class="fnt-10">{{item.new_count}}%</span>
+                </div>
+                <span class="fnt-10 gray_clr">vs Yesterday</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      
+
+      <!-- <div class="hrBusinessSummary">
+        <div class="d__flex just-s w-100 mb-20">
+          <h5 class="m-0">Business Summary</h5>
+          <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+        </div>
+        <div class="color_page">
+          <div *ngFor="let item of db.dashboard_values" class="cards_value" [routerLink]="item.route ? item.route : null">
+            <ion-icon class="fnt-20" [src]="db.get_icon(item.page)"></ion-icon>
+            <p class="m-0 gray_clr fnt-13 mt-5">{{item.page_name}}</p>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="businessSummaryHr">
+        <div class="d__flex just-s w-100 mb-20">
+          <h5 class="m-0">Quick Links</h5>
+          <ion-icon class="fnt-20" (click)="editQuick()" src="/assets/Employee-Home/more.svg"></ion-icon>
+        </div>
+        <div class="buttonsSection">
+          <div class="d__flex buttons_ mouse" *ngFor="let data of db.dashboard_values" (click)="db.doctype_select(data.page)" [routerLink]="data.route ? data.route : null">
+            <ion-icon [src]="db.get_home_icon(data.page)"></ion-icon>
+            <!-- <img [src]="db.get_home_icon(data.page)"> -->
+            <h6 class="h-6 webkit-text" [style.--line]="1">{{data.page_name}}</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="attendanceComparisonChart">
+        <div class="d__flex just-s w-100 mb-20">
+          <h5 class="m-0">Attendance Trends</h5>
+          <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+        </div>
+        <div class="apexChart" *ngIf="chartObject">
+
+          <!-- <div  class="chartDays">
+            <ion-icon class="fnt-20" src="/assets/HR-Home/chart-filter.svg"></ion-icon>
+            <div class="d__flex gap-5" *ngFor="let item of chartDay; let i = index" (click)="changeCalendarDay(item,i)">
+              <div class="radioBox" [class.radioBoxSelect]="item.selected"></div>
+              <p class="m-0 fnt-14" [ngStyle]="{'color': item.selected ? '#007EE5' : '#000'}">{{item.name}}</p>
+            </div>
+          </div> -->
+
+          <div class="bg_primary__">
+            <!-- <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+            [bg_white]="true" bg_color="#f6f7f9" [tabs_array]="chartDay" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button> -->
+            <div *ngFor="let item of apexChartType; let i = index" [class.isSelectedChart]="item['isSelected']" (click)="selectApex(item,i)">
+              <p class="m-0">{{item.name}}</p>
+            </div>
+          </div>
+
+          <!-- <apx-chart [series]="series" [chart]="charts" [dataLabels]="dataLabels" [markers]="markers" [title]="title" [fill]="fill"
+            [yaxis]="yaxis" [xaxis]="xaxis" [tooltip]="tooltip" [autoUpdateSeries]="true"></apx-chart> -->
+          <div class="chartView">
+            <app-apex-chart-dashboard [currentChartValue]="currentChartValue" [hover_name]="'Attendance'" [chart_value]="chartObject"></app-apex-chart-dashboard>
+            <!-- <app-apex-chart [currentChartValue]="currentChartValue" [hover_name]="'Attendance'" [chart_value]="chartObject"></app-apex-chart> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-content *ngIf="db.ismobile && db.sales_manager_role">
+  <div>
+    <div class="profile_rel">
+      <div class="profile_">
+        <div class="d__flex gap-10">
+          <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+          <div>
+            <div class="d__flex gap-5" *ngIf="db.cust_name">
+              <p class="m-0 profile_name">{{db.cust_name}}</p>
+              <img src="/assets/icon/blue-tick.svg" alt="">
+            </div>
+            <p [class.header_txt_clr]="(db.currentRole == 'HR' || db.currentRole == 'Vendor')" class="m-0 profile_mail mbt-3" *ngIf="db.cust_email">{{db.cust_email}}</p>
+            <div class="d__flex gap-5" *ngIf="db.cust_role">
+              <img src="/assets/icon/work-1.svg" alt="">
+              <p class="m-0 profile_role">{{db.sales_manager_role ? 'Sales Manager' : db.cust_role}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="d__flex gap-5 p-10">
+          <img src="/assets/home-genie/hi.svg" alt="">
+          <!-- {{db.cust_name ? db.cust_name : ''}} -->
+          <p class="m-0 fnt_w500"><span class="fnt-13 fnt_w500" style="color: #5461FF;"> HI, Welcome</span><span class="fnt-13 fnt_w500"> Back To Work!</span></p>
+        </div>
+      </div>
+      <img class="link_icon" src="/assets/icon/link-header.png" alt="">
+    </div>
+
+    <div *ngIf="!new_dashboard_values">
+      <div class="w-100 just-s d__flex p-10">
+        <ion-skeleton-text [animated]="true" style="width:70%;height:35px;border-radius:5px"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:20%;height:35px;border-radius:5px"></ion-skeleton-text>
+      </div>
+  
+      <div class="p-10">
+        <ion-skeleton-text [animated]="true" style="width:40%;height:20px;border-radius:5px"></ion-skeleton-text>
+        <div class="d__flex gap-10">
+          <ion-skeleton-text *ngFor="let item of [1,2,3,4]" [animated]="true" style="width:400px;height:90px;border-radius:5px;flex: 0 0 calc(50% - 10px);"></ion-skeleton-text>
+        </div>
+      </div>
+  
+      <div class="p-10">
+        <ion-skeleton-text [animated]="true" style="width:40%;height:20px;border-radius:5px"></ion-skeleton-text>
+        <div class="d__flex just-s just-s gap-10 w-100">
+          <ion-skeleton-text [animated]="true" style="width:100%;height:120px;border-radius:5px"></ion-skeleton-text>
+        </div>
+      </div>
+  
+      <div class="p-10">
+        <ion-skeleton-text [animated]="true" style="width:40%;height:20px;border-radius:5px"></ion-skeleton-text>
+        <div class="d__flex just-s just-s gap-10 w-100">
+          <ion-skeleton-text *ngFor="let item of [1,2,3,4]" [animated]="true" style="width:30%;height:60px;border-radius:5px"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  
+    <app-common-search *ngIf="false && new_dashboard_values" [placeholder]="'Search'" (search_txt_value)="search_txt($event)"></app-common-search>
+
+    <div class="business_summary" *ngIf="new_dashboard_values">
+      <p class="m-0 fnt-16 fnt_w600">Lead's Overview</p>
+      <!-- <p class="m-0 fnt-16 fnt_w600">Business Summary</p> -->
+      <div *ngIf="new_dashboard_values.number_card && new_dashboard_values.number_card.length != 0 && db.ismobile" class="dashboard_tabs_CRM">
+          <div *ngFor="let item of new_dashboard_values.number_card;index as i" class="tabs_items" >
+            <div class="w-80">
+              <div class="doc_labels d__flex gap-10" [ngStyle]="get_colors(item.status)">
+                <ion-icon slot="start" [src]="get_icon(item.status)"></ion-icon>
+                <p class="m-0 fnt-15 fnt_w500" >{{item.status}}</p>
+              </div>
+              <div class="box_" routerLink="{{'/list/' + item.status}}">
+                <p class="m-0 fnt-16 fnt_w600">{{item.status_percentage}} %</p>
+                <p class="m-0 fnt-12 fnt_w500 d__flex gap-5 gray_clr"><ion-icon slot="start" src="/assets/icon/social/increase-arrow.svg"></ion-icon><span>{{item.last_month_dif_percentage}}%</span>vs Past month</p>
+              </div>
+            </div>
+            <!-- <img [src]="load_progress(item.status)" alt=""> -->
+            <div class="container_progress">
+              <div class="progress progress-bar-vertical">
+                <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"
+                [style]="'--value:50'" [ngStyle]="{'height': item.status_percentage > 100 ? '100%' : item.status_percentage + '%', background: get_progress_colors(item.status)}">
+                </div>
+              </div>
+            
+              <div class="progress progress-bar-vertical">
+                <!-- aria-valuenow="60" -->
+                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" 
+                  aria-valuemin="0" aria-valuemax="100" [style]="'--value:50'"  [ngStyle]="{'height': item.last_month_dif_percentage > 100 ? '100%' : item.last_month_dif_percentage + '%', background: get_progress_colors(item.status)}">
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    
+
+    <div class="business_summary" *ngIf="new_dashboard_values">
+      <p class="m-0 fnt-16 fnt_w600">Quick Links</p>
+      <!-- <div class="color_page">
+        <div *ngFor="let item of new_dashboard_values.number_card" class="cards_value" routerLink="{{'/list/' + item.status}}">
+          <img [src]="get_color_icon(item.status)" alt="">
+          <p class="m-0 gray_clr fnt-13 fnt_w500 mt-5">{{item.status}}</p>
+        </div>
+      </div> -->
+      <div class="gridBox">
+        <div *ngFor="let item of db.permission_details" class="boxes_" routerLink="{{item.route}}">
+          <!-- <ion-icon class="fnt_60" [src]="db.get_icon_lead_role(item.page)"></ion-icon> -->
+          <p class="m-0 gray_clr fnt-13 fnt_w500 mt-5">{{item.page_name}}</p>
+        </div>
+        <div *ngFor="let item of push_sales_data" class="boxes_" routerLink="{{item.route}}">
+          <!-- <ion-icon class="fnt_60" [src]="db.get_icon_lead_role(item.page)"></ion-icon> -->
+          <p class="m-0 gray_clr fnt-13 fnt_w500 mt-5">{{item.page_name}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="business_summary" *ngIf="new_dashboard_values">
+      <p class="m-0 fnt-16 fnt_w600">Lead Analysis</p>
+      <app-apex-chart [hover_name]="'Lead'" [new_dashboard_values]="new_dashboard_values.dashboard_chart"></app-apex-chart>
+    </div>
+
+    <div class="business_summary" *ngIf="new_dashboard_values && new_dashboard_values.event_list && new_dashboard_values.event_list.length != 0">
+      <p class="m-0 fnt-16 fnt_w600">Upcoming Events</p>
+      <div class="upcoming_event_list">
+        <app-meeting [no_delete]="true" [dashboard]="true" [summary]="true" [meetingList]="new_dashboard_values.event_list"></app-meeting>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="db.ismobile && db.project_role">
+    <div class="profile_rel_project">
+      <div class="profile_">
+        <div class="d__flex gap-10">
+          <div class="imageDiv">
+            <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+          </div>
+          <div>
+            <div class="d__flex gap-5" *ngIf="db.cust_name">
+              <p class="m-0 profile_name">{{db.cust_name}}</p>
+              <img src="/assets/icon/blue-tick.svg" alt="">
+            </div>
+            <p [class.header_txt]="(db.currentRole == 'HR' || db.currentRole == 'Vendor' || db.currentRole == 'Projects' || db.currentRole == 'Go1 Desk')" class="m-0 profile_mail mbt-3" *ngIf="db.cust_email">{{db.cust_email}}</p>
+            <div class="d__flex gap-5" *ngIf="db.cust_role">
+              <img class="work_img" src="/assets/icon/work-1-white.svg" alt="">
+              <p class="m-0 profile_role">{{db.cust_role}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="d__flex gap-5 p-10" *ngIf="db.currentRole != 'HR'">
+          <img src="/assets/home-genie/hi.svg" alt="">
+          <p class="m-0 fnt_w500"><span class="fnt-13 fnt_w500 header_txt_clr" > HI, Welcome</span><span class="fnt-13 fnt_w500 header_txt_clr"> Back To Work!</span></p>
+        </div>
+      </div>
+      <img class="link_icon" src="/assets/icon/link-header.png" alt="">
+    </div>
+  
+    <div>
+  
+      <div *ngIf="db.dashboard_cards_value && db.dashboard_cards_value.length != 0 && db.ismobile" class="dashboard_tabs_">
+        <div *ngFor="let item of db.dashboard_cards_value;index as i" class="tabs_items" >
+          <div [routerLink]="item.route ? item.route : null">
+            <div class="box_">
+              <div class="d__flex just-s w-100">
+                <p class="m-0 fnt-17 fnt_w500" >{{item.page_name}}</p>
+                <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+              </div>
+              <p [ngStyle]="{'color': db.color_list[(i % db.color_list.length)]}" class="m-0 fnt-16 fnt_w500">{{item.count}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+     
+  
+      <div class="busi_s" *ngIf="db.dashboard_values && db.dashboard_values.length != 0">
+        <div class="d__flex just-s w-100 ptr-10-0">
+          <h5 class="m-0">Business Summary</h5>
+          <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+        </div>
+        <div class="buttons_sec">
+          <div class="d__flex buttons_ mouse" *ngFor="let data of db.dashboard_values"  (click)="db.doctype_select(data.page)" [routerLink]="data.route ? data.route : null">
+            <ion-icon [class.fnt_60]="db.project_role" [src]="db.get_icon(data.page)"></ion-icon>
+            <h6 class="h-6 webkit-text" [style.--line]="2">{{data.page_name}}</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="business_summary" *ngIf="ess_dashboard_data && ess_dashboard_data.upcoming_events && ess_dashboard_data.upcoming_events.length != 0">
+        <h5 class="m-0">Upcoming Meetings</h5>
+        <div class="upcoming_event_list">
+          <app-meeting [no_delete]="true" [dashboard]="true" [summary]="true" [meetingList]="ess_dashboard_data.upcoming_events"></app-meeting>
+        </div>
+      </div>
+
+      <div class="TaskSummary" *ngIf="ess_dashboard_data && ess_dashboard_data.tasks && ess_dashboard_data.tasks.length != 0">
+        <div class="d__flex just-s w-100 ptr-10-0">
+          <h5 class="m-0">Tasks</h5>
+          <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
+        </div>
+        <div class="todayTask" >
+          <div class="d__flex just-s m-10 border-bottom">
+            <div>
+              <p class="m-0 fnt-14 primary_clr">Today Tasks</p>
+              <p class="m-0 fnt-16 d__flex gap-5">{{(ess_dashboard_data && ess_dashboard_data.task_count) ? ess_dashboard_data.task_count : '0'}}<span class="fnt-16 gray_clr fnt_w500">tasks are availabe</span></p>
+            </div>
+            <ion-icon class="fnt-60" src="/assets/Employee-Home/today-task.svg"></ion-icon>
+          </div>
+          <div (click)="openWebFormPopup(item)" *ngFor="let item of ess_dashboard_data.tasks.slice(0, 1)" class="p-10">
+            <p class="fnt-12 gray_clr m-0 capitalize">{{item.subject}}</p>
+            <div class="d__flex just-s">
+              <p class="m-0 fnt-14 description webkit-text" [style.--line]="2" [innerHtml]="item.description ? item.description : '-'"></p>
+              <div *ngIf="item.priority" class="d__flex gap-5 bg_high" [ngClass]="item.priority == 'Low' ? 'low_bg' : item.priority == 'Medium' ? 'medium_bg' : 'high_bg'">
+                <ion-icon [name]="check_priority(item.priority)"></ion-icon>
+                <p class="m-0">{{item.priority}}</p>
+              </div>
+            </div>
+            <div class="d__flex just-s">
+              <p class="fnt-12 d__flex gap-5 mb-5 webkit-text" [style.--line]="1"><ion-icon class="fnt-20" src="/assets/img/user-tag.svg"></ion-icon>{{item.owner}}</p>
+              <p class="m-0 d__flex gap-5 fnt-14 gray_clr"><ion-icon class="fnt-20" src="/assets/img/clock-gray.svg"></ion-icon>{{item.expected_time ? item.expected_time : '0 Hr'}}</p>
+            </div>
+          </div>
+          <div class="d__flex just-s showMoreTask">
+            <p routerLink="/forms/task" class="m-0 fnt-13 primary_clr d__flex gap-10"><ion-icon class="fnt-20" src="/assets/Employee-Home/add-task.svg"></ion-icon>New Task</p>
+            <p class="m-0 fnt-13" routerLink="/task-list">Show More</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</ion-content>
+
+
+<ion-content *ngIf="!db.ismobile && !db.project_role">
+    <div>
+      <app-sidemenu-header heading="Dashboard Overview"></app-sidemenu-header>
+      <div class="d__flex heading_tab">
+        <div class="box_">
+          <h6 class="m-0 title-name">{{greeting}}</h6>
+          <h6 class="m-0 name_of_c">{{db.cust_name ? db.cust_name : ''}}<span class="span">Welcome back to work!</span>
+          </h6>
+        </div>
+        <!-- <div class="icon">
+          <ion-icon class="person-icon" name="person-circle-outline"></ion-icon>
+        </div> -->
+      </div>
+      <div class="web_padding"> 
+      </div>
+    </div>
+  
+    <div>
+      <div class="busi_s section-b" *ngIf="!db.loader">
+        
+        <h4 class="m-0 fnt-16 fnt_w600 ptr-10-0">Summary </h4>
+  
+        <div class="dash sec-2">
+          <div class="chart_div" id="chart" *ngIf="!db.loader">
+            <apx-chart [series]="db.chartOptions.series" [chart]="db.chartOptions.chart" [labels]="db.chartOptions.labels" [responsive]="db.chartOptions.responsive"></apx-chart>
+          </div>
+          <div class="list_div  orders">
+            <ng-container *ngFor="let item of db.dashboard_values;">
+              <div class="d__flex box_3 orders mouse" (click)="db.doctype_select(item.page)"
+                [routerLink]="item.route ? item.route : null">
+                <div class="image"><img [src]="db.get_icon(item.page)"></div>
+                <div class="content_">
+                  <h6 class="m-0 sub_title">{{item.page_name}}</h6>
+                  <h6 class="m-0 sub_count">{{item.count}}</h6>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+</ion-content>
+
+<ion-content *ngIf="!db.ismobile && db.project_role">
+
+<app-projects-dashboard></app-projects-dashboard>
+
+</ion-content>

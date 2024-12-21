@@ -1,0 +1,1159 @@
+
+<!-- Layout 5 Dynamic Mobile -->
+<div #tabList class="ion-list" [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Layout 5' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div [class.selected_item]="db.selectedId == item.name" (click)="!db.ismobile ? active_item(item,i) : null"
+    class="ion-item mouse list_item" *ngFor="let item of db.get_saleslist.data;index as i" [id]="i + 1 + 'scroll'"
+    (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" (click)="do_to_details.emit(item)"
+    (click)="!db.ismobile ? send_data(item) : null">
+    <div class="d__flex just-s ">
+      <div class="avatar d__flex gap-10">
+        <p class="avatar_txt" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">
+          {{item.customer_name ? item.customer_name[0] : ''}}</p>
+        <div class="s-1">
+          <span class="fnt-16 fnt_w600 capitalize primary_clr"> {{item.customer_name ? item.customer_name : ''}}</span>
+          <p class="m-0 medium_name capitalize">{{item.name}}</p>
+          <p class="m-0 fnt-12 fnt_w500 capitalize gray_clr inter_" *ngIf="item.base_grand_total"> {{ '₹'+
+            item.base_grand_total + '.00'}}</p>
+        </div>
+      </div>
+      <div>
+        <p class="m-0 fnt-14 time_ fnt_w500 text-e"><span class="fnt-13 capitalize fnt_w500 gray_clr">
+            {{item.transaction_date | date:'MMM dd yyyy'}}</span></p>
+        <div class="d__flex just-e">
+          <p class="m-0  status_box webkit-text" [ngClass]="db.get_style(item.status)">{{item.status}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Attendance Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Layout 2'">
+ 
+  <div [class.selected_item]="db.selectedId == item.name" (click)="!db.ismobile ? active_item(item,i) : null"
+    *ngFor="let item of db.get_saleslist.data; let i = index" [id]="i + 1 + 'scroll'" class="d__flex sec"
+    (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null"
+    (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null">
+    <div class="s-1">
+      <h3 class="m-0 fnt-14 fnt_w500">{{db.selected_list.page == 'Test Case' ? item.project_name :
+        item[db.get_saleslist.keys[0]]}}</h3>
+      <h2 class="m-0 medium_name Invoice webkit-text" [style.--line]="2"> <span
+          class="gray_clr">{{item[db.get_saleslist.keys[1]]}}</span></h2>
+      <h2 class="m-0  medium_name capitalize">{{get_values(db.get_saleslist.keys[2])}}<span
+          *ngIf="db.selected_list.page != 'Test Case'" class="gray_clr">{{item[db.get_saleslist.keys[2]] | date:'MMMd,y'}}</span></h2>
+    </div>
+    <div class="s-2">
+      <div class="sec__2d">
+        <p class="m-0 fnt-13 status_box webkit-text" [ngClass]="db.get_style(item[db.get_saleslist.keys[3]])">
+          {{item[db.get_saleslist.keys[3]]}}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <app-no-record-found
+    *ngIf="!db.bodySkeleton && !db.listSkeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>
+
+
+<!-- Job Applicant -->
+<div
+  *ngIf="doc_type == 'Job Applicant' && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == '3 Content With Status'">
+
+  <app-no-record-found
+    *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+  <!-- job_applicant_table1 -->
+  <app-common-grid-table [rightDetail]="true" *ngIf="!db.ismobile && !db.enable_detail"
+    (load_popup)="load_popup($event)" [detailPage]="false" [detailPopup]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
+    [doctype]="doc_type"></app-common-grid-table>
+
+  <app-job-applicant *ngIf="db.ismobile" [view]="'mobile'" (scroll_data)="load_data($event)"
+    (go_to_detail)="go_to_detail($event,-1)" (call_clear_txt)="call_clear_txt.emit('')"
+    (search_txt_value)="search_txt_value.emit($event)" (supplier_filter)="supplier_filter.emit('')"
+    [search_filter]="search_filter" (filterList)="filterList.emit($event)" [search_data]="search_data"
+    (tab_filter)="tab_filter.emit($event)" [list_data]="db.get_saleslist.data"></app-job-applicant>
+
+</div>
+
+
+<!-- 3 Content With Status Dynamic Mobile -->
+<div
+  *ngIf="(db.enable_material || db.ismobile) && doc_type != 'Job Applicant' && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == '3 Content With Status' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+
+  <div *ngIf="!db.ismobile" #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+    [class.tab_active_heigth]="db.path.includes('/tabs')">
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      class="d__flex sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1 w-50">
+        <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}
+        </h3>
+        <h2 class="m-0 fnt-11 Invoice webkit-text" [style.--line]="2">{{get_values(db.get_saleslist.keys[2])}} <span
+            class="gray_clr">{{item[db.get_saleslist.keys[2]]}}</span></h2>
+        <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-11 capitalize"><span
+            class="gray_clr">{{item[db.get_saleslist.keys[5]]
+            }}</span></h2>
+      </div>
+      <div class="s-2">
+        <div *ngIf="item[db.get_saleslist.keys[1]]" class="sec__2d">
+          <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[1]]"></app-status>
+        </div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="db.ismobile" #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+    [class.tab_active_heigth]="db.path.includes('/tabs')">
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null" class="list-container">
+      <div class="d__flex gap-10 just-s pb-5">
+        <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.subject}}</h6>
+
+        <div class="flex-auto">
+          <app-status [status]="item.status"></app-status>
+        </div>
+      </div>
+
+      <div class="d__flex gap-10 just-s pb-5">
+        <div class="d__flex gap-5"><span class="fnt-13 m-0 text_2">{{'Created '}}</span>
+          <div class="dot dot-2"></div>
+          <h6 class="m-0 fnt-13 webkit-text text_2" [style.--line]=2>{{item.posting_date ? item.posting_date : ' May 30th 2024'}}</h6>
+          <!-- 'MMMM d, y' -->
+        </div>
+
+        <div class="pill" *ngIf="item.priority"
+          [ngClass]="item.priority == 'high' ? 'high' : item.priority == 'medium' ? 'medium' : 'low'">
+          <ion-icon name="arrow-up-outline" class="fnt-14"></ion-icon>
+          <p class="m-0 flex-auto bold_name-13">{{item.priority}}</p>
+        </div>
+
+        <p *ngIf="!item.priority" class="m-0 flex-auto bold_name-13">-</p>
+      </div>
+
+      <div class="d__flex gap-10 just-s pb-5">
+        <p class="m-0 d__flex gap-5"><ion-icon src="/assets/user-tag.svg"></ion-icon><span
+            class="m-0 text_2 fnt-13">{{item.owner}}</span></p>
+
+        <div class="flex-auto">
+          <div class="d__flex gap-5">
+            <ion-icon class="fnt-16" src="/assets/timer.svg"></ion-icon>
+            <p class="m-0 fnt-12 fnt_w500 text_2">{{item.posting_date ? item.posting_date : '2 Hrs'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Job Applicant -->
+<div
+  *ngIf="(db.enable_material || db.ismobile) && doc_type == 'Job Applicant' && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == '3 Content With Status' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div *ngIf="!db.ismobile" #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+    [class.tab_active_heigth]="db.path.includes('/tabs')">
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      class="d__flex sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1 w-50">
+        <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}
+        </h3>
+        <h2 class="m-0 fnt-11 Invoice webkit-text" [style.--line]="2">{{get_values(db.get_saleslist.keys[6])}} <span
+            class="gray_clr">{{item[db.get_saleslist.keys[6]]}}</span></h2>
+        <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-11"><span
+            class="gray_clr">{{item[db.get_saleslist.keys[5]]
+            }}</span></h2>
+      </div>
+      <div class="s-2">
+        <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
+          <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
+        </div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Letter Request -->
+
+<div
+  *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Employee Letter' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+    [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)">
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      class="d__flex sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1 w-50">
+        <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}
+        </h3>
+        <h2 class="m-0 fnt-11 Invoice webkit-text" [style.--line]="2">{{get_values(db.get_saleslist.keys[6])}} <span
+            class="gray_clr">{{item[db.get_saleslist.keys[6]]}}</span></h2>
+        <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 fnt-11"><span
+            class="gray_clr">{{item[db.get_saleslist.keys[4]]
+            }}</span></h2>
+        <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-11"><span
+            class="gray_clr">{{item[db.get_saleslist.keys[5]]
+            }}</span></h2>
+      </div>
+      <div class="s-2">
+        <!-- <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
+          <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
+        </div> -->
+        <h2 *ngIf="item[db.get_saleslist.keys[3]]" class="m-0 fnt-11"><span
+          class="gray_clr">{{item[db.get_saleslist.keys[3]]
+          }}</span></h2>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <app-common-grid-table height="calc(100vh - 180px)" [rightDetail]="true"
+    *ngIf="!db.ismobile && !db.enable_detail" [detailPage]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+<!-- Mobile Leave Withdrawal -->
+
+<div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Leave Withdrawal' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+    [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)">
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1">
+
+        <div class="d__flex just-s mb-5">
+          <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3>
+          <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
+            <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
+          </div>
+        </div>
+
+        <div class="d__flex just-s mb-5">
+          <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[5]]"><span class="fnt-11">From : </span> {{item[db.get_saleslist.keys[5]]}}</h2>
+          <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[6]]"><span class="fnt-11">To : </span> {{item[db.get_saleslist.keys[6]]}}</h2>
+        </div>
+
+        <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 fnt-11"><span
+            class="gray_clr">{{item[db.get_saleslist.keys[4]]
+            }}</span></h2>
+      </div>
+    </div>
+  </div>
+
+  <app-common-grid-table height="calc(100vh - 180px)" [rightDetail]="true"
+    *ngIf="!db.ismobile && !db.enable_detail" [detailPage]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+<!-- Mobile Resignation Letter -->
+
+<div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Resignation Letter' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+    [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)">
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1">
+
+        <div class="d__flex just-s mb-5">
+          <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[1]]}}</h3>
+          <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}</h3>
+        </div>
+
+        <div class="d__flex just-s mb-5">
+          <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[3]]"><span class="fnt-11">Joining Date : </span> {{item[db.get_saleslist.keys[3]]}}</h2>
+          <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[4]]"><span class="fnt-11">Resignation Date : </span> {{item[db.get_saleslist.keys[4]]}}</h2>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <app-common-grid-table height="calc(100vh - 180px)" [rightDetail]="true"
+    *ngIf="!db.ismobile && !db.enable_detail" [detailPage]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+<!-- Mobile Job Opening -->
+
+<div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Job Opening' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+    [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)">
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1">
+
+        <div class="d__flex just-s mb-5">
+          <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3>
+          <app-status [status]="item[db.get_saleslist.keys[1]]"></app-status>
+        </div>
+
+        <div class="d__flex just-s mb-5">
+          <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[2]]"><span class="fnt-11">Department : </span> {{item[db.get_saleslist.keys[2]]}}</h2>
+          <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[3]]"><span class="fnt-11">Designation : </span> {{item[db.get_saleslist.keys[3]]}}</h2>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <app-common-grid-table height="calc(100vh - 180px)" [rightDetail]="true"
+    *ngIf="!db.ismobile && !db.enable_detail" [detailPage]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+<!-- Mobile Performance Evaluation -->
+
+<div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Performance Evaluation' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div *ngIf="(db.enable_material || db.ismobile)">
+    <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+      [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+      [class.tab_active_heigth]="db.path.includes('/tabs')">
+      <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+        (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+        [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+        class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+        <div class="s-1">
+  
+          <div class="d__flex just-s mb-5">
+            <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3>
+            <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[1]]}}</h3>
+          </div>
+  
+          <div class="d__flex just-s mb-5">
+            <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[2]]"><span class="fnt-11">Evaluation Date : </span> {{item[db.get_saleslist.keys[2]]}}</h2>
+            <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[3]]"><span class="fnt-11">Extended : </span> {{item[db.get_saleslist.keys[3]]}}</h2>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-common-grid-table height="calc(100vh - 180px)" [rightDetail]="true"
+    *ngIf="!db.ismobile && db.viewListType == 'Table' && !db.enable_detail" [detailPage]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.hr_manager_role ? db.get_saleslist['table'] : employee_table"
+    [doctype]="doc_type"></app-common-grid-table>
+
+</div>
+
+
+<!-- Ticket Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  [class.tab_active_heigth]="db.path.includes('/tabs')"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'HD Ticket' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+
+  <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+    (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+    [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+    class="d__flex sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+    <div class="s-1 w-50">
+      <h3 class="m-0 fnt-16 fnt_w600 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}</h3>
+      <h2 class="m-0 medium_name Invoice webkit-text" [style.--line]="2">{{get_values(db.get_saleslist.keys[1])}} <span
+          class="gray_clr">{{item[db.get_saleslist.keys[1]]}}</span></h2>
+      <h2 *ngIf="item[db.get_saleslist.keys[2]]" class="m-0 medium_name capitalize">
+        {{get_values(db.get_saleslist.keys[0])}}<span class="gray_clr">{{item[db.get_saleslist.keys[0]]}}</span></h2>
+    </div>
+    <div class="s-2">
+      <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
+        <p class="m-0 fnt-13 status_box webkit-text" [ngClass]="db.get_style(item[db.get_saleslist.keys[3]])">
+          {{item[db.get_saleslist.keys[3]]}}</p>
+      </div>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </div>
+  </div>
+</div>
+
+
+<!-- Employee Grievance Mobile -->
+<div
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Employee Grievance Mobile'">
+  <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+    [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)"
+    class="mouse list_common_height grievance_sec"
+    *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Employee Grievance Mobile' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+
+
+    <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+      [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null" class="w-100 sec-break">
+
+      <h3 class="m-0 fnt-13 fnt_w500 capitalize webkit-text" [style.--line]="1">{{item[db.get_saleslist.keys[0]]}}</h3>
+
+      <div class="d__flex just-s s-1 m-t-b">
+        <h3 class="m-0 fnt-12 gray_clr fnt_w400 capitalize webkit-text" [style.--line]="1">
+          {{item[db.get_saleslist.keys[1]]}}</h3>
+        <div class="d__flex just-e">
+          <app-status [status]="item[db.get_saleslist.keys[2]]"></app-status>
+        </div>
+      </div>
+
+      <h2 class="m-0 fnt-12 fnt_w400 capitalize gray_clr mb-5">{{item[db.get_saleslist.keys[4]]}}</h2>
+
+    </div>
+  </div>
+
+  <app-no-record-found
+    *ngIf="db.ismobile && (!db.bodySkeleton && !db.listSkeleton) && db.get_saleslist.data && db.get_saleslist.data.length == 0"
+    [column]="true" height="calc(100vh - 180px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>
+
+
+<!-- Issue Mobile-->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)"
+  class="mouse list_common_height issueSec grievance_sec"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Issue Mobile' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+
+  <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+    (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+    [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+    (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null" class="d__flex w-100 sec-break">
+
+    <div class="s-1">
+      <h3 class="m-0 fnt-16 fnt_w600 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}</h3>
+      <h3 class="m-0 medium_name mt-4 mb-4">{{item[db.get_saleslist.keys[0]]}}</h3>
+      <h2 class="m-0 medium_name d__flex"><ion-icon class="fnt-20" src="/assets/sms-01.svg"></ion-icon><span
+          class="gray_clr raised_by">{{item[db.get_saleslist.keys[1]]}}</span></h2>
+    </div>
+
+    <div class="s-2">
+      <div class="sec__2d">
+        <div class="w-100 d__flex just-e">
+          <app-status [status]="item.status"></app-status>
+        </div>
+        <h2 *ngIf="item[db.get_saleslist.keys[6]]" class="m-0 medium_name capitalize gray_clr text-e">
+          {{item[db.get_saleslist.keys[6]]}}</h2>
+        <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 medium_name capitalize gray_clr text-e"><span
+            class="">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Report Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)"
+  class="mouse list_common_height issueSec grievance_sec"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Report Mobile' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+
+  <div id="click_item" [class.selected_item]="db.selectedId === item.name"
+    (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+    [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+    (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null" class="d__flex w-100 sec-break">
+
+    <div class="s-1">
+      <h3 class="m-0 fnt-16 fnt_w600 webkit-text capitalize mb-4" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}
+      </h3>
+      <h2 class="m-0 medium_name capitalize gray_clr">{{get_values(db.get_saleslist.keys[1])}}<span
+          class="">{{item[db.get_saleslist.keys[1]]}}</span></h2>
+    </div>
+
+    <div class="s-2">
+      <div class="sec__2d">
+        <div class="w-100 d__flex just-e">
+          <p class="m-0 fnt-13 status_box webkit-text mb-3" [ngClass]="db.get_style(item[db.get_saleslist.keys[3]])">
+            {{item[db.get_saleslist.keys[3]]}}</p>
+        </div>
+        <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 medium_name gray_clr capitalize text-e mt-2">
+          {{item[db.get_saleslist.keys[4]]}}</h2>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Layout 3 Dynamic Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Layout 3' && db.get_saleslist.data && db.get_saleslist.data.length != 0 && db.sales_dashboard != 'Sales Manager' && db.selected_list.page != 'Employee'">
+
+  <div [class.selected_item]="db.selectedId == item.name" (click)="!db.ismobile ? active_item(item,i) : null"
+    *ngFor="let item of db.get_saleslist.data; let i = index" [id]="i + 1 + 'scroll'"
+    (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" class="d__flex sec"
+    (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+    <div class="s-1">
+      <h3 class="m-0 fnt-16 fnt_w600 primary_clr ">{{item[db.get_saleslist.keys[0]]}}</h3>
+      <h2 class="m-0 medium_name capitalize">{{get_values(db.get_saleslist.keys[1])}}<span
+          class="gray_clr">{{item[db.get_saleslist.keys[1]]}}</span></h2>
+    </div>
+    <div class="s-2">
+      <div class="sec__2d">
+        <h2 class="m-0 pb-5 medium_name w-100 text-e">
+          <span class="gray_clr inter_"
+            *ngIf="checkDataType(item[db.get_saleslist.keys[2]])">{{item[db.get_saleslist.keys[2]] |
+            currency:db.website_settings.currency}}</span>
+
+          <span class="gray_clr inter_"
+            *ngIf="!checkDataType(item[db.get_saleslist.keys[2]])">{{item[db.get_saleslist.keys[2]]}}</span>
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Employee Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Layout 3' &&  db.sales_dashboard != 'Sales Manager' && db.selected_list.page == 'Employee'">
+  <!-- db.get_saleslist.data && db.get_saleslist.data.length != 0 && -->
+  <app-employee-list [view]="'mobile'" (scroll_data)="load_data($event)" (go_to_detail)="go_to_detail($event,-1)"
+    (call_clear_txt)="call_clear_txt.emit('')" (search_txt_value)="search_txt_value.emit($event)"
+    (supplier_filter)="supplier_filter.emit('')" [search_filter]="search_filter" (filterList)="filterList.emit($event)"
+    [search_data]="search_data" (tab_filter)="tab_filter.emit($event)"
+    [list_data]="db.get_saleslist.data"></app-employee-list>
+</div>
+
+
+<!-- Expense Claim -->
+<div [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) && doc_type == 'Expense Claim' && db.get_saleslist && db.sales_dashboard != 'Sales Manager';">
+
+  <div #tabList *ngIf="!db.ismobile">
+    <div [class.selected_item]="db.selectedId == item.name" (click)="!db.ismobile ? active_item(item,i) : null"
+      *ngFor="let item of db.get_saleslist.data; let i = index" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" class="d__flex expense_sec"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="d__flex w-100 gap-10">
+
+        <p class="expenseAvatar capitalize" *ngIf="false"
+          [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">
+          {{item[db.get_saleslist.keys[4]] ? item[db.get_saleslist.keys[4]][0] : ''}}</p>
+
+        <div class="d__flex w-100 sec-break">
+
+          <div class="s-1">
+            <h3 class="m-0 fnt-14 capitalize">{{item[db.get_saleslist.keys[0]]}}</h3>
+            <h3 class="m-0 fnt-13 capitalize gray_clr">{{item[db.get_saleslist.keys[1]]}}</h3>
+            <!-- <h2 class="m-0 fnt-13 capitalize gray_clr">{{get_values(db.get_saleslist.keys[0])}}<span
+                class="gray_clr">{{item[db.get_saleslist.keys[0]]}}</span></h2> -->
+            <h2 class="m-0 fnt-13 gray_clr" *ngIf="item[db.get_saleslist.keys[8]]">
+              {{get_values(db.get_saleslist.keys[8])}}<span class="gray_clr">{{item[db.get_saleslist.keys[8]]}}</span>
+            </h2>
+          </div>
+
+          <div class="s-2">
+            <div class="sec__2d">
+              <h2 class="m-0 pb-5 fnt-13 text-e"><span class="fnt-13 inter_">{{item[db.get_saleslist.keys[5]] |
+                  currency:db.website_settings.currency}}</span></h2>
+              <div class="w-100 d__flex just-e">
+                <!-- <p class="m-0 fnt-13 status_box webkit-text" [ngClass]="db.get_style(item[db.get_saleslist.keys[3]])">
+                  {{item[db.get_saleslist.keys[3]]}}</p> -->
+                <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <!-- ESS list page -->
+  <app-expense-claim-list *ngIf="db.ismobile" (search_txt_value)="search_txt_value.emit($event)"
+    (call_clear_txt)="call_clear_txt.emit($event)" [type]="'expense'" [data]="db.get_saleslist"
+    (getFilters)="getFilters.emit($event)" (getDateFromCalendar)="getDateFromCalendar.emit($event)"
+    (do_to_details)="do_to_details.emit($event)" [dashboard]="dashboard"></app-expense-claim-list>
+</div>
+
+
+<!-- Attendance Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)"
+  [class.attendance_height]="db.selected_list.page == 'Attendance' && !db.ismobile" class="mouse list_common_height"
+  [class.tab_active_heigth_att]="db.path.includes('/tabs')"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && doc_type == 'Attendance' && db.get_saleslist.data  && db.sales_dashboard != 'Sales Manager';">
+
+  <!-- New UI -->
+  <div *ngIf="!db.ismobile">
+    <div [class.selected_item]="db.selectedId == item.name" (click)="!db.ismobile ? active_item(item,i) : null"
+      *ngFor="let item of db.get_saleslist.data; let i = index" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" class="d__flex expense_sec"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+
+      <div class="d__flex w-100 gap-10" *ngIf="!db.employee_role">
+        <p *ngIf="false" class="expenseAvatar"
+          [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">
+          {{item.employee_name ? item.employee_name[0] : ''}}</p>
+        <div class="d__flex w-100 sec-break">
+          <div class="s-1">
+            <h3 class="m-0 fnt-14 fnt_w500 ">{{item.employee_name}}</h3>
+            <h2 class="m-0 fnt-13 capitalize gray_clr mt-5">{{item.employee}}</h2>
+          </div>
+          <div class="s-2">
+            <div class="sec__2d">
+              <h2 class="m-0 fnt-13 fnt_w500 text-e"><span class="fnt-13 fnt_w500 inter_">{{item.attendance_date |
+                  date:'MMM d,y'}}</span></h2>
+              <div class="w-100 d__flex just-e mt-5">
+                <!-- <p class="m-0 fnt-13 status_box webkit-text" [ngClass]="db.get_style(item[db.get_saleslist.keys[3]])">
+                  {{item[db.get_saleslist.keys[3]]}}</p> -->
+                <app-status [reverse]="true" [status]="item.status"></app-status>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-mobile-attendance *ngIf="db.employee_role && !db.enable_detail" [list_data]="db.get_saleslist"
+    (loadMore)="load_more.emit($event)" [attendance_dashboard]="attendance_dashboard" [doc_type]="doc_type"
+    [showCalendar]="showCalendar" [search_data]="search_data" [search_filter]="search_filter"
+    [highlightedDates]="highlightedDates" [show_attendance]="show_attendance"
+    (getDateFromCalendars)="getDateFromCalendars.emit($event)" (getFilters)="getFilters.emit($event)"
+    (getCalendarDate)="getCalendarDate.emit($event)" (show_att_cal)="show_att_cal($event)"
+    (do_to_details)="do_to_details.emit($event)">
+  </app-mobile-attendance>
+
+  <!-- <app-mobile-hr-attendance *ngIf="db.hr_manager_role"></app-mobile-hr-attendance> -->
+
+  <app-mobile-today-checkin *ngIf="db.hr_manager_role && !db.enable_detail"></app-mobile-today-checkin>
+
+
+  <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+    *ngIf="false && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0" [column]="true"
+    height="calc(100vh - 600px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>
+
+
+<!-- Advance -->
+<div [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) &&  db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Layout 4' ">
+
+  <div #tabList *ngIf="!db.ismobile">
+    <div [class.selected_item]="db.selectedId == item.name" (click)="!db.ismobile ? active_item(item,i) : null"
+      *ngFor="let item of db.get_saleslist.data; let i = index" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" class="d__flex sec sec_w_profile"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1">
+        <div class="box_1" *ngIf="db.ismobile && false">
+          <p class="m-0 ep_name">{{item[db.get_saleslist.keys[0]][0]}}</p>
+        </div>
+        <div class="box_2">
+          <p class="m-0 fnt-14 fnt_w500 mt-5">{{item[db.get_saleslist.keys[0]]}}</p>
+          <p class="m-0 fnt-13 gray_clr mt-5">{{item[db.get_saleslist.keys[1]]}}</p>
+          <!-- <h2 class="m-0 medium_name capitalize pb-5">{{get_values(db.get_saleslist.keys[4])}}<span
+              class="gray_clr inter_">{{item[db.get_saleslist.keys[4]] | currency:db.website_settings.currency}}</span></h2> -->
+        </div>
+      </div>
+      <div class="s-2">
+        <div class="sec__2d">
+          <p class="m-0 fnt-13 status_box webkit-text" [ngClass]="db.get_style(item[db.get_saleslist.keys[4]])">
+            {{item[db.get_saleslist.keys[4]]}}</p>
+          <!-- <app-status [status]="item.status"></app-status> -->
+          <p class="m-0 fnt-13 fnt_w500 inter_ mt-5">{{item[db.get_saleslist.keys[2]] |
+            currency:db.website_settings.currency}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-expense-claim-list [advance]="true" *ngIf="db.ismobile" (search_txt_value)="search_txt_value.emit($event)"
+    (call_clear_txt)="call_clear_txt.emit($event)" (getFilters)="getFilters.emit($event)"
+    (getDateFromCalendar)="getDateFromCalendar.emit($event)" [data]="db.get_saleslist"
+    (do_to_details)="do_to_details.emit($event)" [dashboard]="dashboard"></app-expense-claim-list>
+</div>
+
+
+<!-- Leave Request Mobile -->
+<div #tabList class="mouse list_common_height" [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Layout 02'">
+
+  <!-- do_to_details.emit(item) -->
+  <ng-container *ngIf="db.get_saleslist.data && db.get_saleslist.data.length != 0">
+    <div class="list-container" [class.selected_item]="db.selectedId == item.name"
+      (click)="!db.ismobile ? active_item(item,i) : null" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+      *ngFor="let item of db.get_saleslist.data;let i = index" (click)="db.ismobile ? goDetailPage(item) : null"
+      (click)="!db.ismobile ? send_data(item) : null">
+      <div class="d__flex gap-10 just-s pb-5">
+        <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.employee_name}}</h6>
+        <!-- <div><app-status [status]="item.status"></app-status></div> -->
+        <!-- <p class="m-0 text_2 fnt-13 flex-auto">{{db.getTimecal(item[data.keys[8]])}}</p> -->
+      </div>
+
+      <div class="d__flex gap-10 just-s pb-5">
+        <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-12">{{item.name}}</span></p>
+        <div class="d__flex gap-5">
+          <ion-icon src="/assets/leaves/calendar.svg" class="fnt-14"></ion-icon>
+          <p class="m-0 mt-5px fnt-13 text_2"><span class="fnt-12 text_2">{{item.work_from_date | date: "MMM dd"}}</span>
+            to <span class="fnt-13  text_2"> {{(item.work_end_date ? item.work_end_date : item.work_from_date) | date:"MMM dd"}}</span></p>
+        </div>
+      </div>
+
+      <div class="flex-auto">
+        <p class="m-0 fnt-12 webkit-text capitalize" [style.--line]="1">{{item.reason}}</p>
+      </div>
+    </div>
+  </ng-container>
+
+  <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+    *ngIf="!db.bodySkeleton && ((!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>
+
+
+<!-- Salary Slip Mobile -->
+<div *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist  && db.selected_list.page == 'Salary Slip'">
+  <div class="dash_sections"
+    *ngIf="!db.employee_role && db.get_saleslist.dashboard && db.get_saleslist.dashboard.length > 0">
+    <div *ngFor="let item of db.get_saleslist.dashboard" class="border p-10 rounded-10 pad_010">
+      <div class="d__flex gap-10 just-s py-7">
+        <ion-icon class="bg_common " [ngClass]="item.label == 'Paid Payroll' ? 'bg_1' : 'bg_2'"
+          [src]="item.label == 'Paid Payroll' ? '/assets/salary/paid-pay.svg' : '/assets/salary/pending-pay.svg'"></ion-icon>
+        <p class="m-0 bold_name text_col_1">{{item.count ? item.count : item.employee_count}}</p>
+      </div>
+      <p class="m-0 fnt-14">{{item.label}}</p>
+    </div>
+  </div>
+
+  <div class=" ">
+    <app-common-search (call_clear_txt)="clear_txt.emit($event)" [search_filter]="search_filter"
+      (open_filter)="supplier_filter.emit($event)" placeholder="Search for {{page_title}}"
+      (search_txt_value)="load_search.emit($event)"></app-common-search>
+  </div>
+
+
+  <div #tabList [class.height_scroll]="!db.ismobile && !height_val" [class.height_val]="!db.ismobile && height_val"
+    [class.height_scroll_search]="db.enable_detail" *ngIf="db.get_saleslist.data && db.get_saleslist.data.length > 0"
+    (scroll)="load_data($event)" class="mouse list_common_height">
+
+    <div class="list-container" (click)="!db.ismobile ? active_item(item,i) : null" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" (click)="do_to_details.emit(item)"
+      (click)="!db.ismobile ? send_data(item) : null" *ngFor="let item of db.get_saleslist.data;index as i">
+      <div class="d__flex gap-10 just-s pb-5">
+        <div class="d__flex gap-5" *ngIf="db.employee_role"><span class="fnt-13 m-0">{{item.start_date | date: "MMMM"}}</span>
+          <div class="dot dot-2"></div>
+          <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.start_date}}</h6>
+        </div>
+        <div *ngIf="!db.employee_role">
+          <p class="m-0 fnt-13 webkit-text" [style.--line]="2">{{item.employee_name}}</p>
+        </div>
+        <div class="flex-auto">
+          <app-status [status]="item.status"></app-status>
+        </div>
+      </div>
+
+      <div class="d__flex gap-10 just-s pb-5">
+        <p class="m-0 d__flex gap-5">
+          <!-- <ion-icon src="/assets/expense-claim/name.svg"></ion-icon> -->
+          <span class="m-0 text_2 fnt-13">{{item.name}}</span>
+        </p>
+        <p class="m-0 flex-auto bold_name-13 inter_">{{ item.net_pay ? ( item.net_pay |
+          currency:db.website_settings.currency) : 0 }}</p>
+      </div>
+
+      <div class="d__flex gap-10 just-s pb-5">
+        <!-- <p class="m-0 d__flex gap-5"> -->
+        <!-- <ion-icon src="/assets/expense-claim/company.svg"></ion-icon> -->
+        <!-- item.company -->
+        <!-- <span
+            class="m-0 text_2 fnt-13">{{' - '}}</span></p> -->
+        <div class="d__flex w-100 just-s">
+          <p class="m-0 fnt-12 fnt_w500 gray_clr mt-5 inter_"><span style="color: #E21B22;">-
+            </span>{{item.total_deduction ? (item.total_deduction | currency:db.website_settings.currency) : '' }}</p>
+
+          <div class="d__flex gap-5" *ngIf="!db.employee_role"><span class="fnt-13 m-0">{{item.start_date | date: "MMMM"}}</span>
+            <div class="dot dot-2"></div>
+            <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.start_date}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+    *ngIf="!db.bodySkeleton && ((!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>
+
+
+<!-- Leave Application Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile && !height_val" [class.height_val]="!db.ismobile && height_val"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0 && db.selected_list.page == 'Leave Application'">
+
+  <div [class.selected_item]="db.selectedId == item.name" *ngFor="let item of db.get_saleslist.data; let i = index"
+    [id]="i + 1 + 'scroll'" class="sec_leave">
+    <div class="d__flex" (click)="!db.ismobile ? active_item(item,i) : null"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" (click)="do_to_details.emit(item)"
+      (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1">
+        <h3 class="m-0 fnt-15 fnt_w600 primary_clr capitalize">{{item.employee_name}}</h3>
+        <h2 class="m-0 medium_name capitalize mt-5">{{item.employee}}</h2>
+        <h2 class="m-0 medium_name Invoice">{{item.leave_type}}<span class="gray_clr"></span></h2>
+      </div>
+      <div class="s-2">
+        <div class="sec__2d">
+          <p class="m-0 fnt-13 status_box webkit-text text-c" [ngClass]="db.get_style(item.status)">
+            {{item.status}}</p>
+          <!-- <h2 class="m-0 fnt-12 fnt_w500 capitalize mt-5">{{item[db.get_saleslist.keys[1]]}}</h2> -->
+          <!-- to {{item[db.get_saleslist.keys[7]] | date: 'MMM d'}} -->
+          <h2 class="m-0 fnt-12 gray_clr mt-3">{{item.from_date | date: 'MMM d'}}</h2>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="d__flex just-s buttons__" *ngIf="item.status == 'Open' && item.docstatus == 0 && db.ismobile">
+      <ion-button class="approve_" fill="outline" (click)="sure_approve(item,'Approve',i)">Approve</ion-button>
+      <ion-button class="Reject_" fill="outline" (click)="sure_approve(item,'Reject',i)">Reject</ion-button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Toast -->
+<div *ngIf="alert_animatings && alert_animatings.length != 0 && old_list != 'Lead'"
+  class="alert_msg tostifyy success__alert">
+  <div class="tostify d__flex" *ngFor="let item of alert_animatings;let i = index"
+    (click)="alert_animatings.splice(i,1)">
+    <div class="success-txt"> <span>{{item}}...</span> </div>
+    <ion-icon name="close-outline"></ion-icon>
+  </div>
+</div>
+
+
+<!-- Employee Web -->
+<div class="pur-Fields-8"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Layout 3' && !db.enable_material && db.selected_list.page == 'Employee'">
+
+  <app-employee-list *ngIf="db.viewListType == 'Grid'" [view]="'web'" (scroll_data)="load_data($event)"
+    (send_pagination_count)="send_pagination_count.emit($event)" (go_to_detail)="go_to_detail($event,-1)"
+    (createNew)="createNew.emit($event)" [list_data]="db.get_saleslist.data" (filterList)="filterList.emit($event)"
+    [supplier_id]="supplier_id" [search_filter]="search_filter" [page_title]="page_title" [json_filter]="json_filter"
+    [doctype]="doc_type" (tab_filter)="tab_filter.emit($event)"></app-employee-list>
+
+  <!-- [headerData]="employee_table" -->
+  <app-common-grid-table height="calc(100vh - 180px)" [rightDetail]="true"
+    *ngIf="db.viewListType == 'Table' && !db.enable_detail" [detailPage]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.hr_manager_role ? db.get_saleslist['table'] : employee_table"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+
+<!-- Expense Claim Web -->
+<div class="exp-Fields-5"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Mobile Expense Claim' && !db.enable_material && db.selected_list.page == 'Expense Claim'">
+  <!-- [headerData]="expense_claim_table1" -->
+  <app-common-grid-table [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)" [rightDetail]="true"
+    (load_popup)="load_popup($event)" [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table'] "
+    [doctype]="doc_type"></app-common-grid-table>
+
+  <app-no-record-found
+    *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>
+
+
+<!-- Leave Request Web -->
+<div class="leave-req-3"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Layout 02' && !db.enable_material &&  db.selected_list.page == 'Compensatory Leave Request'">
+  
+  <app-no-record-found
+    *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+  <!-- leave_request_table1 -->
+  <app-common-grid-table [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)" [rightDetail]="true"
+    (load_popup)="load_popup($event)" [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+
+<!-- Employee Advance Web -->
+<div class="Emp-Fields-6"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Layout 4' && !db.enable_material">
+ 
+  <app-no-record-found
+    *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+  <!-- employee_advance_table1 -->
+  <app-common-grid-table height="calc(100vh - 180px)" [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)"
+    [rightDetail]="true" (load_popup)="load_popup($event)" [list_data]="db.get_saleslist"
+    [headerData]="db.get_saleslist['table']" [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+
+<!-- Employee Grievance Mobile -->
+<div class="pur-Fields-5"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Employee Grievance Mobile' && !db.enable_material && db.selected_list.page == 'Employee Grievance'">
+ 
+  <app-common-grid-table [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)" [rightDetail]="true"
+    (load_popup)="load_popup($event)" [list_data]="db.get_saleslist" [headerData]="db.get_saleslist.keys"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+
+<!-- Employee Grievance Mobile -->
+<div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+  [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+  *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Employee Grievance' && db.get_saleslist.data && db.get_saleslist.data.length != 0 && db.sales_dashboard != 'Sales Manager';">
+
+  <div [class.selected_item]="db.selectedId == item.name" (click)="!db.ismobile ? active_item(item,i) : null"
+    *ngFor="let item of db.get_saleslist.data; let i = index" [id]="i + 1 + 'scroll'"
+    (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" class="d__flex expense_sec"
+    (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+
+    <div class="d__flex w-100 sec-break">
+
+      <div class="s-1">
+        <h3 class="m-0 fnt-16 fnt_w600 ">{{item[db.get_saleslist.keys[0]]}}</h3>
+        <h2 class="m-0 medium_name capitalize gray_clr">{{get_values(db.get_saleslist.keys[1])}}<span
+            class="gray_clr">{{item[db.get_saleslist.keys[1]]}}</span></h2>
+      </div>
+
+      <div class="s-2">
+        <div class="sec__2d">
+          <div class="w-100 d__flex just-e">
+            <p class="m-0 fnt-13 status_box webkit-text" [ngClass]="db.get_style(item[db.get_saleslist.keys[3]])">
+              {{item[db.get_saleslist.keys[3]]}}</p>
+          </div>
+          <div class="capitalize ">{{item[db.get_saleslist.keys[2]] | date: 'MM/dd/yyyy'}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Issue Web -->
+<div class="iss-Fields-5"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Issue Mobile' && !db.enable_material && db.selected_list.page == 'Issue'">
+  <app-common-grid-table [detailPopup]="true" (load_popup)="load_popup($event)" [list_data]="db.get_saleslist"
+    [headerData]="issue_table1" [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+
+<!-- Report Web-->
+<div class="rep-Fields-4"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'Report Mobile' && !db.enable_material && db.selected_list.page == 'Report'">
+  <div class="table__data fnt-11 d__flex table__header">
+    <div class="text-c mt-5">
+      <!-- <ion-checkbox [checked]="check_box" class="check__box" (click)="check_box = !check_box"></ion-checkbox> -->
+    </div>
+    <div *ngFor="let item of db.get_saleslist.keys.slice(0, 4)">
+      <div class="d__flex capitalize wid-fit">{{ item.replace('_', ' ') }}</div>
+    </div>
+  </div>
+  <div [ngClass]="db.scroll_top?'Sup-orderss__list':'orderss_list'"
+    [class.no_tab_height]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0"
+    #tabList (scroll)="load_data($event)" class="list_common_height"
+    *ngIf="db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0">
+    <div class="main-item mouse animated fadeInUp" *ngFor="let item of db.get_saleslist.data;let i =index"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null"
+      (click)="(!db.ismobile && !db.enable_material) ? enable_mat(item,i) : null"
+      (click)="!db.ismobile ? active_item(item,i) : null" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null">
+      <div class="table__data align-c d__flex table__items">
+        <div class="text-c">
+          <!-- <ion-checkbox class="check__box box__icon"></ion-checkbox> -->
+        </div>
+        <div class="order_id">
+          <p class="">{{item.name}}</p>
+        </div>
+        <div class="capitalize ">{{item.ref_doctype}}</div>
+        <div class="capitalize ">{{item.report_name}}</div>
+        <div class="capitalize ">{{item.is_standard}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Attendance Web -->
+<div class="pur-Fields-5"
+  *ngIf="!db.ismobile && db.get_saleslist  && !db.enable_material && db.selected_list.page == 'Attendance'">
+
+  <div class="big_box_advance">
+
+    <app-attendance-list *ngIf="db.viewListType == 'Grid'" [supplier_id]="supplier_id" [page_title]="page_title"
+      [json_filter]="json_filter" [search_filter]="search_filter" [doc_type]="doc_type" [search_data]="search_data"
+      (do_to_details)="do_to_details.emit($event)" [list_data]="db.get_saleslist" (show_att_cal)="show_att_cal($event)"
+      (load_popup)="load_popup($event)" [highlightedDates]="highlightedDates"
+      (getCalendarDate)="getCalendarDate.emit($event)" (getDateFromCalendars)="getDateFromCalendars.emit($event)"
+      (getFilters)="getFilters.emit($event)"></app-attendance-list>
+    <app-grid-attendance *ngIf="db.viewListType == 'Table'" [list_data]="db.get_saleslist"
+      [search_filter]="search_filter"></app-grid-attendance>
+    <app-common-grid-table [detailPopup]="true" (load_popup)="load_popup($event)" [rightDetail]="true"
+      [enableStatusFilter]="false" *ngIf="db.viewListType == 'GridTable' && !db.enable_detail" [detailPage]="false"
+      (go_to_detail)="go_to_detail($event,-1)" [list_data]="db.get_saleslist" [headerData]="attendanceTable"
+      [doctype]="doc_type"></app-common-grid-table>
+  </div>
+
+</div>
+
+
+<!-- Customer Web -->
+<div class="cus-Fields-5"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'layout 10' && !db.enable_material">
+
+  <div [ngClass]="db.scroll_top ? 'Sup-orderss__list' : 'orderss_list'"
+    [class.no_tab_height]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0"
+    #tabList (scroll)="load_data($event)" class="list_common_height"
+    *ngIf="false && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0">
+    <div class="main-item mouse animated fadeInUp" *ngFor="let item of db.get_saleslist.data;let i =index"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null"
+      (click)="(!db.ismobile && !db.enable_material) ? enable_mat(item,i) : null"
+      (click)="!db.ismobile ? active_item(item,i) : null" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null">
+      <div class="table__data crmList align-c d__flex table__items">
+
+        <div class="order_id p-5-10 d__flex gap-10">
+          <p class="m-0 fnt-14 employee_name_avtr capitalize">{{item.customer_name[0]}}</p>
+          <p class="m-0 fnt-14">{{item.customer_name}}</p>
+        </div>
+
+        <div class="capitalize ">{{item.customer_group ? item.customer_group : '-'}}</div>
+        <div class="capitalize ">{{item.territory ? item.territory : '-'}}</div>
+        <div class="cus_sts1">
+          <p class="m-0 fnt-13 status_box webkit-text text-c"
+            [ngClass]="{'enabled-status': item.disabled != 1, 'disabled-status': item.disabled == 1}">
+            {{item.disabled == 1 ? 'Disabled' : 'Enabled'}}</p>
+        </div>
+        <div class="capitalize ">{{item.mobile_no ? item.mobile_no : '-'}}</div>
+        <div class="capitalize">{{item.modified ? db.getTimecal(item.modified) : (item.creation ?
+          db.getTimecal(item.creation) : '-')}}</div>
+      </div>
+    </div>
+  </div>
+
+
+  <app-common-grid-table [rightDetail]="true" *ngIf="!db.ismobile && !db.enable_detail"
+    (load_popup)="load_popup($event)" [detailPage]="false" [detailPopup]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
+    [doctype]="doc_type"></app-common-grid-table>
+
+
+  <!-- {{db.get_saleslist | json}} -->
+  <app-no-record-found
+    *ngIf="(!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.ismobile"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+</div>
+
+
+<!-- Holiday -->
+<div class="hol-Fields-5" *ngIf="db.get_saleslist && !db.enable_material && db.selected_list.page == 'Holiday List'">
+  <!-- (holidaySearch)="holidaySearch($event)" -->
+  <app-holiday-lists *ngIf="doc_type == 'Holiday List'" [list_data]="db.get_saleslist"
+    (clear_txt)="call_clear_txt.emit('')" (searchTxtValue)="load_search.emit($event)" (load_data)="load_data($event)"
+    (menu_name)="menu_name.emit($event)" [options]="tabs_array"></app-holiday-lists>
+
+</div>
+
+
+<!-- Salary slip Web -->
+<div class="sal-Fields-5"
+  *ngIf="!db.ismobile && db.get_saleslist &&  !db.enable_material && db.selected_list.page == 'Salary Slip'">
+  
+  <app-no-record-found
+    *ngIf="(!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.bodySkeleton && !db.ismobile"
+    [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  <app-common-grid-table [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)" [rightDetail]="true"
+    (load_popup)="load_popup($event)" [list_data]="db.get_saleslist" [headerData]="salary_slip_table1"
+    [doctype]="doc_type"></app-common-grid-table>
+</div>
+
+
+<!-- Leave Application Web -->
+<div class="Lea-Fields-5"
+  *ngIf="!db.ismobile && db.get_saleslist && !db.enable_material && db.selected_list.page == 'Leave Application'">
+  
+  <app-leave-application-list [doctype]="doc_type" (leaveConfirm)="leaveConfirm($event)"
+    (tab_filter)="tab_filter.emit($event)" [data]="db.get_saleslist" [leave_application_table]="leave_application_table"
+    (click_data)="load_all($event)" (load_data)="load_data($event)" (filterList)="filterList.emit($event)"
+    [supplier_id]="supplier_id" [search_filter]="search_filter" [page_title]="page_title" [json_filter]="json_filter"
+    [doctype]="doc_type" (load_popup)="load_popup($event)"></app-leave-application-list>
+</div>
+
+
+ <!-- HD Ticket Web -->
+<div class="hd-ticket-5"
+  *ngIf="!db.ismobile && db.get_saleslist && db.get_saleslist.template_name == 'HD Ticket' && !db.enable_material && db.selected_list.page == 'HD Ticket'">
+  <div class="table__data fnt-11 d__flex table__header">
+    <div class="text-c mt-5">
+      <!-- <ion-checkbox [checked]="check_box" class="check__box" (click)="check_box = !check_box"></ion-checkbox> -->
+    </div>
+    <div *ngFor="let item of hd_ticket_table">
+      <div class="d__flex capitalize wid-fit">{{ item.name }}</div>
+    </div>
+  </div>
+  <div [ngClass]="db.scroll_top?'orderss__list':'orderss_list'"
+    [class.no_tab_height]="db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length == 0"
+    #tabList (scroll)="load_data($event)" class="list_common_height"
+    *ngIf="db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length != 0">
+    <div class="main-item mouse animated fadeInUp" *ngFor="let item of db.get_saleslist.data;let i =index"
+      (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null"
+      (click)="(!db.ismobile && !db.enable_material) ? enable_mat(item,i) : null"
+      (click)="!db.ismobile ? active_item(item,i) : null" [id]="i + 1 + 'scroll'"
+      (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null">
+      <div class="table__data align-c d__flex table__items">
+        <div class="text-c">
+          <!-- <ion-checkbox class="check__box box__icon"></ion-checkbox> -->
+        </div>
+        <div class="capitalize ">{{item.name}}</div>
+        <div class="capitalize ">{{item.subject}}</div>
+        <div><span class="order_status" [ngClass]="db.get_style(item.status)">{{item.status}}</span>
+        </div>
+        <div class="order_id">
+          <p class="m-0">{{item.contact ? item.contact : '-'}}</p>
+        </div>
+        <div class="capitalize ">{{item.opening_date | date:'d-MM-yyyy'}}</div>
+      </div>
+    </div>
+  </div>
+</div>

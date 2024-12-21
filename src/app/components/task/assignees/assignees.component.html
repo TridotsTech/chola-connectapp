@@ -1,0 +1,16 @@
+<app-website-form-header *ngIf="!noHeader" [Title]="'Assignees'"></app-website-form-header>
+<div *ngIf="data && data.length != 0" class="user_list_">
+
+  <div class="d__flex box_" *ngFor="let item of data;let i = index">
+    <div class="d__flex image">
+      <p *ngIf="!item.user_image" class="av_name capitalize" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">{{item.user_name ? item.user_name[0] : (item.full_name ? item.full_name[0] : '')}}</p>
+      <img *ngIf="item.user_image" class="userImage" [src]="db.profileImg(item.user_image, item)">
+    </div>
+    <div>
+      <h4 *ngIf="item.user_name || item.full_name" class="m-0 head_ capitalize">{{item.user_name ? item.user_name : item.full_name}}</h4>
+      <h4 *ngIf="!item.designation && (item.email_id || item.email)" class="sub_head gray_clr">{{item.email_id ? item.email_id : item.email}}</h4>
+      <h4 *ngIf="item.designation" class="sub_head gray_clr d__flex gap-5"><ion-icon class="fnt-16" src="/assets/img/designation.svg"></ion-icon>{{item.designation}}</h4>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,509 @@
+<div class="filter_sec" *ngIf="enableStatusFilter" [class.border-t]="doctype == 'Project'">
+  <app-tabs-button [employee_detail_tab]="true" [border_none]="true" [no_mb]="true" [overflow]="true"
+    (menu_name)="menu_name.emit($event)"
+    [tabs_array]="(list_data && list_data.options && list_data.options.length != 0) ? list_data.options : ''"></app-tabs-button>
+</div>
+
+<input autofocus id="inputs" type="text" (blur)="handleBlur($event)" style="border: #fff;position: absolute;pointer-events: none;"
+      (keyup.arrowdown)="shiftFocusDown()"
+      (keyup.arrowup)="shiftFocusUp()"
+      (keyup.arrowright)="shiftFocusRight()"
+      (keyup.arrowleft)="shiftFocusLeft()">
+
+<div class="tableContainer" [ngStyle]="{'height': height ? height : 'calc(100vh - 227px)'}" #tableScroll [class.custom_h]="detailPopup && listView" (mousedown)="onMouseDown($event, tableScroll)"
+  (mousemove)="onMouseMove($event, tableScroll)"
+  (mouseup)="onMouseUp($event, tableScroll)"
+  (mouseleave)="onMouseUp($event, tableScroll)"
+  (wheel)="onWheel($event, tableScroll)"
+  *ngIf="(headerData && headerData.length != 0 && !headerData[0].prop) && list_data && list_data.data && list_data.data.length != 0 && !skeleton">
+  <table>
+    <thead>
+      <tr class="headerRow">
+        <!-- <th (click)="checkAllBox()" class="sticky-column1 checkBoxSection"><input (change)="changeCheckBox($event)" type="checkbox" [checked]="allCheckTrue"></th> -->
+        <!-- {{headerData[0] | json}} -->
+        <!-- <th class="sticky-column1 capitalize">{{ headerData[0].replaceAll('_', ' ') }}</th> -->
+        <th class="sticky-column1 capitalize">{{ changeTextFormat(headerData[0]) }}</th>
+        <th class="capitalize" *ngFor="let itemHead of headerData.slice(1)">{{ changeTextFormat(itemHead) }}</th>
+      </tr>
+    </thead>
+
+    <tbody class="navigate">
+      <tr *ngFor="let item of list_data.data;let i =index">
+        <!-- <td class="sticky-column1 checkBoxSection" (click)="checkSingleBox(item)"><input type="checkbox" [checked]="item['isChecked']"></td> -->
+        <td class="sticky-column1" (click)="rightSectionDetail($event,item,i)" (mouseenter)="item['showIcon'] = true;"
+          (mouseleave)="item['showIcon'] = false;">
+          <div class="d__flex just-s gap-20">
+            <p class="m-0 fnt-13 capitalize webkit-text w-90" [class.text-t-unset]="isValidEmail(item[headerData[0]])"
+              [style.--line]="1" *ngIf="item[headerData[0]]">{{item[headerData[0]]}}</p>
+            <div class="arrowIcon" *ngIf="item['showIcon']">
+              <ion-icon class="detailIcon fnt-15 gray_clr" (click)="goToDetail($event,item,i)"
+                name="arrow-forward-outline"></ion-icon>
+            </div>
+          </div>
+        </td>
+        <td *ngIf="headerData[1] " [ngClass]="headerData[1] == 'status' ? get_style(item[headerData[1]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[1] == 'status'" [table]="true"
+            [status]="item[headerData[1]]"></app-status>
+          <div *ngIf="headerData[1] == 'shared_to' && item[headerData[1]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[1]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[1]] && item[headerData[1]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[1]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[1] == 'assigned_to' && item[headerData[1]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[1]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[1]] && item[headerData[1]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[1]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[1])"
+            *ngIf="headerData[1] != 'assigned_to' && headerData[1] != 'shared_to' && headerData[1] != 'status' && item[headerData[1]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[1],item[headerData[1]])}}</p>
+        </td>
+        <td *ngIf="headerData[2]" [ngClass]="headerData[2] == 'status' ? get_style(item[headerData[2]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[2] == 'status'" [table]="true"
+            [status]="item[headerData[2]]"></app-status>
+          <div *ngIf="headerData[2] == 'shared_to' && item[headerData[2]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[2]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[2]] && item[headerData[2]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[2]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[2] == 'assigned_to' && item[headerData[2]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[2]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[2]] && item[headerData[2]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[2]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[2])"
+            *ngIf="headerData[2] != 'assigned_to' && headerData[2] != 'shared_to' && headerData[2] != 'status' && item[headerData[2]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[2],item[headerData[2]])}}</p>
+        </td>
+        <td *ngIf="headerData[3] " [ngClass]="headerData[3] == 'status' ? get_style(item[headerData[3]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[3] == 'status'" [table]="true"
+            [status]="item[headerData[3]]"></app-status>
+          <div *ngIf="headerData[3] == 'shared_to' && item[headerData[3]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[3]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[3]] && item[headerData[3]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[3]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[3] == 'assigned_to' && item[headerData[3]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[3]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[3]] && item[headerData[3]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[3]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[3])"
+            *ngIf="headerData[3] != 'assigned_to' && headerData[3] != 'shared_to' && headerData[3] != 'status' && item[headerData[3]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[3],item[headerData[3]])}}</p>
+        </td>
+        <td *ngIf="headerData[4] != 'actions'"
+          [ngClass]="headerData[4] == 'status' ? get_style(item[headerData[4]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[4] == 'status'" [table]="true"
+            [status]="item[headerData[4]]"></app-status>
+          <div *ngIf="headerData[4] == 'shared_to' && item[headerData[4]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[4]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[4]] && item[headerData[4]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[4]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[4] == 'assigned_to' && item[headerData[4]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[4]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[4]] && item[headerData[4]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[4]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[4])"
+            *ngIf="headerData[4] != 'assigned_to' && headerData[4] != 'shared_to' && headerData[4] != 'status' && item[headerData[4]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[4],item[headerData[4]])}}</p>
+        </td>
+        <td *ngIf="headerData[4] == 'actions'">
+          <div class="p-1015">
+            <div class="d__flex gap-10 p-0-10" [class.wi-100]="item.docstatus == 1"
+              *ngIf="db.hr_manager_role && db.current_leave_segment != 'Leave Requests'">
+              <div class="btn1 d__flex mouse" *ngIf="item.docstatus != 1" (click)="leave_confirm($event,item,'Reject',i)">
+                <ion-icon src="/assets/leaves/close.svg" alt=""></ion-icon><span class="fnt3 m-0"></span></div>
+              <div class="btn2 d__flex mouse" *ngIf="item.docstatus != 1"
+                (click)="leave_confirm($event,item,'Approve',i)"><ion-icon src="/assets/leaves/Check.svg"
+                  alt=""></ion-icon><span class="fnt3 m-0"></span></div>
+              <div *ngIf="item.docstatus == 1" class="wi-100"> <app-status [status]="item.status"></app-status> </div>
+            </div>
+  
+            <div class="wi-100 p-1015" *ngIf="!db.hr_manager_role && db.current_leave_segment != 'Leave Requests'">
+              <app-status [reverse]="true" [status]="item.status"></app-status>
+            </div>
+  
+            <div *ngIf="db.current_leave_segment == 'Leave Requests'" class="p-0-10"
+              [class.wi-100]="db.current_leave_segment == 'Leave Requests'">
+              <h5 class="m-0 fnt2">{{item.leave_type}}</h5>
+            </div>
+          </div>
+        </td>
+        <td *ngIf="headerData[5]" [ngClass]="headerData[5] == 'status' ? get_style(item[headerData[5]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[5] == 'status'" [table]="true"
+            [status]="item[headerData[5]]"></app-status>
+          <div *ngIf="headerData[5] == 'shared_to' && item[headerData[5]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[5]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[5]] && item[headerData[5]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[5]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[5] == 'assigned_to' && item[headerData[5]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[5]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[5]] && item[headerData[5]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[5]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[5])"
+            *ngIf="headerData[5] != 'assigned_to' && headerData[5] != 'shared_to' && headerData[5] != 'status' && item[headerData[5]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[5],item[headerData[5]])}}</p>
+        </td>
+        <td *ngIf="headerData[6] " [ngClass]="headerData[6] == 'status' ? get_style(item[headerData[6]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[6] == 'status'" [table]="true"
+            [status]="item[headerData[6]]"></app-status>
+          <div *ngIf="headerData[6] == 'shared_to' && item[headerData[6]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[6]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[6]] && item[headerData[6]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[6]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[6] == 'assigned_to' && item[headerData[6]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[6]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[6]] && item[headerData[6]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[6]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[6])"
+            *ngIf="headerData[6] != 'assigned_to' && headerData[6] != 'shared_to' && headerData[6] != 'status' && item[headerData[6]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[6],item[headerData[6]])}}</p>
+        </td>
+        <td *ngIf="headerData[7] " [ngClass]="headerData[7] == 'status' ? get_style(item[headerData[7]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[7] == 'status'" [table]="true"
+            [status]="item[headerData[7]]"></app-status>
+          <div *ngIf="headerData[7] == 'shared_to' && item[headerData[7]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[7]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[7]] && item[headerData[7]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[7]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[7] == 'assigned_to' && item[headerData[7]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[7]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[7]] && item[headerData[7]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[7]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[7])"
+            *ngIf="headerData[7] != 'assigned_to' && headerData[7] != 'shared_to' && headerData[7] == 'status' && item[headerData[7]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[7],item[headerData[7]])}}</p>
+        </td>
+        <td *ngIf="headerData[8] " [ngClass]="headerData[8] == 'status' ? get_style(item[headerData[8]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[8] == 'status'" [table]="true"
+            [status]="item[headerData[8]]"></app-status>
+          <div *ngIf="headerData[8] == 'shared_to' && item[headerData[8]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[8]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[8]] && item[headerData[8]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[8]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[8] == 'assigned_to' && item[headerData[8]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[8]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[8]] && item[headerData[8]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[8]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[8])"
+            *ngIf="headerData[8] != 'assigned_to' && headerData[8] != 'shared_to' && headerData[8] != 'status' && item[headerData[8]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[8],item[headerData[8]])}}</p>
+        </td>
+        <td *ngIf="headerData[9]" [ngClass]="headerData[9] == 'status' ? get_style(item[headerData[9]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[9] == 'status'" [table]="true"
+            [status]="item[headerData[9]]"></app-status>
+          <div *ngIf="headerData[9] == 'shared_to' && item[headerData[9]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[9]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[9]] && item[headerData[9]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[9]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[9] == 'assigned_to' && item[headerData[9]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[9]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[9]] && item[headerData[9]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[9]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[9])"
+            *ngIf="headerData[9] != 'assigned_to' && headerData[9] != 'shared_to' && headerData[9] != 'status' && item[headerData[9]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[9],item[headerData[9]])}}</p>
+        </td>
+        <td *ngIf="headerData[10]" [ngClass]="headerData[10] == 'status' ? get_style(item[headerData[10]]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[10] == 'status'" [table]="true"
+            [status]="item[headerData[10]]"></app-status>
+          <div *ngIf="headerData[10] == 'shared_to' && item[headerData[10]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[10]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[10]] && item[headerData[10]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[10]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[10] == 'assigned_to' && item[headerData[10]].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[10]]"></app-assign-to>
+            <h4 *ngIf="item[headerData[10]] && item[headerData[10]].length > 3" class="more_ gray_clr">
+              {{ item[headerData[10]].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[10])"
+            *ngIf="headerData[10] != 'assigned_to' && headerData[10] != 'shared_to' && headerData[10] == 'status' && item[headerData[10]]"
+            [style.--line]="1">{{check_label_r_modified(headerData[10],item[headerData[10]])}}</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- height: calc(100vh - 240px); -->
+
+<div class="tableContainer" [ngStyle]="{'height': height ? height : 'calc(100vh - 227px)'}" #tableScroll [class.custom_h]="detailPopup && listView" (mousedown)="onMouseDown($event, tableScroll)"
+  (mousemove)="onMouseMove($event, tableScroll)"
+  (mouseup)="onMouseUp($event, tableScroll)"
+  (mouseleave)="onMouseUp($event, tableScroll)"
+  (wheel)="onWheel($event, tableScroll)"
+  *ngIf="(headerData && headerData[0].prop) && list_data && list_data.data && list_data.data.length != 0 && !skeleton">
+  <table>
+    <thead>
+      <tr class="headerRow">
+        <!-- <th (click)="checkAllBox()" class="sticky-column headerSticky checkBoxSection"><input (change)="changeCheckBox($event)" type="checkbox" [checked]="allCheckTrue"></th> -->
+  
+        <!-- <th class="sticky-column dyna_width capitalize" [style.--cus-width]="headerData[0].size">{{ headerData[0].prop.replaceAll('_', ' ') }}</th>
+        <th class="capitalize dyna_width" [style.--cus-width]="itemHead.size" *ngFor="let itemHead of headerData.slice(1)">{{ itemHead.prop.replaceAll('_', ' ') }}</th> -->
+  
+        <th class="sticky-column dyna_width capitalize headerSticky"
+          [style.--cus-width]="headerData[0] ? headerData[0].size : '0'">{{ changeTextFormat(headerData[0].prop)}}</th>
+        <th class="capitalize dyna_width headerSticky" [style.--cus-width]="itemHead ? itemHead.size : '0'"
+          *ngFor="let itemHead of headerData.slice(1, 11)">{{ changeTextFormat(itemHead.prop)}}</th>
+  
+      </tr>
+    </thead>
+    <tbody class="navigate">
+      <tr *ngFor="let item of list_data.data;let i =index">
+        <!-- <td class="sticky-column checkBoxSection" (click)="checkSingleBox(item)"><input type="checkbox" [checked]="item['isChecked']"></td> -->
+        <td class="sticky-column" (click)="rightSectionDetail($event,item,i)" (mouseenter)="item['showIcon'] = true;"
+          (mouseleave)="item['showIcon'] = false;">
+          <div class="d__flex just-s gap-20">
+            <p class="m-0 fnt-13 capitalize webkit-text w-90"
+              [class.text-t-unset]="isValidEmail(item[headerData[0].prop])" [style.--line]="1"
+              *ngIf="item[headerData[0].prop]">{{item[headerData[0].prop]}}</p>
+            <div class="arrowIcon" *ngIf="item['showIcon']">
+              <ion-icon class="detailIcon fnt-15 gray_clr" (click)="goToDetail($event,item,i)"
+                name="arrow-forward-outline"></ion-icon>
+            </div>
+          </div>
+        </td>
+        <td *ngIf="headerData[1] " [ngClass]="headerData[1].prop == 'status' ? get_style(item[headerData[1].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[1].prop == 'status'" [table]="true"
+            [status]="item[headerData[1].prop]"></app-status>
+          <div *ngIf="headerData[1].prop == 'shared_to' && item[headerData[1].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[1].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[1].prop] && item[headerData[1].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[1].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[1].prop == 'assigned_to' && item[headerData[1].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[1].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[1].prop] && item[headerData[1].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[1].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[1].prop)"
+            *ngIf="headerData[1].prop != 'assigned_to' && headerData[1].prop != 'shared_to' && headerData[1].prop != 'status' && item[headerData[1].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[1].prop,item[headerData[1].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[2]" [ngClass]="headerData[2].prop == 'status' ? get_style(item[headerData[2].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[2].prop == 'status'" [table]="true"
+            [status]="item[headerData[2].prop]"></app-status>
+          <div *ngIf="headerData[2].prop == 'shared_to' && item[headerData[2].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[2].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[2].prop] && item[headerData[2].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[2].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[2].prop == 'assigned_to' && item[headerData[2].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[2].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[2].prop] && item[headerData[2].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[2].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[2].prop)"
+            *ngIf="headerData[2].prop != 'assigned_to' && headerData[2].prop != 'shared_to' && headerData[2].prop != 'status' && item[headerData[2].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[2].prop,item[headerData[2].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[3] " [ngClass]="headerData[3].prop == 'status' ? get_style(item[headerData[3].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[3].prop == 'status'" [table]="true"
+            [status]="item[headerData[3].prop]"></app-status>
+          <div *ngIf="headerData[3].prop == 'shared_to' && item[headerData[3].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[3].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[3].prop] && item[headerData[3].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[3].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[3].prop == 'assigned_to' && item[headerData[3].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[3].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[3].prop] && item[headerData[3].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[3].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[3].prop)"
+            *ngIf="headerData[3].prop != 'assigned_to' && headerData[3].prop != 'shared_to' && headerData[3].prop != 'status' && item[headerData[3].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[3].prop,item[headerData[3].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[4]" [ngClass]="headerData[4].prop == 'status' ? get_style(item[headerData[4].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[4].prop == 'status'" [table]="true"
+            [status]="item[headerData[4].prop]"></app-status>
+          <div *ngIf="headerData[4].prop == 'shared_to' && item[headerData[4].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[4].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[4].prop] && item[headerData[4].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[4].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[4].prop == 'assigned_to' && item[headerData[4].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[4].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[4].prop] && item[headerData[4].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[4].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[4].prop)"
+            *ngIf="headerData[4].prop != 'assigned_to' && headerData[4].prop != 'shared_to' && headerData[4].prop != 'status' && item[headerData[4].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[4].prop,item[headerData[4].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[5]" [ngClass]="headerData[5].prop == 'status' ? get_style(item[headerData[5].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[5].prop == 'status'" [table]="true"
+            [status]="item[headerData[5].prop]"></app-status>
+          <div *ngIf="headerData[5].prop == 'shared_to' && item[headerData[5].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[5].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[5].prop] && item[headerData[5].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[5].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[5].prop == 'assigned_to' && item[headerData[5].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[5].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[5].prop] && item[headerData[5].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[5].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[5].prop)"
+            *ngIf="headerData[5].prop != 'assigned_to' && headerData[5].prop != 'shared_to' && headerData[5].prop != 'status' && item[headerData[5].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[5].prop,item[headerData[5].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[6] " [ngClass]="headerData[6].prop == 'status' ? get_style(item[headerData[6].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[6].prop == 'status'" [table]="true"
+            [status]="item[headerData[6].prop]"></app-status>
+          <div *ngIf="headerData[6].prop == 'shared_to' && item[headerData[6].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[6].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[6].prop] && item[headerData[6].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[6].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[6].prop == 'assigned_to' && item[headerData[6].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[6].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[6].prop] && item[headerData[6].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[6].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[6].prop)"
+            *ngIf="headerData[6].prop != 'assigned_to' && headerData[6].prop != 'shared_to' && headerData[6].prop != 'status' && item[headerData[6].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[6].prop,item[headerData[6].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[7] " [ngClass]="headerData[7].prop == 'status' ? get_style(item[headerData[7].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[7].prop == 'status'" [table]="true"
+            [status]="item[headerData[7].prop]"></app-status>
+          <div *ngIf="headerData[7].prop == 'shared_to' && item[headerData[7].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[7].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[7].prop] && item[headerData[7].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[7].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[7].prop == 'assigned_to' && item[headerData[7].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[7].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[7].prop] && item[headerData[7].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[7].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[7].prop)"
+            *ngIf="headerData[7].prop != 'assigned_to' && headerData[7].prop != 'shared_to' && headerData[7].prop != 'status' && item[headerData[7].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[7].prop,item[headerData[7].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[8] " [ngClass]="headerData[8].prop == 'status' ? get_style(item[headerData[8].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[8].prop == 'status'" [table]="true"
+            [status]="item[headerData[8].prop]"></app-status>
+          <div *ngIf="headerData[8].prop == 'shared_to' && item[headerData[8].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[8].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[8].prop] && item[headerData[8].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[8].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[8].prop == 'assigned_to' && item[headerData[8].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[8].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[8].prop] && item[headerData[8].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[8].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[8].prop)"
+            *ngIf="headerData[8].prop != 'assigned_to' && headerData[8].prop != 'shared_to' && headerData[8].prop != 'status' && item[headerData[8].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[8].prop,item[headerData[8].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[9]" [ngClass]="headerData[9].prop == 'status' ? get_style(item[headerData[9].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[9].prop == 'status'" [table]="true"
+            [status]="item[headerData[9].prop]"></app-status>
+          <div *ngIf="headerData[9].prop == 'shared_to' && item[headerData[9].prop].length != 0" class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[9].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[9].prop] && item[headerData[9].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[9].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[9].prop == 'assigned_to' && item[headerData[9].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[9].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[9].prop] && item[headerData[9].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[9].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[9].prop)"
+            *ngIf="headerData[9].prop != 'assigned_to' && headerData[9].prop != 'shared_to' && headerData[9].prop != 'status' && item[headerData[9].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[9].prop,item[headerData[9].prop])}}</p>
+        </td>
+        <td *ngIf="headerData[10]" [ngClass]="headerData[10].prop == 'status' ? get_style(item[headerData[10].prop]) : ''">
+          <app-status [reverse]="true" *ngIf="headerData[10].prop == 'status'" [table]="true"
+            [status]="item[headerData[10].prop]"></app-status>
+          <div *ngIf="headerData[10].prop == 'shared_to' && item[headerData[10].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[10].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[10].prop] && item[headerData[10].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[10].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <div *ngIf="headerData[10].prop == 'assigned_to' && item[headerData[10].prop].length != 0"
+            class="assignTo d__flex">
+            <app-assign-to [small]="true" [assignTo]="item[headerData[10].prop]"></app-assign-to>
+            <h4 *ngIf="item[headerData[10].prop] && item[headerData[10].prop].length > 3" class="more_ gray_clr">
+              {{ item[headerData[10].prop].length - 3 }} + Peoples
+            </h4>
+          </div>
+          <p class="m-0 fnt-13 webkit-text" [class.text-e]="textEndCheck(headerData[10].prop)"
+            *ngIf="headerData[10].prop != 'assigned_to' && headerData[10].prop != 'shared_to' && headerData[10].prop != 'status' && item[headerData[10].prop]"
+            [style.--line]="1">{{check_label_r_modified(headerData[10].prop,item[headerData[10].prop])}}</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="skeleton" class="align_center">
+  <ion-spinner name="lines-sharp"></ion-spinner>
+</div>

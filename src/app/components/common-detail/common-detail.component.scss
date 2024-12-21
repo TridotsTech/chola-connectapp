@@ -1,0 +1,27 @@
+.Buttons{
+    border: 1px solid #dddd;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 5px;
+    .side1{
+        flex: 0 0 20%;
+        text-align: center;
+        h6{
+            background: #ddd;
+            margin: 0 7px;
+            padding: 10px;
+            border-radius: 7px;
+        }
+    }
+    .side2{
+        flex: 1;
+        p{
+            font-size: 12px;
+            margin: 0;
+        }
+        h6{
+            text-align: center;
+            margin: 0;
+        }
+    }
+}

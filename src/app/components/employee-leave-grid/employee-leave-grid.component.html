@@ -1,0 +1,21 @@
+<div class="tableContainer">
+  <table>
+    <tr>
+      <th class="sticky-column1 checkBoxSection"><input type="checkbox"></th>
+      <th class="sticky-column1 dyna_width capitalize">{{keyData[0]}}</th>
+      <th class="capitalize dyna_width" *ngFor="let itemHead of keyData.slice(1)">{{itemHead}}</th>
+    </tr>
+    <tr *ngFor="let item of employeeList;let i =index">
+      <td class="sticky-column1 checkBoxSection"><input type="checkbox"></td>
+      <td class="sticky-column1">
+        <div class="d__flex just-s gap-20">
+          <p class="m-0 fnt-13 capitalize webkit-text w-90" [style.--line]="1" >{{item.employee_name}}</p>
+        </div>
+      </td>
+      <td *ngFor="let leaves of item.leaveLists">
+        {{leaves.leave_days}}
+      </td>
+      
+    </tr>
+  </table>
+</div>

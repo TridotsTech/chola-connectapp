@@ -1,0 +1,27 @@
+.list-container{
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+}
+
+.text_2{
+    color: #00000099;
+}
+
+.dash_board{
+    position: relative;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    /* margin: 0 10px; */
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    height: 85px;
+    align-items: center;
+}
+
+.icon{
+    height: 52px;
+    width: 68px;
+}
+

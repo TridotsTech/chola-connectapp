@@ -1,0 +1,41 @@
+<div class="datetime-picker-container">
+  <div class="datetime-display d__flex just-s" (click)="togglePicker()">
+    <p class="m-0 fnt-15">{{ selectedDateTime | date: 'd/M/yy' }}</p>
+    <ion-icon name="calendar-outline"></ion-icon>
+  </div>
+  <div class="datetime-picker" *ngIf="showPicker">
+    <div class="picker-header">
+      <div (click)="prevMonth()" class="nav-button"><ion-icon name="caret-back-outline"></ion-icon></div>
+      <span>{{ currentMonth }} {{ currentYear }}</span>
+      <div (click)="nextMonth()" class="nav-button"><ion-icon name="caret-forward-outline"></ion-icon></div>
+    </div>
+    <div class="picker-body">
+      <div class="calendar">
+        <div class="calendar-days">
+          <div *ngFor="let day of daysOfWeek" class="day-label">{{ day }}</div>
+        </div>
+        <div class="calendar-dates">
+          <div *ngFor="let date of calendarDates" 
+               (click)="selectDate(date)"
+               [class.selected]="date.date === selectedDay"
+               [class.not-current-month]="!date.isCurrentMonth">
+            {{ date.date }}
+          </div>
+        </div>
+      </div>
+      <div class="time-picker" *ngIf="dateTime">
+        <div class="time-select">
+          <div (click)="changeHour(-1)" class="time-button"><ion-icon name="caret-back-outline"></ion-icon></div>
+          <span>{{ selectedHour | number: '2.0' }}</span>
+          <div (click)="changeHour(1)" class="time-button"><ion-icon name="caret-forward-outline"></ion-icon></div>
+        </div>
+        :
+        <div class="time-select">
+          <div (click)="changeMinute(-1)" class="time-button"><ion-icon name="caret-back-outline"></ion-icon></div>
+          <span>{{ selectedMinute | number: '2.0' }}</span>
+          <div (click)="changeMinute(1)" class="time-button"><ion-icon name="caret-forward-outline"></ion-icon></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

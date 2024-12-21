@@ -1,0 +1,47 @@
+<div class="list">
+  <div class=" header">
+    <div class="d__flex just-s w-100">
+      <div>
+        <h6 class="m-0 heading__">Timer</h6>
+      </div>
+      <ion-icon (click)="close_modal()" class="mouse" name="close-outline"></ion-icon>
+    </div>
+  </div>
+</div>
+<div class="entire_screen" *ngIf="db.ismobile">
+  <div class="pos">
+    <ion-grid>
+      <form>
+        <ion-row class="forms p-010">
+          <ng-container>
+            <ion-col class="col-1" size="12" size-lg="6">
+              <div class="stopwatch">
+                <h1>{{ displayTime }}</h1>
+              </div>
+              <div class="buttons">
+                <ion-button expand="full" (click)="startStopwatch()" [hidden]="running">Start</ion-button>
+                <ion-button expand="full" (click)="startStopwatch()" [hidden]="!running">Complete</ion-button>
+              </div>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </form>
+    </ion-grid>
+    <div id="timeSheet" class="timesheet">
+    </div>
+  </div>
+</div>
+
+<div class="entire_screen" *ngIf="!db.ismobile">
+  <div class="pos">
+    <form>
+      <div class="stopwatch">
+        <h1>{{ displayTime }}</h1>
+      </div>
+      <div class="buttons">
+        <ion-button expand="full" (click)="startStopwatch()" [hidden]="running">Start</ion-button>
+        <ion-button expand="full" (click)="startStopwatch()" [hidden]="!running">Complete</ion-button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div *ngIf="!db.ismobile && page_title" class="forms__">
+  <div class="d__flex gap-10 mar-0-10">
+    <ion-icon class="mouse" (click)="modalctrl.dismiss()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white">{{page_title}}</p>
+  </div>
+</div>
+<!-- {{page_title | json}} -->
+<app-website-form-header *ngIf="(page_title == 'New Event' || page_title == 'New Task')" [close_btn]="true" [Title]="page_title"></app-website-form-header>
+
+<app-header *ngIf="db.ismobile && (page_title != 'New Event' && page_title != 'New Task')" [title]="page_title" [model]="(page_title == 'New Event'|| page_title == 'New Task' || page_title == 'Set as Lost') ? true : false" [no_filter]="page_route == 'Customer' ? true : false" ></app-header>
+
+<ion-content>
+    <div *ngIf="page_route && !edit_form" >
+      <app-new-wizard-form [new_form]="true" [modal]="modal" [add_new_form]="true"   [forms_route]="page_route" (scrollToTop)="scrollToTop()" [tabs_top]="1" [sale_order_id]="sale_order_id" ></app-new-wizard-form>
+    </div>
+
+    <div *ngIf="page_route && edit_form">
+      <app-new-wizard-form [forms_route]="page_route" [modal]="modal" [add_new_form]="true"  [tabs_top]="1" [edit_form]="1" [enable_readonly]="enable_readonly" [edit_form_values]="order_detail"></app-new-wizard-form>
+    </div>
+
+    <div *ngIf="tasks && !edit_form">
+      <app-new-wizard-form [new_form]="true" [modal]="modal" [add_new_form]="true" [forms_route]="tasks" (scrollToTop)="scrollToTop()" [tabs_top]="1" [sale_order_id]="sale_order_id"
+        [task_doctype]="task_doctype" [web_forms]="true"></app-new-wizard-form>
+    </div>
+ 
+    <div *ngIf="data && !edit_form">
+      <app-new-wizard-form [add_new_form]="true" [modal]="modal" [forms_route]="data" (scrollToTop)="scrollToTop()" [tabs_top]="1" [sale_order_id]="sale_order_id"
+       [enable_height]="true" [web_forms]="true" [new_form]="true"  [event_doctype]="event_doctype" [action_meet]="action_meet"></app-new-wizard-form>
+    </div>
+</ion-content>

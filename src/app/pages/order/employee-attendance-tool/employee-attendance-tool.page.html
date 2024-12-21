@@ -1,0 +1,609 @@
+<app-header back_route="/tabs/dashboard" *ngIf="db.ismobile" title="Attendance Tool"></app-header>
+
+<app-sidemenu-header *ngIf="!db.ismobile" heading="Employee Attendance Tool"></app-sidemenu-header>
+
+<ion-content [fullscreen]="true" *ngIf="db.ismobile">
+
+  <!-- <ion-segment [(ngModel)]="active_tab" *ngIf="db.ismobile" class="ion_segment" (ionChange)="segmentchange($event)" [value]="db.attendance_tool_tab">
+      <ion-segment-button class="flex-50" *ngFor="let item of segment_list" [value]="item.value">
+        <ion-label [class.active_tab]="active_tab == item.value" class="fnt-14 fnt_w500">{{item.label}}</ion-label>
+      </ion-segment-button>
+    </ion-segment> -->
+
+  <div class="bg_header filters">
+    <app-tabs-button [no_mb]="true" [no_next_btn]="true" [change_color_none]="true" [border_none]="true"
+      (menu_name)="menu_name1($event)" [bg_white]="false" [tabs_array]="segment_list1"
+      type="edit-profile"></app-tabs-button>
+  </div>
+
+  <ion-backdrop *ngIf="showCalendar" (ionBackdropTap)="hideDiv()"></ion-backdrop>
+
+  <div class="date__" *ngIf="db.ismobile">
+
+    <div id="clickbox" *ngIf="showCalendar" class="attendanceSummary">
+      <div class="d__flex just-s w-100">
+        <h5>Calendar</h5>
+        <ion-icon class="fnt-20" src="/assets/Employee-Home/more.svg"></ion-icon>
+      </div>
+      <div class="calendar_att">
+        <!-- value="2023-01-01" [value]="(selectedDate | date:'yyyy-mm-dd')"-->
+        <ion-datetime presentation="date" (ionChange)="onDateChange($event)" [value]="current_date"></ion-datetime>
+      </div>
+    </div>
+
+    <div (click)="showCalendar =! showCalendar" class="mouse">
+      <p class="m-0 d__flex gap-10"><span class="m-0 fnt-13">{{current_date | date:'MMM d, y'}}</span>
+        <ion-icon src="/assets/expense-claim/down-arrow.svg" class="fnt-20"></ion-icon>
+      </p>
+    </div>
+
+    <!-- <ion-input [(ngModel)]="current_date" (ionChange)="get_date($event)" type="date" class="form-input fnt-14"></ion-input> -->
+    <div class="d__flex gap-10">
+
+      <p class="fnt-14 d__flex gap-5" *ngIf="unmarked_seg" (click)="select_all()">{{selectAll ? 'Unselect All' :'Select
+        All' }}
+        <!-- <ion-icon class="fnt-20 mouse" src="/assets/Select view Icon-01.svg"></ion-icon> -->
+      </p>
+
+      <div [class.displayNone]="unmarked_seg" (click)="applyFilter(item, i)" [class.activebtnUif]="item['isActive']"
+        *ngFor="let item of filters;let i = index" class="btnUif d__flex">
+        <ion-icon class="icon" [src]="item['isActive'] ? item.activeIcon : item.icon"></ion-icon>
+      </div>
+
+      <div (click)="open_filter()" class="btnUif d__flex">
+        <ion-icon class="icon" src="/assets/attendance/Filter.svg"></ion-icon>
+      </div>
+
+    </div>
+    <!-- <ion-button class="apply"  fill="outline" (click)="select_all()">Select All</ion-button> -->
+  </div>
+
+  <div class="employee_mob_name" [class.employee_mob_name_mark_active]="showFooter"
+    *ngIf="unmarked_employee && unmarked_employee.length != 0 && db.ismobile && unmarked_seg">
+    <div (click)="mark_employee(item,i)" *ngFor="let item of unmarked_employee; let i = index"
+      class="d__flex absent_list_unmark">
+      <div class="d__flex box_1">
+        <div class="employee_image_un">
+          <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+          <p *ngIf="!item.image" class="image_none m-0 fnt-15 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+        </div>
+        <div>
+          <p class="m-0 fnt_w500 fnt-14 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+          <p class="m-0 fnt-12 gray_clr"> {{item.employee}}</p>
+          <div class="d__flex gap-10">
+            <!-- <p class="m-0 fnt-12 gray_clr">{{creation_day(item.creation)}}<span class="req_approver_name gray_clr fnt-12">{{item.full_name}}</span></p> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="req_btns">
+        <div [class.activebtnUi]="item.selected" class="btnUi d__flex">
+          <ion-icon *ngIf="item.selected" class="icon white" name="checkmark-outline" slot="start"></ion-icon>
+        </div>
+        <!-- <ion-button *ngIf="!item.selected" class="decline__"  expand="block" fill="clear"></ion-button>
+          <ion-button *ngIf="item.selected" class="accept__ white" expand="block" fill="clear"><ion-icon class="white" name="checkmark-outline" slot="start"></ion-icon></ion-button> -->
+        <!-- <ion-button class="decline__" (click)="sure_approve(item,'Reject',i)" expand="block" fill="clear"><ion-icon name="close-outline" slot="start"></ion-icon></ion-button>
+          <ion-button class="accept__ white" (click)="sure_approve(item,'Approve',i)" expand="block" fill="clear"><ion-icon class="white" name="checkmark-outline" slot="start"></ion-icon></ion-button> -->
+      </div>
+
+    </div>
+  </div>
+  <!-- <ion-list class="employee_mob_name" [class.employee_mob_name_mark_active]="showFooter" lines="full"
+      *ngIf="unmarked_employee && unmarked_employee.length != 0 && db.ismobile && unmarked_seg">
+      <ion-item *ngFor="let item of unmarked_employee;let i = index">
+        <div class="d__flex w-100 just-s">
+          <div class="avatar w-100">
+            <div class="d__flex gap-10">
+              <ion-checkbox class="employee_check" (ionChange)="mark_employee(item,i)"
+                [checked]="item.selected"></ion-checkbox>
+              <p class="employee_avtr m-0" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">
+                {{item.employee_name ? item.employee_name[0] : ''}} </p>
+            </div>
+            <div class="w-100 d__flex just-s" (click)="mark_employee(item,i)">
+              <p class="fnt-14 fnt_w600 m-0 employee_name">{{item.employee_name}}</p>
+              <p class="fnt-12 m-0 fnt_w500 gray_clr">{{item.employee}}</p>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list> -->
+
+  <div class="employee_mob_name" *ngIf="marked_employee && marked_employee.length != 0 && db.ismobile && !unmarked_seg">
+    <div *ngFor="let item of marked_employee; let i = index" class="d__flex absent_list_unmark">
+      <div class="d__flex box_1">
+        <div class="employee_image_un">
+          <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+          <p *ngIf="!item.image" class="image_none m-0 fnt-15 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+        </div>
+        <div>
+          <p class="m-0 fnt_w500 fnt-14 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+          <p class="m-0 fnt-12 gray_clr"> {{item.employee}}</p>
+          <div class="d__flex gap-10">
+            <!-- <p class="m-0 fnt-12 gray_clr">{{creation_day(item.creation)}}<span class="req_approver_name gray_clr fnt-12">{{item.full_name}}</span></p> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="req_btns">
+        <div class="flex-auto">
+          <app-status [status]="item.status"></app-status>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- <ion-list class="employee_mob_name_mark" lines="full"
+      *ngIf="marked_employee && marked_employee.length != 0 && db.ismobile && !unmarked_seg">
+      <ion-item *ngFor="let item of marked_employee;let i = index">
+        <div class="d__flex w-100 just-s">
+          <div class="avatar w-100">
+            <div class="d__flex gap-10">
+              <ion-checkbox class="employee_check" (ionChange)="mark_employee(item,i)" [checked]="item.selected"></ion-checkbox>
+              <p class="employee_avtr m-0" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">
+                {{item.employee_name ? item.employee_name[0] : ''}} </p>
+            </div>
+            <div class="w-100 d__flex just-s">
+              <p class="fnt-14 fnt_w600 m-0 employee_name">{{item.employee_name}}</p>
+              <p class="fnt-14" [ngClass]="db.get_style(item.status)">{{item.status}}</p>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list> -->
+
+
+
+  <ion-list *ngIf="skeleton && db.ismobile && unmarked_seg">
+    <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10]">
+      <!-- <ion-thumbnail slot="start">
+                  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                </ion-thumbnail> -->
+      <ion-label>
+        <div class="d__flex w-100 just-s">
+          <h3 style="width: 60%;">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </h3>
+          <p style="width: 10%;">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </p>
+        </div>
+        <!-- <p>
+          <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+        </p> -->
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="skeleton && db.ismobile && !unmarked_seg">
+    <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10]">
+      <!-- <ion-thumbnail slot="start">
+                  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                </ion-thumbnail> -->
+      <ion-label>
+        <div class="d__flex w-100 just-s">
+          <h3 style="width: 60%;">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </h3>
+          <p style="width: 10%;">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </p>
+        </div>
+        <!-- <p>
+          <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+        </p> -->
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <app-no-record-found class="1" [height]="'calc(100vh - 170px)'"
+    *ngIf="unmarked_employee && unmarked_employee.length == 0 && !skeleton && unmarked_seg" [column]="true"
+    [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  <app-no-record-found class="2" [height]="'calc(100vh - 170px)'"
+    *ngIf="marked_employee && marked_employee.length == 0 && !skeleton && !unmarked_seg" [column]="true"
+    [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  <div class="footer" *ngIf="db.ismobile && showFooter && unmarked_seg">
+    <div class="d__flex gap-5">
+      <!-- <ion-select class="shift_type" interface="popover" placeholder="Select Shift" [(ngModel)]="select_shift_type">
+        <ion-select-option *ngFor="let item of shift_type" [value]="item.value">{{item.name}}</ion-select-option>
+      </ion-select> -->
+      <div class="ion-select custom-select">
+
+    <div (click)="showPopup('shift')" class="d__flex just-s box w-100">
+          <h4 class="m-0">{{select_shift_type ? select_shift_type : 'Select Shift'}}</h4>
+          <ion-icon class="fnt-13" src="/assets/expense-claim/down-arrow.svg"></ion-icon>
+        </div>
+        <div *ngIf="showShiftType" class="drop-popover">
+          <h4 [class.selectedDiv]="select_shift_type == item.value" (click)="selectValue(item)" *ngFor="let item of shift_type" class="m-0 shift_type_">{{item.name}}</h4>
+        </div>
+      </div>
+
+      <div class="entry_">
+        <div class="d__flex gap-10" *ngFor="let item of entry_types">
+          <ion-checkbox class="employee_check" [name]="item.type" (ionChange)="toggleCheckbox(checkbox,item)"
+            [checked]="item.selected" [id]="item.name" #checkbox></ion-checkbox>
+          <p class="fnt-14 gray_clr m-0 employee_name" (click)="toggleCheckbox(checkbox,item)">{{item.name}}</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="d__flex gap-5`">
+      <!-- <ion-select interface="popover" placeholder="Select Status" [(ngModel)]="select_type">
+        <ion-select-option *ngFor="let item of attendance_type" [value]="item.value">{{item.name}}</ion-select-option>
+      </ion-select> -->
+
+      <div class="ion-select custom-select">
+        <div (click)="showPopup('status')" class="d__flex just-s box w-100">
+          <h4 class="m-0">{{select_type ? select_type : 'Select Status'}}</h4>
+          <ion-icon class="fnt-13" src="/assets/expense-claim/down-arrow.svg"></ion-icon>
+        </div>
+        <div *ngIf="showattendance_type" class="drop-popover">
+          <h4 [class.selectedDiv]="select_type == item.value" (click)="selectValueattendance_type(item)" *ngFor="let item of attendance_type" class="m-0 shift_type_">{{item.name}}</h4>
+        </div>
+      </div>
+
+      <ion-button class="apply" fill="outline" (click)="mark_att()">Mark Attendance</ion-button>
+    </div>
+  </div>
+
+
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="!db.ismobile">
+
+  <div>
+    <div class="d__flex gap-10 pl-10 attendance_title">
+      <ion-icon class="fnt-20" slot="start" src="/assets/dashboard/EmployeeAttendanceTool-active.svg"></ion-icon>
+      <p class="m-0 fnt-16 fnt_w500 border-right-txt primary_clr">Attendance Tool</p>
+    </div>
+    <div class="big_box">
+
+      <!-- Skeleton Loader -->
+      <div *ngIf="skeleton">
+        <div class="summary_sec" *ngIf="!db.bodySkeleton">
+          <div class="border-r">
+            <app-skeleton-loader [type]="'date-dashboard'"></app-skeleton-loader>
+          </div>
+
+          <div *ngFor="let item of [0,1,2];index as i">
+            <app-skeleton-loader [index]="item == 2 ? -1 : i" type="dashboard"></app-skeleton-loader>
+          </div>
+        </div>
+
+        <div *ngIf="!db.bodySkeleton" class="d__flex gap-20 p-1015 border-b">
+          <div *ngFor="let item of [0,1,2]">
+            <app-skeleton-loader type="tabs"></app-skeleton-loader>
+          </div>
+        </div>
+
+        <div class="p-1015" *ngIf="!db.bodySkeleton">
+          <app-skeleton-loader [type]="'Employee Attendance Tool Summary'"></app-skeleton-loader>
+        </div>
+
+      </div>
+
+
+      <!-- *ngIf="!skeleton" -->
+      <!-- <div *ngIf="!skeleton"> -->
+        <app-common-dashboard *ngIf="!skeleton" [date_change_section]="true" [icons]="icons_array" [data]="employee_shift"
+          (send_format_date)="formatDate($event)"></app-common-dashboard>
+      <!-- </div> -->
+
+      <div *ngIf="!skeleton || db.bodySkeleton" class="d__flex just-s filter_sec">
+        <app-tabs-button [employee_detail_tab]="true" [no_mb]="true" [no_next_btn]="true" [change_color_none]="true"
+          [border_none]="true" (menu_name)="menu_name($event)" [bg_white]="false" [tabs_array]="profile_menu"
+          type="edit-profile" [no_initial_active]="true"></app-tabs-button>
+        <div class="d__flex gap-20">
+          <div class="d__flex gap-10 filter_btn mouse" (click)="open_filter()">
+            <ion-icon name="filter-outline"></ion-icon>
+            <p class="m-0 fnt-14">Filter</p>
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+          <div class="d__flex gap-10 select_filter mouse" *ngIf="unmarked_seg">
+            <p class="fnt-14 d__flex gap-5 m-0" (click)="select_all()">{{selectAll ? 'Unselect All' : 'Select All' }}
+              <!-- <ion-icon class="fnt-20 mouse" src="/assets/Select view Icon-01.svg"></ion-icon> -->
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="employee_height" *ngIf="!summary_seg">
+
+        <div [class.seperate_unmarked]="showFooter">
+          <div [class.w-75]="showFooter">
+            <div class="d__flex just-s p-5-10 w-100 mt-10" *ngIf="!skeleton">
+              <div class="d__flex gap-10">
+                <div class="d__flex gap-10">
+                  <ion-icon class="fnt-20" slot="start" src="/assets/img/grip-horizontal.svg"></ion-icon>
+                  <p class="m-0 fnt-16 fnt_w500 border-right-txt">Select Employees</p>
+                  <p class="employee_count" *ngIf="unmarked_seg">{{unmarked_employee.length}} Peoples</p>
+                </div>
+                <div *ngIf="!unmarked_seg" class="d__flex gap-10">
+                  <div *ngFor="let item of attendance_filter; let i = index" class="d__flex gap-10 mouse">
+                    <div class="attendace_filter_div d__flex gap-10" (click)="change_select(item,i)">
+                      <p class="m-0 fnt-14 attendance_filter"
+                        [style.--col-background]="item.selected ? get_attendance_color(item.name) : '#b4b4b4'"
+                        [ngStyle]="{'color': item.selected ? get_attendance_color(item.name) : ''}">{{item.name}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d__flex gap-10 filters just-e">
+                <div class="search_bar d__flex">
+                  <ion-icon name="search-outline"></ion-icon>
+                  <ion-input class="search_input" [(ngModel)]="search_text"
+                    (ionInput)="filterItems($event,'attendance')" placeholder="Search..."></ion-input>
+                  <!-- <ion-icon name="close-outline" (click)="clear_txt()" *ngIf="search_text"></ion-icon> -->
+                </div>
+                <!-- <ion-button class="fnt" [disabled]="(employee_names && employee_names.length == 0) ? true : false" (click)="open_register()" expand="block" fill="clear">Selected<span *ngIf="employee_names && employee_names.length != 0" class="selected_count">{{ (employee_names.length < 10) ? '0' + employee_names.length : employee_names.length }}</span></ion-button> -->
+              </div>
+            </div>
+
+            <div *ngIf="!db.ismobile && !skeleton && unmarked_seg" class="employee_list">
+              <div *ngFor="let item of unmarked_employee;let i = index" class="flex-0-20"
+                (click)="mark_employee(item,i)" [class.selected_unmarked]="item.selected">
+                <div class="w-100 mouse d__flex gap-10">
+                  <div class="absolute_">
+                    <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+                    <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}
+                    </p>
+                  </div>
+                  <div class="w-100">
+                    <div class="d__flex gap-10 mb-5">
+                      <!-- <ion-checkbox class="employee_check" (ionChange)="item.selected =! item.selected" [checked]="item.selected"></ion-checkbox> -->
+                      <p class="fnt-14 fnt_w500 m-0 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+                    </div>
+                    <!-- d__flex just-s -->
+                    <div class="">
+                      <p class="d__flex gap-5 m-0 mb-5"><ion-icon class="fnt-20"
+                          src="/assets/img/designation.svg"></ion-icon><span [style.--line]="1"
+                          class="fnt-11 webkit-text">{{item.designation ? item.designation : '-'}}</span></p>
+                      <p class="fnt-11 d__flex gap-5 m-0 mb-5 webkit-text" [style.--line]="1"><ion-icon class="fnt-20"
+                          src="/assets/img/user-tag.svg"></ion-icon>{{item.employee}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <app-no-record-found class="3" [height]="'calc(100vh - 530px)'"
+              *ngIf="unmarked_employee && unmarked_employee.length == 0 && !skeleton && unmarked_seg && !summary_seg"
+              [column]="true" [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+          </div>
+          <div *ngIf="showFooter" [class.w-25]="showFooter" class="show_mark_att">
+            <app-mark-attendance [shift_type]="shift_type" [selected_employee_count]="employee_names.length" [selected_employees]="employee_names"
+              (sav_mark_data)="sav_mark_data($event)"></app-mark-attendance>
+          </div>
+        </div>
+
+
+        <div *ngIf="!skeleton && !unmarked_seg" class="employee_list">
+          <div *ngFor="let item of marked_employee;let i = index" class="flex-0-20">
+            <div class="w-100 mouse" (click)="mark_employee(item,i)">
+              <div class="d__flex just-s mb-5">
+                <!-- <ion-checkbox class="employee_check" (ionChange)="item.selected =! item.selected" [checked]="item.selected"></ion-checkbox> -->
+                <p class="fnt-14 fnt_w500 m-0 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+                <p class="fnt-14 fnt_w500 m-0 d__flex gap-5 just-e"
+                  [ngStyle]="{'color': item.status == 'Present' ? '#28A713' : '#CF161C'}">{{item.status}}<ion-icon
+                    [src]="item.status == 'Present' ? '/assets/img/active-dot.svg' : '/assets/img/in-active.svg'"></ion-icon>
+                </p>
+              </div>
+              <div class="d__flex just-s">
+                <p class="d__flex gap-5 mb-5"><ion-icon class="fnt-20"
+                    src="/assets/img/designation.svg"></ion-icon><span [style.--line]="1"
+                    class="fnt-12 webkit-text">{{item.designation ? item.designation : '-'}}</span></p>
+                <p class="fnt-12 d__flex gap-5 mb-5"><ion-icon class="fnt-20"
+                    src="/assets/img/user-tag.svg"></ion-icon>{{item.employee}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="summary_seg && summary_details && !skeleton" class="summary_seg_height">
+        <div class="list_section">
+
+          <div class="leave_req_section">
+            <div class="d__flex gap-10 mb-10 h-35">
+              <ion-icon class="fnt-20" slot="start" src="/assets/img/grip-horizontal.svg"></ion-icon>
+              <p class="m-0 fnt-16 fnt_w500 border-right-txt">Today Leave Requests</p>
+              <p class="onleave_count" *ngIf="summary_seg">{{today_leave_request.length}} Peoples</p>
+              <ion-icon class="fnt-20 mouse" slot="start"
+                [src]="leave_req_collapse ? '/assets/img/arrow-square-down.svg' : '/assets/img/arrow-square-left.svg'"
+                (click)="leave_req_collapse =! leave_req_collapse"></ion-icon>
+            </div>
+
+            <div *ngIf="today_leave_request && today_leave_request.length != 0 && leave_req_collapse"
+              class="show_absent">
+              <div *ngFor="let item of today_leave_request; let i = index" class="d__flex absent_list">
+                <div class="d__flex box_1">
+                  <div class="employee_image">
+                    <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+                    <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="m-0 fnt_w500 fnt-14 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+                    <div class="d__flex gap-10">
+                      <!-- <p class="m-0 fnt-12 gray_clr">{{creation_day(item.creation)}}<span
+                          class="req_approver_name gray_clr fnt-12">{{item.full_name}}</span></p> -->
+                      <p class="m-0 fnt-12 gray_clr">{{item.from_date | date: 'MMM d'}} to {{item.to_date | date: 'MMM d'}}<span
+                          class="req_approver_name gray_clr fnt-12">{{item.full_name}}</span></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="req_btns">
+                  <ion-button class="decline__" (click)="sure_approve(item,'Reject',i)" expand="block"
+                    fill="clear"><ion-icon name="close-outline" slot="start"></ion-icon></ion-button>
+                  <ion-button class="accept__ white" (click)="sure_approve(item,'Approve',i)" expand="block"
+                    fill="clear"><ion-icon class="white" name="checkmark-outline" slot="start"></ion-icon></ion-button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- <div *ngIf="today_leave_request && today_leave_request.length != 0 && leave_req_collapse" class="show_absent">
+              <div *ngFor="let item of today_leave_request;let i = index" class="p-10">
+                <div class="leave_req_list mb-10">
+                  <div class="employee_image_req">
+                    <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+                    <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+                  </div>
+                  <p class="m-0 fnt-14 d__flex gap-5">{{item.employee_name}}<span class="gray fnt-13">Applied Leave Request</span></p>
+                </div>
+                <div class="leave_reason mb-10">
+                  <p class="m-0 fnt-13">{{item.description}}</p>
+                </div>
+                <div class="req_btns mb-10">
+                  <ion-button class="decline__" (click)="sure_approve(item,'Reject',i)" expand="block" fill="clear"><ion-icon name="close-outline" slot="start"></ion-icon>Decline</ion-button>
+                  <ion-button class="accept__ white" (click)="sure_approve(item,'Approve',i)" expand="block" fill="clear"><ion-icon class="white" name="checkmark-outline" slot="start"></ion-icon>Accept</ion-button>
+                  <div class="d__flex gap-10">
+                    <p class="m-0 fnt-14 gray_clr">{{creation_day(item.creation)}}<span class="req_approver_name gray_clr fnt-14">{{item.full_name}}</span></p>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <app-no-record-found class="4" [height]="'calc(100vh - 530px)'"
+              *ngIf="today_leave_request && today_leave_request.length == 0 && leave_req_collapse" [column]="true"
+              [heading]="'No Request found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+          </div>
+
+          <div *ngIf="summary_details.absent_worforce" class="mb-20">
+            <div class="d__flex just-s mb-10 h-35">
+              <div class="d__flex gap-10">
+                <ion-icon class="fnt-20" slot="start" src="/assets/img/grip-horizontal.svg"></ion-icon>
+                <p class="m-0 fnt-16 fnt_w500 border-right-txt">Absent workforce</p>
+                <p class="absent_count" *ngIf="summary_seg">{{absent_list.length}} Peoples</p>
+                <ion-icon class="fnt-20 mouse" slot="start"
+                  [src]="absent_collapse ? '/assets/img/arrow-square-down.svg' : '/assets/img/arrow-square-left.svg'"
+                  (click)="absent_collapse =! absent_collapse"></ion-icon>
+              </div>
+              <div class="search_bar_absent d__flex" *ngIf="absent_collapse">
+                <ion-icon name="search-outline"></ion-icon>
+                <ion-input class="search_input" [(ngModel)]="search_text_absent"
+                  (ionInput)="filterItems($event,'absent')" placeholder="Search..."></ion-input>
+                <ion-icon name="close-outline" (click)="clear_txt('absent')" *ngIf="search_text_absent"></ion-icon>
+              </div>
+            </div>
+
+            <!-- <div *ngIf="absent_list && absent_list.length != 0 && absent_collapse" class="show_absent">
+              <div *ngFor="let item of absent_list" class="absent_list">
+                <p class="m-0 fnt_w500 fnt-14 webkit-text" [style.--line]="1"">{{item.employee_name}}</p>
+                <p class="d__flex gap-5 m-0 fnt-14 just-c absent_sts"><ion-icon src="/assets/img/absent-dot.svg"></ion-icon>{{item.status}}</p>
+                <p class="d__flex gap-5 m-0 fnt-14 gray_clr"><ion-icon class="fnt-18" src="/assets/img/user-tag.svg"></ion-icon>{{item.employee}}</p>
+                <p class="d__flex gap-5 m-0 fnt-14 gray_clr"><ion-icon class="fnt-18" src="/assets/img/designation.svg"></ion-icon><span [style.--line]="1" class="fnt-14 webkit-text">{{item.designation ? item.designation : '-'}}</span></p>
+              </div>
+            </div> -->
+
+            <div *ngIf="absent_list && absent_list.length != 0 && absent_collapse" class="show_absent">
+              <div *ngFor="let item of absent_list" class="absent_list">
+                <div class="employee_image">
+                  <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+                  <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+                </div>
+                <div class="w-100">
+                  <div class="d__flex just-s mb-5">
+                    <p class="m-0 fnt_w500 fnt-14 webkit-text text-w" [style.--line]="1">{{item.employee_name}}</p>
+                    <p class="d__flex gap-5 m-0 fnt-14 just-c absent_sts"><ion-icon
+                        src="/assets/img/absent-dot.svg"></ion-icon>{{item.status}}</p>
+                  </div>
+                  <div class="d__flex just-s">
+                    <p class="d__flex gap-5 m-0 fnt-14 gray_clr"><ion-icon class="fnt-18"
+                        src="/assets/img/designation.svg"></ion-icon><span [style.--line]="1"
+                        class="fnt-14 webkit-text">{{item.designation ? item.designation : '-'}}</span></p>
+                    <p class="d__flex gap-5 m-0 fnt-14 gray_clr"><ion-icon class="fnt-18"
+                        src="/assets/img/user-tag.svg"></ion-icon>{{item.employee}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <app-no-record-found class="5" [height]="'calc(100vh - 530px)'"
+              *ngIf="absent_list && absent_list.length == 0 && !skeleton && !unmarked_seg && summary_seg && absent_collapse"
+              [column]="true" [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+          </div>
+
+          <div *ngIf="summary_details.onleave">
+            <div class="d__flex just-s mb-20 h-35">
+              <div class="d__flex gap-10">
+                <ion-icon class="fnt-20" slot="start" src="/assets/img/grip-horizontal.svg"></ion-icon>
+                <p class="m-0 fnt-16 fnt_w500 border-right-txt">On Leave</p>
+                <p class="onleave_count" *ngIf="summary_seg">{{on_leave_list.length}} Peoples</p>
+                <ion-icon class="fnt-20 mouse" slot="start"
+                  [src]="leave_collapse ? '/assets/img/arrow-square-down.svg' : '/assets/img/arrow-square-left.svg'"
+                  (click)="leave_collapse =! leave_collapse"></ion-icon>
+              </div>
+              <div class="search_bar_absent d__flex" *ngIf="leave_collapse">
+                <ion-icon name="search-outline"></ion-icon>
+                <ion-input class="search_input" [(ngModel)]="search_text_onLeave"
+                  (ionInput)="filterItems($event,'on_leave')" placeholder="Search..."></ion-input>
+                <ion-icon name="close-outline" (click)="clear_txt('on_leave')" *ngIf="search_text_onLeave"></ion-icon>
+              </div>
+            </div>
+
+            <div *ngIf="on_leave_list && on_leave_list.length != 0 && leave_collapse" class="show_absent">
+              <div *ngFor="let item of on_leave_list" class="on_leave_list">
+                <!-- <div class="d__flex just-s w-100 mb-20">
+                    <p class="m-0 fnt_w500 fnt-15">{{item.employee_name}}</p>
+                    <p class="m-0 fnt-14"># {{item.employee}}</p>
+                    <p class="d__flex gap-5 m-0 fnt-14"><ion-icon class="fnt-18" src="/assets/img/designation.svg"></ion-icon><span [style.--line]="1" class="fnt-14 webkit-text">{{item.designation ? item.designation : '-'}}</span></p>
+                    <p class="m-0 fnt-14">{{item.department}}</p>
+                    <p class="d__flex gap-5 m-0 fnt-14 onleave_red"><ion-icon src="/assets/img/in-active.svg"></ion-icon>On Leave</p>
+                  </div>
+                  <div class="d__flex w-100 gap-20">
+                    <p class="m-0 d__flex gap-5 padding-r fnt-14"><ion-icon class="fnt-18" src="/assets/img/user-tag.svg"></ion-icon>{{item.leave_approver}}</p>
+                    <p class="m-0 d__flex gap-5 padding-r fnt-14"><ion-icon class="fnt-18" src="/assets/img/days-time.svg"></ion-icon>{{item.total_leave_days}} {{item.total_leave_days < 2 ? 'day' : 'days'}}</p>
+                    <p class="m-0 d__flex gap-5 fnt-14"><ion-icon class="fnt-18" src="/assets/img/reason.svg"></ion-icon>{{item.description}}</p>
+                  </div> -->
+                <div class="employee_image">
+                  <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+                  <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+                </div>
+                <div class="w-100">
+                  <div class="d__flex just-s mb-5">
+                    <p class="m-0 fnt_w500 fnt-14 webkit-text text-w" [style.--line]="1">{{item.employee_name}}</p>
+                    <p class="d__flex gap-5 m-0 fnt-14 onleave_red"><ion-icon
+                        src="/assets/img/in-active.svg"></ion-icon>On Leave</p>
+                  </div>
+                  <div class="d__flex just-s">
+                    <p class="d__flex gap-5 m-0 fnt-14 gray_clr"><ion-icon class="fnt-18"
+                        src="/assets/img/designation.svg"></ion-icon><span [style.--line]="1"
+                        class="fnt-14 webkit-text">{{item.designation ? item.designation : '-'}}</span></p>
+                    <p class="d__flex gap-5 m-0 fnt-14 gray_clr"><ion-icon class="fnt-18"
+                        src="/assets/img/user-tag.svg"></ion-icon>{{item.employee}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <app-no-record-found class="6" [height]="'calc(100vh - 530px)'"
+              *ngIf="summary_details.onleave && on_leave_list && on_leave_list.length == 0 && !skeleton && !unmarked_seg && summary_seg && leave_collapse"
+              [column]="true" [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+          </div>
+        </div>
+
+      </div>
+
+      <app-no-record-found class="7" [height]="'calc(100vh - 530px)'"
+        *ngIf="!summary_details && !skeleton && !unmarked_seg && summary_seg" [column]="true"
+        [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+
+      <!-- <div *ngIf="skeleton && !db.ismobile" class="align_center">
+        <ion-spinner name="circles"></ion-spinner>
+      </div> -->
+
+      <app-no-record-found class="8" [height]="'calc(100vh - 530px)'"
+        *ngIf="marked_employee && marked_employee.length == 0 && !skeleton && !unmarked_seg && !summary_seg"
+        [column]="true" [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+    </div>
+  </div>
+
+
+
+</ion-content>

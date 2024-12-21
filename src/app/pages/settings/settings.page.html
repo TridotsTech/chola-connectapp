@@ -1,0 +1,21 @@
+<app-header *ngIf="db.ismobile" title="Settings" [back_route]="'/tabs/dashboard'"></app-header>
+<!-- [back_route]="'dashboard'" -->
+<ion-content [fullscreen]="true">
+  <div *ngIf="!db.ismobile" class="forms__">
+    <div class="d__flex gap-10 mar-0-10">
+      <ion-icon class="mouse" (click)="db.modalCtrl.dismiss()" name="chevron-back-outline"></ion-icon>
+      <p class="fnt_w500 fnt-14 white">Settings</p>
+    </div>
+  </div>
+  <div>
+    <ion-item button lines="none" *ngFor="let item of settings_base_role" (click)="db.ismobile ? navigate_settings(item.route) : open_settings_popup(item.name)" >
+      <ion-icon [name]="item.icon"></ion-icon>
+      <ion-label class="">{{item.name}}</ion-label>
+    </ion-item>
+
+    <!-- <ion-item button lines="none" *ngFor="let item of invoice" routerLink="/invoice-format/{{item.value}}">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <ion-label class="">{{item.label}}</ion-label>
+    </ion-item> -->
+  </div>
+</ion-content>

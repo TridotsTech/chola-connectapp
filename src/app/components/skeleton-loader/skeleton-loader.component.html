@@ -1,0 +1,504 @@
+<div *ngIf="!db.ismobile">
+  <!-- Dashboard -->
+  <div [class.border-r]="index != -1" *ngIf="type == 'dashboard'" class="p-1020">
+
+    <!-- <div style="display: flex;gap: 20px;align-items:center">
+        <div class="border" style="padding:5px;border-radius: 5px">
+          <ion-skeleton-text animated style="width: 25px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+  
+        <ion-skeleton-text animated style="width: 100px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+      </div> -->
+
+    <div style="padding: 10px 0;">
+      <ion-skeleton-text animated
+        style="width: 100px; height: 14px;border-radius: 5px;margin-bottom: 8px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 30px; height: 12px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+  </div>
+
+  <!-- Date -->
+
+  <div *ngIf="type == 'date-dashboard'" class="p-1020">
+    <!-- padding:10px 0; -->
+    <div style="display: flex;gap: 20px;justify-content:space-between;align-items: center;">
+      <ion-skeleton-text animated style="width: 25px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+      <div>
+        <ion-skeleton-text animated style="width: 70px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated
+          style="width: 35px; height: 12px;border-radius: 5px;margin:10px 0px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 80px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+      <ion-skeleton-text animated style="width: 25px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+  </div>
+
+
+
+  <!-- Tabs -->
+  <ion-skeleton-text *ngIf="type == 'tabs'" animated
+    style="width: 90px; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+
+  <!-- Tabs with Icon -->
+  <div *ngIf="type == 'icon-tabs'" style="display: flex;gap: 10px;align-items: center">
+    <ion-skeleton-text animated style="width: 20px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80px; height: 12px;border-radius: 5px;"></ion-skeleton-text>
+  </div>
+
+  <!-- Filters -->
+  <div *ngIf="type == 'filter'">
+    <div class="d__flex gap-10" *ngIf="filter_len && filter_len.length > 0">
+      <div *ngFor="let item of filter_len">
+        <ion-skeleton-text animated style="width: 130px; height: 30px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+    </div>
+  </div>
+
+  <!-- List Header -->
+
+  <div *ngIf="type == 'list-head'">
+    <ion-skeleton-text animated style="width: 100px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+  </div>
+
+  <div class="pl10" *ngIf="type == 'list'">
+    <ion-item *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,0,1,2]">
+      <ion-label>
+        <h3 class="d__flex just-s">
+          <!-- <ion-skeleton-text animated style="width: 20px; height: 16px"></ion-skeleton-text> -->
+          <ion-skeleton-text animated style="width: 15%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 15%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 15%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 15%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 15%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 10%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+        </h3>
+      </ion-label>
+    </ion-item>
+  </div>
+
+  <!-- Employee List -->
+
+  <div *ngIf="type == 'Employee'" class="d__flex skeleton">
+    <div class="d__flex box_ gap-10" *ngFor="let i of [1, 2, 3, 4 ,5, 1, 6, 7, 8, 9, 10]">
+      <ion-skeleton-text animated style="width: 90px; height: 70px;border-radius: 5px;"></ion-skeleton-text>
+      <div class="w-100">
+        <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project -->
+
+  <div *ngIf="type == 'Project'" class="d__flex skeleton">
+    <div class="box_ gap-10" *ngFor="let i of [1, 2, 3, 4 ,5, 1, 6, 7, 8, 9, 10]">
+      <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+  </div>
+
+
+
+
+  <!-- Holiday List -->
+
+  <div class="holiday_list" *ngIf="type == 'Holiday List'">
+    <!-- Left -->
+    <div class="left w-50">
+      <div>
+        <ion-skeleton-text animated style="width: 100%; height: 200px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div style="display: flex;justify-content: space-between;margin: 15px 0px;">
+        <div style="display: flex;gap:10px;align-items:center;">
+          <ion-skeleton-text animated style="width: 15px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 50px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 15px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+
+        <div style="display: flex;gap:10px;align-items:center;">
+          <ion-skeleton-text animated style="width: 55px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 55px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 55px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+
+      <div style="display: flex;gap:25px;align-items:center;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+        <div *ngFor="let item of [0,1,2,3,4,5,6]">
+          <ion-skeleton-text animated style="width: 65px; height: 14px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+
+      <div class="calendar" *ngFor="let val of [0,1,2,3,4,5]">
+        <div class="items" *ngFor="let item of [0,1,2,3,4,5,6]">
+          <ion-skeleton-text animated
+            style="width: 30px; height: 20px;border-radius: 5px;margin:10px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Right -->
+    <div class="right w-50">
+      <div style="padding-bottom: 15px;">
+        <ion-skeleton-text animated style="width: 140px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="">
+        <div *ngFor="let item of [0,1,2,3,4,5,6,7,8,9]" style="display: flex;gap: 15px;align-items:center; border: 1px solid #ddd;padding: 5px 10px;border-radius: 5px; margin-bottom: 10px;">
+          <!-- style="width: calc(4% - 10px);border-right: 1px solid #ddd;" -->
+          <div>
+            <ion-skeleton-text animated style="width: 40px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 40px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+          </div>
+
+          <div style="border-left: 1px solid #ddd; padding: 0 10px;width: 100%;">
+            <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+            <div style="display: flex;gap: 15px;align-items:center;justify-content:space-between;">
+              <div style="display: flex;gap: 15px;align-items:center;">
+                <ion-skeleton-text animated style="width: 70px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 90px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+              </div>
+
+              <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Employee Attendance Tool -->
+  <div *ngIf="type == 'Employee Attendance Tool Summary'">
+
+    <!-- <div class="" > -->
+    <div *ngFor="let i of [0,1, 2]">
+      <div class="d__flex gap-10">
+        <ion-skeleton-text animated style="width: 20px; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 190px; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 90px; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 25px; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+      <div class="d__flex gap-20">
+        <ion-skeleton-text *ngFor="let item of [0,1, 2, 3]" animated style="width: 300px; height: 50px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+      <div class="d__flex gap-20">
+        <ion-skeleton-text *ngFor="let item of [0,1, 2, 3]" animated style="width: 300px; height: 50px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+    </div>
+    <!-- </div> -->
+
+  </div>
+
+  <div
+    *ngIf="type == 'Employee Advance' || type == 'Task' || type == 'Attendance' || type == 'Employee Grievance' || type == 'Expense Claim' || type == 'Job Applicant' || type == 'Lead' || type == 'Opportunity' || type == 'Customer Feedback'">
+    <div class="skeleton_s" *ngFor="let i of list_len">
+      <h3 class="d__flex just-s m-0 gap-5">
+        <div class="d__flex gap-10" style="width: 30%">
+          <ion-skeleton-text
+            *ngIf="type == 'Employee Advance' || type == 'Expense Claim' || type == 'Job Applicant' || type == 'Lead' || type == 'Opportunity' || type == 'Customer Feedback'"
+            animated style="width: 40px; height: 40px"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 80%; height: 20px"></ion-skeleton-text>
+        </div>
+        <div style="width: 15%; height: 16px"><ion-skeleton-text animated
+            style="width: 90%; height: 16px"></ion-skeleton-text></div>
+        <div style="width: 15%; height: 16px"><ion-skeleton-text animated
+            style="width: 90%; height: 16px"></ion-skeleton-text></div>
+        <div style="width: 15%; height: 16px"><ion-skeleton-text animated
+            style="width: 90%; height: 16px"></ion-skeleton-text></div>
+        <div style="width: 20%; height: 16px"><ion-skeleton-text animated
+            style="width: 90%; height: 16px"></ion-skeleton-text></div>
+        <div style="width: 5%; height: 16px"><ion-skeleton-text animated
+            style="width: 90%; height: 16px"></ion-skeleton-text></div>
+      </h3>
+
+      <!-- <h3 *ngIf="type != 'Employee Advance' && type != 'Expense Claim' && type != 'Employee Grievance' && type != 'Lead' && type != 'Opportunity' && type != 'Customer Feedback'" class="d__flex just-s">
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 10%; height: 16px"></ion-skeleton-text>
+      </h3> -->
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="db.ismobile">
+
+  <!-- Tab ( Mobile ) -->
+  <!-- (this.db.selected_list.page != 'Employee' && this.db.selected_list.page != 'Salary Slip' && this.db.selected_list.page !='Quality Feedback' && this.db.selected_list.page !='Report' && this.db.selected_list.page != 'Attendance' && this.db.selected_list.page != 'Leave Request' && this.db.selected_list.page != 'Supplier' && this.db.selected_list.page != 'Customer') && !kanban && routers != 'Lead' -->
+
+  <div *ngIf="type == 'tabs'">
+    <ion-skeleton-text [animated]="true"
+      style="width:60px;height:20px;margin:0px;border-radius:5px"></ion-skeleton-text>
+  </div>
+
+  <!-- Dashboard ( Mobile ) -->
+  <!-- skeleton && (!get_saleslist || (get_saleslist && get_saleslist.data && get_saleslist.data.length == 0)) && db.ismobile && (this.db.selected_list && this.db.selected_list.page) &&  (this.db.selected_list.page == 'Employee' || this.db.selected_list.page == 'Salary Slip') && !kanban && routers != 'Lead' -->
+
+  <div class="boxs" *ngIf="type == 'dashboard'">
+    <div class="d__flex just-s s-1 pb-10">
+      <ion-skeleton-text [animated]="true"
+        style="width:30px;height:30px;margin:0px;border-radius:50%"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true"
+        style="width:30px;height:30px;margin:0px;border-radius:5px"></ion-skeleton-text>
+    </div>
+
+    <ion-skeleton-text [animated]="true" style="width:120px;height:18px;margin:0;border-radius:5px"></ion-skeleton-text>
+  </div>
+
+
+  <!-- Count exp ( Mobile ) ( Expense Claim ) -->
+  <!-- skeleton && (!get_saleslist || (get_saleslist && get_saleslist.data && get_saleslist.data.length == 0)) && db.ismobile && (this.db.selected_list && this.db.selected_list.page) &&  (this.db.selected_list.page == 'Employee Advance' || this.db.selected_list.page == 'Expense Claim') && !kanban && routers != 'Lead' -->
+  <div class="Common_dashboardSkeleton_count" *ngIf="type == 'dashboard_count'">
+    <div class="d__flex box_ui gap-10">
+      <ion-skeleton-text animated style="width: 65px; height: 65px;border-radius: 5px;margin: 0;"></ion-skeleton-text>
+      <div style="width: 100px;"></div>
+      <div style="width: 150px;">
+        <ion-skeleton-text animated style="width: 70%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 85%; height: 16px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+    </div>
+  </div>
+
+  <!-- Month filter ( Mobile ) -->
+  <!-- skeleton && (!get_saleslist || (get_saleslist && get_saleslist.data && get_saleslist.data.length == 0)) && db.ismobile && (this.db.selected_list && this.db.selected_list.page) &&  (this.db.selected_list.page == 'Employee Advance' || this.db.selected_list.page == 'Expense Claim') && !kanban && routers != 'Lead' -->
+  <div class="d__flex just-s monthSkeleton" *ngIf="type == 'month_filter'">
+    <ion-skeleton-text animated style="width: 150px; height: 35px;border-radius: 5px;margin: 0;"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width:35px; height: 35px;border-radius: 5px;margin: 0;"></ion-skeleton-text>
+  </div>
+
+  <!-- Search ( Mobile ) -->
+  <!-- skeleton && (!get_saleslist || (get_saleslist && get_saleslist.data && get_saleslist.data.length == 0)) && db.ismobile && (doc_type && doc_type != 'Employee Advance') -->
+  <div class="searchSkeleton" *ngIf="type == 'search'">
+    <ion-skeleton-text [animated]="true"
+      style="width:100%;height:35px;margin:8px 0 0 0;border-radius:5px"></ion-skeleton-text>
+  </div>
+
+  <!-- Splitted 2 column -->
+  <div class="normalSketon" *ngIf="type == '3x2 col' || type == 'left3_right1'">
+    <div class="divF" *ngFor="let val of list_len">
+
+      <div class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width:55%;height:15px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text *ngIf="type != 'left3_right1'" [animated]="true"
+          style="width:80px;height:15px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 45%;height:15px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:150px;height:15px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" *ngIf="type != 'left3_right1'"
+          style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="normalSketon" *ngIf="type == 'avatar_left3_right1'">
+    <div class="divF d__flex gap-10" *ngFor="let val of list_len">
+
+      <ion-skeleton-text animated style="width: 50px; height: 50px;border-radius: 50%;"></ion-skeleton-text>
+
+      <div style="width: 80%;">
+        <div class="d__flex just-s">
+          <ion-skeleton-text [animated]="true"
+            style="width:90%;height:15px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+
+        <div class="d__flex just-s">
+          <ion-skeleton-text [animated]="true"
+            style="width: 50%;height:15px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:100px;height:15px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+
+        <div class="d__flex just-s">
+          <ion-skeleton-text [animated]="true"
+            style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Employee -->
+  <!-- skeleton && (db.ismobile || (!db.ismobile && db.enable_material && db.enable_detail)) && (this.db.selected_list && this.db.selected_list.page == 'Employee') -->
+  <div class="normalSketon" *ngIf="type == 'img_list'">
+    <div class="d__flex employeeSkeleton">
+      <div class="d__flex box_ gap-10" *ngFor="let i of list_len">
+        <ion-skeleton-text animated style="width: 90px; height: 70px;border-radius: 5px;"></ion-skeleton-text>
+        <div class="w-100">
+          <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Holiday Image section -->
+  <div *ngIf="type == 'img_sec'">
+    <ion-skeleton-text animated style="width: 100%; height: 120px;border-radius: 5px;"></ion-skeleton-text>
+  </div>
+
+  <!-- Holiday List -->
+  <div *ngIf="type == 'holiday_list'" class="">
+    <div *ngFor="let item of list_len"
+      style="display: flex;gap: 15px;align-items:center;padding: 5px 10px; margin-bottom: 10px; border-bottom: 1px solid #ddd;">
+      <!-- style="width: calc(4% - 10px);border-right: 1px solid #ddd;" -->
+      <div>
+        <ion-skeleton-text animated style="width: 40px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 40px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div style="border-left: 1px solid #ddd; padding: 0 10px;width: 100%;">
+        <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+        <!-- <div style="display: flex;gap: 15px;align-items:center;justify-content:space-between;"> -->
+        <div style="display: flex;gap: 15px;align-items:center;">
+          <ion-skeleton-text animated style="width: 70px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 90px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+        <!-- </div> -->
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="type == 'lead'" style="padding:10px;" class="leadSkeleton">
+    <div *ngFor="let item of list_len" style="margin-bottom: 10px; border-radius: 20px; border: 1px solid #ddd;">
+      <div style="padding:10px; display: flex;align-items: center;justify-content: space-between;">
+        <div style="display: flex;align-items: center;gap: 7px;">
+          <ion-skeleton-text animated style="width: 50px; height: 50px;border-radius: 50%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 200px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+        <ion-skeleton-text animated style="width: 70px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div style="margin: 8px 0 0 0;padding:0 10px; " class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"
+          style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div style="margin: 15px 0 0 0;padding:0 10px;" class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"
+          style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div style="margin: 15px 0 0 0;padding:0 10px;" class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"
+          style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div *ngIf="type == 'lead'"
+        style="margin: 15px 0 0 0;padding:15px 10px;background: #F8F9FF;border-radius: 0 0 20px 20px;"
+        class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"
+          style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div *ngIf="type == 'avatar_left2_right2'" style="padding:10px 0;" class="leadSkeleton">
+    <div *ngFor="let item of list_len" style="padding:0 0 10px 0;margin-bottom: 10px;border-bottom : 1px solid #ddd;">
+      <div style="padding:10px; display: flex;align-items: center;justify-content: space-between;">
+        <div style="display: flex;align-items: center;gap: 7px;">
+          <ion-skeleton-text animated style="width: 50px; height: 50px;border-radius: 50%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 200px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+        <ion-skeleton-text animated style="width: 70px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div style="margin: 8px 0 0 0;padding:0 10px; " class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"
+          style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div style="margin: 15px 0 0 0;padding:0 10px;" class="d__flex just-s">
+        <ion-skeleton-text [animated]="true"
+          style="width: 40%;height:15px;margin:0 0 0px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"
+          style="width:90px;height:15px;margin:0;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div *ngIf="type == 'salary_slip_detail'">
+    <div class="border" style="padding:10px; display: flex;align-items: center;gap: 15px;">
+      <div style="display: flex;align-items: center;gap: 7px;">
+        <ion-skeleton-text animated style="width: 70px; height: 75px;border-radius: 6px;"></ion-skeleton-text>
+      </div>
+
+      <div>
+        <ion-skeleton-text animated style="width: 200px; height: 20px;border-radius: 5px;margin-bottom: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 60px; height: 20px;border-radius: 5px;margin-bottom: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 80px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+    </div>
+
+
+    <div class="d__flex gap-10 just-s my-10">
+      <div class="d__flex gap-10">
+        <ion-skeleton-text animated style="width: 40px; height: 20px;border-radius: 5px;margin-bottom: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 70px; height: 20px;border-radius: 5px;margin-bottom: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 40px; height: 20px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div>
+        <ion-skeleton-text animated style="width: 60px; height: 20px;border-radius: 5px;"></ion-skeleton-text> 
+      </div>
+    </div>
+
+
+    <div class="border">
+      <div style="border-bottom:1px solid #ddd;padding: 5px 10px;">
+        <div class="d__flex gap-10 just-s">
+          <ion-skeleton-text animated style="width: 80px; height: 20px;border-radius: 5px;"></ion-skeleton-text> 
+          <ion-skeleton-text animated style="width: 50px; height: 20px;border-radius: 5px;"></ion-skeleton-text> 
+        </div>
+
+        <ion-skeleton-text animated style="width: 80px; height: 20px;border-radius: 5px;"></ion-skeleton-text> 
+
+      </div>
+
+      <div style="padding: 5px 10px;">
+        <div class="mb-10" *ngFor="let item of [0,1,2,3,4,5,6,7]">
+          <ion-skeleton-text animated style="width: 80px; height: 20px;border-radius: 5px;margin-bottom: 5px;"></ion-skeleton-text> 
+          <ion-skeleton-text animated style="width: 140px; height: 20px;border-radius: 5px;"></ion-skeleton-text> 
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

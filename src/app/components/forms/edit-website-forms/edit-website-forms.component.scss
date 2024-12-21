@@ -1,0 +1,19 @@
+@media only screen and (min-width: 768px) {
+    .forms__ {
+        background: var(--dynamic-color);
+    
+        .mar-0-10{
+            margin: 0 10px;
+        }
+    
+        ion-icon {
+            background: #ffff;
+            border-radius: 50%;
+            padding: 5px;
+        }
+        
+        .white{
+            color: #ffff;
+        }
+    }
+}

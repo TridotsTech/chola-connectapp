@@ -1,0 +1,56 @@
+.mail_verify{
+    padding: 25px 85px;
+    .mail-id{
+        color: var(--primary-color);
+    }
+
+    .custom-input {
+        width: 60px;
+        // margin: 7px 0;
+        border: 1px solid var(--border-col);
+        border-radius: 5px;
+        height: 50px;
+
+        ion-input {
+            --padding-start: 0px;
+            --padding-top: 15px;
+        }
+        ion-icon {
+            font-size: 18px;
+            color: var(--secondary-text);
+            padding: 9px 10px;
+            // border-right: 1px solid;
+            // border-color: var(--border-col);
+        }
+    }
+
+    .action-button{
+        background: var(--primary-color);
+        height: 42px;
+        border-radius: 6px;
+        text-transform: capitalize;
+        margin-top: 13px;
+    }
+}
+
+
+.otp_code{
+    margin: 0 0 15px 0;
+}
+
+.error {
+    font-size: 10px;
+    color: red;
+}
+
+.resend{
+    margin: 10px 0;
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.resend:hover{
+    text-decoration: underline;
+    transition: 1s;
+}

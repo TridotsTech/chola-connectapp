@@ -1,0 +1,91 @@
+
+<div #modalContent class="updateTimesheet">
+
+  <div class="d__flex gap-10 header">
+    <ion-icon class="ion-icon" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+    <div class="w-100">
+      <p class="fnt-14 fnt_w500 m-0 white capitalize webkit-text" [style.line]="1">{{employeeDetail.employee_name}}</p>
+      <div (click)="db.close_modal()" [routerLink]="'/detail/employee/' + employeeDetail.name" class="d__flex gap-10 just-s w-100">
+        <h6 class="fnt-12 fnt_w400 gray_clr m-0 mt-5" [style.line]="1">{{employeeDetail.name}}</h6>
+        <ion-icon style="margin: 4px 0 0 -3px;" class="fnt-15 gray_clr" name="create-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <div  class="body_sec">
+    <div class="employeeDetail-s">
+      <div *ngIf="employeeDetail" class="employeeDetail">
+        
+        <div class="d__flex gap-10 just-s employeeDetails">
+          <img class="blue" src="/assets/timesheet/blue.svg" /> 
+          <img class="yellow" src="/assets/timesheet/yellow.svg" /> 
+          <div class="d__flex m-0 details w-100">
+            <div class="imageDiv">
+              <img *ngIf="employeeDetail.image" [src]="db.product_img(employeeDetail.image)" />
+              <h4 *ngIf="!employeeDetail.image" class="m-0 fnt-15 fnt_w500">{{employeeDetail?.employee_name[0]}}</h4>
+              <!-- <ion-icon class="mouse camera" (click)="file_upload.click()" name="camera"></ion-icon> -->
+            </div>
+            <div class="w-100">
+              <h4 class="fnt-14 fnt_w500 m-0 name webkit-text capitalize" [style.--line]="1">{{employeeDetail?.employee_name}}</h4>
+              <div class="d__flex title just-s w-100">
+                <h4  *ngIf="employeeDetail.name" class="fnt-12 fnt_w400 m-0 id gray_clr">{{employeeDetail?.name}}</h4>
+                <app-status [status]="employeeDetail.status"></app-status>
+              </div>
+            </div>
+         </div>    
+        </div>  
+      </div>
+    </div>
+
+    <!-- <div *ngIf="employeeDetail.leave_balance && employeeDetail.leave_balance.length != 0">
+      <h2 class="fnt-15 fnt_w500 p-10 m-0">Leave Details</h2>
+  
+      <div class="leavesDetails">
+        <div *ngFor="let itemLeaves of employeeDetail.leave_balance;let i = index;let last = last;" class="box__">
+          <p class="m-0 fnt-14">{{itemLeaves.label}}</p>
+          <p class="m-0 fnt-14 fnt_w500">{{itemLeaves.count}}</p>
+        </div>
+       </div>
+    </div> -->
+
+    <div *ngIf="employeeDetail && employeeDetail.leave_balance && employeeDetail.leave_balance.length > 0" class="w-100">
+      <h2 class="fnt-15 fnt_w500 p-10 m-0">Leave Details</h2>
+      <div class="section">
+        <div class="box_1" *ngFor="let itemLeaves of employeeDetail.leave_balance">
+          <div class="m-7 d__flex just-s">
+            <ion-icon class="fnt-16 icon " [ngClass]="itemLeaves.label ? checkImages(itemLeaves.label,'class') : ''"
+              [src]="checkImages(itemLeaves.label,'')"></ion-icon>
+            <p class="m-0 fnt_w500 " [style.color]="checkImages(itemLeaves.label,'color')">{{itemLeaves.count}}</p>
+          </div>
+          <p class="fnt-12 m-0 ">{{itemLeaves.label}}</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="fnt-15 fnt_w500 p-10 m-0">Employee Details</h2>
+
+    <div class="d__flex detailView p-10">
+      <h4 class="m-0">Email</h4>
+      <h4 (click)="employeeDetail.personal_email ? social('mail', employeeDetail.personal_email) : null"  class="m-0 text-transform-none">
+        <ion-icon [class.opacity]="!employeeDetail.personal_email" class="fnt-25 mouse"  slot="start" src="/assets/img/mail.svg"></ion-icon>
+        {{employeeDetail.personal_email ? employeeDetail.personal_email : '-'}}
+      </h4>
+      <h4 class="m-0">Phone Number</h4>
+      <h4 (click)="employeeDetail.cell_number ? social('call', employeeDetail.cell_number) : null" class="m-0">
+        <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/call.svg"></ion-icon>
+        {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
+      </h4>
+      <h4 class="m-0">What's App</h4>
+      <h4 (click)="employeeDetail.cell_number ? social('whatsapp', employeeDetail.cell_number) : null"  class="m-0">
+        <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/whatsapp.svg"></ion-icon>
+        {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
+      </h4>
+      <h4 class="m-0">Date Of Birth</h4>
+      <h4 class="m-0">{{employeeDetail.date_of_birth ? (employeeDetail.date_of_birth | date: 'MMM d, y') : '-'}}</h4>
+      <h4 class="m-0">Designation</h4>
+      <h4 class="m-0">{{employeeDetail.designation ? employeeDetail.designation : '-'}}</h4>
+    </div>
+
+  </div> 
+
+</div>

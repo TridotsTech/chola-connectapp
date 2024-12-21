@@ -1,0 +1,421 @@
+.active_star {
+    color: #ffbf00;
+}
+
+.qtycrm {
+    padding: 0 10px;
+
+    .qty__add {
+        background: #dddd;
+        padding: 5px;
+        height: 30px;
+        border-radius: 5px;
+        background: var(--primary-gradient);
+
+        .icon {
+            font-size: 20px;
+            color: var(--CRM-primary-color);
+        }
+    }
+
+    .add_title {
+        font-size: 14px;
+        font-weight: 600;
+    }
+}
+
+.submit_primary-btn {
+    p {
+        color: #fff;
+    }
+}
+
+ion-spinner {
+    color: var(--white);
+    --color: var(--white);
+}
+
+.qtationTab {
+    border: 1px solid var(--border-col);
+    // padding: 5px;
+    border-radius: 5px;
+}
+
+.price_container {
+    background: #E4EAF8;
+    padding: 10px;
+
+    .big_icon {
+        font-size: 13px;
+    }
+
+    .icon {
+        font-size: 12px;
+    }
+
+    p {
+        font-size: 13px;
+        margin: 0;
+        // font-weight: 600;
+    }
+
+    .last {
+        border-top: 1px dotted var(--border-color);
+        padding: 10px 0;
+    }
+}
+
+.alert {
+    color: #FF0000;
+}
+
+.delete {
+    background: #ff000021;
+    padding: 4px;
+    border-radius: 5px;
+    height: 24px;
+    width: 24px;
+}
+
+.child_event {
+
+    background: #E4EAF8;
+
+    h6 {
+        margin: 0 0 10px 0;
+    }
+
+    .event_row {
+        background: #fff;
+        border-radius: 7px;
+        padding: 10px;
+        margin-bottom: 7px;
+
+        ion-icon {
+            padding: 3px;
+            background: #f5434385;
+            border-radius: 5px;
+        }
+    }
+}
+
+.h-35 {
+    height: 35px !important;
+}
+
+
+.label-12 {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    color: #475987;
+}
+
+.employee_detail_container {
+    margin: 0 0 0 auto;
+    height: calc(100vh - 320px);
+    overflow: auto;
+}
+
+@media only screen and (min-width: 768px) {
+    .custom_bug_h{
+        height: calc(100vh - 160px) !important;
+    }
+
+    .w-400px {
+        width: 400px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        white-space: break-spaces;
+        height: 35px;
+        overflow: auto;
+    }
+
+    .modalHeightForm {
+        height: calc(100vh - 105px) !important;
+    }
+
+    .show_button_none {
+        height: calc(100vh - 104px) !important;
+    }
+
+    .formUi {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding: 10px 15px 10px 15px;
+        row-gap: 10px;
+        column-gap: 10px;
+    }
+
+}
+
+.search-skeleton {
+    padding: 8px;
+    // border-top: 1px solid var(--border-col);
+    border-bottom: 1px solid var(--border-col);
+}
+
+@media only screen and (max-width: 768px) {
+    .boxUI {
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+
+    .formUi {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        padding: 10px 15px 10px 15px;
+        row-gap: 10px;
+        column-gap: 10px;
+    }
+
+    .lightgallery {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+
+        a {
+            width: 35%;
+        }
+
+        .img_cont {
+            height: 100px !important;
+            width: 120px !important;
+
+            .img {
+                height: 60px;
+            }
+        }
+    }
+}
+
+.employee_detail_gap {
+    row-gap: 5px !important;
+    column-gap: 10px !important;
+}
+
+.employee_detail_pad {
+    padding: 10px 15px 10px 50px !important;
+}
+
+ion-spinner {
+    color: #000;
+}
+
+.bugSheetFiles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .imgUrls {
+        padding: 5px 10px;
+        font-size: 12px;
+        background: #a0a0a0;
+        border-radius: 7px;
+        cursor: pointer;
+    }
+
+    .lightgallery {
+        display: flex;
+        // display: grid;
+        // grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        width: 100%;
+
+        a {
+            width: 35%;
+        }
+
+        .img_cont {
+            border: 1px solid var(--border-col);
+            border-radius: 5px;
+            height: 85px;
+            width: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            .img {
+                height: 100px;
+                width: 100%;
+                object-fit: contain;
+            }
+
+            .remove_img {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+            }
+        }
+    }
+
+}
+
+
+
+.label-S {
+    h6 {
+        margin: 0 0 10px 0;
+    }
+
+    .p-10_15 {
+        padding: 10px 15px;
+    }
+
+    .p-10_25 {
+        padding: 10px 25px;
+    }
+}
+
+.expenseDiv {
+
+    .impt-star {
+        color: red;
+        font-size: 12px;
+    }
+
+    .emptyDivExpense:hover {
+        background: #f6f7f9;
+        transition: background 0.3s ease;
+
+        h5 {
+            color: #000 !important;
+        }
+    }
+
+    .emptyDiv {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--border-col);
+        border-radius: 10px;
+        justify-content: center;
+        padding: 5px;
+
+        img {
+            height: 60px;
+            object-fit: cover;
+        }
+    }
+
+    .boxUI {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .box__ {
+        border: 1px solid var(--border-col);
+        border-radius: 5px;
+        padding: 10px;
+        // margin: 10px 0;
+    }
+
+    .add_btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+        width: 20px;
+        border-radius: 5px;
+        background: #f1f1f1;
+
+        ion-icon {
+            font-size: 12px;
+        }
+    }
+
+    .title {
+        font-size: 15px;
+        font-weight: 500;
+        margin: 10px 0 10px 0;
+    }
+
+    .box__ {
+        .title-1 {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .title-2,
+        .span,
+        .expense_date {
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .expense_date::before {
+            content: " ";
+            height: 5px;
+            width: 5px;
+            border-radius: 50%;
+            background: #0000008c;
+            display: inline-block;
+            margin: 3px 5px 3px 0;
+        }
+    }
+
+    .deleteDiv {
+        gap: 15px;
+        // flex-direction: column;
+
+        ion-input {
+            border: 1px solid var(--border-col);
+            border-radius: 5px;
+            --padding-start: 10px;
+            min-height: 30px !important;
+            min-width: 60px !important;
+            width: 70px !important;
+            text-align: end;
+            --padding-end: 10px;
+            font-size: 13px;
+        }
+
+        .delete_t-btn {
+            position: relative;
+            margin: 0px 0 0 3px;
+            background: #ff00002e;
+            height: 20px;
+            width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+
+            ion-icon {
+                color: red;
+                font-size: 12px;
+            }
+        }
+
+        .delete_t-btn::before {
+            content: " ";
+            height: 20px;
+            width: 1px;
+            background: #ddd;
+            position: absolute;
+            left: -9px;
+            top: 1px;
+        }
+
+    }
+}
+
+ion-spinner {
+    --color: #fff;
+    color: #fff;
+}
+
+ion-input ::placeholder {
+    color: transparent;
+    opacity: 0;
+}
+
+.detail_input_gray ion-input {
+    width: 100%;
+}
+
+.h-46 {
+    height: 46px !important;
+}

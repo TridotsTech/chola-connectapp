@@ -1,0 +1,61 @@
+<ion-header class="mobile-header ion-no-border" [ngClass]="!no_home?'no-shadow':''" [class.ion_header_crm]="db.sales_manager_role" [ngStyle]= "!db.sales_manager_role ? db.set_primary_color(db.sales_dashboard) : null">
+  <!-- && title != 'Task' -->
+  <ion-toolbar *ngIf="!no_home"
+    [ngStyle]="{'border-radius': (tab_array && tab_array.length == 0) ?  '0 0 20px 20px' : null }">
+
+    <!-- <ion-back-button *ngIf="!home" slot="start" (click)="backbtn()"
+      [defaultHref]="back_route && !model ? back_route:null"></ion-back-button> -->
+    <ion-icon class="back_btn" [name]="getIconName()" *ngIf="!home && !db.sales_manager_role" slot="start" (click)="backbtn()" ></ion-icon>
+    <ion-icon class="back_btn" src="/assets/icon/arrow-left.svg" *ngIf="!home && db.sales_manager_role" slot="start" (click)="backbtn()" ></ion-icon>
+
+    <ion-buttons *ngIf="home" class="ion-buttons" slot="start">
+      <ion-button class="menu" (click)="openMenu()">
+        <ion-icon class="icon menu"  src="/assets/icon/menu-white.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <div [class.d__flex]="title && title != 'home'" *ngIf="title != 'OnSite Dashboard'">
+      <ion-title *ngIf="title && title != 'home'" class="w-80 fnt-16 fnt_w500">{{title}}</ion-title>
+      
+      <div *ngIf="title == 'My Profile'" class="filter" >
+        <ion-icon (click)="db.logout()"  class="white fnt-15" name="log-out-outline"></ion-icon>
+      </div>
+
+      <div (click)="freezeEvent.emit('')" *ngIf="freeze" class="filter" >
+        <ion-icon class="white fnt-15" src="assets/freeze.svg" ></ion-icon>
+      </div>
+
+      <div *ngIf="showMonth" (click)="db.monthPopUp()" class="yearD d__flex">
+        <h5 class="title">{{db.monthLists[(db.selectedMonth) - 1].name}}</h5>
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </div>
+
+      <div *ngIf="showYear" (click)="db.yearPopUp(showYear)" [class.yearDCrm]="db.currentRole == 'CRM'" class="yearD d__flex">
+        <h5 class="title">{{db.selectedYear}}</h5>
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </div>
+
+      <!-- || doc_type == 'Project' -->
+
+      <div class="filter" 
+        *ngIf="doc_type && (doc_type == 'Timesheet' || doc_type == 'Task') && !db.sales_manager_role">
+        <ion-icon (click)="toggleKanban_task.emit()"
+        [src]="kanban ? '/assets/Header/task-kanban.svg' : '/assets/Header/task-list.svg'"></ion-icon>
+      </div>
+
+      <!-- <div class="filter_cus" *ngIf="title && (title == 'Customer' || title == 'meeting' || title == 'tasks') && !no_filter" (click)="filters.emit()">
+        <ion-icon  name="filter-outline"></ion-icon>
+      </div> -->
+
+    </div>
+  
+  </ion-toolbar>
+
+
+</ion-header>
+
+<div *ngIf="tab_array && tab_array.length != 0" class="">
+  <app-tabs-button [border_none]="true" (menu_name)="menu_name.emit($event)" [tabs_array]="tab_array"></app-tabs-button>
+</div>
+
+<!-- <div class="line"></div> -->

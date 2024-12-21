@@ -1,0 +1,56 @@
+<ion-header class="ion-no-border" *ngIf="db.ismobile">
+  <ion-toolbar>
+    <!-- <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Become a seller</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!db.ismobile" class="sticky__header">
+
+    <div class="header d__flex">
+      <div class="logo">
+        <a routerLink="/" routerDirection="forward"><img class="home__logo mouse" src="assets/website-logo.svg"></a>
+      </div>
+
+      <div class="cancle">
+        <div class="d__flex cancle_button mouse" [routerLink]="db.ismobile ? '/' : '/'">
+          <ion-icon name="close-outline"></ion-icon>
+          <p class="cancle_p m-0">Cancel</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="is_show && web_form;else loader">
+    <h5 *ngIf="!db.ismobile" class="m-0 head__">Become a seller</h5>
+    <!-- <app-wizard-forms [tabs_top]="1" [forms_route]="page_route"></app-wizard-forms> -->
+    <app-wizard-forms [tabs_top]="1" [web_form]="web_form"></app-wizard-forms>
+    <!-- <app-wizard-forms [tabs_top]="1" [tabs_left]="0" [web_form]="form_values"></app-wizard-forms> -->
+  </div>
+
+  <ng-template #loader>
+    <div class="loader__ forms_">
+
+      <div class="div">
+
+        <div class="d__flex box__">
+          <div *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]" class="input">
+            <ion-skeleton-text class="label_skele" [animated]="true"></ion-skeleton-text>
+            <ion-skeleton-text class="input_skele" [animated]="true"></ion-skeleton-text>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ng-template>
+
+
+
+</ion-content>

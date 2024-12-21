@@ -1,0 +1,87 @@
+<div *ngIf="db.ismobile" class="bg_primary">
+  <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+  [bg_white]="db.ismobile ? false : true" [tabs_array]="options" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+</div>
+
+<div class="month-filter"> 
+  <app-month-filter [noSort]="true" [showCalendar]="showCalendar" [selectedDate]="current_date" (getDateFromCalendar)="getDateFromCalendar($event)" (getFilters)="getFilters($event)" [search_data]="{}" [search_filter]="[]"></app-month-filter>
+  
+  <div class="d__flex gap-10" *ngIf="viewType == 'List'" >
+    <div (click)="applyFilter(item, i)" [class.activebtnUif]="item['isActive']" *ngFor="let item of filtersLabel;let i = index" class="btnUif d__flex">
+     <ion-icon class="icon" [src]="item['isActive'] ? item.activeIcon : item.icon"></ion-icon>
+    </div>
+  </div>
+</div>
+
+<div id="chart" *ngIf="viewType == 'Overview' && chartOptions">
+  <apx-chart 
+    [series]="chartOptions.series" 
+    [chart]="chartOptions.chart" 
+    [labels]="chartOptions.labels"
+    [responsive]="chartOptions.responsive">
+  </apx-chart>
+
+  <ng-container *ngIf="listData.length != 0">
+
+    <div class="d__flex just-s header-cs">
+      <h4 class="m-0 fnt-14 fnt_w500">Attendance Details</h4>
+      <h4 *ngIf="listData.length > 10" (click)="go_list()" class="m-0 d__flex gap-5 fnt-12 fnt_w400">
+        <span class="fnt-12 fnt_w400">View All</span>
+        <ion-icon class="fnt-13" name="chevron-forward-outline"></ion-icon>
+      </h4>
+    </div>
+
+    <div *ngFor="let item of listData.slice(0,10)" class="w-100 employee_att">
+      <div class="s-1 mb-5">
+        <h3 class="m-0 fnt-15 fnt_w500">{{item.attendance_date | date:'MMM d, y'}}</h3>
+        <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours) : ' - '}}</h2>
+      </div>
+
+      <div class="s-1 mb-10">
+        <h3 *ngIf="db.selfView" class="m-0 fnt-14 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/company.svg" class="fnt-20"></ion-icon>{{item.company ? item.company : ' - '}}</h3>
+        <h3 *ngIf="!db.selfView" class="m-0 fnt-14 gray_clr w-80 d__flex gap-5 webkit-text" [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
+        <app-status [status]="item.status"></app-status>
+      </div>
+  
+      <div class="s-1 mb-5">
+        <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+        <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&& item.last_checkout!= "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+      </div>
+  
+    </div>
+  </ng-container>
+
+</div>
+
+
+
+<div (scroll)="scrollEvent($event)" class="liststyle" *ngIf="viewType == 'List'">
+
+  <div *ngIf="skeleton">
+    <app-skeleton-loader [type]="'left3_right1'" [list_len_count]="'20'" ></app-skeleton-loader>
+  </div>
+
+  <ng-container *ngIf="!skeleton && listData.length != 0">
+    <div *ngFor="let item of listData" class="w-100 employee_att">
+      <div class="s-1 mb-5">
+        <h3 class="m-0 fnt-15 fnt_w500">{{item.attendance_date | date:'MMM d, y'}}</h3>
+        <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours) : ' - '}}</h2>
+      </div>
+  
+      <div class="s-1 mb-10">
+        <h3 *ngIf="db.selfView" class="m-0 fnt-14 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/company.svg" class="fnt-20"></ion-icon>{{item.company ? item.company : ' - '}}</h3>
+        <h3 *ngIf="!db.selfView" class="m-0 fnt-14 gray_clr w-80 d__flex gap-5 webkit-text" [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
+        <app-status [status]="item.status"></app-status>
+      </div>
+
+      <div class="s-1 mb-5">
+        <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+        <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&& item.last_checkout!= "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+      </div>
+  
+    </div>
+  </ng-container>
+
+  <app-no-record-found *ngIf="!skeleton && listData.length == 0" [column]="true" height="calc(100vh - 100px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>
+

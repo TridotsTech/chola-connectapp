@@ -1,0 +1,21 @@
+
+<div *ngIf="time">
+    <div class="d__flex Buttons" *ngIf="time.In_time && time.in_device_id">
+        <div class="side1">
+            <h6>IN</h6>
+        </div>
+        <div class="side2">
+            <p>{{time.in_device_id}}</p>
+            <h6>{{time.In_time}}</h6>
+        </div>
+    </div>
+    <div class="d__flex Buttons" *ngIf="time.Out_time && time.out_device_id">
+        <div class="side1">
+            <h6>OUT</h6> 
+        </div>
+        <div class="side2">
+            <p>{{time.out_device_id}}</p>
+            <h6>{{time.Out_time}}</h6>
+        </div>
+    </div>
+</div>

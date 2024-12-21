@@ -1,0 +1,212 @@
+<app-header *ngIf="!type && db.ismobile" [model]="false" back_route="sales-order-list" title="Order Detail"></app-header>
+
+
+<ion-content>
+<div class="container order__info__container order__dtl__container" *ngIf="order_detail">
+
+
+    <div *ngIf="type == 'Preview'" class="d__flex header">
+        <div>
+          <h6 class="m-0 heading__">{{doctype + ' Detail' }} </h6>
+        </div>
+        <ion-icon (click)="close_modal()" class="mouse" name="close-outline"></ion-icon>
+    </div>
+    
+
+    <div  class="inner__container">
+
+        <div class="d__flex top__container">
+            <div *ngIf="!type && this.detail_doc && this.detail_doc['name']" class="invoice">
+                <ion-button class="btn" fill="clear" [routerLink]="'/edit-form/create-sales-invoice/' + order_detail.name">Create Invoice</ion-button>
+            </div>
+            <div class="top__child">
+                <div class="order__info">
+                    <div class="info__title">Order Status</div>
+                    <div class="info__text"><span class="dot" [class.success_]="order_detail.status == 'Completed'"
+                            [class.to-deliver-and-bill_]="order_detail.status == 'To Deliver and Bill'"
+                            [class.to-bill_]="order_detail.status == 'To Bill'"  [class.to-deliver_]="order_detail.status == 'To Deliver'"  [class.cancelled_]="order_detail.status == 'Cancelled'"  [class.closed_]="order_detail.status == 'Closed'"></span>{{order_detail.status}}</div>
+                </div>
+                <div class="order__info">
+                    <div class="info__title">Order Id</div>
+                    <div class="info__text">{{order_detail.name}}</div>
+                   
+                </div>
+            </div>
+
+            <div class="top__child">
+                <div class="order__info">
+                    <div class="info__title">Transaction Date</div>
+                    <div class="info__text">{{order_detail.transaction_date | date:'MMM-dd,YYYY'}}</div>
+                </div>
+                <div class="order__info">
+                    <div class="info__title">Billing Status</div>
+                    <div class="info__text"><span class="dot" [class.success]="order_detail.billing_status == 'Paid'"
+                            [class.pending]="order_detail.billing_status == 'Pending'"></span>
+                        {{order_detail.billing_status}}</div>
+                    <!-- <div class="info__text">{{order_detail.billing_status}}</div> -->
+                </div>
+            </div>
+
+            <div *ngIf="order_detail.customer_name || order_detail.contact_mobile || order_detail.company_address_display" class="address">
+                <h6 class="m-0 order__heading">Customer Detail</h6>
+                
+                <p *ngIf="order_detail.customer_name" [ngClass]="db.ismobile ?'fnt-13':'fnt-15'" class="m-0"> {{order_detail.customer_name}} ,</p>
+                <p *ngIf="order_detail.customer_name && order_detail.contact_mobile" [ngClass]="db.ismobile ?'fnt-13':'fnt-15'" class="m-0">{{order_detail.contact_mobile}} ,</p>
+                
+                <p [ngClass]="db.ismobile ?'fnt-13':'fnt-15'" class="m-0" [innerHtml]="order_detail.company_address_display"></p>
+            </div>
+
+            <div *ngIf="order_detail.shipping_address" class="address">
+                <h6 class="m-0 order__heading">Shipping Detail</h6>
+                <p [ngClass]="db.ismobile ?'fnt-13':'fnt-15'" class="m-0" [innerHtml]="order_detail.shipping_address"></p>
+            </div>
+
+
+        </div>
+
+        <div  class="order__items p-10">
+            <div class="d__flex just-s payment__info">
+                <h6 class="m-0 order__heading">Item Details</h6>
+            </div>
+            <div class="d__flex gap-10 mb-5 product_d" *ngFor="let d of (order_detail.Items || order_detail.items || order_detail.order_item || order_detail.order_item)">
+
+                <div class="info__container_mb">
+
+                    <div class="item_name_free_txt just-s">
+                        <div class="product_name medium_name-13">{{d.item_name}} </div> 
+                        <span *ngIf="d.is_free_item == 1" class="free__item__text"><img src="/assets/icon/free.svg"></span>
+                    </div>
+                    <div *ngIf="d.attribute_description" class="attribute_d" [innerHTML]="d.attribute_description"></div>
+                    <p class="m-0 sold_by_d" *ngIf="d.business_name">Sold By : <span class="sold_by">{{d.business_name}}</span></p>
+                    <p class="m-0 sold_by_d" *ngIf="d.description">Description : <span class="sold_by" [innerHtml]="d.description"></span></p>
+                    <p class="m-0 sold_by_d" *ngIf="d.gst_hsn_code">HSN/SAC : <span class="sold_by">{{d.gst_hsn_code}}</span></p>
+
+                    <div class="d__flex gap-10 price_c_gap">
+                        <div class="price_mb">
+                            <p class="m-0 fnt-9">Price</p>
+                            <div class="fnt-13 open_sans__font inter_">{{d.rate | currency:db.website_settings.currency}}</div>
+                        </div>
+                        <div class="qty_mb">
+                            <p class="m-0 fnt-9">Qty</p>
+                            <div class="fnt-13">{{d.qty}} ({{d.uom}})</div>
+                        </div>
+                        <div class="total_mb">
+                            <p class="m-0 fnt-9">Amount</p>
+                            <div class="fnt-13 open_sans__font inter_">{{d.amount | currency:db.website_settings.currency}}</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+      
+        </div>
+
+
+        <div  class="taxes_section">
+            <div class="">
+                <h6 class="m-0 order__heading">Taxes</h6>
+            </div>
+
+            <div class="price_box_">
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Tax Category</p>
+                    <p class="m-0 medium_name-14-400">{{order_detail.tax_category ? order_detail.tax_category : '-'}}</p>
+                </div>
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Shipping Rule</p>
+                    <p class="m-0 medium_name-14-400">{{order_detail.shipping_rule ? order_detail.shipping_rule : '-'}}</p>
+                </div>
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Incoterm</p>
+                    <p class="m-0 medium_name-14-400">{{order_detail.incoterm ? order_detail.incoterm : '-'}}</p>
+                </div>
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Sales Taxes and Charges Template</p>
+                    <p class="m-0 medium_name-14-400">{{order_detail.taxes_and_charges ? order_detail.taxes_and_charges : '-'}}</p>
+                </div>
+
+                <div *ngIf="order_detail.taxes && order_detail.taxes != 0" class="sales_tax_a_charges">
+                    <h6 class="m-0 head__ medium_name">Sales Taxes and Charges</h6>
+    
+                    <div class="box_">
+                       <div class="sec" *ngFor="let item of order_detail.taxes">
+                        <div class="d__flex just-s py-5 order__info__item">
+                            <p class="m-0 medium_name-14-400">Type</p>
+                            <p class="m-0 medium_name-14-400">{{item.charge_type ? item.charge_type : '-'}}</p>
+                        </div>
+                        <div class="d__flex just-s py-5 order__info__item">
+                            <p class="m-0 medium_name-14-400">Rate</p>
+                            <p class="m-0 medium_name-14-400 inter_">{{item.rate ? (item.rate | currency:db.website_settings.currency) : '-'}}</p>
+                        </div>
+                        <div class="d__flex just-s py-5 order__info__item">
+                            <p class="m-0 medium_name-14-400">Amount</p>
+                            <p class="m-0 medium_name-14-400 inter_">{{item.tax_amount ? (item.tax_amount | currency:db.website_settings.currency) : '-'}}</p>
+                        </div>
+                        <div class="d__flex just-s py-5 order__info__item">
+                            <p class="m-0 medium_name-14-400">Total</p>
+                            <p class="m-0 medium_name-14-400 inter_">{{item.total ? (item.total | currency:db.website_settings.currency): '-'}}</p>
+                        </div>
+                       </div>
+                    </div>
+                  </div>
+
+            </div>    
+
+
+        </div>
+
+        <div class="payment-desc">
+            <div class=" d__flex just-s payment__info payment_de">
+                <h6 class="m-0 order__heading">Payment Details</h6>
+            </div>
+
+            <div class="price_box">
+                
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Total Items</p>
+                    <p class="m-0 medium_name-14-400">{{order_detail.items && order_detail.items.length}}</p>
+                </div>
+
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Sub Total</p>
+                    <p class="m-0 medium_name-14-400 open_sans__font inter_">{{order_detail.total | currency:db.website_settings.currency}}</p>
+                </div>
+                
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Total Taxes And Charges</p>
+                    <p class="m-0 medium_name-14-400 open_sans__font inter_">{{order_detail.total_taxes_and_charges | currency:db.website_settings.currency}}</p>
+                </div>
+
+                <div class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Grand Total</p>
+                    <p class="m-0 medium_name-14-400 open_sans__font inter_">{{order_detail.grand_total | currency:db.website_settings.currency}}</p>
+                </div>
+            
+                <div class="d__flex just-s total order__info__item">
+                    <p class="medium_name-14-400 m-0">Rounded Total</p>
+                    <p class="medium_name-14-400 m-0 open_sans__font inter_">{{order_detail.rounded_total | currency:db.website_settings.currency}}</p>
+                </div>
+
+                <div *ngIf="order_detail.payment_terms_template" class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Payment Terms</p>
+                    <p class="m-0 medium_name-14-400 open_sans__font inter_">{{order_detail.payment_terms_template}}</p>
+                </div>
+
+                <div *ngIf="order_detail.tc_name" class="d__flex just-s py-5 order__info__item">
+                    <p class="m-0 medium_name-14-400">Terms & Conditions</p>
+                    <p class="m-0 medium_name-14-400 open_sans__font inter_">{{order_detail.tc_name}}</p>
+                </div>
+        
+            </div>
+        </div>
+    </div>
+</div>
+</ion-content>
+
+<ion-footer *ngIf="type == 'Preview' && db.ismobile">
+    <ion-button (click)="submit()" class="btn" fill="clear">Submit</ion-button>
+</ion-footer>
+
+<div class="ion_footer1" *ngIf="type == 'Preview' && !db.ismobile">
+    <ion-button (click)="submit()" class="btn" fill="clear">Submit</ion-button>
+</div>

@@ -1,0 +1,88 @@
+.impt-star {
+    color: red;
+    font-size: 12px;
+}
+
+.save_ {
+    // position: fixed;
+    bottom: 0;
+    // width: 25%;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    // box-shadow: 0 0 5px #ddd;
+
+    .clear_btn {
+        width: 30%;
+        --background: #fff;
+        border: 1px solid var(--border-col);
+        color: #000;
+    }
+
+    .save_btn {
+        width: 55%;
+    }
+}
+
+.m-0-10 {
+    margin: 10px 0;
+}
+
+ion-select,
+ion-input {
+    border: 1px solid var(--border-color);
+    --padding-start: 10px;
+    border-radius: 5px;
+    height: 40px;
+    min-height: 40px !important;
+    width: 100%;
+    font-size: 12px;
+
+    ion-icon {
+        margin: 10px;
+        background: #f1f1f1;
+        padding: 5px;
+        border-radius: 5px;
+    }
+}
+
+
+.search_box_select {
+    border: 1px solid var(--border-col);
+    height: 40px;
+    border-radius: 5px;
+    font-size: 13px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.header {
+    border-bottom: 1px solid var(--border-col)
+}
+
+.employee_name {
+    width: 140px;
+    overflow: hidden;
+    // text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+ion-checkbox {
+    --size: 14px;
+    --border-radius: 10px;
+    --border-color: #b2b2b2;
+    --checkbox-background-checked: #0CA637;
+    --border-color-checked: #0CA637;
+}
+
+.error-msg-alert {
+    color: red;
+    font-size: 12px;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 0;
+}

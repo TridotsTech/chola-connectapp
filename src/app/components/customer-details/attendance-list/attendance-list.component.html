@@ -1,0 +1,138 @@
+<div class="min-h">
+
+
+  <div *ngIf="!db.enable_detail && !db.ismobile " class="d__flex gap-10 just-s search_filter">
+    <app-filters *ngIf="(search_filter && search_filter.length != 0)" (filterList)="filterList($event)"
+      [isNotModal]="true" [supplier_id]="supplier_id" [search_filter]="search_filter" [page_title]="page_title"
+      [json_filter]="json_filter" [doctype]="doc_type"></app-filters>
+    <div *ngIf="(search_filter && search_filter.length == 0)"></div>
+    <!-- doc_type == 'Attendance' ? true:  -->
+    <app-tab-filter [search]="false" [noView]="false" [noSort]="true" (tab_filter)="tab_filter($event)"
+      (toggleKanban_task)="viewChange($event)"></app-tab-filter>
+  </div>
+
+  <div *ngIf="view == 'list'">
+
+    <div>
+      <app-attendance-summary *ngIf="db.employee_role"></app-attendance-summary>
+
+      <!-- (scroll)="load_data($event)" -->
+      <div class="attendanceBox" *ngIf="list_data && list_data.data && list_data.data.length != 0">
+        <div *ngFor="let item of list_data.data; let i = index" class="w-100 mouse boxU"
+          (click)="load_popup.emit(item)">
+          <div class="d__flex w-100 gap-10">
+            <div class="w-100 employee_att">
+              <div class="s-1 mb-5 mt-5" *ngIf="db.employee_role">
+                <h3 class="m-0 fnt-15 fnt_w500">{{transform_att_date(item.attendance_date)}}</h3>
+                <h2 class="m-0 fnt-14 capitalize gray_clr">{{item.status == 'Present' ? converHours(item.total_hours) :
+                  ' - '}}</h2>
+              </div>
+
+              <div class="s-1 mb-5" *ngIf="db.hr_manager_role">
+                <h3 class="m-0 fnt-13 webkit-text h-30" [style.--line]="2">{{item.employee_name}}</h3>
+                <div class="flex-auto w-15">
+                  <app-status [status]="item.status"></app-status>
+                </div>
+              </div>
+
+              <div class="s-1 mb-5">
+                <!-- <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-20"></ion-icon>{{item.first_checkin | date: 'h:mm:ss a'}}</h3> -->
+                <h3 class="m-0 fnt-12 gray_clr d__flex gap-5 fnt_w400"><ion-icon
+                    src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{item.first_checkin ?
+                  converTime(item.first_checkin) : ' - '}}</h3>
+                <!-- <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/logout-black.svg" class="fnt-20"></ion-icon>{{item.last_checkout | date: 'h:mm:ss a'}}</h3> -->
+                <h3 class="m-0 fnt-12 gray_clr d__flex gap-5 fnt_w400"><ion-icon
+                    src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{item.last_checkout ?
+                  converTime(item.last_checkout) : ' - '}}</h3>
+              </div>
+
+              <div class="s-1 mb-5" *ngIf="db.employee_role">
+                <h3 class="m-0 fnt-14 gray_clr d__flex gap-5 fnt_w400"><ion-icon
+                    src="/assets/attendance-ess/company.svg" class="fnt-13"></ion-icon>{{item.company ? item.company : '
+                  - '}}</h3>
+                <app-status [status]="item.status"></app-status>
+              </div>
+
+              <div class="s-1 mb-5" *ngIf="db.hr_manager_role">
+                <h3 class="m-0 fnt-14 gray_clr d__flex gap-5">{{transform_att_date(item.attendance_date)}}</h3>
+                <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ?
+                  converHours(item.total_hours) : ' - '}}</h2>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- style="width: 70%;" -->
+      <div *ngIf="list_data && list_data.data && list_data.data.length == 0">
+        <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false" [column]="true"
+          height="calc(100vh - 270px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'">
+        </app-no-record-found>
+      </div>
+    </div>
+
+    <!-- No data found -->
+
+  </div>
+
+  <div *ngIf="view == 'calendar'">
+
+    <div class=" p-10">
+      <!-- <img src="/assets/leaves/main.svg" class="main-img" alt="calendar image" /> -->
+      <div *ngIf="!db.ismobile" class="d__flex just-s py-10">
+
+        <div class="d__flex gap-10 ">
+          <div mwlCalendarPreviousView [view]="views" [(viewDate)]="viewDate" (viewDateChange)="calendarDateChange()">
+            <ion-icon class="mouse" src="/assets/left-arrow.svg"></ion-icon>
+          </div>
+          <div class="" mwlCalendarToday [(viewDate)]="viewDate">
+            <h3 class="m-0 fnt-15">{{ viewDate | calendarDate:(views + 'ViewTitle'):'en' }}</h3>
+          </div>
+          <div mwlCalendarNextView [view]="views" [(viewDate)]="viewDate" (viewDateChange)="calendarDateChange()">
+            <ion-icon class="mouse" src="/assets/right-arrow.svg"></ion-icon>
+          </div>
+        </div>
+
+
+        <div class="d__flex gap-10 bg_gray just-s">
+          <div class="btn btn-primary mouse fnt-13" (click)="views = CalendarView.Month"
+            [class.active]="views === CalendarView.Month">
+            Month
+          </div>
+          <div class="btn btn-primary mouse fnt-13" (click)="views = CalendarView.Week"
+            [class.active]="views === CalendarView.Week">
+            Week
+          </div>
+          <div class="btn btn-primary mouse fnt-13" (click)="views = CalendarView.Day"
+            [class.active]="views === CalendarView.Day">
+            Day
+          </div>
+        </div>
+
+      </div>
+
+      <br>
+
+      <div *ngIf="!db.ismobile" class="attendance_calendar" [ngSwitch]="views">
+        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate"
+          (dayClicked)="dayClicked($event.day)" [events]="leaveIndicators"
+          [mwlCalendarMonthCellTemplate]="customEventTemplate">
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate">
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate">
+        </mwl-calendar-day-view>
+      </div>
+
+      <ng-template #customEventTemplate let-event="event">
+        <!-- Customize event rendering here -->
+        <div class="custom-event">
+          {{ event.title }}
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+
+</div>

@@ -1,0 +1,35 @@
+// @media only screen and (min-width: 768px) {
+    .forms__ {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+
+        .mar-0-10 {
+            margin: 0 10px;
+        }
+
+        ion-icon {
+            background: var(--dynamic-color);
+            border-radius: 50%;
+            padding: 5px;
+            color: #ffff;
+        }
+
+        .white {
+            color: var(--dynamic-color);
+        }
+    }
+// }
+
+.quickEntry{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+     .body__{
+        height: 100%;
+        overflow: auto;
+        margin: 0 0 52px 0;
+     }
+     .body__::-webkit-scrollbar{
+        display: none;
+     }
+}

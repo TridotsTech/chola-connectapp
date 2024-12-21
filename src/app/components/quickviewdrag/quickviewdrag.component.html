@@ -1,0 +1,33 @@
+<div class="fullview">
+  <div class="d__flex gap-10 popUpheadercss">
+    <ion-icon class="mouse" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white"></p>
+  </div>
+
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let data of listValues" class="example-box" [cdkDragData]="data" cdkDrag [cdkDragStartDelay]="300">
+      <ion-icon class="drag" src="/assets/img/grip-horizontal.svg"></ion-icon>
+      <img class="icon" [src]="data.imageUrl" >
+      <!-- <ion-icon class="icon" [src]="data.imageUrl? data.imageUrl : db.get_home_icon1(data.page,data)"></ion-icon> -->
+      <h6 class="h-6 webkit-text m-0" [style.--line]="2">{{data.page_name}}</h6>
+    </div>
+  </div>
+
+  <!-- <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let data of listValues" class="example-box" cdkDrag>
+        <ion-icon class="drag" src="/assets/img/grip-horizontal.svg"></ion-icon>
+        <ion-icon class="icon" [src]="data.imageUrl ? data.imageUrl : db.get_home_icon1(data.page,data)"></ion-icon>
+        <h6 class="h-6 webkit-text m-0" [style.--line]="2">{{data.page_name}}</h6>
+    </div>
+  </div> -->
+
+  <!-- <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let data of movies" class="example-box" cdkDrag>
+       {{data}}>
+    </div>
+  </div> -->
+
+  <div class="submitBtn">
+   <ion-button (click)="save()" fill="clear">Save</ion-button>
+  </div>
+</div>

@@ -1,0 +1,1216 @@
+<ion-content *ngIf="!db.ismobile" class="child_popup">
+  <!-- <div class="child_title d__flex just-s">
+    <h4 class="table_title">{{doctype}}</h4>
+    <div class="close-icon-div">
+      <ion-icon class="close-icon" (click)="db.close_modal()" name="close-circle-outline"></ion-icon>
+    </div>
+  </div> -->
+
+  <div *ngIf="!db.ismobile" class="forms__">
+    <div class="d__flex gap-10 mar-0-10">
+      <ion-icon class="mouse" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+      <p class="fnt_w500 fnt-14 white">{{doctype}}</p>
+    </div>
+  </div>
+
+  <div
+    *ngIf="section_break_data && section_break_data_2 && section_break_name && section_break_name.length>0 && info.length > 0"
+    class="form-full-container">
+    <div *ngIf="doctype == 'Timesheet Detail'" class="stop_timer">
+      <div class="d__flex gap-5 s-1-d">
+        <ion-icon name="time-outline"></ion-icon>
+        <ion-label>{{ formatElapsedTime() }}</ion-label>
+      </div>
+      <ion-button expand="full" (click)="toggleTimer()">
+        {{ isTimerRunning ? 'Stop Timer' : 'Start Timer' }}
+      </ion-button>
+    </div>
+    <div class="form-container">
+      <form [formGroup]="form_data">
+        <div class="form-data">
+          <!-- <ion-row class="rows-container" *ngFor="let section of section_break_name"> -->
+          <div class="d__flex" [class.sections]="section_break_data[section].label != 'Component properties and references ' && section_break_data[section].label != 'Condition and formula'"
+            [ngClass]="{'rows-container':((section_break_data_2 && (section_break_data && !section_break_data[section].label)) ||( section_break_data_2 && section_break_data[section].label)) ,'enable-border':(section_break_data_2 && section_break_data[section].label)}"
+            *ngFor="let section of section_break_name">
+            <!-- If section breake having title -->
+            <div class="sec-title w-100" *ngIf="section_break_data_2 && section_break_data[section].label && (section_break_data[section].label != 'Component properties and references ' && section_break_data[section].label != 'Condition and formula' && section_break_data[section].label != ' ')">
+              <!-- {{section_break_data[section].label | json}} -->
+              <p class="title-label">{{section_break_data[section].label}}</p>
+            </div>
+
+            <!-- End -->
+
+            <!-- [ngClass]="each.fieldtype == 'Check'?'data-manl-div-check flex':'data-manl-div flex'" -->
+            <div [class.hidden]="each.hidden == 1"
+              [ngClass]="{'data-manl-div-check':(each.fieldtype == 'Check'),'data-manl-div':(each.fieldtype != 'Check')}"
+              *ngFor="let each of section_break_data[section]" [style.margin-right]='flex_margin'
+              [style.flex]='section_break_data[section].flex'>
+
+              <!-- data input -->
+
+              <ion-label *ngIf="each.fieldtype == 'Data'" class="label-1">{{each.label}}<span class="impt-star"
+                  *ngIf="each.reqd == 1">
+                  *</span></ion-label>
+              <div class="custom-input" *ngIf="each.fieldtype == 'Data'">
+                <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input>
+              </div>
+
+              <ion-label *ngIf="each.fieldtype == 'Data' && each.depends_on" class="label-1">{{each.label}}<span
+                  class="impt-star" *ngIf="each.reqd == 1">
+                  *</span></ion-label>
+              <div class="custom-input" *ngIf="each.fieldtype == 'Data'  && each.depends_on">
+                <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input>
+              </div>
+              <!-- Check box -->
+
+              <div class="custom-input-check" *ngIf="each.fieldtype == 'Check'">
+                <ion-checkbox (ionChange)="check_box($event,each)" [formControlName]="each.fieldname"
+                  color="primary"></ion-checkbox>
+              </div>
+
+              <ion-label *ngIf="each.fieldtype == 'Check'" class="label-1">{{each.label}}{{each.description}}<span
+                  class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+
+
+              <!-- Link and Select-->
+
+              <ion-label *ngIf="each.fieldtype == 'Dynamic Link' || each.fieldtype == 'Link' || each.fieldtype == 'Select'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+              <div class="custom-input link_field_mouse" *ngIf="each.fieldtype == 'Link' || each.fieldtype == 'Dynamic Link'">
+                <!-- (click)="gen_links(each,each.options,$event)" -->
+                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                  interface="popover">
+
+                  <ion-select-option>Select</ion-select-option>
+                  <ion-select-option *ngFor="let opts of all_link_opts[each.options]" [value]="opts">
+                    {{opts}}
+                  </ion-select-option>
+                </ion-select> -->
+
+                <div class="custom-input m-ng-select" *ngIf="each.fieldtype == 'Link' || each.fieldtype == 'Dynamic Link'">
+                  <ion-input placeholder="Select {{each.label}}" type="text"
+                    (click)="each.fieldtype == 'Dynamic Link' ? open_dynamic_link(each) : open_drop_down_options(each.options,each.fieldname,'item_name')"
+                    [formControlName]="each.fieldname"
+                    [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : ''"
+                    class="mouse 789 form-input"></ion-input>
+                </div>
+              </div>
+
+              <div class="custom-input link_field_mouse" *ngIf="each.fieldtype == 'Select'">
+
+
+                <ion-input [class.readOnlyClass]="each.read_only == 1" placeholder="Select {{each.label}}" type="text"
+                  (click)="open_drop_down_options(each.options, each.fieldname, 'name')"
+                  [readonly]="each.read_only == 1 ? true : false" [formControlName]="each.fieldname"
+                  [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : each.value ? each.value : ''"
+                  class="mouse 789 form-input" (ionFocus)="select_value($event)">
+                  <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+                </ion-input>
+
+                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                interface="popover" id="select-options" (ionChange)="changed($event)"> -->
+
+                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                  interface="popover" id="select-options">
+                  <ion-select-option>Select</ion-select-option>
+                  <ion-select-option *ngFor="let item of (each.options.split('\n'))" [value]="item"> {{item}}
+                  </ion-select-option>
+                </ion-select> -->
+
+              </div>
+
+
+              <!-- Int && Float && currency-->
+
+              <ion-label *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'"
+                class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'">
+                <ion-input *ngIf="each.read_only == 0" (input)="ion_change($event,each)"
+                  (ionFocus)="select_value($event)" (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any"
+                  min="0" type="number" [formControlName]="each.fieldname" class="form-input"></ion-input>
+                <ion-input *ngIf="each.read_only == 1" readonly (input)="ion_change($event,each)"
+                  (ionFocus)="select_value($event)" (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any"
+                  min="0" type="number" [formControlName]="each.fieldname" class="form-input"></ion-input>
+              </div>
+
+              <!-- Attach && Attach Image -->
+
+              <ion-label id="attach" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'"
+                class="label-1">
+                {{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="image-div_" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'">
+                <input #file_upload class="image-d" (change)="changeListener($event,each)" type="file"
+                  [formControlName]="each.fieldname" class="form-input">
+
+                <div [class.attached]="each.file_url" class="d__flex browser">
+                  <div (click)="file_upload.click()" class="mouse d__flex name">
+                    <span>Browse</span>
+                    <ion-icon name="chevron-down-outline"></ion-icon>
+                  </div>
+                  <a (click)="each.file_url ? this.db.preview_image(db.product_img(each.file_url))  : file_upload.click()"
+                    class="m-0 mouse value_ webkit-text" [style.--line]="1">{{each.file_url ? each.file_url : 'Upload
+                    afile'}}</a>
+                </div>
+
+              </div>
+
+
+              <!-- Date -->
+
+              <ion-label *ngIf="each.fieldtype == 'Date'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Date'">
+                <!-- <ion-input type="date" [formControlName]="each.fieldname" class="form-input"></ion-input> -->
+                <!-- [max]="today_date" -->
+                <input type="date" [formControlName]="each.fieldname" class="form-input date_picker" />
+                <!-- <ion-input [placeholder]="each.label" onfocus="(this.type='date')"
+                    onblur="if(this.value==''){this.type='text'}" [formControlName]="each.fieldname" class="form-input">
+                  </ion-input> -->
+              </div>
+
+              <!-- Datetime-->
+
+              <ion-label *ngIf="each.fieldtype == 'Datetime'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Datetime' && doctype != 'Timesheet Detail'">
+                <ion-input type="datetime-local" [formControlName]="each.fieldname" class="form-input">
+                </ion-input>
+              </div>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Datetime' && doctype == 'Timesheet Detail' && each.fieldname == 'from_time'">
+                <ion-input type="datetime-local" [(ngModel)]="selectedFromTime" class="form-input"
+                  (ionChange)="onFromTimeChange()" [formControlName]="each.fieldname">
+                </ion-input>
+              </div>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Datetime' && doctype == 'Timesheet Detail' && each.fieldname == 'to_time'">
+                <ion-input type="datetime-local" class="form-input" (ionInput)="onToTimeChange($event,each)"
+                  [formControlName]="each.fieldname">
+                </ion-input>
+              </div>
+
+              <!-- text editor -->
+
+              <ion-label
+                *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'"
+                class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'">
+                <ion-textarea class="text-area" [formControlName]="each.fieldname"
+                  placeholder="Enter Your {{each.label}} Here..."></ion-textarea>
+
+                <!-- <quill-editor class="text-editor" [formControlName]="each.fieldname" [style]="{height: '285px'}">
+                 </quill-editor> -->
+              </div>
+
+              <!-- time-->
+
+              <ion-label *ngIf="each.fieldtype == 'Time'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Time'">
+                <ion-input type="time" [formControlName]="each.fieldname" class="form-input">
+                </ion-input>
+              </div>
+
+              <!-- Signature -->
+
+              <!-- <ion-label *ngIf="each.fieldtype == 'Signature'" class="label-1">{{each.label}}
+            <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+          </ion-label>
+  
+          <div class="signature-input" *ngIf="each.fieldtype == 'Signature'"> 
+            <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawComplete(each.fieldname)">
+            </signature-pad>
+          </div> -->
+
+              <!-- Text,small text,long text -->
+
+              <ion-label
+                *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'"
+                class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'">
+                <!-- <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input> -->
+                <ion-textarea class="text-area" [formControlName]="each.fieldname" placeholder="Enter text here...">
+                </ion-textarea>
+                <!-- <textarea ng-model="myTextarea">Enter text here...</textarea> -->
+              </div>
+
+              <!-- Password -->
+              <ion-label *ngIf="each.fieldtype == 'Password'" class="label-1">{{each.label}}<span class="impt-star"
+                  *ngIf="each.reqd == 1">*</span></ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Password'">
+                <ion-input type="Password" [formControlName]="each.fieldname" class="form-input"></ion-input>
+              </div>
+
+              <!-- (Table Field) Child table -->
+
+              <!-- <ion-label *ngIf="each.fieldtype == 'Table'" class="label-1">{{each.label}}<span class="impt-star"
+                    *ngIf="each.reqd == 1">
+                    *</span></ion-label>
+  
+                <div class="custom-input" *ngIf="each.fieldtype == 'Table'">
+                  <ion-button class="child-table-btn" (click)="open_child_modal(each.options)">Add Details</ion-button>
+                </div> -->
+
+
+              <!-- Error msg required field and mail field-->
+
+              <div class="error-msg"
+                *ngIf="submitted && each.reqd == 1 && (form_data.get(each.fieldname)?.errors || form_data.get(each.fieldname)?.status )">
+                <p class="error-msg-alert"
+                  *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname).errors.required">
+                  {{each.label}} is required *</p>
+                <p class="error-msg-alert"
+                  *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.email && form_data.get(each.fieldname)?.status=='INVALID'">
+                  Please
+                  Enter Valid {{each.label}} *</p>
+              </div>
+
+              <div class="error-msg"
+                *ngIf="submitted && each.reqd != 1 && (form_data.get(each.fieldname)?.errors || form_data.get(each.fieldname)?.status )">
+                <p class="error-msg-alert"
+                  *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.email && form_data.get(each.fieldname)?.status=='INVALID'">
+                  Please
+                  Enter Valid {{each.label}} *</p>
+              </div>
+
+              <!-- End error -->
+            </div>
+            <!-- </ion-row> -->
+          </div>
+        </div>
+        <div class="submit-btn">
+          <!-- {{'test 2' | json}} -->
+          <ion-button class="sub-button" (click)="save_details()">Save</ion-button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- If not section breake in api data -->
+
+  <div class="form-full-container" *ngIf="info && no_sec_col && no_sec_col.length>0 ">
+    <div *ngIf="doctype == 'Timesheet Detail'" class="stop_timer">
+      <div class="d__flex gap-5 s-1-d">
+        <ion-icon name="time-outline"></ion-icon>
+        <ion-label>{{ formatElapsedTime() }}</ion-label>
+      </div>
+      <ion-button expand="full" (click)="toggleTimer()">
+        {{ isTimerRunning ? 'Stop Timer' : 'Start Timer' }}
+      </ion-button>
+    </div>
+    <div class="form-container">
+      <!-- <div class="close-icon-div"> -->
+      <!-- <ion-icon class="close-icon" (click)="save_details()" name="chevron-down-circle-outline"></ion-icon> -->
+      <!-- <ion-icon class="close-icon" (click)="db.close_modal()" name="close-circle-outline"></ion-icon>
+        </div> -->
+      <form [formGroup]="form_data">
+        <div class="form-data">
+          <!-- <div [ngClass]="each.fieldtype == 'Check'?'data-manl-div-check':'data-manl-div'"
+              *ngFor="let each of info.data.web_form_fields"> -->
+          <div class="data-manl-div-2"
+            [ngClass]="{'data-manl-div-check-2':(each.fieldtype == 'Check'),'data-manl-div-text-2':(each.fieldtype == 'Text Editor'),'data-manl-div-2':(each.fieldtype != 'Text Editor' && each.fieldtype != 'Check')}"
+            *ngFor="let each of info" [class.hidden]="each.hidden == 1">
+            <!-- {{each | json}} -->
+
+            <!-- data input -->
+
+            <ion-label *ngIf="each.fieldtype == 'Data' && (!each.depends_on || each.show)"
+              class="label-1">{{each.label}} <span class="impt-star" *ngIf="each.reqd == 1">
+                *</span></ion-label>
+            <div class="custom-input" *ngIf="each.fieldtype == 'Data' && (!each.depends_on || each.show)">
+              <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input>
+            </div>
+
+            <!-- Check box -->
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Check'">
+              <ion-checkbox (ionChange)="check_box($event,each)" [formControlName]="each.fieldname"
+                color="primary"></ion-checkbox>
+            </div>
+
+            <ion-label *ngIf="each.fieldtype == 'Check'" class="label-1">{{each.label}}{{each.description}}<span
+                class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+
+
+            <ion-label *ngIf="each.fieldtype == 'Dynamic Link' || each.fieldtype == 'Select'"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input m-ng-select" *ngIf="each.fieldtype == 'Dynamic Link'">
+              <ion-input placeholder="Select {{each.label}}" type="text"
+                (click)="open_drop_down_options(each.options,each.fieldname,'item_name')"
+                [formControlName]="each.fieldname"
+                [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : ''"
+                class="mouse 789 form-input"></ion-input>
+            </div>
+
+            <!-- Link and Select-->
+
+            <ion-label
+              *ngIf="(each.fieldtype == 'Link' || each.fieldtype == 'Select') && (!each.depends_on || each.show)"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input m-ng-select link_field_mouse"
+              *ngIf="each.fieldtype == 'Link' && (!each.depends_on || each.show)">
+              <!-- [disabled]="true" -->
+
+              <ion-input placeholder="Select {{each.label}}" type="text"
+                (click)="open_drop_down_options(each.options,each.fieldname,'item_name')"
+                [formControlName]="each.fieldname"
+                [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : ''"
+                class="mouse 789 form-input"></ion-input>
+
+              <!-- <ion-input placeholder="Select items" type="text" (click)="open_drop_down_options(each.options,each.fieldname,'item_name')" [formControlName]="each.fieldname" class="mouse 123 form-input"></ion-input> -->
+
+
+              <!-- (click)="gen_links(each,each.options,$event)" -->
+
+              <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                  interface="popover"> 
+                  <ion-select-option >Select</ion-select-option>
+                  <ion-select-option *ngFor="let opts of all_link_opts[each.options]" [value]="opts">
+                    {{opts}}
+                  </ion-select-option>
+                </ion-select> -->
+              <!--    (click)="focusof()"  (change)="multivalue_select_link($event,each,all_link_opts[each.options])" -->
+              <!-- <ng-select #select [items]="all_link_opts[each.options]" class="medium_name"
+                [placeholder]="each.placeholder"
+                appendTo="body"
+                [clearable]="false"
+                [searchable]="false"
+                bindLabel="name"
+                [multiple]="false"
+                [formControlName]="each.fieldname"
+                [searchFn]="db.CustomSearch" 
+                (search)="db.onSearch($event)">
+                <ng-template ng-header-tmp>
+                  <div class="custome_input d__flex gap-5 just-s">
+                    <input #customInput style="width: 100%;line-height: 25px; border:unset" 
+                      [placeholder]="'search'" 
+                      type="text" 
+                      (input)="select.filter($any($event.target).value)"
+                      (change)="$event.stopPropagation()"
+                      (keydown)="select.handleKeyDown($event)"/> 
+                      <img style="width: 15px;" src="assets/icon/search.svg">
+                  </div>
+                </ng-template>
+              
+                </ng-select>  -->
+              <!-- <select class="select-1" [formControlName]="each.fieldname" (click)="gen_links(each.options,$event)">
+                <option></option>
+                <option *ngFor="let opts of link_opts">{{opts}}</option>
+              </select> -->
+            </div>
+
+            <div class="custom-input link_field_mouse"
+              *ngIf="each.fieldtype == 'Select' && (!each.depends_on || each.show)">
+              <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                interface="popover" id="select-options" (ionChange)="changed($event)"> -->
+              <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label" (ionChange)="change_data($event,each.fieldname)"
+                  interface="popover" id="select-options">
+                  <ion-select-option >Select</ion-select-option>
+                  <ion-select-option *ngFor="let item of (each.options.split('\n'))" [value]="item"> {{item}}
+                  </ion-select-option>
+                </ion-select> -->
+              <ng-select #select [items]="all_select_values[each.fieldname]" class="medium_name"
+                [placeholder]="each.placeholder" appendTo="body" [clearable]="false" [searchable]="false"
+                bindLabel="name" [multiple]="false" [formControlName]="each.fieldname" [searchFn]="db.CustomSearch"
+                (search)="db.onSearch($event)">
+                <ng-template ng-header-tmp>
+                  <div class="custome_input d__flex gap-5 just-s">
+                    <input #customInput style="width: 100%;line-height: 25px; border:unset" [placeholder]="'search'"
+                      type="text" (input)="select.filter($any($event.target).value)" (change)="$event.stopPropagation()"
+                      (keydown)="select.handleKeyDown($event)" />
+                    <img style="width: 15px;" src="assets/icon/search.svg">
+                  </div>
+                </ng-template>
+
+              </ng-select>
+            </div>
+            <!-- Int && Float && currency-->
+
+            <ion-label *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'">
+              <ion-input *ngIf="each.read_only == 0" (input)="ion_change($event,each)" (ionFocus)="select_value($event)"
+                (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any" min="0" type="number"
+                [formControlName]="each.fieldname" class="form-input"></ion-input>
+              <ion-input *ngIf="each.read_only == 1" readonly (input)="ion_change($event,each)"
+                (ionFocus)="select_value($event)" (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any"
+                min="0" type="number" [formControlName]="each.fieldname" class="form-input"></ion-input>
+            </div>
+
+            <!-- Attach && Attach Image -->
+
+            <ion-label id="attach" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'"
+              class="label-1">
+              {{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="image-div_  123" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'">
+              <input #file_upload class="image-d" (change)="changeListener($event,each)" type="file"
+                [formControlName]="each.fieldname" class="form-input">
+
+              <div [class.attached]="each.file_url" class="d__flex browser">
+                <div (click)="file_upload.click()" class="mouse d__flex name">
+                  <span>Browse</span>
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+                <a (click)="each.file_url ? null : file_upload.click()" class="m-0 mouse value_ webkit-text"
+                  [style.--line]="1">{{each.file_url ? each.file_url : 'Upload a file'}}</a>
+              </div>
+
+            </div>
+
+
+            <!-- Date -->
+
+            <ion-label *ngIf="each.fieldtype == 'Date'" class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Date'">
+              <ion-input type="date" [formControlName]="each.fieldname" max='22-12-2022' class="form-input">
+              </ion-input>
+            </div>
+
+            <!-- Datetime-->
+
+            <ion-label *ngIf="each.fieldtype == 'Datetime'" class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Datetime' && doctype != 'Timesheet Detail'">
+              <ion-input type="datetime-local" [formControlName]="each.fieldname" class="form-input">
+              </ion-input>
+            </div>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Datetime' && doctype == 'Timesheet Detail' && each.fieldname == 'from_time'">
+              <ion-input type="datetime-local" [(ngModel)]="selectedFromTime" class="form-input"
+                (ionChange)="onFromTimeChange()" [formControlName]="each.fieldname">
+              </ion-input>
+            </div>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Datetime' && doctype == 'Timesheet Detail' && each.fieldname == 'to_time'">
+              <ion-input type="datetime-local" class="form-input" (ionInput)="onToTimeChange($event,each)"
+                [formControlName]="each.fieldname">
+              </ion-input>
+            </div>
+
+            <!-- text editor -->
+
+            <ion-label
+              *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'">
+              <ion-textarea class="text-area" [formControlName]="each.fieldname"
+                placeholder="Enter Your {{each.label}} Here..."></ion-textarea>
+
+              <!-- <quill-editor class="text-editor" [formControlName]="each.fieldname" [style]="{height: '285px'}">
+               </quill-editor> -->
+            </div>
+
+            <!-- time-->
+
+            <ion-label *ngIf="each.fieldtype == 'Time'" class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Time'">
+              <ion-input type="time" [formControlName]="each.fieldname" class="form-input">
+              </ion-input>
+            </div>
+
+            <!-- Signature -->
+
+            <!-- <ion-label *ngIf="each.fieldtype == 'Signature'" class="label-1">{{each.label}}
+            <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+          </ion-label>
+  
+          <div class="signature-input" *ngIf="each.fieldtype == 'Signature'"> 
+            <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawComplete(each.fieldname)">
+            </signature-pad>
+          </div> -->
+
+            <!-- Text,small text,long text -->
+
+            <ion-label
+              *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'"
+              class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'">
+              <!-- <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input> -->
+              <ion-textarea class="text-area" [formControlName]="each.fieldname" placeholder="Enter text here...">
+              </ion-textarea>
+              <!-- <textarea ng-model="myTextarea">Enter text here...</textarea> -->
+            </div>
+
+            <!-- Password -->
+            <ion-label *ngIf="each.fieldtype == 'Password'" class="label-1">{{each.label}}<span class="impt-star"
+                *ngIf="each.reqd == 1">
+                *</span></ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Password'">
+              <ion-input type="Password" [formControlName]="each.fieldname" class="form-input"></ion-input>
+            </div>
+
+            <!-- Section and column breake -->
+
+            <!-- <div class="sec-col-breake" *ngIf="each.fieldtype == 'Section Break' || each.fieldtype == 'Column Break'">
+              <ion-row></ion-row>
+            </div> -->
+
+            <!-- Error msg required field and mail field-->
+
+            <div class="error-msg"
+              *ngIf="submitted && each.reqd == 1 && (form_data.get(each.fieldname)?.errors || form_data.get(each.fieldname)?.status )">
+              <p class="error-msg-alert"
+                *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.required">
+                {{each.label}} is required *</p>
+              <p class="error-msg-alert"
+                *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.email && form_data.get(each.fieldname)?.status=='INVALID'">
+                Please
+                Enter Valid {{each.label}}</p>
+            </div>
+
+            <div class="error-msg"
+              *ngIf="submitted && each.reqd != 1 && (form_data.get(each.fieldname) && form_data.get(each.fieldname)?.errors || form_data.get(each.fieldname)?.status )">
+              <p class="error-msg-alert"
+                *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.email && form_data.get(each.fieldname)?.status=='INVALID'">
+                Please
+                Enter Valid {{each.label}} *</p>
+            </div>
+
+            <!-- End error -->
+
+          </div>
+        </div>
+        <div class="submit-btn">
+          <!-- {{'test 1' | json}} -->
+          <ion-button class="sub-button btn primary-btn" fill="clear" (click)="save_details()">Save</ion-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Mobile view -->
+
+<ion-content *ngIf="db.ismobile">
+  <div class="child_title d__flex just-s">
+    <h4 class="table_title">{{doctype}}</h4>
+    <div class="close-icon-div">
+      <!-- <ion-icon class="close-icon" (click)="save_details()" name="chevron-down-circle-outline"></ion-icon> -->
+      <ion-icon class="close-icon" (click)="db.close_modal()" name="close-circle-outline"></ion-icon>
+    </div>
+  </div>
+
+  <div *ngIf="doctype == 'Timesheet Detail'" class="stop_timer">
+    <div class="d__flex gap-5 s-1-d">
+      <ion-icon name="time-outline"></ion-icon>
+      <ion-label>{{ formatElapsedTime() }}</ion-label>
+    </div>
+    <ion-button expand="full" (click)="toggleTimer()">
+      {{ isTimerRunning ? 'Stop Timer' : 'Start Timer' }}
+    </ion-button>
+  </div>
+  <div
+    *ngIf="section_break_data && section_break_data_2 && section_break_name && section_break_name.length>0 && info.length>0"
+    class="form-full-container mbl-form-full-container">
+    <div class="form-container">
+      <form [formGroup]="form_data">
+        <div class="form-data">
+          <!-- <ion-row class="rows-container" *ngFor="let section of section_break_name"> -->
+          <div
+            [ngClass]="{'mbl-rows-container':((section_break_data_2 && (section_break_data && !section_break_data[section].label)) ||( section_break_data_2 && section_break_data[section].label)) ,'enable-border':(section_break_data_2 && section_break_data[section].label)}"
+            *ngFor="let section of section_break_name">
+
+            <!-- If section breake having title -->
+
+            <div class="sec-title" *ngIf="section_break_data_2 && section_break_data[section].label && (section_break_data[section].label != 'Component properties and references ' && section_break_data[section].label != 'Condition and formula' && section_break_data[section].label != ' ')">
+              <p class="title-label">{{section_break_data[section].label}}</p>
+            </div>
+
+            <!-- End -->
+
+            <!-- [ngClass]="each.fieldtype == 'Check'?'data-manl-div-check flex':'data-manl-div flex'" -->
+            <div [class.hidden]="each.hidden == 1"
+              [ngClass]="{'mbl-data-manl-div-check':(each.fieldtype == 'Check'),'mbl-data-manl-div':(each.fieldtype != 'Check')}"
+              *ngFor="let each of section_break_data[section]">
+
+              <!-- data input -->
+
+              <ion-label *ngIf="each.fieldtype == 'Data'" class="label-1">{{each.label}}<span class="impt-star"
+                  *ngIf="each.reqd == 1">
+                  *</span></ion-label>
+              <div class="custom-input" *ngIf="each.fieldtype == 'Data'">
+                <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input>
+              </div>
+
+
+              <!-- Check box -->
+
+              <div class="custom-input-check" *ngIf="each.fieldtype == 'Check'">
+                <ion-checkbox (ionChange)="check_box($event,each)" [formControlName]="each.fieldname"
+                  color="primary"></ion-checkbox>
+              </div>
+
+              <ion-label *ngIf="each.fieldtype == 'Check'" class="label-1">{{each.label}}{{each.description}}<span
+                  class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+
+
+              <!-- Link and Select-->
+
+              <ion-label *ngIf="each.fieldtype == 'Link' || each.fieldtype == 'Select'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input m-ng-select link_field_mouse" *ngIf="each.fieldtype == 'Link'">
+                <!-- [disabled]="true" -->
+
+                <ion-input placeholder="Select items" type="text"
+                  (click)="open_drop_down_options(each.options,each.fieldname,'item_name')"
+                  [ngModelOptions]="{standalone: true}"
+                  [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : ''"
+                  class="mouse 789 form-input"></ion-input>
+
+                <!-- <ion-input placeholder="Select items" type="text" (click)="open_drop_down_options(each.options,each.fieldname,'item_name')" [formControlName]="each.fieldname" class="mouse 456 form-input"></ion-input> -->
+
+
+                <!-- (click)="gen_links(each,each.options,$event)" -->
+
+                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                    interface="popover">
+  
+                    <ion-select-option >Select</ion-select-option>
+                    <ion-select-option *ngFor="let opts of all_link_opts[each.options]" [value]="opts">
+                      {{opts}}
+                    </ion-select-option>
+                  </ion-select> -->
+                <!-- <select class="select-1" [formControlName]="each.fieldname" (click)="gen_links(each.options,$event)">
+                <option></option>
+                <option *ngFor="let opts of link_opts">{{opts}}</option>
+              </select> -->
+              </div>
+
+              <!-- Dynamic Link and Select-->
+              <!-- {{each.fieldtype | json}} -->
+              <ion-label *ngIf="each.fieldtype == 'Dynamic Link' || each.fieldtype == 'Select'"
+                class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input m-ng-select" *ngIf="each.fieldtype == 'Dynamic Link'">
+                <ion-input placeholder="Select {{each.label}}" type="text"
+                  (click)="open_drop_down_options(each.options,each.fieldname,'item_name')"
+                  [ngModelOptions]="{standalone: true}"
+                  [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : ''"
+                  class="mouse 789 form-input"></ion-input>
+              </div>
+
+              <div class="custom-input link_field_mouse" *ngIf="each.fieldtype == 'Select'">
+
+                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                interface="popover" id="select-options" (ionChange)="changed($event)"> -->
+
+                <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                  interface="popover" id="select-options">
+                  <ion-select-option>Select</ion-select-option>
+                  <ion-select-option *ngFor="let item of (each.options.split('\n'))" [value]="item"> {{item}}
+                  </ion-select-option>
+                </ion-select>
+              </div>
+
+
+              <!-- Int && Float && currency-->
+
+              <ion-label *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'"
+                class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'">
+                <ion-input *ngIf="each.read_only == 0" (input)="ion_change($event,each)"
+                  (ionFocus)="select_value($event)" (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any"
+                  min="0" type="number" [formControlName]="each.fieldname" class="form-input"></ion-input>
+                <ion-input *ngIf="each.read_only == 1" readonly (input)="ion_change($event,each)"
+                  (ionFocus)="select_value($event)" (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any"
+                  min="0" type="number" [formControlName]="each.fieldname" class="form-input"></ion-input>
+              </div>
+
+              <!-- Attach && Attach Image -->
+
+              <ion-label id="attach" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'"
+                class="label-1">
+                {{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="image-div_ 456" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'">
+                <input #file_upload class="image-d" (change)="changeListener($event,each)" type="file"
+                  [formControlName]="each.fieldname" class="form-input">
+
+                <div [class.attached]="each.file_url" class="d__flex browser">
+                  <div (click)="file_upload.click()" class="mouse d__flex name">
+                    <span>Browse</span>
+                    <ion-icon name="chevron-down-outline"></ion-icon>
+                  </div>
+                  <a (click)="each.file_url ? null : file_upload.click()" class="m-0 mouse value_ webkit-text"
+                    [style.--line]="1">{{each.file_url ? each.file_url : 'Upload a file'}}</a>
+                </div>
+
+              </div>
+
+
+              <!-- Date -->
+
+              <ion-label *ngIf="each.fieldtype == 'Date'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Date'">
+                <ion-input type="date" [formControlName]="each.fieldname" class="form-input">
+                </ion-input>
+              </div>
+
+              <!-- Datetime-->
+
+              <ion-label *ngIf="each.fieldtype == 'Datetime'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Datetime'">
+                <ion-input type="datetime-local" [formControlName]="each.fieldname" class="form-input">
+                </ion-input>
+              </div>
+
+              <!-- text editor -->
+
+              <ion-label
+                *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'"
+                class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'">
+                <ion-textarea class="text-area" [formControlName]="each.fieldname"
+                  placeholder="Enter Your {{each.label}} Here..."></ion-textarea>
+
+                <!-- <quill-editor class="text-editor" [formControlName]="each.fieldname" [style]="{height: '285px'}">
+                 </quill-editor> -->
+              </div>
+
+              <!-- time-->
+
+              <ion-label *ngIf="each.fieldtype == 'Time'" class="label-1">{{each.label}}
+                <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+              </ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Time'">
+                <ion-input type="time" [formControlName]="each.fieldname" class="form-input">
+                </ion-input>
+              </div>
+
+              <!-- Signature -->
+
+              <!-- <ion-label *ngIf="each.fieldtype == 'Signature'" class="label-1">{{each.label}}
+            <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+          </ion-label>
+  
+          <div class="signature-input" *ngIf="each.fieldtype == 'Signature'"> 
+            <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawComplete(each.fieldname)">
+            </signature-pad>
+          </div> -->
+
+              <!-- Text,small text,long text -->
+
+              <ion-label
+                *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'"
+                class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+
+              <div class="custom-input"
+                *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'">
+                <!-- <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input> -->
+                <ion-textarea class="text-area" [formControlName]="each.fieldname" placeholder="Enter text here...">
+                </ion-textarea>
+                <!-- <textarea ng-model="myTextarea">Enter text here...</textarea> -->
+              </div>
+
+              <!-- Password -->
+              <ion-label *ngIf="each.fieldtype == 'Password'" class="label-1">{{each.label}}<span class="impt-star"
+                  *ngIf="each.reqd == 1">
+                  *</span></ion-label>
+
+              <div class="custom-input" *ngIf="each.fieldtype == 'Password'">
+                <ion-input type="Password" [formControlName]="each.fieldname" class="form-input"></ion-input>
+              </div>
+
+              <!-- Section and column breake -->
+
+              <!-- <div class="sec-col-breake" *ngIf="each.fieldtype == 'Section Break' || each.fieldtype == 'Column Break'">
+              <ion-row></ion-row>
+            </div> -->
+
+              <!-- Error msg required field and mail field-->
+
+              <div class="error-msg"
+                *ngIf="submitted && each.reqd == 1 && (form_data.get(each.fieldname)?.errors || form_data.get(each.fieldname)?.status )">
+                <p class="error-msg-alert"
+                  *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.required">
+                  {{each.label}} is required *</p>
+                <p class="error-msg-alert"
+                  *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.email && form_data.get(each.fieldname)?.status=='INVALID'">
+                  Please
+                  Enter Valid {{each.label}}</p>
+              </div>
+
+              <div class="error-msg"
+                *ngIf="submitted && each.reqd != 1 && (form_data.get(each.fieldname)?.errors || form_data.get(each.fieldname)?.status )">
+                <p class="error-msg-alert"
+                  *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname)?.errors.email && form_data.get(each.fieldname)?.status=='INVALID'">
+                  Please
+                  Enter Valid {{each.label}} *</p>
+              </div>
+
+              <!-- End error -->
+            </div>
+            <!-- </ion-row> -->
+          </div>
+        </div>
+        <div class="submit-btn">
+          <ion-button class="sub-button btn primary-btn" fill="clear" (click)="save_details()">Save</ion-button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- If not section breake in api data -->
+
+  <div class="form-full-container" [class.form-full-container1]="doctype == 'Timesheet Detail'"
+    *ngIf="info && no_sec_col && no_sec_col.length>0 ">
+    <div class="form-container">
+      <!-- <div class="close-icon-div">
+        <ion-icon class="close-icon" (click)="save_details()" name="chevron-down-circle-outline"></ion-icon> 
+          <ion-icon class="close-icon" (click)="db.close_modal()" name="close-circle-outline"></ion-icon>
+        </div> -->
+      <form [formGroup]="form_data">
+        <div class="form-data">
+          <!-- <div [ngClass]="each.fieldtype == 'Check'?'data-manl-div-check':'data-manl-div'"
+              *ngFor="let each of info.data.web_form_fields"> -->
+          <div class="data-manl-div-2"
+            [ngClass]="{'data-manl-div-check-2':(each.fieldtype == 'Check'),'data-manl-div-text-2':(each.fieldtype == 'Text Editor'),'data-manl-div-2':(each.fieldtype != 'Text Editor' && each.fieldtype != 'Check')}"
+            *ngFor="let each of info" [class.hidden]="each.hidden == 1">
+
+            <!-- data input -->
+
+            <ion-label *ngIf="each.fieldtype == 'Data'" class="label-1">{{each.label}}<span class="impt-star"
+                *ngIf="each.reqd == 1">
+                *</span></ion-label>
+            <div class="custom-input" *ngIf="each.fieldtype == 'Data'">
+              <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input>
+            </div>
+
+
+            <!-- Check box -->
+            <div class="check-box">
+              <div class="custom-input" *ngIf="each.fieldtype == 'Check'">
+                <ion-checkbox (ionChange)="check_box($event,each)" [formControlName]="each.fieldname"
+                  color="primary"></ion-checkbox>
+              </div>
+              <ion-label *ngIf="each.fieldtype == 'Check'" class="label-1">{{each.label}}{{each.description}}<span
+                  class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+            </div>
+
+            <!-- Link and Select-->
+
+            <ion-label *ngIf="each.fieldtype == 'Link' || each.fieldtype == 'Select' && false"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input m-ng-select link_field_mouse" *ngIf="each.fieldtype == 'Link'">
+              <!-- [disabled]="true" -->
+
+              <ion-input placeholder="Select {{each.label}}" type="text"
+                (click)="open_drop_down_options(each.options,each.fieldname,'item_name')"
+                [formControlName]="each.fieldname"
+                [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : ''"
+                class="mouse 789 form-input"></ion-input>
+
+
+              <!-- (click)="gen_links(each,each.options,$event)" -->
+
+              <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                  interface="popover">
+  
+                  <ion-select-option >Select</ion-select-option>
+                  <ion-select-option *ngFor="let opts of all_link_opts[each.options]" [value]="opts">
+                    {{opts}}
+                  </ion-select-option>
+                </ion-select> -->
+              <!-- <select class="select-1" [formControlName]="each.fieldname" (click)="gen_links(each.options,$event)">
+                <option></option>
+                <option *ngFor="let opts of link_opts">{{opts}}</option>
+              </select> -->
+            </div>
+
+            <!-- Dynamic Link and Select-->
+            <!-- {{each.fieldtype | json}} -->
+            <ion-label *ngIf="each.fieldtype == 'Dynamic Link' || each.fieldtype == 'Select'"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input m-ng-select" *ngIf="each.fieldtype == 'Dynamic Link'">
+              <ion-input placeholder="Select {{each.label}}" type="text"
+                (click)="open_drop_down_options(each.options,each.fieldname,'item_name')"
+                [ngModelOptions]="{standalone: true}"
+                [ngModel]="drop_down_value[each.fieldname] ? drop_down_value[each.fieldname] : ''"
+                class="mouse 789 form-input"></ion-input>
+            </div>
+
+            <div class="custom-input link_field_mouse" *ngIf="each.fieldtype == 'Select'">
+
+              <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                interface="popover" id="select-options" (ionChange)="changed($event)"> -->
+
+              <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
+                interface="popover" id="select-options" ionSelect="end">
+                <ion-select-option>Select</ion-select-option>
+                <ion-select-option *ngFor="let item of (each.options.split('\n'))" [value]="item"> {{item}}
+                </ion-select-option>
+              </ion-select>
+            </div>
+
+
+            <!-- Int && Float && currency-->
+
+            <ion-label *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Int' || each.fieldtype == 'Float' || each.fieldtype == 'Currency'">
+              <ion-input *ngIf="each.read_only == 0" (input)="ion_change($event,each)" (ionFocus)="select_value($event)"
+                (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any" min="0" type="number"
+                [formControlName]="each.fieldname" class="form-input"></ion-input>
+              <ion-input *ngIf="each.read_only == 1" readonly (input)="ion_change($event,each)"
+                (ionFocus)="select_value($event)" (ionBlur)="get_blur(each.value)" [ngModel]="each.value" step="any"
+                min="0" type="number" [formControlName]="each.fieldname" class="form-input"></ion-input>
+
+              <!-- <ion-input (input)="ion_change($event,each)" step="any" min="0" type="number"
+                [formControlName]="each.fieldname" class="form-input">
+              </ion-input> -->
+            </div>
+
+            <!-- Attach && Attach Image -->
+
+            <ion-label id="attach" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'"
+              class="label-1">
+              {{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="image-div_" *ngIf="each.fieldtype == 'Attach' || each.fieldtype == 'Attach Image'">
+              <input #file_upload class="image-d" (change)="changeListener($event,each)" type="file"
+                [formControlName]="each.fieldname" class="form-input">
+
+              <div [class.attached]="each.file_url" class="d__flex browser">
+                <div (click)="file_upload.click()" class="mouse d__flex name">
+                  <span>Browse</span>
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+                <a (click)="each.file_url ? null : file_upload.click()" class="m-0 mouse value_ webkit-text"
+                  [style.--line]="1">{{each.file_url ? each.file_url : 'Upload a file'}}</a>
+              </div>
+
+            </div>
+
+
+            <!-- Date -->
+
+            <ion-label *ngIf="each.fieldtype == 'Date'" class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Date'">
+              <ion-input type="date" [formControlName]="each.fieldname" class="form-input">
+              </ion-input>
+            </div>
+
+            <!-- Datetime-->
+
+            <ion-label *ngIf="each.fieldtype == 'Datetime'" class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Datetime' && doctype != 'Timesheet Detail'">
+              <ion-input type="datetime-local" [formControlName]="each.fieldname" class="form-input">
+              </ion-input>
+            </div>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Datetime' && doctype == 'Timesheet Detail' && each.fieldname == 'from_time'">
+              <ion-input type="datetime-local" [(ngModel)]="selectedFromTime" class="form-input"
+                (ionChange)="onFromTimeChange()" [formControlName]="each.fieldname">
+              </ion-input>
+            </div>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Datetime' && doctype == 'Timesheet Detail' && each.fieldname == 'to_time'">
+              <ion-input type="datetime-local" class="form-input" (ionInput)="onToTimeChange($event,each)"
+                [formControlName]="each.fieldname">
+              </ion-input>
+            </div>
+
+            <!-- text editor -->
+
+            <ion-label
+              *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'"
+              class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Text Editor' || each.fieldtype == 'Code' || each.fieldtype == 'HTML' || each.fieldtype == 'HTML Editor' || each.fieldtype == 'Markdown Editor'">
+              <ion-textarea class="text-area" [formControlName]="each.fieldname"
+                placeholder="Enter Your {{each.label}} Here..."></ion-textarea>
+
+              <!-- <quill-editor class="text-editor" [formControlName]="each.fieldname">
+               </quill-editor> -->
+            </div>
+
+            <!-- time-->
+
+            <ion-label *ngIf="each.fieldtype == 'Time'" class="label-1">{{each.label}}
+              <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+            </ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Time'">
+              <ion-input type="time" [formControlName]="each.fieldname" class="form-input">
+              </ion-input>
+            </div>
+
+            <!-- Signature -->
+
+            <!-- <ion-label *ngIf="each.fieldtype == 'Signature'" class="label-1">{{each.label}}
+            <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
+          </ion-label>
+  
+          <div class="signature-input" *ngIf="each.fieldtype == 'Signature'"> 
+            <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawComplete(each.fieldname)">
+            </signature-pad>
+          </div> -->
+
+            <!-- Text,small text,long text -->
+
+            <ion-label
+              *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'"
+              class="label-1">{{each.label}}<span class="impt-star" *ngIf="each.reqd == 1"> *</span></ion-label>
+
+            <div class="custom-input"
+              *ngIf="each.fieldtype == 'Text' || each.fieldtype == 'Long Text' || each.fieldtype == 'Small Text'">
+              <!-- <ion-input type="text" [formControlName]="each.fieldname" class="form-input"></ion-input> -->
+              <ion-textarea class="text-area" [formControlName]="each.fieldname" placeholder="Enter text here...">
+              </ion-textarea>
+              <!-- <textarea ng-model="myTextarea">Enter text here...</textarea> -->
+            </div>
+
+            <!-- Password -->
+            <ion-label *ngIf="each.fieldtype == 'Password'" class="label-1">{{each.label}}<span class="impt-star"
+                *ngIf="each.reqd == 1">
+                *</span></ion-label>
+
+            <div class="custom-input" *ngIf="each.fieldtype == 'Password'">
+              <ion-input type="Password" [formControlName]="each.fieldname" class="form-input"></ion-input>
+            </div>
+
+            <!-- Section and column breake -->
+
+            <!-- <div class="sec-col-breake" *ngIf="each.fieldtype == 'Section Break' || each.fieldtype == 'Column Break'">
+              <ion-row></ion-row>
+            </div> -->
+
+            <!-- Error msg required field and mail field-->
+
+            <div class="error-msg"
+              *ngIf="submitted && each.reqd == 1 && (form_data.get(each.fieldname).errors || form_data.get(each.fieldname).status )">
+              <p class="error-msg-alert"
+                *ngIf="form_data.get(each.fieldname).errors && form_data.get(each.fieldname).errors.required">
+                {{each.label}} is required *</p>
+              <p class="error-msg-alert"
+                *ngIf="form_data.get(each.fieldname).errors && form_data.get(each.fieldname).errors.email && form_data.get(each.fieldname).status=='INVALID'">
+                Please
+                Enter Valid {{each.label}}</p>
+            </div>
+
+            <div class="error-msg"
+              *ngIf="submitted && each.reqd != 1 && (form_data.get(each.fieldname)?.errors || form_data.get(each.fieldname)?.status )">
+              <p class="error-msg-alert"
+                *ngIf="form_data.get(each.fieldname)?.errors && form_data.get(each.fieldname).errors?.email && form_data.get(each.fieldname).status=='INVALID'">
+                Please
+                Enter Valid {{each.label}} *</p>
+            </div>
+
+            <!-- End error -->
+
+          </div>
+        </div>
+        <div class="submit-btn">
+          <ion-button class="sub-button btn primary-btn" fill="clear" (click)="save_details()">Save</ion-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

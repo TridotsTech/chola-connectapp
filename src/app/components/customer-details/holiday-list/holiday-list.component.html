@@ -1,0 +1,177 @@
+<div class="">
+
+  <div class="parent-h bg_white">
+    <div class="d__flex border-bottom just-s">
+      
+      <div class="border-r flex-33 px-10">
+        <div class="d__flex gap-10 top-1">
+          <div class="icon_sec">
+            <ion-icon src="/assets/beach.svg" class="fnt-20"></ion-icon>
+          </div>
+
+          <div>
+            <h6 class="m-0 fnt-14"><span class="m-0 green_txt">10%</span> vs Year</h6>
+          </div>
+        </div>
+
+        <div class="bottom-1">
+          <h6 class="m-0 fnt-16 pb-10">Total working days</h6>
+          <h6 class="m-0 fnt-18 green_txt2">{{list_data.total_working_days ? list_data.total_working_days : '265 days'}}</h6>
+        </div>
+      </div>
+
+      <div class="border-r flex-33">
+        <div class="d__flex gap-10 top-1">
+          <div class="icon_sec">
+            <ion-icon src="/assets/beach.svg" class="fnt-20"></ion-icon>
+          </div>
+
+          <div>
+            <h6 class="m-0 fnt-14"><span class="m-0 red_txt">10%</span> vs Year</h6>
+          </div>
+        </div>
+
+        <div class="bottom-1">
+          <h6 class="m-0 fnt-16 pb-10">Total Holidays</h6>
+          <h6 class="m-0 fnt-18 yellow_txt">{{list_data.total_holidays ? list_data.total_holidays : '40 days'}}</h6>
+        </div>
+      </div>
+
+      <div class="flex-33">
+        <div class="d__flex gap-10 top-1">
+          <div class="icon_sec">
+            <ion-icon src="/assets/beach.svg" class="fnt-20"></ion-icon>
+          </div>
+
+          <div>
+            <h6 class="m-0 fnt-14"><span class="m-0 green_txt">10%</span> vs Year</h6>
+          </div>
+        </div>
+
+        <div class="bottom-1">
+          <h6 class="m-0 fnt-16 pb-10">Goverment Holidays</h6>
+          <h6 class="m-0 fnt-18 green_txt2">{{list_data.government_holidays ? list_data.government_holidays : '28 days'}}</h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-calendar">
+
+      <!-- <div class="d__flex"> -->
+      <div class="w-50 border-r p-10">
+        <img src="/assets/leaves/main.svg" class="main-img" alt="calendar image" />
+        <div class="d__flex just-s py-10">
+
+          <div class="d__flex gap-10 ">
+            <div mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+              (viewDateChange)="activeDayIsOpen = false">
+              <ion-icon class="mouse" src="/assets/left-arrow.svg"></ion-icon>
+            </div>
+            <div class="" mwlCalendarToday [(viewDate)]="viewDate">
+              <h3 class="m-0 fnt-15">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+            <div mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false">
+              <ion-icon class="mouse" src="/assets/right-arrow.svg"></ion-icon>
+            </div>
+          </div>
+
+
+          <div *ngIf="false" class="d__flex gap-10 bg_gray just-s">
+            <div class="btn btn-primary mouse fnt-13" (click)="view = CalendarView.Month"
+              [class.active]="view === CalendarView.Month">
+              Month
+            </div>
+            <div class="btn btn-primary mouse fnt-13" (click)="view = CalendarView.Week"
+              [class.active]="view === CalendarView.Week">
+              Week
+            </div>
+            <div class="btn btn-primary mouse fnt-13" (click)="view = CalendarView.Day"
+              [class.active]="view === CalendarView.Day">
+              Day
+            </div>
+          </div>
+
+        </div>
+        <br>
+
+        <div [ngSwitch]="view">
+          <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate"
+            (dayClicked)="dayClicked($event.day)" [mwlCalendarMonthCellTemplate]="customEventTemplate">
+          </mwl-calendar-month-view>
+          <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate">
+          </mwl-calendar-week-view>
+          <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate">
+          </mwl-calendar-day-view>
+        </div>
+
+        <ng-template #customEventTemplate let-event="event">
+          <!-- Customize event rendering here -->
+          <div class="custom-event">
+            {{ event.title }}
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="w-50 p10">
+        <div class="d__flex gap-10 just-s pb-20">
+          <div class="">
+            <h1 class="m-0 fnt-18">Main Holidays</h1>
+          </div>
+
+          <div class="d__flex gap-10">
+            <ion-input class="border rounded-5 input-1" (ionChange)="holidaySearch.emit($event)" placeholder="search"
+              name="search"></ion-input>
+            <div class="border d__flex gap-5 rounded-5 p510">
+              <ion-icon src="/assets/sort.svg"></ion-icon>
+              <p class="m-0 fnt-13">filter</p>
+              <ion-icon src="/assets/arrow-down.svg"></ion-icon>
+            </div>
+
+            <div class="border rounded-5 d__flex p510">
+              <ion-icon class="fnt-20" src="/assets/refresh.svg"></ion-icon>
+            </div>
+
+            <div class="border rounded-5 d__flex p510">
+              <ion-icon class="fnt-20" src="/assets/sort-descending-2.svg"></ion-icon>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- List -->
+        <div class="holiday_list" #tabList (scroll)="load_data.emit($event)"
+          *ngIf="list_data && list_data.data && list_data.data.length != 0">
+          <div *ngFor="let item of list_data.data;let i =index" class="d__flex gap-10 border rounded-5 p-10">
+            <div class="border-r flex-10 text-c">
+              <h5 class="m-0 fnt-20">{{item.date | date: "d"}}</h5>
+              <p class="m-0 fnt-15 gray_clr">{{item.date | date: "MMM"}}</p>
+            </div>
+
+            <div class="flex-90">
+              <div class="d__flex just-s pb-5">
+                <h6 class="m-0 fnt-15 holiday" [innerHTML]="item.description"></h6>
+                <ion-icon name="heart-outline"></ion-icon>
+              </div>
+
+              <div class="d__flex just-s">
+                <div class="d__flex gap-10">
+                  <p class="m-0 fnt-13 gray_clr">{{checkDateFormat(item.date,'date')}}</p>
+                  <div class="d__flex gap-10">
+                    <div class="dot dot-1"></div>
+                    <p class="m-0 fnt-13 gray_clr">{{checkDateFormat(item.date,'')}}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="m-0 fnt-13">Govt Holiday</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

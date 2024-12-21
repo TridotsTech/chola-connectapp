@@ -1,0 +1,234 @@
+<app-header *ngIf="db.ismobile" [model]="true"
+  [title]="(earning_details && earning_details.title) ? earning_details.title : page_title"
+  [showYear]="'getYear'"></app-header>
+
+<div class="bg_primary">
+  <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+    [bg_white]="db.ismobile ? false : true" [tabs_array]="months" [no_initial_active]="true"
+    [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+</div>
+
+<div class="m-10" *ngIf="skeleton && !earning_details">
+  <app-skeleton-loader type="salary_slip_detail"></app-skeleton-loader>
+</div>
+
+<div class="fullSec" *ngIf="earning_details && !skeleton">
+  <div class="d__flex gap-10 header just-s employeeDetails">
+    <img class="blue" src="/assets/timesheet/blue.svg" />
+    <img class="yellow" src="/assets/timesheet/yellow.svg" />
+    <div class="d__flex m-0 details">
+      <div class="imageDiv">
+        <img *ngIf="earning_details.image" [src]="db.product_img(earning_details.image)" />
+        <h4 *ngIf="!earning_details.image" class="m-0 fnt-15 fnt_w500">{{earning_details?.employee_name[0]}}</h4>
+      </div>
+      <div class="contextDiv w-100">
+        <div class="d__flex title just-s">
+          <h4 class="fnt-14 fnt_w500 m-0 name webkit-text" [style.--line]="2">{{earning_details?.employee_name}}</h4>
+        </div>
+        <h4 *ngIf="earning_details.employee" class="fnt-13 fnt_w500 m-0 id gray_clr"># {{earning_details?.employee}}
+        </h4>
+        <h4 *ngIf="earning_details.department" class="d__flex gap-5 role m-0">
+          <img class="workIcon" src="/assets/timesheet/work.svg" />
+          <span class="fnt-12 fnt_w400 m-0 gray_clr">{{earning_details?.department}}</span>
+        </h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="d__flex just-e gap-20 m-10">
+    <div *ngIf="false" class="d__flex gap-10 just-se border-r">
+      <div class="next_prev mouse rounded-10" (click)="goToPreviousDay()">
+        <ion-icon class="gray_clr" name="chevron-back-outline"></ion-icon>
+      </div>
+
+      <div class=" p-810 ">
+        <p class="fnt-14 m-0">{{month}} {{year}}</p>
+      </div>
+
+      <div class="next_prev mouse rounded-10" (click)="goToNextDay()">
+        <ion-icon class="gray_clr" name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="border p-810 rounded-10 mouse d__flex" (click)="download_payroll(earning_details)">
+      <ion-icon src="/assets/printer.svg" class="fnt-20"></ion-icon>
+    </div>
+  </div>
+
+  <div class="body_sec ">
+
+    <div class="headersec border-b section-p">
+      <div class="d__flex just-s">
+        <h4 class="m-0 fnt-14 fnt_w400 primary_clr">{{earning_details?.name}}</h4>
+        <h4 class="m-0 fnt-14 fnt_w400">{{earning_details?.creation | date: 'MM-dd-yyyy'}}</h4>
+      </div>
+
+      <h4 class="m-0 fnt-14 fnt_w400 gray_clr grossPay">Gross Pay <span class="_span">{{earning_details?.gross_pay |
+          currency:db.website_settings.currency}}</span></h4>
+    </div>
+
+    <div class="detailSec">
+      <div class="section-p">
+        <h4 class="values m-0">Employee Name</h4>
+        <h4 class="values m-0">{{earning_details.employee_name ? earning_details.employee_name : '-'}}</h4>
+        <h4 class="values m-0">Company</h4>
+        <h4 class="values m-0">{{earning_details.company ? earning_details.company : '-'}}</h4>
+        <h4 class="values m-0">Bank Name</h4>
+        <h4 class="values m-0">{{earning_details.bank_name ? earning_details.bank_name : '-'}}</h4>
+        <h4 class="values m-0">Bank Account No</h4>
+        <h4 class="values m-0">{{earning_details.bank_account_no ? earning_details.bank_account_no : '-'}}</h4>
+        <h4 class="values m-0">Payroll Frequency</h4>
+        <h4 class="values m-0">{{earning_details.payroll_frequency ? earning_details.payroll_frequency : '-'}}</h4>
+        <h4 class="values m-0">Status</h4>
+        <h4 class="values m-0">{{earning_details.status ? earning_details.status : '-'}}</h4>
+        <h4 class="values m-0">Salary Structure</h4>
+        <h4 class="values m-0">{{earning_details.salary_structure ? earning_details.salary_structure : '-'}}</h4>
+        <h4 class="values m-0">Start Date</h4>
+        <h4 class="values m-0">{{earning_details.start_date ? (earning_details.start_date | date: 'MM-dd-yyyy') : '-'}}
+        </h4>
+        <h4 class="values m-0">End Date</h4>
+        <h4 class="values m-0">{{earning_details.end_date ? (earning_details.end_date | date: 'MM-dd-yyyy') : '-'}}</h4>
+      </div>
+
+      <div class="grid_sec">
+        <div class="box">
+          <h4 class="m-0 head-1">Working Days</h4>
+          <h4 class="m-0 value">{{earning_details.total_working_days ? earning_details.total_working_days : '0'}}</h4>
+        </div>
+        <div class="box">
+          <h4 class="m-0 head-1">Absent Days</h4>
+          <h4 class="m-0 value">{{earning_details.absent_days ? earning_details.absent_days : '0'}}</h4>
+        </div>
+        <div class="box">
+          <h4 class="m-0 head-1">Unmarked Days</h4>
+          <h4 class="m-0 value">{{earning_details.unmarked_days ? earning_details.unmarked_days : '0'}}</h4>
+        </div>
+        <div class="box">
+          <h4 class="m-0 head-1">LWP</h4>
+          <h4 class="m-0 value">{{earning_details.leave_without_pay ? earning_details.leave_without_pay : '0'}}</h4>
+        </div>
+        <div class="box">
+          <h4 class="m-0 head-1">Payment Days</h4>
+          <h4 class="m-0 value">{{earning_details.payment_days ? earning_details.payment_days : '0'}}</h4>
+        </div>
+      </div>
+
+      <div *ngIf="earning_details.earnings && earning_details.earnings.length != 0" class="">
+        <h4 class="m-0 fnt-14 fnt_w500 headig-p">Earnings</h4>
+        <div class="table">
+          <table>
+            <tr>
+              <th>S.No</th>
+              <th>Components</th>
+              <th>Amount</th>
+            </tr>
+            <tr *ngFor="let item of earning_details.earnings;let i = index">
+              <td>{{ i + 1}}</td>
+              <td>{{item.salary_component}}</td>
+              <td>{{item.amount | currency:db.website_settings.currency}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="earning_details.deductions && earning_details.deductions.length != 0" class="">
+        <h4 class="m-0 fnt-14 fnt_w500 headig-p">Deductions</h4>
+        <div class="table">
+          <table>
+            <tr>
+              <th>S.No</th>
+              <th>Components</th>
+              <th>Amount</th>
+            </tr>
+            <tr *ngFor="let item of earning_details.deductions;let i = index">
+              <td>{{ i + 1}}</td>
+              <td>{{item.salary_component}}</td>
+              <td>{{item.amount | currency:db.website_settings.currency}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="earning_details.leave_details && earning_details.leave_details.length != 0" class="">
+        <h4 class="m-0 fnt-14 fnt_w500 headig-p">Leave Details</h4>
+        <div class="table">
+          <table class="margin-last">
+            <tr>
+              <th>S.No</th>
+              <th>Leave Type</th>
+              <th>Total Allocated Leave(s)</th>
+              <th>Expired Leave(s)</th>
+              <th>Used Leave(s)</th>
+              <th>Leave(s) Pending Approval</th>
+              <th>Available Leave(s)</th>
+
+            </tr>
+            <tr *ngFor="let item of earning_details.leave_details;let i = index">
+              <td>{{ i + 1}}</td>
+              <td>{{item.leave_type}}</td>
+              <td>{{item.total_allocated_leaves}}</td>
+              <td>{{item.expired_leaves}}</td>
+              <td>{{item.used_leaves}}</td>
+              <td>{{item.pending_leaves}}</td>
+              <td>{{item.available_leaves}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="section-p mobile_summary">
+
+        <div>
+          <p class="m-0 values">Total deduction</p>
+          <h6 class="m-0 values inter_">{{earning_details.total_deduction | currency:db.website_settings.currency}}</h6>
+        </div>
+
+        <div>
+          <p class="m-0 values">Gross Pay</p>
+          <h6 class="m-0 values inter_">{{earning_details.gross_pay | currency:db.website_settings.currency}}</h6>
+        </div>
+
+
+        <div>
+          <p class="m-0 values">Gross year to date</p>
+          <h6 class="m-0 values inter_">{{earning_details.gross_year_to_date | currency:db.website_settings.currency}}
+          </h6>
+        </div>
+
+
+        <div>
+          <p class="m-0 values">Net Pay</p>
+          <h6 class="m-0 values inter_">{{earning_details.net_pay | currency:db.website_settings.currency}}</h6>
+        </div>
+
+        <div>
+          <p class="m-0 values">Year to date</p>
+          <h6 class="m-0 values inter_">{{earning_details.year_to_date | currency:db.website_settings.currency}}</h6>
+        </div>
+
+      </div>
+      
+      <div class="section-p">
+        <div>
+          <p class="m-0 values">Total in words</p>
+          <h6 class="m-0 values inter_">{{earning_details.total_in_words}}</h6>
+        </div>
+
+        <div>
+          <p class="m-0 values">Rounded total</p>
+          <h6 class="m-0 values inter_">{{earning_details.rounded_total | currency:db.website_settings.currency}}</h6>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div>
+  <app-no-record-found [Lead_detail]="false"
+    *ngIf="!skeleton && no_products && !earning_details" [column]="true" height="calc(100vh - 100px)"
+    [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</div>

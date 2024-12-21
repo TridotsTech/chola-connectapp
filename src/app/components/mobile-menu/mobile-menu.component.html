@@ -1,0 +1,305 @@
+<div class="menu__content" *ngIf="!db.attachment_menu && !db.sales_manager_role && !db.employee_role && !db.hr_manager_role && !db.project_role">
+  <div class="inner__menu__content">
+    <div class="d__flex user" [ngStyle]="db.set_primary_color(db.sales_dashboard)">
+      <ion-avatar slot="start" (click)="open_profile()">
+        <img alt="profile"
+          [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) :  db.load_icon(db.cust_name)" />
+      </ion-avatar>
+      <div class="user-title">
+        <p class="webkit-text" [style.--line]="1">{{db.cust_name}}</p>
+        <p *ngIf="db.cust_designation">{{db.cust_designation !='null' ? db.cust_designation : '' }}</p>
+        <!-- <p *ngIf="db.cust_name || db.guest_cust_name" class="m-0">{{db.cust_name || db.guest_cust_name}}</p> -->
+      </div>
+    </div>
+
+    <!-- <ion-accordion-group>
+      <ion-accordion value="first" #yourAccordion>
+        <ion-item slot="header" color="light" (click)="showmore1 = !showmore1;">
+          <ion-label>Login As</ion-label>
+        </ion-item>
+        <div slot="content" *ngIf="showmore1" class="policy">
+          <ion-item lines="none" *ngFor="let item of login_as" (click)="goto_login(item.title)">
+            <p class="fnt-14 fnt_w500">{{item.title}}</p>
+          </ion-item>
+      </div>
+      </ion-accordion>
+    </ion-accordion-group> -->
+
+    <!-- <ion-item lines="none" (click)="showmore1 = !showmore1;" class="menu_item" *ngIf="!db.sales_manager_role">
+      <div class="con_ d__flex just-s w-100">
+        <ion-label class="fnt-inter menu_name">Login As</ion-label>
+        <ion-icon id="15f" [name]="!showmore1 ? 'chevron-forward-outline' : 'chevron-down-outline'"></ion-icon>
+      </div>
+    </ion-item> -->
+
+    <div *ngIf="showmore1" class="policy">
+      <ion-item *ngFor="let item of login_as" (click)="goto_login(item.title)">
+        <p class="fnt-14 fnt_w500">{{item.title}}</p>
+      </ion-item>
+    </div>
+
+    <ion-menu-toggle *ngIf="!db.sales_manager_role">
+      <ion-item button lines="none" (click)="router_('/tabs/dashboard')">
+        <!-- [routerLink]="item.route" -->
+        <ion-icon class="menu-icon" src="/assets/dashboard/Home.svg"></ion-icon>
+        <!-- <ion-icon class="menu-icon" name="remove-outline"></ion-icon> -->
+        <ion-label>Home</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+
+    <div *ngIf="db.sales_manager_role">
+      <div *ngFor="let item of push_sales_data" (click)="db.doctype_select(item.page)">
+        <ion-menu-toggle *ngIf="item.enable == 1">
+          <ion-item button lines="none" (click)="router_(item.route)">
+            <!-- [routerLink]="item.route" -->
+            <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+            <!-- <ion-icon class="menu-icon" name="remove-outline"></ion-icon> -->
+            <ion-label>{{item.page_name}}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </div>
+    </div>
+
+    <div class="background-white">
+      <!-- <div *ngFor="let item of db.menu">
+
+        <ion-menu-toggle>
+          <ion-item button *ngIf="item.enable == 1" lines="none" [routerLink]="item.route" routerDirection="back" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact :true}">
+            <ion-icon class="menu-icon" name="remove-outline"></ion-icon>
+            <ion-label>{{item.title}}</ion-label>
+          </ion-item>
+        </ion-menu-toggle> -->
+
+      <div *ngFor="let item of db.permission_details" (click)="db.doctype_select(item.page)">
+        <ion-menu-toggle *ngIf="item.enable == 1">
+          <ion-item button lines="none" (click)="router_(item.route)">
+            <!-- [routerLink]="item.route" -->
+            <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+            <!-- <ion-icon class="menu-icon" name="remove-outline"></ion-icon> -->
+            <ion-label>{{item.page_name}}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+      </div>
+      <ion-menu-toggle>
+        <ion-item class="logout_" lines="none" (click)="db.logout()">
+          <ion-icon class="menu-icon" src="/assets/dashboard/logout.svg"></ion-icon>
+          <!-- <ion-icon class="menu-icon" name="remove-outline"></ion-icon> -->
+          <ion-label>Logout</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <!-- <ion-item lines="none" (click)="showmore1 = !showmore1;" class="menu_item">
+          <div class="con_ d__flex just-s w-100">
+            <ion-label class="fnt-inter menu_name">Login As</ion-label>
+            <ion-icon id="15f" [name]="!showmore1 ? 'chevron-forward-outline' : 'chevron-down-outline'"></ion-icon>
+          </div>
+        </ion-item>
+        
+        <div *ngIf="showmore1" class="policy">
+          <ion-item lines="none" *ngFor="let item of login_as" (click)="goto_login(item.title)">
+            <p class="fnt-14 fnt_w500">{{item.title}}</p>
+          </ion-item>
+        </div> -->
+
+    </div>
+    <!-- <div *ngIf="db.app_version" class="txt-c">
+      <p class="app_version">App Version {{db.app_version}}</p>
+    </div> -->
+
+  </div>
+</div>
+
+<div *ngIf="!db.attachment_menu && db.sales_manager_role">
+  <div class="logo_mobile_menu">
+    <img src="/assets/mobile-menu/mobile-menu-icon.svg" alt="">
+    <ion-icon slot="start" src="/assets/mobile-menu/close-menu.svg" (click)="close_menu()"></ion-icon>
+  </div>
+
+  <div class="mobile_menusection">
+
+    <div *ngFor="let item of push_sales_data_home" (click)="router_mobile('static', item)" class="secBox" [class.selected_item]="(item['selected'] || db.path == item.route)">
+      <ion-icon class="menu-icon"
+        [src]="(item['selected'] || db.path == item.route) ? db.get_icon_mobile_menu_active(item.page) : db.get_icon_mobile_menu(item.page)"></ion-icon>
+      <ion-label [class.selected_label]="(item['selected'] || db.path == item.route)">{{item.page_name}}</ion-label>
+    </div>
+
+    <div *ngFor="let item of db.permission_details"  (click)="router_mobile('', item)" class="secBox">
+      <!-- <ion-menu-toggle *ngIf="item.enable == 1">
+        <ion-item style="--padding-start: 10px;" button lines="none" (click)="router_mobile('', item)"> -->
+          <ion-icon class="menu-icon" [src]="(item['selected'] || db.path == item.route) ? db.get_icon_mobile_menu_active(item.page) : db.get_icon_mobile_menu(item.page)"></ion-icon>
+          <ion-label>{{item.page_name}}</ion-label>
+        <!-- </ion-item>
+      </ion-menu-toggle> -->
+    </div>
+
+    <div *ngFor="let item of push_sales_data" (click)="router_mobile('static', item)" class="secBox" [class.selected_item]="(item['selected'] || db.path == item.route)">
+      <ion-icon class="menu-icon"
+        [src]="(item['selected'] || db.path == item.route) ? db.get_icon_mobile_menu_active(item.page) : db.get_icon_mobile_menu(item.page)"></ion-icon>
+      <ion-label [class.selected_label]="(item['selected'] || db.path == item.route)">{{item.page_name}}</ion-label>
+    </div>
+  </div>
+
+  <div class="mobile_menusectionCRMFixed">
+
+    <div routerLink="/settings" class="secBox">
+      <ion-icon class="menu-icon" src="/assets/account/Settings.svg"></ion-icon>
+      <ion-label>Settings</ion-label>
+    </div>
+
+    <div (click)="db.logout()" class="secBox">
+      <ion-icon class="menu-icon" src="/assets/account/logout-account.svg"></ion-icon>
+      <ion-label>Logout</ion-label>
+    </div>
+
+    <!-- <ion-menu-toggle>
+      <ion-item style="--padding-start: 10px;" lines="none" routerLink="/settings">
+        <ion-icon class="menu-icon" src="/assets/account/Settings.svg"></ion-icon>
+        <ion-label>Settings</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+    <ion-menu-toggle>
+      <ion-item style="--padding-start: 10px;" lines="none" (click)="db.logout()">
+        <ion-icon class="menu-icon" src="/assets/account/logout-account.svg"></ion-icon>
+        <ion-label>Logout</ion-label>
+      </ion-item>
+    </ion-menu-toggle> -->
+
+  </div>
+</div>
+
+<div *ngIf="!db.attachment_menu && (db.employee_role || db.hr_manager_role || db.project_role)">
+  <!-- <div class="logo_mobile_menu_ess">
+    <img [src]="db.employee_role ? '/assets/mobile-menu/ESS-logo.svg' : '/assets/icon/Go1-HR-logo-white.svg'" alt="">
+    <ion-icon slot="start" src="/assets/mobile-menu/close-menu.svg" (click)="close_menu()"></ion-icon>
+  </div> -->
+
+  <div class="employeeDetails">
+    <div class="imageDiv">
+      <img class="profile_user_img"
+        [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+    </div>
+    <div class="content">
+      <!-- (click)="showRole =! showRole" -->
+      <div class="d__flex just-s">
+        <p class="m-0 fnt-14 w-150 fnt_w500 webkit-text" [style.--line]="1">{{db.cust_name}}</p>
+        <ion-icon slot="start" src="/assets/mobile-menu/close-menu.svg" (click)="close_menu()"></ion-icon>
+
+        <!-- <ion-icon [class.rotate]="db.selfView" class="fnt-13" name="chevron-down-outline"></ion-icon> -->
+      </div>
+      <p class="m-0 fnt-12 d__flex gray_clr gap-5">{{(db.cust_designation && db.cust_designation != null) ? db.cust_designation : db.cust_role}}</p>
+   
+      <!-- <div [class.activeSelf]="db.selfView" [class.active]="showRole && db.show_selfView"  *ngIf="showRole && db.show_selfView" (click)="db.selfViewFn()" class="viewSec d__flex">
+        <label class="label-1">Self</label>
+        <label class="label-2">HR</label>
+      </div> -->
+
+    </div>
+  </div>
+
+
+  <div [class.activeSelf]="db.selfView" *ngIf="db.show_selfView" (click)="db.selfViewFn()" class="viewSec d__flex">
+    <label class="label-1">Self</label>
+    <label  class="label-2">{{db.reportView ? 'Team' : 'HR'}}</label>
+  </div>
+
+  <!-- <div *ngIf="db.show_selfView" (click)="db.selfViewFn()" class="d__flex gap-10 p-10 self">
+    <ion-toggle [checked]="db.selfView" mode="ios" slot="end"></ion-toggle>
+    <h4 class="m-0 fnt-14">Self</h4>
+
+
+  </div> -->
+
+  <div class="mobile_menusectionHR">
+
+    <div>
+      <ion-menu-toggle>
+        <div class="d__flex" routerLink="/tabs/dashboard">
+          <ion-icon class="menu-icon" src="/assets/mobile-menu/Home.svg"></ion-icon>
+          <ion-label>Home</ion-label>
+        </div>
+      </ion-menu-toggle>
+    </div>
+
+    <div *ngFor="let item of db.permission_details" (click)="db.doctype_select(item.page)">
+      <ion-menu-toggle *ngIf="item.enable == 1">
+        <div class="d__flex" (click)="router_mobile('', item)">
+          <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+          <ion-label>{{item.page_name}}</ion-label>
+        </div>
+      </ion-menu-toggle>
+    </div>
+
+    <div *ngIf="db.project_role">
+      <ion-menu-toggle>
+        <div class="d__flex" routerLink="/list/meeting">
+          <ion-icon class="menu-icon" src="/assets/mobile-menu/Meeting.svg"></ion-icon>
+          <ion-label>Meeting</ion-label>
+        </div>
+      </ion-menu-toggle>
+    </div>
+
+    <div *ngIf="db.project_role">
+      <ion-menu-toggle>
+        <div class="d__flex" routerLink="/daily-updates">
+          <ion-icon class="menu-icon" src="/assets/mobile-menu/DailyUpdate.svg"></ion-icon>
+          <ion-label>Daily Update</ion-label>
+        </div>
+      </ion-menu-toggle>
+    </div>
+
+    <!-- <div *ngIf="db.project_role">
+      <ion-menu-toggle>
+        <div class="d__flex" routerLink="/task-allocation">
+          <ion-icon class="menu-icon" src="/assets/mobile-menu/TaskAllocations.svg"></ion-icon>
+          <ion-label>Task Allocations</ion-label>
+        </div>
+      </ion-menu-toggle>
+    </div> -->
+
+    
+  </div>
+
+  <div class="mobile_menusectionHRFixed">
+    <ion-menu-toggle>
+      <div routerLink="/settings" class="d__flex">
+        <ion-icon class="menu-icon" src="/assets/account/Settings.svg"></ion-icon>
+        <ion-label>Settings</ion-label>
+      </div>
+    </ion-menu-toggle>
+    <ion-menu-toggle>
+      <div (click)="db.logout()" class="d__flex">
+        <ion-icon class="menu-icon" src="/assets/account/logout-account.svg"></ion-icon>
+        <ion-label>Logout</ion-label>
+      </div>
+    </ion-menu-toggle>
+  </div>
+</div>
+
+<div *ngIf="db.attachment_menu" class="p-15">
+  <div class="assigned_to">
+    <ion-label><ion-icon class="icon_" name="person-add-outline"></ion-icon> Assigned To</ion-label>
+    <div class="add_icon"><ion-icon name="add-outline"></ion-icon></div>
+  </div>
+
+  <div class="add_picture">
+    <!-- <ion-icon class="icon_" name="attach-outline"></ion-icon> -->
+    <h6 class="title medium_name "> Attachments</h6>
+    <div class="image-input">
+      <div class="picture"></div>
+      <input #file_upload class="image-d" (change)="changeListener($event,each)" [(ngModel)]="image" type="file"
+        class="form-input">
+      <div class=" browser ">
+        <div (click)="file_upload.click()" class="mouse d__flex border-dot name ">
+          <span>Attach File</span><ion-icon slot="start" name="add-outline"></ion-icon>
+        </div>
+      </div>
+      <div *ngIf="multiple_array" class="imge_url">
+        <div *ngFor="let item of multiple_array; let i = index;" class="img_url d__flex">
+          <p class="medium_name m-0">{{item.file_name}}</p>
+          <ion-icon (click)="remove_img(multiple_array,i)" name="close-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="quickEntry">
+
+  <app-website-form-header [enableHeader]="true" [Title]="'Add ' + page_title"></app-website-form-header>
+
+  <div class="body__" *ngIf="web_form">
+    <app-new-wizard-form [add_new_form]="true" [tabs_top]="1" [modal]="true" [web_form]="web_form" [quickForm]="1" [parentTaskCreate]="parentTaskCreate ? true : false"></app-new-wizard-form>
+  </div>
+</div>

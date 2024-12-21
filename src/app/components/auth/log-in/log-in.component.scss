@@ -1,0 +1,102 @@
+
+.login-with{
+    margin-top: 20px;
+    ul{
+        margin-top: 10px;
+    }
+    li{
+        display: flex;
+        padding: 10px 25px;
+        border-radius: 3px;
+        border: 0.5px solid;
+        border-color: #ddd;
+        margin: 0 10px;
+        font-size: 14px;
+        ion-icon{
+            font-size: 25px;
+            margin: auto;
+            margin-right: 10px;
+            // color: #6c69697a;
+        }
+    }
+    li:hover{
+        // border-color: var(--primary-text);
+        background: var(--light-color);
+        color: var(--primary-color);
+        // ion-icon{
+        //     background: var(--primary-color);
+        // }
+    }
+}
+
+
+
+// Google button
+.g-button{
+    margin:0  15px;
+    border-radius: 104px;
+    overflow: hidden;
+    height: 46px;
+    --background: #4285f4 !important;
+    color: #fff;
+    ion-icon{
+        color: #fff;
+    }
+}
+
+
+
+.mobile-input{
+    border-bottom: 1px solid  var(--primary-bg);
+    background-color: #fff;
+}
+
+
+
+
+
+.message{
+    margin: 0 0 10px 10px;
+    color: var(--secondary-text);
+    font-size: 11px;
+}
+
+
+
+
+.input-item{
+    margin-bottom: 20px;
+}
+
+.rergister_{
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 10px 0px;
+    border-radius: 6px;
+    p{
+        font-size: 15px;
+    }
+}
+
+.rergister_:hover{
+    background: var(--light-color);
+    p{
+        color: var(--primary-color);
+    }
+}
+
+.container-desc-header{
+    width: 100%;
+}
+
+.line{
+    border-bottom: 1px solid var(--border-col);
+}
+
+.mt-2rem{
+    margin-top: 2rem;
+}
+
+.mt-3rem{
+    margin-top: 3rem;
+}

@@ -1,0 +1,36 @@
+<div>
+  <!-- <div class="picker" (click)="togglePicker($event)">
+    <p class="month-year">{{selectDate}}</p>
+  </div> -->
+
+  <div (click)="togglePicker($event)" class="border rounded-10 p-10 mouse picker">
+    <p class="m-0 d__flex gap-10"><span class="m-0 fnt-13">{{selectDate | date:('MMM, y')}}</span>
+      <ion-icon src="/assets/expense-claim/down-arrow.svg" class="fnt-20"></ion-icon>
+    </p>
+  </div>
+
+  <!-- <ion-backdrop *ngIf="visible" (ionBackdropTap)="hideDiv()"></ion-backdrop> -->
+
+  <div class="backdrop" *ngIf="visible">
+    <div class="year-month-picker" #yearMonthPicker>
+      <div class="parent">
+        <div id="month" class="pickers">
+          <div (click)="onChange(month,'month')" [id]="month.value" class="p-5 d__flex just-c" [class.activeMonth]="selectedMonth == month.value" *ngFor="let month of months">
+            <h6 class="">{{ month.name }}</h6>
+          </div>
+        </div>
+    
+        <div id="year" class="pickers">
+          <div (click)="onChange(year,'year')" [id]="year" class="p-5 d__flex just-c" [class.activeMonth]="selectedYear == year" *ngFor="let year of years">
+            <h6 class="">{{ year }}</h6>
+          </div>
+        </div>
+      </div>
+  
+
+      <div class="save-btn">
+        <ion-button (click)="submit()">Save</ion-button>
+      </div>
+    </div>
+  </div>
+</div>

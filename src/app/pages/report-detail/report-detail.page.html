@@ -1,0 +1,25 @@
+<app-header title = "Report" [model]="false"></app-header>
+
+<app-sidemenu-header *ngIf="!db.ismobile && !modal" heading="Report" ></app-sidemenu-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="report_list">
+    <div class="d__flex border-b gap-10 p-0-10 attendance_title" *ngIf="!db.ismobile">
+      <ion-icon class="fnt-20" slot="start" src="/assets/dashboard/Report-active.svg"></ion-icon>
+      <p class="m-0 fnt-16 fnt_w500 border-right-txt primary_clr">Report</p>
+    </div>
+      <ion-list lines="full" *ngIf="report_list">
+        <ion-item *ngFor="let item of report_list" (click)="enable_detail(item)" class="mouse">
+          <div class="d__flex just-s w-100">
+            <div class="d__flex gap-10">
+              <ion-icon class="fnt-25" [src]="item.icon"></ion-icon>
+              <p class="fnt-15 fnt_w500">{{item.name}}</p>
+            </div>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </ion-item>
+      </ion-list>
+  </div>
+
+</ion-content>

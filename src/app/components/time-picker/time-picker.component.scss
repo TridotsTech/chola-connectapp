@@ -1,0 +1,57 @@
+.timepicker{
+    position: relative;
+    width: 250px;
+    max-width: 100%;
+}
+
+
+.timepicker_div {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    padding: 20px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid var(--border-col);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 260px;
+    overflow: auto;
+    z-index: 999999;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+.values{
+    padding: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-hr-h{
+    flex: 0 0 calc(33.333% - 10px);
+    height: 235px;
+    overflow: auto;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+.selected{
+    background: var(--CRM-primary-color);
+    color: var(--white);
+    p{
+        color: var(--white);
+        font-weight: 500;
+    }
+}

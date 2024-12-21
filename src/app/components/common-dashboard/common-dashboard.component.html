@@ -1,0 +1,68 @@
+<div *ngIf="data && !db.ismobile" class="employee_shift" [style.--length]="data.length + ((date_change_section ? 1 : 0) + (month_change_section ? 1 :0))">
+  <!-- [ngClass]="this.db.hr_manager_role && doctype == 'Leave Application'? 'employee_shift_5':''" -->
+  <!-- Date Change -->
+
+  <div class="d__flex gap-20 just-se border-r" *ngIf="date_change_section">
+    <ion-button class="next_prev" expand="block" fill="clear" (click)="goToPreviousDay()"><ion-icon class="gray_clr"
+        name="chevron-back-outline"></ion-icon></ion-button>
+    <div class="change_date_sec">
+      <p class="m-0 mb-10 fnt-14 fnt_w500 gray_clr">{{ today | date:'MMMM' }}</p>
+      <p class="m-0 mb-10 fnt-22 fnt_w600">{{ today | date:'dd' }}</p>
+      <p class="m-0 mb-10 fnt-14 gray_clr">{{ today | date:'EEEE' }}</p>
+    </div>
+    <ion-button class="next_prev" expand="block" fill="clear" (click)="goToNextDay()"><ion-icon class="gray_clr"
+        name="chevron-forward-outline"></ion-icon></ion-button>
+  </div>
+
+  <!-- Month Change -->
+
+  <div class="d__flex gap-20 just-se border-r" *ngIf="month_change_section">
+    <ion-button [disabled]="yearLoader" class="next_prev" expand="block" fill="clear" (click)="month_goToPreviousDay.emit()">
+      <ion-icon  class="gray_clr" name="chevron-back-outline"></ion-icon>
+      <!-- <ion-spinner *ngIf="yearLoader" name="circular"></ion-spinner> -->
+    </ion-button>
+    <div class="change_date_sec">
+      <p class="m-0 fnt-14 fnt_w500 gray_clr">{{ year }}</p>
+      <p class="m-0 fnt-22 fnt_w600">{{ month }}</p>
+      <!-- <p class="m-0 mb-10 fnt-14 gray_clr"> 01 - <span class="m-0 mb-10 fnt-14 gray_clr">{{ daysInMonth }}</span></p> -->
+    </div>
+    <ion-button [disabled]="yearLoader" class="next_prev" expand="block" fill="clear" (click)="month_goToNextDay.emit()">
+      <ion-icon  class="gray_clr" name="chevron-forward-outline"></ion-icon>
+      <!-- <ion-spinner *ngIf="yearLoader" name="circular"></ion-spinner> -->
+    </ion-button>
+  </div>
+
+  <div *ngIf="!count_with_title" class="d__contain">
+    <div *ngFor="let item of data;let i = index" class="box_1">
+
+      <div *ngIf="false" class="d__flex gap-10 mb-5">
+        <ion-icon slot="start" [src]="item.icon ? item.icon : icons && icons[i] ? icons[i] : ''"></ion-icon>
+        <p class="m-0 fnt-12 gray_clr"><span class="fnt-12"
+            [ngStyle]="{'color': i % 2 ? '#CF161C' : '#458F5A'}">{{item.percentage ? check_percentage(item.percentage) : 0}}%</span> vs Yesterday</p>
+      </div>
+
+      <div  class="d__flex gap-10 mb-5">
+        <ion-icon slot="start" [src]="item.icon ? item.icon : icons && icons[i] ? icons[i] : ''"></ion-icon>
+        <p class="m-0 fnt-14 mb-5 fnt_w500">{{item.label}}</p>
+      </div>
+
+      <!-- <p class="m-0 fnt-14 mb-5 fnt_w500">{{item.label}}</p> -->
+      <p class="m-0 fnt-16 mb-5 fnt_w500" [ngStyle]="{'color': i== 1 ? '#458F5A' : i== 2 ? '#E08700' : '#CF161C'}">{{item.count}}</p>
+
+    </div>
+  </div>
+
+  <!-- [ngStyle]="{'border-right': (i == 0 || i == 1 || i == 2) ? '1px solid var(--border-col)'  : ''}" -->
+
+  <div *ngIf="count_with_title" class="d__contain">
+    <div *ngFor="let item of data;let i = index"  class="box_1">
+      <div  *ngIf="false" class="d__flex gap-10 mb-5">
+        <ion-icon slot="start" [src]="item.icon ? item.icon : icons && icons[i] ? icons[i] : ''"></ion-icon>
+        <p class="m-0 fnt-15 gray_clr" [ngStyle]="{'color': i % 2 ? '#CF161C' : '#458F5A'}">{{item.title ? item.title : 'No. of Employee:'}} <span class="fnt-12"> {{item.employee_count}}</span></p>
+      </div>
+      <p class="m-0 fnt-14 mb-5 fnt_w500 gray_clr">{{item.label}}</p>
+      <p class="m-0 fnt-16 mb-5 fnt_w500 inter_" [ngStyle]="{'color': i== 1 ? '#458F5A' : i== 2 ? '#E08700' : '#CF161C'}">{{item.amount ? (item.amount | currency:db.website_settings.currency) : item.count ? item.count : '0'}}</p>
+    </div>
+  </div>
+
+</div>

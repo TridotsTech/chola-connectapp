@@ -1,0 +1,102 @@
+<app-header title="Leaves" [model]="(inputEmployeeDetails || editFormValues) ? true : false"></app-header>
+
+<ion-content [fullscreen]="true">
+  <app-leave-detail (leave_confirm)="approve_leaves($event)"
+    *ngIf="leave_detail  && (leave_dashboard && leave_dashboard.length > 0)" [emp_detail]="employee_details"
+    [dash_board]="leave_dashboard" [data]="leave_detail">
+  </app-leave-detail>
+
+  <div class="body" *ngIf="!skeleton && employee_details && !leave_detail">
+    <div *ngIf="leave_dashboard && leave_dashboard.length > 0" class="d__flex w-100 section">
+      <div class="box_1" *ngFor="let item of leave_dashboard">
+        <div class="m-7 d__flex just-s">
+          <ion-icon class="fnt-16 icon " [ngClass]="item.label ? checkImages(item.label,'class') : ''"
+            [src]="checkImages(item.label,'')"></ion-icon>
+          <p class="m-0 fnt_w500 " [style.color]="checkImages(item.label,'color')">{{item.count}}</p>
+        </div>
+        <p class="fnt-12 m-0 ">{{item.label}}</p>
+      </div>
+    </div>
+
+    <div class="section_3">
+      <form [formGroup]="leave_form">
+
+        <div class="pb-10">
+          <label for="leave_type" class="pb-10">Leave Type <span class="impt-star"> *</span></label>
+          <div class="custom-input">
+            <ion-input type="text"
+              [ngModel]="(db.drop_down_value && db.drop_down_value['leave_type'] ? db.drop_down_value['leave_type'] : '')"
+              placeholder="Leave type" (click)="open_dropdown()" name="leave_type" formControlName="leave_type"
+              class="form-input"></ion-input>
+          </div>
+          <p class="impt-star pt-5" *ngIf="submitted && !leave_type.valid && leave_type.errors.required">Leave type is
+            required</p>
+        </div>
+
+
+        <div class="pb-10">
+          <label for="reason" class="pb-10">Reason <span class="impt-star"> *</span></label>
+          <div class="custom-input">
+            <ion-textarea class="text-area" name="reason" formControlName="reason"
+              placeholder="Enter Your reason Here..."></ion-textarea>
+          </div>
+
+          <p class="impt-star pt-5" *ngIf="submitted && !reason.valid && reason.errors.required">Reason is
+            required</p>
+        </div>
+
+
+
+        <div class="d__flex gap-20 pb-10">
+          <div style="width: 50%;">
+            <label for="from_date" class="pb-10">From date <span class="impt-star"> *</span></label>
+            <div class="custom-input">
+              <ion-input type="date"  name="from_date" (ionChange)="datePicker($event,'from_date')" formControlName="from_date"
+                class="form-input"></ion-input>
+            </div>
+            <p class="impt-star pt-5" *ngIf="submitted && !from_date.valid && from_date.errors.required">From date is
+              required</p>
+          </div>
+
+          <div style="width: 50%;">
+            <label for="to_date" class="pb-10">To date <span class="impt-star"> *</span></label>
+            <div class="custom-input">
+              <ion-input type="date" name="to_date" (ionChange)="datePicker($event,'to_date')" formControlName="to_date"
+                class="form-input"></ion-input>
+            </div>
+            <p class="impt-star pt-5" *ngIf="submitted && !to_date.valid && to_date.errors.required">To date is
+              required</p>
+          </div>
+
+        </div>
+
+        <div class="pb-10 leavePreview" *ngIf="leave_preview && leave_preview.length != 0">
+          <label for="reason" class="pb-10">Leave Preview</label>
+          <div *ngFor="let item of leave_preview" class="boxes_">
+            <div class="d__flex just-s">
+              <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.date | date: 'MMM d, y'}}</p>
+              <div class="d__flex">
+                <app-status [status]="item.status"></app-status>
+              </div>
+            </div>
+            <div class="d__flex just-s">
+              <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Count: </span> {{item.count}}</p>
+              <div *ngIf="item.count != 'Weekly Off'">
+                <ion-select aria-label="Duration" interface="popover" (ionChange)="changeDuration(item,$event)" placeholder="Duration" mode="ios" [value]="item.duration">
+                  <ion-select-option *ngFor="let types of durationType" [value]="types.name">{{types.name}}</ion-select-option>
+                </ion-select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="submit-btn">
+      <ion-button (click)="sure_submit()" fill="clear">{{save_only ? 'Save' : 'Submit'}}</ion-button>
+    </div>
+
+  </div>
+
+</ion-content>

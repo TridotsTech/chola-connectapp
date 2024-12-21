@@ -1,0 +1,317 @@
+ion-icon {
+    // background: #0000001f;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 17px;
+    padding: 1px;
+    color: #888;
+}
+
+
+.navigation_btn {
+    width: 100%;
+
+    span {
+        font-size: 14px;
+        color: #fff;
+    }
+}
+
+.done-btn {
+    background: var(--dynamic-color);
+    color: #fff;
+    height: 42px !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .conversation-compose {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        border-top: 1px solid #ddd;
+        box-shadow: 10px 10px 10px 10px #ddd;
+        background: #fff;
+
+        ion-button {
+            width: 100%;
+            margin: 10px;
+        }
+    }
+
+    .conversation-compose div,
+    .conversation-compose input {
+        background: #fff;
+        height: 100%;
+    }
+
+    .conversation-compose .input-msg {
+        border: 1px solid #ddd;
+        font-size: 14px;
+        border-radius: 50px;
+        --padding-start: 15px;
+        --padding-end: 15px;
+    }
+
+    .conversation-compose .send {
+        background: #007EE5;
+        border: 0;
+        cursor: pointer;
+        flex: 0 0 auto;
+        margin-left: 0px;
+        margin-right: 8px;
+        padding: 0;
+        position: relative;
+        outline: none;
+    }
+
+    .conversation-compose .send .circle {
+        background: #fff;
+        border-radius: 50%;
+        color: #fff;
+        position: relative;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .conversation-compose .send .circle ion-icon {
+        font-size: 24px;
+        margin-left: 5px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .mobile_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 10px 5px 10px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .input_div {
+        padding: 10px 10px;
+        position: sticky;
+        top: -1px;
+        z-index: 99;
+        background: #fff;
+
+        .input-msg {
+            border: 1px solid #EBEBEB;
+            border-radius: 5px;
+            --padding-start: 15px;
+            --padding-end: 15px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .add_tag {
+            border: 1px solid #EBEBEB;
+            position: absolute;
+            margin: 0px;
+            width: max-content;
+            height: 30px;
+            padding: 4px 5px 0px 5px;
+            border-radius: 10px;
+            right: 20px;
+            bottom: 16px;
+            z-index: 999;
+            color: #7f7f7f;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        ion-icon {
+            cursor: pointer;
+            border-radius: 50px;
+            font-size: 14px;
+            padding: 0px;
+            margin-bottom: -2px;
+            color: #888;
+        }
+    }
+
+    .conversation-compose {
+        width: 100%;
+        background: #fff;
+        padding: 10px;
+        border-top: 1px solid #f1f1f1;
+        box-shadow: 10px 10px 10px 10px #ddd;
+    }
+
+    .conversation-compose div,
+    .conversation-compose input {
+        background: #fff;
+        height: 100%;
+    }
+
+    .conversation-compose .input-msg {
+        border: 1px solid #ddd;
+        font-size: 14px;
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+        border-radius: 5px;
+        --padding-start: 15px;
+        --padding-end: 15px;
+    }
+
+    .conversation-compose .send {
+        background: #007EE5;
+        border: 0;
+        cursor: pointer;
+        flex: 0 0 auto;
+        margin-left: 0px;
+        margin-right: 8px;
+        padding: 0;
+        position: relative;
+        outline: none;
+    }
+
+    .conversation-compose .send .circle {
+        background: #fff;
+        border-radius: 50%;
+        color: #fff;
+        position: relative;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .conversation-compose .send .circle ion-icon {
+        font-size: 24px;
+        margin-left: 5px;
+    }
+
+}
+
+
+@media only screen and (min-width: 768px) {
+
+    .input_div {
+        padding: 10px 10px;
+        position: relative;
+        position: sticky;
+        top: 0;
+        z-index: 99;
+        background: #fff;
+
+        .input-msg {
+            border: 1px solid #EBEBEB;
+            border-radius: 5px;
+            --padding-start: 15px;
+            --padding-end: 15px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .add_tag {
+            border: 1px solid #EBEBEB;
+            position: absolute;
+            margin: 0px;
+            width: max-content;
+            height: 30px;
+            padding: 4px 5px 0px 5px;
+            border-radius: 10px;
+            right: 20px;
+            bottom: 16px;
+            z-index: 999;
+            color: #7f7f7f;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        ion-icon {
+            cursor: pointer;
+            border-radius: 50px;
+            font-size: 14px;
+            padding: 0px;
+            margin-bottom: -2px;
+            color: #888;
+        }
+    }
+
+    .body_sec {
+        height: calc(100vh - 120px);
+        overflow: auto;
+    }
+}
+
+.tags_section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    .Header {
+        height: 40px;
+        padding: 10px 0px;
+        margin: 0;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .body_sec {
+        height: calc(100vh - 110px);
+        overflow: auto;
+
+        .selected_tags_,
+        .Other_tags_ {
+            padding: 10px;
+
+            .title {
+                margin: 10px 0px;
+                font-weight: 400;
+                font-size: 12px;
+                color: var(--gray-color);
+            }
+
+            .Selected_tag_Chips {
+                display: flex;
+                flex-wrap: wrap;
+                // height: 160px;
+                // overflow: auto;
+                gap: 7px;
+                padding-bottom: 10px;
+                // height: calc(100vh - 640px);
+
+                .selected_tag {
+                    padding: 4px 10px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    border-radius: 50px;
+                    white-space: nowrap;
+                    color: #fff;
+                    background: var(--CRM-primary-color);
+                }
+
+                .unselected_tag {
+                    padding: 4px 10px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    border-radius: 50px;
+                    border: 1px solid var(--CRM-primary-color);
+                    color: var(--CRM-primary-color);
+                    white-space: nowrap;
+                    // margin: 0 10px;
+                }
+            }
+        }
+    }
+
+    .body_sec::-webkit-scrollbar {
+        display: none;
+    }
+
+}
+
+ion-spinner {
+    --color: #fff;
+    color: #fff;
+}

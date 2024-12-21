@@ -1,0 +1,27 @@
+<div class="fullview">
+  <div class="d__flex gap-10 popUpheadercss">
+    <ion-icon class="mouse" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white">Freeze Column</p>
+  </div>
+
+  <div class="example-list">
+    <div (click)="select(item,i,false)" class="d__flex just-s sec mouse" *ngFor="let item of columns;let i = index">
+      <h5 class="m-0 title fnt_w400">{{item.name}}</h5>
+      <img *ngIf="item.selected" class="tick" src="/assets/profile/blue-tick.svg">
+    </div>
+
+    <div class="w-sec">
+      <h4 class="title fnt_w400 gray_clr m-0 fnt-14">Set width to freeze the 1st Column</h4>
+  
+      <div class="grid">
+        <div (click)="selectedWidth(item)" [class.selectDiv]="item.isSelected" class="secV" *ngFor="let item of widthValues">{{item.value}}</div>
+        <ion-input (input)="widthInput($event)" placeholder="Enter..."  type="number" [(ngModel)]="enterWidth"></ion-input>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="submitBtn">
+   <ion-button (click)="save()" fill="clear">Save</ion-button>
+  </div>
+</div>

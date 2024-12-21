@@ -1,0 +1,31 @@
+<div class="align_center">
+  <div class="check_button" *ngIf=" db.current_address &&  time">
+    <div class="text-c time">
+      <h6>{{checkin_time ? checkin_time : time}}</h6>
+    </div>
+    <div class="location">
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      <p class="fnt-14">{{db.current_address}}</p>
+    </div>
+    <div class="d__flex button_">
+      <ion-icon *ngIf="!checkin" name="checkmark-done-circle-sharp"></ion-icon>
+      <ion-button [disabled]="!checkin" fill="clear" (click)="check_In('IN')"><ion-spinner *ngIf="spinner"
+          name="circular"></ion-spinner> <span *ngIf="!spinner">Check In</span></ion-button>
+    </div>
+  </div>
+
+  <div class="check_button" *ngIf=" db.current_address && time && !checkin">
+    <div class="text-c time">
+      <h6>{{checkout_time ? checkout_time : time }}</h6>
+    </div>
+    <div class="location">
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      <p class="fnt-14">{{db.current_address}}</p>
+    </div>
+    <div class="d__flex button_">
+      <ion-icon *ngIf="!checkout" name="checkmark-done-circle-sharp"></ion-icon>
+      <ion-button [disabled]="!checkout" fill="clear" (click)="check_In('OUT')"><ion-spinner *ngIf="spinner"
+          name="circular"></ion-spinner> <span *ngIf="!spinner">Check Out</span></ion-button>
+    </div>
+  </div>
+</div>

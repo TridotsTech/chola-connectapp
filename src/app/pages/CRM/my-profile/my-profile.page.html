@@ -1,0 +1,60 @@
+<app-header [back_route]="'tabs/dashboard'" title="My Profile"></app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-backdrop *ngIf="db.profile_loader"></ion-backdrop>
+  <div class='container height' >
+    <div class="profile">
+
+     <div class="employeeDetail-s">
+       <div *ngIf="db.employee_img" class="employeeDetail">
+         <img class="blue" src="/assets/timesheet/blue.svg" /> 
+         <img class="yellow" src="/assets/timesheet/yellow.svg" /> 
+         <div class="d__flex gap-10 just-s employeeDetails">
+           <div class="d__flex m-0 details w-100">
+             <div class="imageDiv">
+               <img *ngIf="db.employee_img.user_image" [src]="db.product_img(db.employee_img.user_image)" />
+               <h4 *ngIf="!db.employee_img.user_image" class="m-0 fnt-15 fnt_w500">{{db.employee_img?.employee_name[0]}}</h4>
+               <ion-icon class="mouse camera" (click)="file_upload.click()" name="camera"></ion-icon>
+             </div>
+             <div class="w-100">
+               <h4 class="fnt-14 fnt_w500 m-0 name webkit-text capitalize" [style.--line]="1">{{db.employee_img?.employee_name}}</h4>
+               <div class="d__flex title just-s w-100">
+                 <h4  *ngIf="db.employee_img.name" class="fnt-12 fnt_w400 m-0 id gray_clr">{{db.employee_img?.name}}</h4>
+                 <app-status [status]="db.employee_img.status"></app-status>
+               </div>
+             </div>
+          </div>    
+         </div>  
+ 
+         <div class="d__flex gap-10">
+ 
+           <h4 *ngIf="db.employee_img.department" class="d__flex gap-5 role m-0">
+             <img class="workIcon1" src="/assets/emailIcon.svg" /> 
+             <span class="fnt-13 fnt_w400 m-0 gray_clr">{{db.employee_img.personal_email ? db.employee_img?.personal_email : '-'}}</span>
+           </h4>
+ 
+           <h4 *ngIf="db.employee_img.department" class="d__flex gap-5 role m-0">
+             <img class="workIcon1" src="/assets/callIcon.svg" /> 
+             <span class="fnt-13 fnt_w400 m-0 gray_clr">{{db.employee_img.cell_number ? db.employee_img?.cell_number : '-'}}</span>
+           </h4>
+ 
+         </div>
+ 
+       </div>
+     </div>  
+      
+
+      <input #file_upload type="file" class="img-input" (change)="changeListener1($event)" multiple>
+
+      <div class="user_detail">
+        <div class="tabs" *ngFor="let item of db.permission_details.slice(0, 7)" (click)="db.doctype_select(item.page)">
+          <ion-item  button lines="none" (click)="router_(item.route)">
+            <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+            <ion-label>{{item.page_name}}</ion-label>
+            <ion-icon slot="end" name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

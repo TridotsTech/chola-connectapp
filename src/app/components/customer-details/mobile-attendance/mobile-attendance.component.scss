@@ -1,0 +1,28 @@
+.bg_primary__ {
+    background: #f6f7f9;
+}
+
+.attendanceHeight {
+    height: calc(100vh - 295px);
+    overflow: auto;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+.header{
+  padding: 10px 0;
+}
+
+.calendar_att1 {
+    // display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    border: 1px solid var(--border-col);
+    margin-top: 10px;
+ }
+
+ .expense_sec{
+    padding: 10px !important;
+ }

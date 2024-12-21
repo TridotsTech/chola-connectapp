@@ -1,0 +1,110 @@
+.images {
+  position: relative;
+
+  .image_div {
+    height: 34px;
+    width: 34px;
+    border-radius: 50%;
+    // background: #EDEDED;
+    background: #fff;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img,
+    .avatar {
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  .img2,
+  .img3 {
+    position: absolute;
+  }
+
+  .img2 {
+    left: 15px;
+  }
+
+  .img3 {
+    left: 30px;
+
+  }
+
+  .more_ {
+    font-size: 9px;
+    color: #fff;
+    left: 33px;
+    position: absolute;
+    top: 2px;
+    background: rgba(0, 0, 0, 0.2784313725);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+  }
+}
+
+.left {
+  position: relative;
+  left: -27px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #fff;
+  margin: 0;
+}
+
+.small {
+  .image_div {
+    // height: 30px !important;
+    // width: 30px !important;
+    height: 25px !important;
+    width: 25px !important;
+
+    img,
+    .avatar {
+      // height: 26px !important;
+      // width: 26px !important;
+      height: 20px !important;
+      width: 20px !important;
+    }
+  }
+}
+
+.mini {
+  .image_div {
+    height: 20px !important;
+
+    p {
+      font-size: 10px !important;
+    }
+  }
+}
+
+.assignRelative {
+  position: relative;
+
+  .assignAbsolute {
+    position: absolute;
+    z-index: 9999;
+
+    .hover_name {
+      padding: 0px 10px;
+      background: #000;
+      color: #fff;
+      border-radius: 5px;
+      width: max-content;
+    }
+  }
+}

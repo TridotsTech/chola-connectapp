@@ -1,0 +1,13 @@
+.quickEntry{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+     .body__{
+        height: 100%;
+        overflow: auto;
+        margin: 0 0 52px 0;
+     }
+     .body__::-webkit-scrollbar{
+        display: none;
+     }
+}

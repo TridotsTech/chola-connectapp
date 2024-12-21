@@ -1,0 +1,65 @@
+.formHeight {
+    height: calc(100vh - 100px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.title {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.custom-input {
+
+    ion-input,
+    ion-select {
+        border: 1px solid var(--border-col);
+        border-radius: 7px;
+        height: 40px;
+        min-height: 40px !important;
+        padding: 0 10px !important;
+        font-size: 14px;
+    }
+}
+
+.section2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+}
+
+.submit-btn {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    z-index: 99999;
+    border-top: 1px solid var(--border-col);
+
+    ion-button {
+        width: 100%;
+    }
+}
+
+.year_calculator {
+    border: 1px solid var(--border-col);
+    border-radius: 5px;
+
+    .boxes__ {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-bottom: 1px solid var(--border-col);
+    }
+
+    .boxes__:last-child{
+        border-bottom: unset !important;
+    }
+}

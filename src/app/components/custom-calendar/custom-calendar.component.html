@@ -1,0 +1,57 @@
+<div [class.pos-r]="table">
+  <div class="date-picker" [class.border-none]="table" [class.readOnlyClass]="web_form && each && !task_form && each.read_only == 1" [class.ov-hidden]="table" (click)="togglePicker($event)">
+    <input readonly *ngIf="!web_form && !task_form" (input)="dateChange($event)" type="text" class="date-input"  [ngModel]="dateFormat1(selectedDateTime)" />
+    <input readonly *ngIf="web_form && each && !task_form" (input)="dateChange($event)" type="text" [class.readOnlyClass]="each.read_only == 1" class="date-input custom-input" [ngModel]="dateFormat1(selectedDateTime)" />
+    <p *ngIf="task_form" class="box_1 m-0 fnt-13 mb-5 fnt_w400 d__flex gap-5" (click)="enableStart()"><ion-icon name="calendar-outline"></ion-icon>{{dateFormat1(selectedDateTime)}}</p>
+    <img *ngIf="!task_form" src="assets/icon/calendar.svg" alt="calendar" class="" />
+  </div>
+
+  <div *ngIf="show_cal" class="calendar-picker" [ngClass]="(web_form && each && (each.fieldname == 'from_time')) ? 'left-15' : (web_form && each && (each.fieldname == 'to_time')) ? 'right-15' : task_form ? 'bottom-35': ''">
+
+    <div class="calendar-header">
+      <button (click)="changeMonth(-1)" class="nav-button">&#10094;</button>
+
+      <div>
+        <!-- Dropdown for months -->
+        <select [(ngModel)]="currentMonth" (change)="onMonthYearChange()" class="month-dropdown custom-scroll">
+          <option *ngFor="let month of months; let i = index" [value]="i">{{ month }}</option>
+        </select>
+
+        <!-- Dropdown for years -->
+        <select [(ngModel)]="currentYear" (change)="onMonthYearChange()" class="year-dropdown custom-scroll">
+          <option *ngFor="let year of years" [disabled]="year.isDisabled" [value]="year.year">{{ year.year }}</option>
+        </select>
+      </div>
+
+      <button (click)="changeMonth(1)" class="nav-button">&#10095;</button>
+    </div>
+
+
+    <div class="days-of-week">
+      <div class="days" *ngFor="let day of daysOfWeek">{{ day }}</div>
+    </div>
+
+    <div class="calendar-days">
+      <!-- [class.has-time]="isTimeSelected(day?.day)" -->
+      <div *ngFor="let day of days" (click)="selectDate(day)" [class.disabled]="day?.isDisabled"
+        [class.selected]="isSelected(day?.day)" >
+        <span class="weekday" *ngIf="day">{{ day.day }}</span>
+      </div>
+    </div>
+
+    <div class="time-selection" *ngIf="format == 'Date and Time'">
+      <select [(ngModel)]="selectedHour" class="time-dropdown custom-scroll">
+        <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+      </select>
+      <select [(ngModel)]="selectedMinute" class="time-dropdown custom-scroll">
+        <option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</option>
+      </select>
+      <select [(ngModel)]="selectedPeriod" class="time-dropdown custom-scroll">
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
+    </div>
+
+    <button *ngIf="format == 'Date and Time'" (click)="submit()" class="submit-button">Save</button>
+  </div>
+</div>

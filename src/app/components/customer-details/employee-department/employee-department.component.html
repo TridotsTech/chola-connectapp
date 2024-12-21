@@ -1,0 +1,112 @@
+<div *ngIf="db.ismobile">
+
+  <div (click)="open_department_filter()" class="d__flex gap-5 bg-H">
+    <div class="d__flex gap-5 box1">
+      <ion-icon class="icon" slot="start" src="/assets/employees/award.svg"></ion-icon>
+      <p class="m-0 fnt-14 webkit-text" [style.--line]="2">{{selected_dept ? selected_dept : 'Department'}}</p>
+    </div>
+    <ion-icon class="chevronIcon" name="chevron-down-outline"></ion-icon>
+  </div>
+
+  <div>
+    <app-common-search placeholder="Search" (call_clear_txt)="clear_txt($event)" [noFilter]="true"
+      (search_txt_value)="search_txt_value($event)" (open_filter)="open_filter($event)"></app-common-search>
+  </div>
+
+  <div *ngIf="employee_list && employee_list.length != 0" class="scroll_"
+    [ngStyle]="{'height': view != 'mobile' ? '' : 'calc(100vh - 228px)'}">
+    <div #tabList [class.grid_view]="view == 'web'">
+      <div class="list_data mouse" [class.selected_item]="item.selected && (db.enable_detail || db.ismobile)"
+        *ngFor="let item of employee_list;let i = index" [class.mb-10]="view == 'mobile'" (click)="go_detail(item,i)">
+        <div class="d__flex gap-10 employee_">
+          <div [class.image_div]="item.image" class="absolute_">
+            <div class="dot_active">
+              <div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}">
+              </div>
+            </div>
+            <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+            <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+          </div>
+          <div>
+            <p class="m-0 mb-5 fnt-14 fnt_w500 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+            <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start"
+                src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+            <div class="d__flex gap-5">
+              <ion-icon class="fnt-16" slot="start" src="/assets/img/designation.svg"></ion-icon>
+              <p class="m-0 fnt-12 gray_clr webkit-text w-100" [style.--line]="1">{{item.designation ? item.designation
+                : '-'}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="wish_list gap-15">
+          <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5 year_ago">{{getDateDifference(item.date_of_joining)}}</p>
+          <ion-icon class="fnt-16" class="mb-5 mouse" (click)="add_wish($event, item)" slot="start"
+            [src]="item['fav_employee'] ? '/assets/img/heart-fill.svg' : '/assets/img/heart.svg'"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <app-no-record-found [height]="'calc(100vh - 290px)'" *ngIf="employee_list && employee_list.length == 0"
+    [column]="true" [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+
+</div>
+
+<div *ngIf="departments && !db.ismobile" class="department_emp d___flex">
+  <div class="department_list">
+    <p class="m-0 fnt-16 p-10 d__flex gap-10 heading"><ion-icon slot="start"
+        src="/assets/img/award-active.svg"></ion-icon><span>Departments</span></p>
+    <div *ngIf="departments && departments.length != 0" class="departments">
+      <div *ngFor="let item of departments; let i = index">
+        <p class="m-0 pt-10 dept_name pb-10 fnt-14 gray_clr mouse" (click)="select_dept(item,i)"
+          [class.active_dept]="item.selected">{{item.department_name}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="dept_employees p-10">
+    <div class="d__flex just-s" *ngIf="selected_dept">
+      <p class="select_dept d__flex gap-10 fnt-14"><ion-icon slot="start"
+          src="/assets/img/department.svg"></ion-icon>{{selected_dept}}</p>
+      <div class="search_bar d__flex">
+        <ion-icon name="search-outline"></ion-icon>
+        <ion-input class="search_input" [(ngModel)]="search_text" (ionInput)="search_emp($event)"
+          placeholder="Search..."></ion-input>
+        <ion-icon name="close-outline" *ngIf="search_text" (click)="clear_txt('')"></ion-icon>
+      </div>
+    </div>
+    <div *ngIf="employee_list && employee_list.length != 0">
+      <div class="d__flex gap-10 mb-10">
+        <ion-icon class="fnt-20" slot="start" src="/assets/img/grip-horizontal.svg"></ion-icon>
+        <p class="m-0 fnt-15 fnt_w500 border-right-txt">Employees</p>
+      </div>
+      <div class="employee_list">
+        <div *ngFor="let item of employee_list" class="employees">
+          <div class="d__flex" [class.mb-10]="!item.image">
+            <div class="employee_image">
+              <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+              <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+            </div>
+            <p class="webkit-text fnt-13 m-0 mb-5" [style.--line]="1">{{item.employee_name}}</p>
+          </div>
+          <div class="d___flex just-s mb-5">
+            <p class="d__flex gap-5 mb-5 m-0"><ion-icon class="fnt-20" src="/assets/img/user-tag.svg"></ion-icon><span
+                class="fnt-12 gray_clr">{{item.employee}}</span></p>
+            <p class="d__flex gap-5 mb-5 m-0"><ion-icon style="color: #28A713;"
+                src="/assets/img/active-dot.svg"></ion-icon><span class="fnt-12">Present</span></p>
+          </div>
+          <div class="d___flex just-s">
+            <p class="d__flex gap-5 mb-5 m-0"><ion-icon class="fnt-20"
+                src="/assets/img/designation.svg"></ion-icon><span [style.--line]="1"
+                class="fnt-12 webkit-text">{{item.designation ? item.designation : '-'}}</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-no-record-found [height]="'calc(100vh - 290px)'" *ngIf="employee_list && employee_list.length == 0"
+      [column]="true" [heading]="'No Employee found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  </div>
+</div>

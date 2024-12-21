@@ -1,0 +1,216 @@
+@media screen and (max-width: 768px) {
+   .mobile-header .menu {
+      margin: 0;
+      --overflow: none;
+      --ripple-color: transparent;
+      --padding-start: 0;
+      --padding-end: 0;
+      padding: 0;
+      background: unset !important;
+      //  margin: 0 10px;
+      // padding: 0 5px;
+   }
+
+   .new_request {
+      --background: var(--secondary-color);
+   }
+
+   .w-80 {
+      width: 80%;
+      padding: 0;
+      text-transform: capitalize;
+   }
+
+   .ion-buttons {
+      //  background: #fff;
+      //  border-radius: 5px;
+      height: 32px;
+      //  box-shadow: 0px 0px 7px 2px rgb(0 0 0 / 3%);
+      margin: 0 10px;
+   }
+
+
+   .icon {
+      height: 20px;
+      margin: 0 !important;
+      padding: 0 10px;
+      font-size: 22px;
+   }
+
+   .Rounded {
+      border-radius: 30px;
+      height: 28px;
+   }
+
+}
+
+ng-select {
+   margin-right: 15px;
+}
+
+.line {
+   border-bottom: 3px solid var(--light-color);
+}
+
+.settings {
+   margin-right: 15px;
+   font-size: 22px;
+}
+
+// ion-toolbar{
+//    border-bottom: 1px solid #ddd;
+//    --background: var(--secondary-color);
+//    --min-height: 45px;
+// }
+
+.sec {
+   padding: 0 10px 0px 0;
+   background: var(--primary-color);
+
+   .s-1 {
+      flex: 0 0 60%;
+
+      .Invoice {
+         padding: 7px 0 0 0;
+         text-transform: capitalize;
+      }
+   }
+
+   .s-2 {
+      flex: 1;
+
+      display: flex;
+      justify-content: flex-end;
+
+      .sec__2d {
+         text-align: end;
+         //  display: flex;
+         //  align-items: center;
+         // //  flex-direction: column;
+         //  gap: 5px;
+      }
+   }
+}
+
+.member_name {
+   width: max-content;
+}
+
+.speciality {
+   // overflow: hidden;
+   // text-overflow: ellipsis;
+   // display: -webkit-box;
+   // -webkit-line-clamp: 1;
+   // -webkit-box-orient: vertical;
+   // max-width: 150px;
+   // width: 150px;
+   width: max-content;
+   // max-width: 150px;
+}
+
+.m-10-10-0 {
+   margin: 10px 10px 0;
+}
+
+.add_project {
+   color: #006800;
+}
+
+.avatar {
+   // flex: 0 0 calc(23% - 10px);
+   flex: 0 0 calc(70% - 10px);
+
+   // height: 100%;
+   // padding: 0 5px 0 0;
+   p {
+      //  margin: 10px 0 0 0;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // background: var(--primary-bg);
+      color: var(--white);
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+   }
+}
+
+
+.filter {
+   width: 30px;
+   height: 30px;
+   text-align: center;
+   border-radius: 7px;
+   // background: #fff;
+   padding: 4px;
+   margin: 5px 10px;
+
+   ion-icon {
+      font-size: 24px;
+      margin-bottom: -4px;
+   }
+}
+
+.back_btn {
+   color: #fff;
+   width: 32px;
+   height: 20px;
+   // font-size: 18px;
+}
+
+.filter_cus {
+   width: 40px;
+   height: 33px;
+   text-align: center;
+   border-radius: 7px;
+   background: #fff;
+   padding: 5px;
+   margin: 5px 10px;
+
+   ion-icon {
+      font-size: 20px;
+      margin-bottom: -4px;
+   }
+}
+
+.projects_fil {
+   margin: 7px 0;
+   border: 1px solid #fff;
+   border-radius: 5px;
+   padding: 2px 10px;
+   width: 80%;
+}
+
+.yearDCrm{
+   border: 1px solid var(--border-col) !important;
+   .title, ion-icon{
+      color: #000 !important;
+   }
+}
+
+.yearD{
+   gap: 10px;
+   width: 80px;
+   // background: #fff;
+   border: 1px solid #fff;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 5px 4px;
+   margin: 0px 8px;
+  .title{
+   font-size: 14px;
+   font-weight: 500;
+   margin: 0;
+   color: #fff;
+  }   
+  ion-icon{
+   font-size: 14px;
+   color: #fff;
+  }
+} 

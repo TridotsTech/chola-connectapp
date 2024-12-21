@@ -1,0 +1,384 @@
+<app-header title="Leaves" [showYear]="'getYearLeave'" [model]="false"></app-header>
+<!-- [showYear]="'getYearLeave'" -->
+<ion-content class="ion-content" [fullscreen]="true">
+
+  <div *ngIf="db.hasClass" [ngClass]="{'backdrop-visible': db.hasClass}">
+    <ion-backdrop (ionBackdropTap)="db.hasClass = false" (ionBackdropTap)="fab_()"></ion-backdrop>
+  </div>
+
+  <ion-fab *ngIf="db.ismobile" slot="fixed" vertical="bottom" class="fabs" #fab>
+    <ion-fab-button id="fab" (click)="nav()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top" class="fab-list" *ngIf="fab_lead && fab_lead.length != 0">
+      <div *ngFor="let item of fab_lead" class="fab-grp">
+        <span class="fab-item">{{item.name}}</span>
+        <ion-fab-button (click)="navigate_to_next(item)">
+          <ion-icon [src]="item.icon" class="fab_icon"></ion-icon>
+        </ion-fab-button>
+      </div>
+    </ion-fab-list>
+  </ion-fab>
+
+  <div *ngIf="false && !db.ismobile && detail_loader" class="align_center">
+
+    <div class="b-1 d__flex">
+      <ion-skeleton-text [animated]="true"
+        style="width:62px;height:52px;border-radius:50%;margin:0 8px 0 0"></ion-skeleton-text>
+      <div class="b-2">
+        <ion-skeleton-text [animated]="true" style="width:75%;height:20px;margin:0 0 8px 0"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:60%;height:17px"></ion-skeleton-text>
+      </div>
+    </div>
+
+    <div class="b-3">
+      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
+    </div>
+
+    <div class="tab_skeleton">
+      <div *ngFor="let val of [1,2,3,4,5,6]">
+        <ion-skeleton-text [animated]="true"
+          style="width:60px;height:20px;margin:0px;border-radius:5px"></ion-skeleton-text>
+      </div>
+    </div>
+
+
+    <div class="d__flex  box_" *ngFor="let val of [1,2,3,4,5,6]">
+      <ion-skeleton-text [animated]="true" style="width:60px;height:50px;border-radius:5px"></ion-skeleton-text>
+      <div class="w-full">
+        <ion-skeleton-text [animated]="true" style="width:55%;height:17px;border-radius:5px"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true"
+          style="width:45%;height:15px;border-radius:5px;margin:3px 0"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:35%;height:12px;border-radius:5px"></ion-skeleton-text>
+      </div>
+    </div>
+
+    <!-- <ion-spinner name="crescent"></ion-spinner> -->
+  </div>
+
+  <div *ngIf="db.ismobile" class="fullD">
+
+
+    <!-- Mobile Skeleton -->
+    <div *ngIf="skeleton && (!leave_list || (leave_list && leave_list.length == 0)) && skeleton_value_mobile">
+
+      <!-- Tabs -->
+      <div [class.tab_skeleton]="skeleton_value_mobile.tabs" *ngIf="skeleton_value_mobile.tabs">
+        <div *ngFor="let val of skeleton_value_mobile.tabs_len">
+          <app-skeleton-loader type="tabs"></app-skeleton-loader>
+        </div>
+      </div>
+
+      <!-- Common Dashboard -->
+      <div [class.Common_dashboardSkeleton]="skeleton_value_mobile.enable_dashboard"
+        *ngIf="skeleton_value_mobile.enable_dashboard">
+        <div class="small_box" *ngFor="let item of skeleton_value_mobile.dash_len;index as i">
+          <app-skeleton-loader type="dashboard"></app-skeleton-loader>
+        </div>
+      </div>
+
+      <div *ngIf="skeleton_value_mobile.month_filter">
+        <app-skeleton-loader type="month_filter"></app-skeleton-loader>
+      </div>
+
+      <div *ngIf="skeleton_value_mobile.list">
+        <app-skeleton-loader [type]="skeleton_value_mobile.list_type"
+          [list_len]="skeleton_value_mobile.list_len ? skeleton_value_mobile.list_len : []"
+          [list_len_count]="skeleton_value_mobile.list_len_count"></app-skeleton-loader>
+      </div>
+    </div>
+
+
+
+
+
+    <div *ngIf="false && leave_dashboard && !no_employee_details && employee_details" class="employe_details">
+
+      <div *ngIf="!employee_details.image" class="avathar">{{employee_details.employee_name[0]}}</div>
+      <div *ngIf="employee_details.image" class="imageDiv">
+        <img [src]="db.product_img(employee_details.image)" />
+      </div>
+
+      <!-- <img src="/assets/icon/Ellipse 291 .png"> -->
+      <!-- <div class="userImage"> -->
+      <!-- <img class="mouse" slot="start" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) :  db.load_icon(db.cust_name)"> -->
+      <!-- </div> -->
+
+      <!-- <ion-icon class="fnt-50 mouse" slot="start" [src]="db.load_icon(db.cust_name)"></ion-icon> -->
+      <div>
+        <p class="m-0 white fnt-16 fnt_w600">{{employee_details.employee_name}}</p>
+        <p class="m-0 fnt-15 fnt_w500 white">{{employee_details.designation}}</p>
+      </div>
+    </div>
+
+    <div class="bg_header" *ngIf="!skeleton">
+      <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+        [bg_white]="db.ismobile ? false : true" [tabs_array]="options" [Lead_seg]="false"></app-tabs-button>
+    </div>
+
+    <!-- <app-calendar (getMonth)="getMonth($event)" [yearList]="true"></app-calendar> -->
+
+    <!-- !no_employee_details && -->
+    <div *ngIf="!skeleton && leave_dashboard" class="leave_list">
+
+      <div *ngIf="leave_dashboard && leave_dashboard.length > 0" class="d__flex w-100 section">
+        <div class="box_1" *ngFor="let item of leave_dashboard">
+          <div class="m-7 d__flex just-s">
+            <ion-icon class="fnt-16 icon " [ngClass]="item.label ? checkImages(item.label,'class') : ''"
+              [src]="checkImages(item.label,'')"></ion-icon>
+            <p class="m-0 fnt_w500 " [style.color]="checkImages(item.label,'color')">{{item.count}}</p>
+            <!-- <ion-icon class="fnt-16" src="/assets/icon/allocated-Leave-01.svg"></ion-icon> -->
+          </div>
+          <p class="fnt-12 m-0 ">{{item.label}}</p>
+        </div>
+
+        <!-- <div class="box_1">
+          <div class="m-7 d__flex just-s">
+            <ion-icon class="fnt-16 icon color_1" src="/assets/leaves/calendar-purple.svg"></ion-icon>
+            <p class="m-0 fnt_w500 " style="color: #5461FF;">{{leave_dashboard.total_allocated_leaves ?
+              leave_dashboard.total_allocated_leaves : 0}}</p>
+           
+          </div>
+          <p class="fnt-12 m-0 ">Allocated</p>
+        </div> -->
+
+        <!-- <div class="box_1">
+          <p class="fnt-12 m-0 ">Leave Without Pay</p>
+          <div class="m-7 d__flex just-s">
+            <p class="m-0 fnt_w500">{{leave_dashboard.leave_without_pay ? leave_dashboard.leave_without_pay : 0}}</p>
+            <ion-icon class="fnt-16" src="/assets/icon/taken-leave-01.svg"></ion-icon>
+          </div>
+        </div> -->
+
+        <!-- <div class="box_1">
+          <div class="m-7 d__flex just-s">
+            <ion-icon class="fnt-16 icon color_2" src="/assets/leaves/calendar-yellow.svg"></ion-icon>
+            <p class="m-0 fnt_w500" style="color: #E08700;">{{leave_dashboard.used_leaves ? leave_dashboard.used_leaves
+              : 0}}</p>
+          </div>
+          <p class="fnt-12 m-0 ">Used Leaves</p>
+        </div> -->
+
+        <!-- <div class="box_1">
+          <div class="m-7 d__flex just-s">
+            <ion-icon class="fnt-16 icon color_3" src="/assets/leaves/calendar-green.svg"></ion-icon>
+            <p class="m-0 fnt_w500 " style="color: #458F5A;">{{leave_dashboard.available_leaves ?
+              leave_dashboard.available_leaves : 0}}</p>
+          </div>
+          <p class="fnt-12 m-0 ">Available</p>
+        </div>
+
+        <div class="box_1">
+          <div class="m-7 d__flex just-s">
+            <ion-icon class="fnt-16 icon color_4" src="/assets/leaves/calendar-red.svg"></ion-icon>
+            <p class="m-0 fnt_w500 " style="color: #C01212;">{{leave_dashboard.expired_leaves ?
+              leave_dashboard.expired_leaves : 0}}</p>
+          </div>
+          <p class="fnt-12 m-0 ">Expired Leaves</p>
+        </div> -->
+
+      </div>
+
+      <!-- Filters p-10 d__flex gap-10 just-s-->
+      <div *ngIf="!db.employee_role && (db.hr_manager_role && !employee)" class="">
+        <app-month-filter [doctype]="'Leave Application'" [showCalendar]="employee ? false : showCalendar"
+          [selectedDate]="this.db.current_event_date" (getDateFromCalendar)="getDateFromCalendar($event)"
+          (getFilters)="getFilters($event)" [search_data]="search_data"
+          [search_filter]="search_filter"></app-month-filter>
+      </div>
+
+
+      <ion-list *ngIf="false && leave_list && leave_list.length != 0" lines="none">
+        <ion-item (click)="openQuickForm(item)" *ngFor="let item of leave_list">
+          <div class="d__flex w-100 just-s">
+            <div class="d__flex section-day gap-10">
+              <div class="days_">
+                <p class="fnt_w500">{{item.days}}<br>{{item.days <= 1 ? 'Day' : 'Days' }}</p>
+              </div>
+              <div>
+                <p class="m-0 fnt-14 fnt_w500 capitalize" *ngIf="item.leave_type">{{item.leave_type}}</p>
+                <!-- <div *ngIf="item.leave_reason" class="d__flex"> -->
+                <div class="d__flex">
+                  <p *ngIf="item.leave_reason" [style.--line]="2"
+                    class="m-0 fnt-13 fnt_w500 capitalize gray_clr reasonT webkit-text">Reason :</p>
+                  <p [class.reason_desc]="item.leave_reason" class="m-0 fnt-13 fnt_w500 capitalize  "
+                    [innerHtml]="item.leave_reason ? item.leave_reason : 'No Reason Found'"></p>
+                </div>
+
+                <!-- </div>   -->
+                <p class="m-0 mt-5px fnt-12 gray_clr"><span class="fnt-12 fnt_w500 gray_clr">{{item.from_date | date:"MMM dd"}}</span> <span class="p-r-l fnt-13 text_2">to</span> <span class="fnt-12 fnt_w500 gray_clr"> {{item.to_date | date: "MMM dd"}}</span>
+                </p>
+              </div>
+            </div>
+            <div class="r-d">
+              <!-- <p class="m-0 fnt-12 fnt_w500 capitalize" *ngIf="item.leave_type">{{item.leave_type}}</p> -->
+              <p [class.status_cancelled]="item.status == 'Cancelled' || item.status == 'Rejected'"
+                [class.status_open]="item.status == 'Open'" [class.status_approved]="item.status == 'Approved'"
+                class="m-0">{{item.status}}</p>
+
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+
+      <div [ngClass]="(db.employee_role || employee) ? 'list_height-1' : 'list_height'" (scroll)="load_more($event)"
+        #tabList *ngIf="leave_list && leave_list.length > 0">
+        <div class="list-container" (click)="openQuickForm(item)" *ngFor="let item of leave_list;index as i">
+          <div class="d__flex gap-10 just-s pb-5">
+            <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.leave_type}}</h6>
+            <div><app-status [status]="item.status ? item.status : item.workflow_state"></app-status></div>
+            <!-- <p class="m-0 text_2 fnt-13 flex-auto">{{db.getTimecal(item[data.keys[8]])}}</p> -->
+          </div>
+
+          <div class="d__flex gap-10 just-s pb-5">
+           
+            <div  *ngIf="(db.employee_role || db.selfView);else showselfView" class="d__flex gap-5">
+              <ion-icon src="/assets/leaves/calendar.svg" class="fnt-14"></ion-icon>
+              <p class="m-0 mt-5px fnt-13 text_2"><span class="fnt-13 text_2">{{item.from_date | date: "MMM dd"}}</span> <span class="p-r-l fnt-13 text_2">to</span> <span class="fnt-13  text_2"> {{(item.to_date ? item.to_date : item.from_date) | date:"MMM dd"}}</span></p>
+            </div>
+
+            <ng-template #showselfView>
+              <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-13">{{item.employee_name}}</span></p>
+            </ng-template>
+
+            <p class="m-0 flex-auto  bold_name-13">{{item.total_leave_days + (item.total_leave_days > 1 ? " days" : " day")}}</p>
+          </div>
+
+          <div class="d__flex gap-10 just-s pb-5">
+            <p class="m-0 d__flex gap-5">
+              <!-- <ion-icon class="fnt-13" src="/assets/expense-claim/name.svg"></ion-icon> -->
+              <span class="m-0 text_2 fnt-13">{{item.name}}</span></p>
+ 
+
+            <div *ngIf="(db.employee_role || db.selfView) ;else showselfView2" class="flex-auto">
+              <p class="m-0 flex-auto fnt-13 text_2">{{item.modified | date: 'h:mm a'}}</p>
+            </div>
+
+            <ng-template #showselfView2>
+              <div class="d__flex gap-5">
+                <ion-icon src="/assets/leaves/calendar.svg" class="fnt-14"></ion-icon>
+                <p class="m-0 mt-5px fnt-13 text_2"><span class="fnt-13 text_2">{{item.from_date | date: "MMM dd"}}</span> <span class="p-r-l fnt-13 text_2">to</span> <span class="fnt-13  text_2"> {{(item.to_date ? item.to_date : item.from_date) | date:"MMM dd"}}</span></p>
+              </div>
+            </ng-template>
+            
+          </div>
+        </div>
+      </div>
+
+      <app-no-record-found *ngIf="leave_list && leave_list.length == 0" [column]="true" height="calc(100vh - 400px)"
+        [heading]="'No Detail found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+    </div>
+
+    <app-no-record-found *ngIf="leave_list && leave_list.length == 0" [column]="true" height="calc(100vh - 251px)"
+      [heading]="'No Detail found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  </div>
+
+
+  <div *ngIf="!db.ismobile">
+    <!-- Header -->
+    <div class="side_menu_sticky">
+      <app-sidemenu-header [heading]="page_title" [doc_type]="doc_type"></app-sidemenu-header>
+    </div>
+
+    <!-- Body section -->
+    <div [ngStyle]="!db.ismobile ? db.apply_padding(doc_type) : null">
+
+      <!-- Title section -->
+      <div class="d__flex just-s p-0-10 h-45 border-b">
+        <!-- back_gray -->
+        <div class="d__flex gap-10">
+          <ion-icon class="fnt-20 headerIcon" slot="start"
+            src="/assets/dashboard/Timesheet-active.svg"></ion-icon>
+          <p class="m-0 fnt-16 fnt_w500 primary_clr border-right-txt">{{doc_type}}</p>
+        </div>
+      
+        <div class="d__flex gap-20">
+
+          <div class="d__flex gap-5 views__" *ngIf="false">
+            <ion-icon class="mouse" [class.selectedViewList]="item['isSelected']" *ngFor="let item of viewList;let i = index" (click)="sendViewType(item,i)" [name]="item.icon"></ion-icon>
+          </div>
+
+          <ion-button *ngIf="!db.ismobile && !skeleton " (click)="createNew()" fill="clear" class="addNew mouse">
+            <ion-icon slot="start" name="add-outline"></ion-icon>Add
+          </ion-button>
+        </div>
+      
+      </div>
+
+      <!-- <p> leave web view</p> -->
+      <!-- (tab_filter)="tab_filter($event)" [data]="list_data" (load_data)="load_data($event)" -->
+      <!-- (filterList)="filterList.emit($event)" [json_filter]="json_filter" -->
+      <div *ngIf="!skeleton">
+        <div class="big_box" *ngIf="db.viewListType == 'Grid'">
+          <!-- <app-leave-application-list [doctype]="doc_type" (leaveConfirm)="leaveConfirm($event)" [data]="list_data"
+            [leave_application_table]="db.current_leave_segment == 'Leave Requests' ? leave_request_table : leave_application_table"
+            (click_data)="load_all($event)" [employee]="employee" (load_popup)="load_popup($event)" [module_tab]="profile_menu"
+            (tab_filter)="tab_filter($event)" [supplier_id]="supplier_id" [search_filter]="search_filter" [leave_type]="leave_type"
+            [page_title]="page_title" (filterList)="filterList($event)"></app-leave-application-list> -->
+
+            <app-leave-application-list [doctype]="doc_type" (leaveConfirm)="leaveConfirm($event)" [data]="list_data"
+            [leave_application_table]="db.current_leave_segment == 'Leave Requests' ? leave_request_table : leave_application_table"
+            (click_data)="load_all($event)" [detail_loader]="detail_loader" [employee]="employee" (load_popup)="load_popup($event)" [module_tab]="profile_menu"
+            (tab_filter)="tab_filter($event)" [supplier_id]="supplier_id" [search_filter]="search_filter" [leave_type]="leave_type"
+            [page_title]="page_title" (filterList)="filterList($event)"></app-leave-application-list>
+        </div>
+
+        <div *ngIf="db.viewListType == 'Table'">
+          <app-employee-leave-grid></app-employee-leave-grid>
+        </div>
+
+        <div *ngIf="!db.ismobile && !skeleton && list_data && list_data.data && list_data.data.length != 0"
+          class="d__flex w-100 just-s pagination_sec">
+          <div class="d__flex border">
+            <p *ngFor="let item of pagination_count;let i = index" [class.select_pagination]="item.selected"
+              class="m-0 fnt-12 box__ mouse" (click)="send_pagination(item,i)">{{item.count}}</p>
+          </div>
+          <ion-button class="load-more" expand="block" fill="clear" (click)="add_pagination()">Load More</ion-button>
+        </div>
+      </div>
+
+      <div class="summary_skeleton" *ngIf="(skeleton) && skeleton_value">
+        <div [class.summary_sec]="skeleton_value.enable_dashboard" *ngIf=" skeleton_value.enable_dashboard">
+          <div *ngFor="let item of skeleton_value.dash_len;index as i">
+            <app-skeleton-loader [index]="i == skeleton_value.dash_len.length - 1 ? -1 : i"
+              type="dashboard"></app-skeleton-loader>
+          </div>
+        </div>
+
+        <div [ngClass]="skeleton_value.tabs ? 'p-1015 border-b d__flex gap-20' : ''" *ngIf=" skeleton_value.tabs">
+          <div *ngFor="let item of skeleton_value.tabs_len">
+            <app-skeleton-loader type="tabs"></app-skeleton-loader>
+          </div>
+        </div>
+
+        <!-- <div [ngClass]="skeleton_value.tabs ? 'p-1015 border-b d__flex gap-20' : ''"
+          *ngIf="db.hr_manager_role && skeleton_value.tabs">
+          <div *ngFor="let item of skeleton_value.tabs_len">
+            <app-skeleton-loader type="tabs"></app-skeleton-loader>
+          </div>
+        </div> -->
+
+        <div [ngClass]="skeleton_value.tabs ? 'p-1015 border-b d__flex gap-20' : ''"
+          *ngIf=" db.hr_manager_role && skeleton_value.tabs">
+          <div *ngFor="let item of skeleton_value.tabs_len">
+            <app-skeleton-loader type="tabs"></app-skeleton-loader>
+          </div>
+        </div>
+
+        <div>
+          <app-skeleton-loader [type]="'list'"></app-skeleton-loader>
+          <!-- <app-skeleton-loader [type]="(skeleton_value.doc_type == 'Employee' || skeleton_value.doc_type == 'Project') ?  skeleton_value.doc_type : 'list'" ></app-skeleton-loader> -->
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</ion-content>

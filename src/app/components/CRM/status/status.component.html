@@ -1,0 +1,8 @@
+
+<div [class.rev]="head || reverse" [class.just-fe]="table" class="d__flex gap-5 p-0 common_width"  *ngIf="status && status != ''" [style]="cssLayout ? cssLayout : ''" [ngClass]="status ? get_style(status) : ''">
+  <p *ngIf="!no_color" [style.--line]="1" class="order_status fnt_w600 m-0 webkit-text" [ngClass]="head ? 'bold_name-15 kt_name webkit-text' : 'fnt-12'">{{status}}</p>
+  <h6 *ngIf="no_color" [style.--line]="1" class="bold_name-15 kt_name webkit-text m-0 webkit-text">{{status}}</h6>
+  <div *ngIf="!noDot && !tick" class="common"></div>
+  <ion-icon *ngIf="tick" [name]="status == 'Unpaid ' ? 'checkmark-outline' : 'checkmark-done-outline'"></ion-icon>
+</div>
+

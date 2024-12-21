@@ -1,0 +1,101 @@
+.tableContainer {
+    width: 100%;
+    overflow: auto;
+    // min-height: 95vh;
+    min-height: 80vh;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:focus {
+        outline: none;
+        border: none;
+    }
+
+    &:active {
+        outline: none;
+        border: none;
+    }
+
+    /* If any child elements inside the container might be causing the issue */
+    &*:focus {
+        outline: none;
+        border: none;
+    }
+
+    &*:active {
+        outline: none;
+        border: none;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+th {
+    font-weight: 500;
+}
+
+tr td:hover {
+    background: #f9f9f9;
+    cursor: pointer;
+}
+
+th {
+    background: #f9f9f9 !important;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+td,
+th {
+    border: 1px solid #ebebeb;
+    text-align: left;
+    padding: 6px;
+    width: 165px;
+}
+
+.sticky-column1 {
+    width: 400px !important;
+    position: sticky;
+    left: 30px;
+    background: white;
+    z-index: 2;
+    border-left: 0;
+    // border-bottom: 0;
+    // border-right: 0;
+
+    ion-icon {
+        border: 1px solid #7fbdfa;
+        border-radius: 50%;
+        padding: 3px;
+        color: var(--primary-color);
+    }
+}
+
+.sticky-column1::after {
+    content: " ";
+    width: 0px;
+    // box-shadow: -5px 0px 11px -5px rgb(0 0 0 / 25%);
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    border-left: 1px solid var(--border-col);
+}
+
+.checkBoxSection {
+    width: 30px !important;
+    left: 0 !important;
+}

@@ -1,0 +1,196 @@
+.filter_input {
+    padding: 0 10px;
+    border-bottom: 1px solid var(--border-color);
+
+    ion-input {
+        margin: 10px 0 !important;
+        font-size: 13px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        min-height: 35px !important;
+        padding: 0 10px !important;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.chart_ {
+    margin: 10px auto;
+    border: 1px solid var(--border-col);
+    border-radius: 5px;
+    width: calc(100% - 20px);
+    overflow: hidden;
+    // box-shadow: 0px 0px 4px 0px #ddd;
+}
+
+.detail_name {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border-color);
+
+    h5 {
+        margin: 0px;
+    }
+}
+
+.revo-report {
+    margin: 10px auto;
+    width: calc(100% - 20px);
+    height: calc(100vh - 125px);
+    border-radius: 5px;
+    // padding: 10px;
+    // margin: 10px auto;
+    // width: 95%;
+}
+
+.revo-border {
+    border: 1px solid #f1f1f1;
+}
+
+.no_task {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 150px);
+
+    ion-icon {
+        font-size: 200px;
+    }
+}
+
+ion-content::-webkit-scrollbar {
+    display: none;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.month_year_filter {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border-col);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    ion-select {
+        border-radius: 7px;
+        height: 35px;
+        padding: 0 10px;
+        border: 1px solid var(--border-col);
+        font-size: 14px;
+    }
+}
+
+.parameter_filter {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border-col);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    ion-select {
+        border-radius: 7px;
+        height: 35px;
+        padding: 0 10px;
+        border: 1px solid var(--border-col);
+        font-size: 14px;
+        width: 200px;
+    }
+}
+
+.employee_info {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border-col);
+
+    ion-input {
+        font-size: 13px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        min-height: 35px !important;
+        padding: 0 10px !important;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.dept_info {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border-col);
+
+    ion-input {
+        font-size: 13px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        min-height: 35px !important;
+        padding: 0 10px !important;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.group_info {
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    ion-input {
+        font-size: 13px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        min-height: 35px !important;
+        padding: 0 10px !important;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.w-150 {
+    width: 150px;
+}
+
+// .revo-report {
+//   height: 500px; /* Set a height for visibility */
+// }
+
+// .revo-column-resizer {
+//   cursor: col-resize; /* Ensure resize cursor is set */
+// }
+
+.revo-grid .revo-column {
+    position: relative;
+}
+
+.revo-grid .revo-column .resizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    cursor: col-resize;
+}
+
+.align_center {
+    display: grid;
+    place-items: center;
+    min-height: calc(100vh - 230px);
+
+    img {
+        height: 100px;
+    }
+}
+
+.statusFilter {
+    ion-select {
+        border-radius: 7px;
+        height: 40px;
+        padding: 0 10px;
+        border: 1px solid var(--border-col);
+        font-size: 14px;
+        min-height: 40px;
+    }
+}

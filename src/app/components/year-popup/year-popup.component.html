@@ -1,0 +1,36 @@
+
+<div class="list">
+  <div class="header" *ngIf="db.ismobile">
+    <div class="d__flex just-s user__">
+      <ion-title class="bold_name">{{ showMonth ? 'Select a Month' : 'Select a Year'}}</ion-title>
+      <div class="d__flex gap-5">
+        <ion-icon class="icon__" name="close-outline" (click)="modalCtrl.dismiss()"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="search__">
+    <div class="search_bar d__flex">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-input class="search_input" [(ngModel)]="search_txt" (input)="load_search($event)" placeholder="Search"></ion-input>
+      <ion-icon *ngIf="search_txt" name="close-outline" (click)="clearText()"></ion-icon>
+    </div>
+  </div>
+
+  <div #tabList class="box_sec" *ngIf="is_loaded">
+    <div [class.active]="item['isActive']" [id]="i + 1 + 'scroll'" (click)="add(item,i)" *ngFor="let item of (showMonth ? db.monthLists : yearLists);let i = index" class="d__flex mouse boxs">
+      <!-- <div> -->
+        <h6 class="m-0 name_">{{item.name}}</h6>
+      <!-- </div> -->
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="!is_loaded" class="ske_sec">
+    <ion-skeleton-text *ngFor="let item of [1,2,3,4,5,7,8,9,10,1,1,1,1,1,1]" [animated]="true"
+      class="loader"></ion-skeleton-text>
+  </div>
+
+</div>

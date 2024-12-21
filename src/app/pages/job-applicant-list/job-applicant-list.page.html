@@ -1,0 +1,191 @@
+<app-header *ngIf="!modalPopup" title="Job Applicants" [back_route]="'/tabs/dashboard'" [model]="false"></app-header>
+<app-sidemenu-header *ngIf="!db.ismobile" heading="Job Applicants"></app-sidemenu-header>
+
+<ion-content [fullscreen]="true" *ngIf="db.ismobile">
+
+  <!-- <app-common-search placeholder="Search for Project" [noFilter]="true" (call_clear_txt)="clear_txt('')" (search_txt_value)="load_search($event)"></app-common-search> -->
+
+  <div *ngIf="modalPopup" class="d__flex gap-10 header">
+    <ion-icon class="mouse" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white capitalize">Job Applicant</p>
+  </div>
+
+  <div *ngIf="!skeleton && job_applicant_category && job_applicant_category.length != 0" class="p-10">
+    <div  *ngFor="let item of job_applicant_category; let i = index" (click)="selectCategory(item,i)" [class.selectedBox]="item.name == selectedName" class="allList mouse">
+      <div [class.border-bottom]="!modalPopup" class="bugSheet">
+          <div class="d__flex gap-10">
+            <div class="avatar">
+              <p [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">{{item.job_title ? item.job_title[0] : ''}} </p>
+            </div>
+            <div class="w-100">
+              <div class="d__flex just-s mb-5">
+                <p class="m-0 fnt-14 fnt_w500">{{item.job_title}}</p>
+                <!-- <app-status [status]="item.status"></app-status> -->
+              </div>
+              <div class="d__flex just-s">
+                <p class="m-0 fnt-13 gray_clr">Total Applicants : </p>
+                <p class="m-0 fnt-15 text-e fnt_w500">{{item.count ? item.count : '-'}}</p>
+              </div>
+            </div>
+          </div>
+
+      </div>
+      <div *ngIf="!modalPopup" class="allCards">
+        <div *ngFor="let cards of item.designation_info.slice(0,3)" class="cardsCount">
+          <p class="fnt-15 m-0">{{cards.label}}</p>
+          <p class="fnt-14 gray_clr m-0">{{cards.count}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="normalSketon" *ngIf="skeleton">
+    <div class="divF d__flex gap-5 just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+      <div class="b-1">
+          <ion-skeleton-text [animated]="true" style="width:90%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:70%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="b-2">
+        <ion-skeleton-text [animated]="true" style="width: 65%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:45%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+     </div>
+  </div>
+
+  <app-no-record-found [height]="'calc(100vh - 90px)'"
+    *ngIf="!skeleton && job_applicant_category && job_applicant_category.length == 0" [column]="true"
+    [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="!db.ismobile">
+
+  <div class="d__flex just-s p-0-10 h-45 border-b" *ngIf="!db.seperateJobSection">
+    <div class="d__flex gap-10">
+      <ion-icon class="fnt-20 headerIcon" slot="start"
+        src="/assets/dashboard/JobApplicant-active.svg"></ion-icon>
+      <p class="m-0 fnt-16 fnt_w500 primary_clr border-right-txt">Job Opening</p>
+    </div>
+  
+  </div>
+
+  <!-- <app-common-search placeholder="Search for Project" [noFilter]="true" (call_clear_txt)="clear_txt('')" (search_txt_value)="load_search($event)"></app-common-search> -->
+
+<div [class.seperateSectionJob]="db.seperateJobSection">
+  <div class="openingSection">
+    <div *ngIf="modalPopup" class="d__flex gap-10 header">
+      <ion-icon class="mouse" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
+      <p class="fnt_w500 fnt-14 white capitalize">Job Applicant</p>
+    </div>
+
+    <div *ngIf="!db.seperateJobSection" class="filter_sec">
+      <app-filters *ngIf="db.get_saleslist && (search_filter && search_filter.length != 0)" (filterList)="filterList($event)" [isNotModal]="true" [search_filter]="search_filter" [page_title]="'Job Applicant'" [doctype]="'Job Applicant'"></app-filters>
+    </div>
+
+    <div class="search__" *ngIf="db.seperateJobSection">
+      <div class="search_bar d__flex">
+        <ion-icon name="search-outline"></ion-icon>
+        <ion-input class="search_input" [(ngModel)]="search_text" (input)="load_search_text($event)" placeholder="Search for Job Title"></ion-input>
+        <ion-icon class="mouse" name="close-outline" *ngIf="search_text" (click)="clear_txt('')"></ion-icon>
+      </div>
+    </div>
+  
+    <div *ngIf="!skeleton && job_applicant_category && job_applicant_category.length != 0 && !db.seperateJobSection" class="p-10">
+      <div  *ngFor="let item of job_applicant_category; let i = index" (click)="selectCategory(item,i)" [class.selectedBox]="(item.name == selectedName || item['isSelected'])" class="allListWeb mb-10 mouse">
+        <div class="bugSheet">
+            <div class="d__flex gap-10">
+              <div class="avatar">
+                <p [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">{{item.job_title ? item.job_title[0] : ''}} </p>
+              </div>
+              <div class="w-100">
+                <div class="d__flex just-s mb-5">
+                  <p class="m-0 fnt-14 fnt_w500 capitalize">{{item.job_title}}</p>
+                  <!-- <app-status [status]="item.status"></app-status> -->
+                </div>
+                <div class="d__flex gap-10">
+                  <p class="m-0 fnt-13 gray_clr">Total Applicants : </p>
+                  <p class="m-0 fnt-15 text-e fnt_w500">{{item.count ? item.count : '-'}}</p>
+                </div>
+              </div>
+            </div>
+  
+        </div>
+        <div *ngIf="!modalPopup" class="allCards">
+          <div *ngFor="let cards of item.designation_info.slice(0,3)" class="cardsCount">
+            <p class="fnt-15 m-0">{{cards.label}}</p>
+            <p class="fnt-14 gray_clr m-0 fnt_w500">{{cards.count}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!skeleton && job_applicant_category && job_applicant_category.length != 0 && db.seperateJobSection" class="p-10">
+      <div  *ngFor="let item of job_applicant_category; let i = index" (click)="selectCategory(item,i)" [class.selectedBox]="(item.name == selectedName || item['isSelected'])" class="allList mouse">
+        <div [class.border-bottom]="!modalPopup" class="bugSheet">
+            <div class="d__flex gap-10">
+              <div class="avatar">
+                <p [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">{{item.job_title ? item.job_title[0] : ''}} </p>
+              </div>
+              <div class="w-100">
+                <div class="d__flex just-s mb-5">
+                  <p class="m-0 fnt-14 fnt_w500 capitalize">{{item.job_title}}</p>
+                  <!-- <app-status [status]="item.status"></app-status> -->
+                </div>
+                <div class="d__flex just-s">
+                  <p class="m-0 fnt-13 gray_clr">Total Applicants : </p>
+                  <p class="m-0 fnt-15 text-e fnt_w500">{{item.count ? item.count : '-'}}</p>
+                </div>
+              </div>
+            </div>
+  
+        </div>
+        <div *ngIf="!modalPopup" class="allCards">
+          <div *ngFor="let cards of item.designation_info.slice(0,3)" class="cardsCount">
+            <p class="fnt-15 m-0">{{cards.label}}</p>
+            <p class="fnt-14 gray_clr m-0">{{cards.count}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="normalSketon" *ngIf="skeleton">
+      <div class="divF d__flex gap-5 just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+        <div class="b-1">
+            <ion-skeleton-text [animated]="true" style="width:90%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:70%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+  
+        <div class="b-2">
+          <ion-skeleton-text [animated]="true" style="width: 65%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:45%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+  
+       </div>
+    </div>
+
+    
+    <app-no-record-found [height]="'calc(100vh - 90px)'"
+    *ngIf="!skeleton && job_applicant_category && job_applicant_category.length == 0" [column]="true"
+    [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+  </div>
+  
+  <div class="applicantSection" *ngIf="db.seperateJobSection">
+    <div class="headerSection">
+      <div>
+        <p class="fnt_w500 fnt-14 ion-text-capitalize primary_clr m-0">Job Applicant</p>
+      </div>
+      <div class="d__flex gap-10">
+        <ion-button *ngIf="db.hr_manager_role" (click)="openWebFormPopup()" fill="clear" class="addNew mouse ">
+          <ion-icon slot="start" name="add-outline"></ion-icon>Add
+        </ion-button>
+        <ion-icon name="close-circle-outline" class="fnt-25 primary_clr mouse" (click)="closeList()"></ion-icon>
+      </div>
+    </div>
+    <app-orders [doc_type]="'Job Applicant'" [list_data]="db.get_saleslist"></app-orders>
+  </div>
+</div>
+
+
+</ion-content>

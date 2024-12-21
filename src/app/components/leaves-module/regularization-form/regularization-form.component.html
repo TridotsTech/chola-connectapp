@@ -1,0 +1,23 @@
+<app-header [title]="title" [showYear]="false" [model]="true"></app-header>
+<div class="p-10">
+  <div *ngIf="missing_days && missing_days.length != 0">
+    <div *ngFor="let item of missing_days; let i = index" class="boxes_" (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)">
+      <div class="d__flex just-s">
+        <div class="d__flex gap-5">
+          <div (click)="eventPropagation($event)" class="checkBox">
+            <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+          </div>
+
+          <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.date | date: 'MMM d, y'}} </p>
+        </div>
+        <div class="d__flex">
+          <!-- <app-status [status]="item.status"></app-status> -->
+        </div>
+      </div>
+      <div class="d__flex just-s">
+        <!-- <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p> -->
+        <p class="m-0 fnt-14 d__flex gap-5">{{item.reason}}</p>
+      </div>
+    </div>
+  </div>
+</div>

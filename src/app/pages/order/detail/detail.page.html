@@ -1,0 +1,166 @@
+<ion-header *ngIf="!loader_ && db.ismobile">
+
+  <div [ngStyle]="{'min-height':(this.detail_doc && this.detail_doc['name'] && !db.scroll_event.detail_head) ? '50px' : '50px'}"
+    class="secondary-head">
+    <div class="d__flex gap-10 just-s">
+      <div class="d__flex back_btn">
+        <ion-icon class="back"  (click)="doctype != 'HD Ticket'?location.back():back_btn()" (click)="db.hasClass = false"
+          src="/assets/icon/arrow-left.svg"></ion-icon>
+        <img class="logo_"
+          src="/assets/chola/chola-white-logo.svg">
+      </div>
+
+      <div *ngIf="!loader && creation" class="d__flex gap-10">
+
+        <div  [class.disabled]="loader" fill="clear" (click)="loader ? null : next_doc(1)"
+          [ngClass]="db.sales_manager_role ? 'sales_back' : 'back_button'">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </div>
+         
+        <div *ngIf="(order_detail && (order_detail.project_name && order_detail.project_name[0]))" class="detailName">
+          <div *ngIf="loader" class="spinner"><ion-spinner name="circular"></ion-spinner></div>
+          <h4 *ngIf="!loader" class="h4 m-0">{{(order_detail.project_name) ? order_detail.project_name[0] : order_detail.title[0]}}</h4>
+        </div>
+
+        <div  [class.disabled]="loader" fill="clear" (click)="loader ? null : next_doc(0)"
+          [ngClass]="db.sales_manager_role ? 'sales_back' : 'back_button'">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </div>
+
+        <ion-icon *ngIf="doctype != 'HD Ticket'" class="icon menu head_icon" (click)="openMenu()"
+        [src]="(db.hr_manager_role || db.currentRole == 'Vendor' || db.employee_role || db.project_role) ? '/assets/icon/menu-white.svg' : '/assets/icon/menu.svg'"></ion-icon>
+      </div>
+
+    </div>
+ 
+  </div>
+
+</ion-header>
+
+<ion-content *ngIf="!loader_" [scrollEvents]="true" (ionScroll)="db.scrolled($event)">
+
+  <div class="align_center" *ngIf="loader && (page_route == 'Lead' || page_route == 'Opportunity')">
+    <ion-spinner name="bubbles"></ion-spinner>
+  </div>
+
+  <div *ngIf="page_route != 'project'">
+    <div class="skeleton"
+      *ngIf="loader && (page_route != 'Lead' && page_route != 'Opportunity' && (doctype != 'HD Ticket' && (!db.ismobile || db.ismobile)))">
+      <div class="section-s" *ngFor="let i of [0,1,2,3,4,5,6,7,8]">
+        <ion-skeleton-text animated style="width:25%; height: 16px;margin:10px 0; border-radius:5px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width:100%; height: 40px; border-radius:5px"></ion-skeleton-text>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="db.hasClass" [ngClass]="{'backdrop-visible': db.hasClass}">
+    <ion-backdrop (ionBackdropTap)="fab_()"></ion-backdrop>
+  </div>
+
+  <div class="h-100" *ngIf="order_detail && !loader && doctype != 'HD Ticket'">
+
+    <ion-icon class="close-circle" 
+      *ngIf="detail_doc && detail_doc['name'] == 'Info'" name="close-circle-outline"></ion-icon>
+
+    <app-new-wizard-form
+      *ngIf="((db.ismobile && doctype != 'Project')) && (createNew || (detail_doc && detail_doc['name'] == 'Info') || (page_route && (page_route != 'Lead' && page_route != 'Opportunity'))) && (!readOnly && doctype != 'Event')"
+      [enable_reference]="enable_reference" [forms_route]="page_route" [reference_id]="sale_order_id"
+      [createNew]="createNew" [sale_order_id]="order_id ? order_id : undefined" [tabs_top]="1" [edit_form]="1"
+      [enabled_read_only]="enabled_read_only" [items_values]="items_values" [edit_form_values]="order_detail"
+      [lead_comments]="lead_comments" [enable_leadcomment]="false" (returnSubmitValues)="returnSubmitValues($event)" [noRouteBack]="true"
+      [save_details_only]="(this.db.selected_list && this.db.selected_list.page && (this.db.selected_list.page == 'Lead' || this.db.selected_list.page == 'Opportunity' || this.db.selected_list.page == 'Customer')) ? true : false"></app-new-wizard-form>
+
+
+    <!-- Event readOnly -->
+    <div *ngIf="doctype == 'Event' && readOnly" class="infoSec">
+      <div class="d__flex title just-s">
+        <h5 class="m-0 fnt-16 fnt_w600">Information</h5>
+        <ion-button (click)="edit_event(order_detail)" class="button" clear="all">
+          <img class="editIcon" src="/assets/Info/editIcon.svg">
+          <h6 class="m-0 ">Edit Details</h6>
+        </ion-button>
+      </div>
+
+      <div class="d__flex event_detail">
+        <h4 class="m-0">Subject</h4>
+        <h4 class="m-0">{{order_detail.subject ? order_detail.subject : '-'}}
+        </h4>
+        <h4 class="m-0">Event Category</h4>
+        <h4 class="m-0">{{order_detail.event_category ? order_detail.event_category : '-'}}</h4>
+        <h4 class="m-0">Starts On</h4>
+        <h4 class="m-0">{{order_detail.starts_on ? order_detail.starts_on : '-'}}</h4>
+        <h4 class="m-0">Ends On</h4>
+        <h4 class="m-0">{{order_detail.ends_on ? order_detail.ends_on : '-'}}</h4>
+        <h4 class="m-0">Event Type </h4>
+        <h4 class="m-0">{{order_detail.event_type ? order_detail.event_type : '-'}}</h4>
+        <h4 class="m-0">Status</h4>
+        <h4 class="m-0">{{order_detail.status ? order_detail.status : '-'}}</h4>
+
+        <div class="d__flex gap-10 w-100">
+          <h4 class="m-0 flex-auto">Event Participants</h4>
+          <div class="d__flex gap-10 overflow"
+            *ngIf="order_detail.event_participants && order_detail.event_participants.length > 0">
+            <h6 class="m-0 fnt-14" *ngFor="let item of order_detail.event_participants">{{item.email}}</h6>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="m-0 desc">Description</h4>
+        <h4 class="m-0 fnt-14 py-10">{{order_detail.description ? order_detail.description : '-'}}</h4>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-content *ngIf="loader_">
+
+  <div class="skeletonLoader">
+    <div *ngIf="db.ismobile" class="d__flex back_btn gap-10">
+      <ion-icon class="back" (click)="location.back()" (click)="db.hasClass = false"
+        src="/assets/icon/arrow-left.svg"></ion-icon>
+      <h6 class="m-0 head webkit-text capitalize title" [style.--line]="1">{{page_route}}</h6>
+    </div>
+
+    <div class="sec divF d__flex">
+      <ion-skeleton-text [animated]="true"
+        style="width:43px;height:43px;border-radius:50%;margin:0 8px 0 0"></ion-skeleton-text>
+      <div class="b-2">
+        <ion-skeleton-text [animated]="true"
+          style="width:80%;height:17px;margin:0 0 8px 0;border-radius:5px"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:60%;height:15px;border-radius:5px"></ion-skeleton-text>
+      </div>
+    </div>
+
+    <div class="sec d__flex">
+      <ion-skeleton-text *ngFor="let i of [1,2,3,4]" [animated]="true"
+        style="width:20%;height:20px;border-radius:10px;margin:0 10px 0 0"></ion-skeleton-text>
+    </div>
+
+    <div class="sec d__flex">
+      <ion-skeleton-text class="sec" [animated]="true"
+        style="width: 20px;height:20px;border-radius:5px;margin:0 8px 0 0"></ion-skeleton-text>
+
+      <div class="sec1 d__flex images">
+        <div [class]="'img' + (i + 1) + ' image_div'" *ngFor="let item of [1,2,3];let i = index">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec d__flex">
+      <ion-skeleton-text *ngFor="let i of [1,2,3,4,5]" [animated]="true"
+        style="width:18%;height:20px;border-radius:10px;margin:0 10px 0 0"></ion-skeleton-text>
+    </div>
+
+    <ion-skeleton-text *ngFor="let i of [1,2,3,4]" [animated]="true"
+      style="width:calc(100% - 20px);height:40px;border-radius:5px;margin:10px"></ion-skeleton-text>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,26 @@
+<div [class.noFilter]="noFilter" class="d__flex gap-10 p-10 w-100">
+  <!-- <div [class.w-88]="!showSort && search_filter && search_filter.length > 0" [class.search_filter]="!showSort && search_filter && search_filter.length == 0" class="search_bar d__flex"> -->
+  <div class="search_bar d__flex" [class.searchBarWeb]="!db.ismobile">
+    <ion-icon name="search-outline"></ion-icon>
+    <ion-input class="search_input" [(ngModel)]="search_value" (ionInput)="search_text_send($event)" (ionFocus)="onInputFocus($event)" (ionBlur)="onInputBlur($event)"  [placeholder]="placeholder"></ion-input>
+    <ion-icon name="close-outline" (click)="clear_txt()" *ngIf="search_value"></ion-icon>
+  </div>
+
+  <div *ngIf="funnelFilter" class="mouse filter_search" (click)="sendFunnelFilter.emit()">
+    <ion-icon name="funnel-outline"></ion-icon>
+  </div>
+
+  <div [class.activeFilter]="(sort == 'creation ASC')" *ngIf="showSort" class="filters_" (click)="sort_by()">
+    <ion-icon class="icon" [src]="(sort == 'creation ASC') ? '/assets/salary/sortUp-active.svg' : '/assets/salary/sort.svg'"></ion-icon>
+  </div>
+
+  <div *ngIf="!noFilter && (db.search_filter && db.search_filter.length > 0)" (click)="open_filter.emit()" class="filters_ mouse notification_icon">
+    <ion-icon slot="start" src="/assets/icon/Vector.svg" ></ion-icon>
+    <p class="m-0 count_filter" *ngIf="db.filter_count > 0">{{db.filter_count}}</p>
+  </div>
+
+  <div *ngIf="favoriteFilter" class="filters_">
+    <ion-icon slot="start" [src]="favEmployee ? '/assets/img/heart.svg' : '/assets/img/heart-fill.svg'" (click)="likedEmployee()"></ion-icon>
+  </div>
+
+</div>

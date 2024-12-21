@@ -1,0 +1,56 @@
+<form [formGroup]="loginform" >
+  <div class="input-item">
+    <label  class="input__title">Site Name</label>
+    <div class="custom-input" [ngClass]="focus.foucs1?'focused':''">
+      <ion-input (ionFocus)="focus.foucs1 = true" (ionBlur)="focus.foucs1 = false" [(ngModel)]="sitename_data" type="text"  (keyup.enter)="login()" placeholder="sample.com" name="site_name" formControlName="site_name"> </ion-input>
+    </div>
+    <p class="error" *ngIf="submitted && !site_name.valid && site_name.errors.required">Site Name is required</p>  
+  </div>
+
+  <div class="input-item">
+      <label  class="input__title">Email Address</label>
+      <div class="custom-input d__flex" [ngClass]="focus.foucs1?'focused':''">
+        <ion-icon  name="mail-outline"></ion-icon>
+        <ion-input (ionFocus)="focus.foucs1 = true" (keyup.enter)="login()" (ionBlur)="focus.foucs1 = false"  type="text" placeholder="Username" name="email" formControlName="email"> </ion-input>
+      </div>
+      <div *ngIf="submitted && !email?.valid"> 
+        <p class="error" *ngIf="email.errors.required">Email-Id is required</p>
+        <p class="m-0 error" *ngIf="email.errors.pattern">Email-Id is not valid</p>
+        <p class="error" *ngIf="email.errors.email">Email-Id is not valid</p>
+      </div>
+  </div>
+  
+  <div class="input-item">
+    <label class="input__title">Password</label>
+    <div class="custom-input d__flex position-relative" [ngClass]="focus.foucs2?'focused':''">
+      <ion-icon class="mouse" (click)="show_pass = !show_pass"
+        [name]="(show_pass)?'lock-closed-outline':'lock-open-outline'"></ion-icon>
+      <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false"
+        [type]="(show_pass)?'password':'text'" (keyup.enter)="login()" placeholder="Password" name="password"
+        formControlName="password"> </ion-input>
+      <ion-icon class="eye-icon" (click)="show_pass = !show_pass" [name]="show_pass? 'eye':'eye-off'"></ion-icon>
+    </div>
+    <p class="m-0 error" *ngIf="submitted && !password.valid && password.errors.required"> Password is required </p>
+  </div>
+  
+</form>
+<div class="log-button ion-text-center">
+  <ion-button expand="full" class="action-button m-0" [ngClass]="shake?'shaking':''" fill="clear"(click)="buttonLoader ? null : login()" >
+    <p class="m-0 white fnt-15" *ngIf="!buttonLoader">Sign In</p>
+    <ion-spinner name="circular" *ngIf="buttonLoader"></ion-spinner>
+  </ion-button>
+  <p class="m-0 error" *ngIf="alert_message">{{alert_message}}</p>
+</div>
+
+<div *ngIf="false" class="d__flex just-s forget">
+  <!-- <div class="d__flex">
+    <ion-checkbox slot="start"></ion-checkbox>
+    <ion-label>Remember me</ion-label>
+  </div> -->
+  <span (click)="db.otp_form = true" class="mouse">Forgot password?</span>
+</div>
+
+<div class="text-c" *ngIf="!db.registerform && (db.currentRole && db.currentRole == 'Vendor')">
+  <p class="txt-l my-10 sub_Title ">Don't have an account? <a class="mouse" (click)="signup()">Sign Up</a> </p>
+</div>
+

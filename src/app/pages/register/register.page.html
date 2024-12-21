@@ -1,0 +1,44 @@
+<!-- <ion-header translucent="true" *ngIf="db.ismobile">
+  <ion-toolbar >
+    <ion-back-button slot="start"  defaultHref="/tabs/home" (click)="db.opened_login_modal?modalCtrl.dismiss():''"></ion-back-button>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <div *ngIf="!db.guest_form" [ngClass]="!db.ismobile?'main-container':''"
+    [class.height]="!db.ismobile && !db.registerform">
+
+
+    <div class="form-container">
+      <div class="container__from">
+        <div class="mobile_logo mouse txt-c">
+          <img src="/assets/chola/chola-logo.svg">
+        </div>
+
+        <div class="text-c" *ngIf="!db.registerform">
+          <h4 class="title_ my-10">Login to Your Account</h4>
+        </div>
+
+        <div class="txt-c with" *ngIf="false">
+          <p class="txt-l my-10 sub_Title">Connect with</p>
+          <ul class="d__flex gap-10">
+            <li class="mouse login__buttons btn1"><ion-icon src="/assets/icon/facebook.svg"></ion-icon></li>
+            <li class="mouse login__buttons btn2" (click)="googleLogin()"><ion-icon
+                src="/assets/icon/Vector.svg"></ion-icon></li>
+            <li class="mouse login__buttons btn3"><ion-icon src="/assets/icon/apple.svg"></ion-icon></li>
+          </ul>
+          <div class="log-or">
+            <div class="or-text">or</div>
+          </div>
+        </div>
+
+        <div *ngIf="!db.otp_form">
+          <div *ngIf="db.registerform"><app-registe-r></app-registe-r></div>
+          <div *ngIf="!db.registerform" (scrollToTop)="scrollToTop()"><app-log-in></app-log-in> </div>
+        </div>
+        <div *ngIf="db.otp_form"> <app-forget></app-forget> </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

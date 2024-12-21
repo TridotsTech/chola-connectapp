@@ -1,0 +1,30 @@
+<div class="full_div">
+
+    <div class="header">
+      <app-website-form-header [close_btn]="true" [Title]="'Select Department'"></app-website-form-header>
+    </div>
+
+
+    <div class="user_list_">
+
+        <div *ngIf="departments.length != 0">
+          <div (click)="get_data(item,i)" [class.selected]="item['selected']" class="d__flex box_" *ngFor="let item of departments;let i = index">
+            <div class="d__flex image">
+              <p *ngIf="!item.user_image" class="av_name" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">{{item.department_name ? item.department_name[0] : ''}}</p>
+              <img *ngIf="item.user_image" class="userImage" [src]="db.profileImg(item.user_image, item)">
+              <!-- <img class="userImage" [src]="item.UserAvatar ? item.UserAvatar : db.profileImg(item.user_image, item)"> -->
+              <img *ngIf="item['selected']" class="tick" src="/assets/profile/blue-tick.svg">
+            </div>
+            <div>
+              <h4 *ngIf="item.department_name" class="m-0 head_">{{item.department_name}}</h4>
+              <h4 *ngIf="item.company" class="sub_head">{{item.company}}</h4>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+
+  </div>
+
+

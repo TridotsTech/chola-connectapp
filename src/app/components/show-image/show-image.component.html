@@ -1,0 +1,22 @@
+<div class="img_headers">
+  <div [class.seperate]="delete_btn" [ngClass]="delete_btn ? '' : 'd__flex gap-10 just-s w-100'">
+    <p [ngClass]="delete_btn ? '' : 'flex_87'">{{image.replace('/files/', '')}}</p>
+    <!-- class="gap-10 d__flex" [class.flex_13]="!delete_btn" -->
+    <div class="gap-10 d__flex" [class.just-e]="!delete_btn" [class.flex_13]="!delete_btn">
+      <ion-icon class="red" *ngIf="delete_btn" name="trash-outline" (click)="delete_img()"></ion-icon>
+      <ion-icon class="mouse" name="close-outline" (click)="modalCtrl.dismiss()"></ion-icon>
+    </div>
+  </div>
+</div>
+
+<div class="image__">
+  <img *ngIf="image" src="{{product_img(image)}}" defaultImage="" alt="">
+</div>
+
+<!-- <div class="image__">
+  <lightgallery [settings]="gallerySettings">
+    <a *ngIf="finalImage" [href]="finalImage">
+      <img [src]="finalImage" alt="">
+    </a>
+  </lightgallery>
+</div> -->

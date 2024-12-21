@@ -1,0 +1,121 @@
+.assigned_to {
+  .icon_ {
+    margin-right: 10px;
+  }
+
+  .add_icon {
+    ion-icon {
+      border-radius: 30px;
+      background: #f4f5f6;
+      font-size: 20px;
+      padding: 10px;
+      margin: 10px 0 0 10px;
+    }
+  }
+}
+
+.attach__ {
+  height: 100vh;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+.add_picture {
+  input {
+    display: none !important;
+  }
+
+  ion-icon {
+    font-size: 20px;
+    color: var(--gray-color);
+  }
+
+  span {
+    font-size: 14px;
+    color: var(--gray-color);
+  }
+
+  .border-dot {
+    border: 1px solid #dddd;
+    color: var(--gray-color);
+    justify-content: space-between;
+    padding: 3px 7px;
+    gap: 7px;
+    border-radius: 7px;
+    height: 45px;
+  }
+
+  .imge_url {
+    .img_url {
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 8px 5px;
+      margin-bottom: 5px;
+      margin: 10px 0;
+    }
+
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      color: var(--gray-color);
+      width: 260px;
+    }
+  }
+}
+
+.mail__ {
+  font-size: 12px;
+  height: 18px;
+  width: 175px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  margin: 0 5px 0 5px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected_mail {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 768px) {
+  .forms__ {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+
+    .mar-0-10 {
+      margin: 0 10px;
+    }
+
+    ion-icon {
+      background: var(--dynamic-color);
+      border-radius: 50%;
+      padding: 5px;
+      color: #ffff;
+    }
+
+    .white {
+      color: var(--dynamic-color);
+    }
+  }
+
+  .selected_mail {
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 5px;
+    margin-bottom: 5px;
+  }
+}

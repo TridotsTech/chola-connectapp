@@ -1,0 +1,550 @@
+.common {
+    height: 8px !important;
+    width: 8px !important;
+    border-radius: 50%;
+}
+
+.lead {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.opportunity {
+    p {
+        color: #12CDD9;
+    }
+
+    div {
+        background: #12CDD9;
+    }
+}
+
+.converted {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.quotation {
+    p {
+        color: #57AEFF;
+    }
+
+    div {
+        background: #57AEFF;
+    }
+}
+
+.active {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.medium {
+    p {
+        color: #FFb949;
+    }
+
+    div {
+        background: #FFb949;
+    }
+}
+
+.in-active {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+
+
+.lost-quotation {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.lost {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.default {
+    p {
+        color: #000;
+    }
+
+    div {
+        background: #000;
+    }
+}
+
+.open {
+    p {
+        color: #9e9e9e;
+    }
+
+    div {
+        background: #9e9e9e;
+    }
+}
+
+.open_hd,.unpaid {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.replied_hd {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.resolved_hd {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.resolved {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.closed_hd {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.interested {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.rev {
+    flex-direction: row-reverse;
+}
+
+.approved {
+    p {
+        color: #069855;
+    }
+}
+
+.rejected {
+    p {
+        color: #CF161C;
+    }
+}
+
+.draft {
+    p {
+        color: #9e9e9e;
+    }
+
+    div {
+        background: #9e9e9e;
+    }
+}
+
+.submitted {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.p-0 {
+    padding: 0 !important;
+}
+
+.absent {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.present {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.half-day {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.on-leave {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.working {
+    p {
+        color: #048EFF;
+    }
+
+    div {
+        background: #048EFF;
+    }
+}
+
+.completed {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+// Tick
+
+.unpaid {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+
+    }
+
+    ion-icon {
+        color: #CF161C;
+    }
+}
+
+.paid {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+
+    ion-icon {
+        color: #069855;
+    }
+}
+
+.investigated {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.overdue {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.pending-review {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.closed {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.common_width{
+    width: unset !important;
+}
+
+.fixed {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.verified {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.accepted {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.replied {
+    p {
+        color: #069855;
+    }
+
+    div {
+        background: #069855;
+    }
+}
+
+.re-open {
+    p {
+        color: #048EFF;
+    }
+
+    div {
+        background: #048EFF;
+    }
+}
+
+.cancelled {
+    p {
+        color: #CF161C;
+    }
+
+    div {
+        background: #CF161C;
+    }
+}
+
+.to-do {
+    p {
+        color: #ee7710;
+    }
+
+    div {
+        background: #ee7710;
+    }
+}
+
+.in-progress {
+    p {
+        color: #FFb949;
+    }
+
+    div {
+        background: #FFb949;
+    }
+}
+
+.qa-inprogress {
+    p {
+        color: #f8d733;
+    }
+
+    div {
+        background: #f8d733;
+    }
+}
+
+.just-fe{
+    justify-content: flex-end !important;
+}
+
+
+// Go1 Projects
+.proj_open {
+    p {
+        color: #007EE5;
+    }
+
+    div {
+        background: #007EE5;
+    }
+}
+
+.proj_task_open {
+    p {
+        color: #007EE5;
+    }
+
+    div {
+        background: #007EE5;
+    }
+}
+
+
+.proj_working {
+    p {
+        color: #FF8725;
+    }
+
+    div {
+        background: #FF8725;
+    }
+}
+
+.proj_task_working {
+    p {
+        color: #FF8725;
+    }
+
+    div {
+        background: #FF8725;
+    }
+}
+
+
+.proj_pending_review {
+    p {
+        color: #077E8C;
+    }
+
+    div {
+        background: #077E8C;
+    }
+}
+
+.proj_task_pending_review {
+    p {
+        color: #077E8C;
+    }
+
+    div {
+        background: #077E8C;
+    }
+}
+
+.proj_overdue {
+    p {
+        color: #0392C3;
+    }
+
+    div {
+        background: #0392C3;
+    }
+}
+
+.proj_task_overdue {
+    p {
+        color: #0392C3;
+    }
+
+    div {
+        background: #0392C3;
+    }
+}
+
+.proj_completed {
+    p {
+        color: #33D446;
+    }
+
+    div {
+        background: #33D446;
+    }
+}
+
+.proj_task_completed {
+    p {
+        color: #33D446;
+    }
+
+    div {
+        background: #33D446;
+    }
+}

@@ -1,0 +1,41 @@
+<app-header [title]="title" [showYear]="false" [model]="true"></app-header>
+
+<div class="p-10">
+
+  <div class="d__flex gap-10">
+    <div class="pb-10">
+      <label class="pb-10">From Date</label>
+      <app-custom-calendar format="Date" [selectedDate]="editFormValues.from_date" (onChange)="datePickerChange('from_date',$event)"></app-custom-calendar>
+    </div>
+    <div class="pb-10">
+      <label for="filter_end_date" class="pb-10">To Date</label>
+      <app-custom-calendar format="Date" [selectedDate]="editFormValues.to_date " (onChange)="datePickerChange('end_date',$event)"></app-custom-calendar>
+    </div>
+  </div>
+
+  <div class="pb-10">
+    <label class="pb-10">Leave Type</label>
+    <div class="custom-input">
+      <ion-input type="text" (click)="open_dropdown()" [(ngModel)]="editFormValues.leave_type" placeholder="Leave Type" class="form-input"></ion-input>
+    </div>
+  </div>
+
+  <div class="pb-10">
+    <label class="pb-10">Count</label>
+    <div class="custom-input">
+      <ion-input type="number" [(ngModel)]="editFormValues.total_leave_days" placeholder="Count" class="form-input"></ion-input>
+    </div>
+  </div>
+
+  <div class="pb-10">
+    <label class="pb-10">Status</label>
+    <ion-select aria-label="Status" interface="popover" placeholder="Status" mode="ios" (ionChange)="changeStatus($event,editFormValues)" [value]="editFormValues.status">
+      <ion-select-option *ngFor="let types of statusType" [value]="types.name">{{types.name}}</ion-select-option>
+    </ion-select>
+  </div>
+
+</div>
+
+<div class="submit-btn">
+  <ion-button (click)="save()" fill="clear">Save</ion-button>
+</div>

@@ -1,0 +1,12 @@
+<div class="mail_verify">
+  <div class="txt-c">
+    <h3>Verify your email account</h3>
+    <p>We've sent you an email with a code at <span class="mail-id">{{this.user_data.message.email}}</span> please enter a code below to verify</p>
+      <div class="otp_code">
+        <!-- <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:4}"></ng-otp-input> -->
+      </div>
+      <a class="resend mouse m-0" (click)="resend_otp()" >Resend</a>
+      <ion-button expand="full" class="action-button" (click)="validate_otps()"  fill="clear">Verify</ion-button>
+      <p class="m-0 error" *ngIf="alert">{{alert_message}}</p>
+  </div>
+</div>

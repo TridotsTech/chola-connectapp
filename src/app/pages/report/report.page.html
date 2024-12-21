@@ -1,0 +1,195 @@
+<app-header [title] = "page_route" [freeze]="true" (freezeEvent)="freezeEvent($event)" [model]="false"></app-header>
+
+<app-sidemenu-header *ngIf="!db.ismobile" [heading]="page_route" ></app-sidemenu-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="report_detail" >
+    <div class="d__flex just-s w-100 detail_name" *ngIf="!db.ismobile">
+      <div class="d__flex gap-10">
+        <ion-icon name="arrow-back-outline" class="mouse" routerLink="/report-detail"></ion-icon>
+        <h5>{{page_route}}</h5>
+      </div>
+      <ion-button expand="block" fill="clear" (click)="open_reports()">Reports</ion-button>
+    </div>
+
+    <!-- Date Filter -->
+    <div class="d__flex filter_input" [class.gap-20]="!db.ismobile" [class.just-s]="db.ismobile" *ngIf="page_route == 'Attendance' || page_route == 'Timesheet' || page_route == 'Daily Work Summary Replies' || page_route == 'Employee Exits' || page_route == 'Employee Advance Summary'">
+      <div class="d__flex gap-15">
+        <p class="m-0 fnt-14 w-100" *ngIf="!db.ismobile">From Date: </p>
+        <ion-input type="date" [(ngModel)]="from_date" (ionChange)="change_from_date($event)"></ion-input>
+      </div>
+      <ion-icon *ngIf="db.ismobile && (page_route != 'Employee Exits' && page_route != 'Daily Work Summary Replies')" name="swap-horizontal-outline"></ion-icon>
+      <div class="d__flex gap-15">
+        <p class="m-0 fnt-14 w-100" *ngIf="!db.ismobile">To Date: </p>
+        <ion-input type="date" [(ngModel)]="to_date" (ionChange)="change_to_date($event)"></ion-input>
+      </div>
+      <div *ngIf="page_route == 'Attendance' && !db.ismobile" class="statusFilter">
+        <ion-select interface="popover" placeholder="Select Status" [(ngModel)]="select_status" (ionChange)="change_status($event)">
+          <ion-select-option *ngFor="let item of statusAttendance" [value]="item.value">{{item.value}}</ion-select-option>
+        </ion-select>
+      </div>
+
+      <ion-icon *ngIf="(page_route == 'Employee Exits' || page_route == 'Daily Work Summary Replies') && db.ismobile" (click)="open_filter()" name="funnel-outline"></ion-icon>
+
+        <div *ngIf="page_route == 'Daily Work Summary Replies' && !db.ismobile" class="group_info">
+          <p class="m-0 fnt-14" *ngIf="!db.ismobile">Group: </p>
+          <ion-input type="text" placeholder="Group" class="mouse" [(ngModel)]="selected_group" (click)="open_drop_down_options('Daily Work Summary Group','group')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+        </div>
+  
+        <div *ngIf="page_route == 'Employee Exits' && !db.ismobile" class="group_info">
+          <p class="m-0 fnt-14" *ngIf="!db.ismobile">Department: </p>
+          <ion-input type="text" placeholder="Department" class="mouse" [(ngModel)]="selected_department" (click)="open_drop_down_options('Department','department')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+        </div>
+  
+        <div *ngIf="page_route == 'Employee Exits' && !db.ismobile" class="group_info">
+          <p class="m-0 fnt-14" *ngIf="!db.ismobile">Designation: </p>
+          <ion-input type="text" placeholder="Designation" class="mouse" [(ngModel)]="selected_designation" (click)="open_drop_down_options('Designation','designation')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+        </div>
+  
+        <div *ngIf="(page_route == 'Employee Exits' || page_route == 'Employee Advance Summary') && !db.ismobile" class="group_info">
+          <p class="m-0 fnt-14" *ngIf="!db.ismobile">Employee: </p>
+          <ion-input type="text" placeholder="Employee" class="mouse" [(ngModel)]="selected_employee" (click)="open_drop_down_options('Employee','employee')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+        </div>
+
+    </div>
+    
+    <div class="d__flex filter_input" [class.gap-20]="!db.ismobile" [class.just-s]="db.ismobile" *ngIf="page_route == 'Employee Leave Balance Summary'">
+      
+      <div class="d__flex gap-15">
+        <p class="m-0 fnt-14 w-100" *ngIf="!db.ismobile">Date: </p>
+        <ion-input type="date" [(ngModel)]="current_date_leave" (ionChange)="change_current_date($event)"></ion-input>
+      </div>
+
+      
+      <div class="group_info">
+        <p class="m-0 fnt-14" *ngIf="!db.ismobile">Department: </p>
+        <ion-input type="text" [class.w-150]="db.ismobile" placeholder="Department" class="mouse" [(ngModel)]="selected_department" (click)="open_drop_down_options('Department','department')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+      
+      <ion-icon *ngIf="db.ismobile" (click)="open_filter()" name="funnel-outline"></ion-icon>
+      <div *ngIf="!db.ismobile" class="group_info">
+        <p class="m-0 fnt-14" *ngIf="!db.ismobile">Employee: </p>
+        <ion-input type="text" placeholder="Employee" class="mouse" [(ngModel)]="selected_employee" (click)="open_drop_down_options('Employee','employee')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+      
+    </div>
+
+    <!-- Month && Year Filter -->
+    <div *ngIf="page_route == 'Monthly Attendance Sheet'" class="month_year_filter">
+      <ion-select interface="popover" [class.w-20]="!db.ismobile" placeholder="Select Month" [(ngModel)]="select_month" (ionChange)="change_month($event)">
+        <ion-select-option *ngFor="let item of months" [value]="item.name">{{item.value}}</ion-select-option>
+      </ion-select>
+
+      <ion-select interface="popover" [class.w-20]="!db.ismobile" placeholder="Select Year" [(ngModel)]="select_year" (ionChange)="change_year($event)">
+        <ion-select-option *ngFor="let item of year" [value]="item.value">{{item.value}}</ion-select-option>
+      </ion-select>
+    </div>
+
+    <div *ngIf="page_route == 'Employee Birthday'" class="month_year_filter">
+
+      <div class="group_info">
+        <p class="m-0 fnt-14" *ngIf="!db.ismobile">Department: </p>
+        <ion-input type="text" placeholder="Department" class="mouse" [(ngModel)]="selected_department" (click)="open_drop_down_options('Department','department')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+
+      <div class="group_info">
+        <p class="m-0 fnt-14" *ngIf="!db.ismobile">Employee: </p>
+        <ion-input type="text" placeholder="Employee" class="mouse" [(ngModel)]="selected_employee" (click)="open_drop_down_options('Employee','employee')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+
+    </div>
+
+    <div *ngIf="page_route == 'Employee Leave Balance'" class="d__flex filter_input" [class.gap-20]="!db.ismobile" [class.just-s]="db.ismobile">
+
+      <div class="group_info" [class.w-45]="db.ismobile">
+        <p class="m-0 fnt-14 w-40" *ngIf="!db.ismobile">Leave Type: </p>
+        <ion-input type="text" placeholder="Leave" class="mouse" [(ngModel)]="selected_leave" (click)="open_drop_down_options('Leave Type','leave_type')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+
+      <div class="group_info" [class.w-45]="db.ismobile">
+        <p class="m-0 fnt-14" *ngIf="!db.ismobile">Department: </p>
+        <ion-input type="text" placeholder="Department" class="mouse" [(ngModel)]="selected_department" (click)="open_drop_down_options('Department','department')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+
+      <div class="group_info" *ngIf="!db.ismobile">
+        <p class="m-0 fnt-14">Employee: </p>
+        <ion-input type="text" placeholder="Employee" class="mouse" [(ngModel)]="selected_employee" (click)="open_drop_down_options('Employee','employee')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+
+      <ion-icon *ngIf="db.ismobile" (click)="open_filter()" name="funnel-outline"></ion-icon>
+
+    </div>
+
+    <div *ngIf="page_route == 'Employee Analytics'" class="parameter_filter">
+      <div class="d__flex gap-10">
+        <p class="m-0 fnt-14" *ngIf="!db.ismobile">Parameter: </p>
+        <ion-select interface="popover" placeholder="Select Parameter" [(ngModel)]="employee_analytics_parameter" (ionChange)="change_employee_analytics($event)">
+          <ion-select-option *ngFor="let item of parameter_employee_analytics" [value]="item.value">{{item.value}}</ion-select-option>
+        </ion-select>
+      </div>
+    </div>
+
+    <div *ngIf="page_route == 'Employee Information'" class="dept_info">
+      <ion-input [class.w-20]="!db.ismobile" type="text" placeholder="Department" class="mouse" [(ngModel)]="selected_department" (click)="open_drop_down_options('Department','department')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+    </div>
+
+    <div class="d__flex filter_input" [class.gap-20]="!db.ismobile" [class.just-s]="db.ismobile" *ngIf="page_route == 'Employees Working on a Holiday'">
+
+      
+      <div class="group_info">
+        <p class="m-0 fnt-14 w-100" *ngIf="!db.ismobile">To Date: </p>
+        <ion-input type="date" [(ngModel)]="to_date" (ionChange)="change_to_date($event)"></ion-input>
+      </div>
+
+      <div class="group_info">
+        <p class="m-0 fnt-14 w-100" *ngIf="!db.ismobile">From Date: </p>
+        <ion-input type="date" [(ngModel)]="from_date" (ionChange)="change_from_date($event)"></ion-input>
+      </div>
+
+      <ion-icon *ngIf="db.ismobile" (click)="open_filter()" name="funnel-outline"></ion-icon>
+      
+      <div class="group_info" *ngIf="!db.ismobile">
+        <p class="m-0 fnt-14" *ngIf="!db.ismobile">Holiday: </p>
+        <ion-input type="text" placeholder="Holiday" class="mouse" [(ngModel)]="selected_holiday" (click)="open_drop_down_options('Holiday List','holiday_list')"><ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon></ion-input>
+      </div>
+
+    </div>
+
+    <!-- *ngIf="rows && rows.length !=0 && (page_route != 'Employee Analytics' && page_route != 'Employee Information' && page_route != 'Employee Exits' && page_route != 'Daily Work Summary Replies' && page_route != 'Employee Leave Balance Summary' && page_route != 'Employee Birthday' && page_route != 'Employee Leave Balance' && page_route != 'Employees Working on a Holiday' && page_route != 'Employee Advance Summary')" -->
+    <div class="chart_" *ngIf="chart_value">
+      <div>
+        
+        <div class="bg_primary__" *ngIf="false">
+          <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
+          [bg_white]="true" bg_color="#f6f7f9" [tabs_array]="chartDay" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+        </div>
+
+        <app-apex-chart [hover_name]="hover_label" [chart_value]="chart_value"></app-apex-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- [zoom]="zoomValue" (zoomChange)="onZoomChange($event)" -->
+  <!-- <div> -->
+  <revo-grid class="revo-report revo-border" #revoGrid *ngIf="rows && rows.length !=0 && !skeleton" [canFocus]="true" [source]="rows" [columns]="columns" theme="material" [exporting]="true" [options]="optionsValue" [resizable]="true" readonly="true"></revo-grid>
+  <!-- <revo-grid  class="revo-report revo-border" #revoGrid *ngIf="rows && rows.length !=0" [canFocus]="true" [source]="rows" [columns]="columns" theme="material" [exporting]="true" readonly="true" rowGrouping="employee" ></revo-grid> -->
+  <!-- <revo-grid [data]="data" [columns]="columnsValue" [options]="optionsValue" (onColumnResize)="onColumnResize($event)"></revo-grid> -->
+  <!-- </div> -->
+
+  <app-no-record-found *ngIf="rows && rows.length ==0 && !skeleton" [column]="true"height="calc(100vh - 410px)" [heading]="'No Report Found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  <div *ngIf="skeleton" class="align_center">
+    <ion-spinner name="lines-sharp"></ion-spinner>
+  </div>
+  
+  <ng-template #no_data_found>
+    <div class="no_task" *ngIf="!skeleton">
+      <div>
+        <ion-icon src="/assets/no-gallery -found.svg" ></ion-icon>
+        <p class="text-c m-0">No Data Found</p>
+      </div>
+    </div>
+  </ng-template>
+  
+</ion-content>

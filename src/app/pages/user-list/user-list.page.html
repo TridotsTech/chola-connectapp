@@ -1,0 +1,70 @@
+
+<!-- <ion-header *ngIf="doctype != 'Lead'" [ngClass]="db.sales_manager_role ? 'sales_header' : 'normal_header'">
+  <div class="d__flex just-s user__">
+    <ion-title class="bold_name">Select User</ion-title>
+    <ion-icon class="icon__ mouse" name="close-outline" (click)="modalCtrl.dismiss()"></ion-icon>
+  </div>
+</ion-header> -->
+
+<ion-content [fullscreen]="true">
+
+  <div class="full_div">
+
+    <div class="header">
+      <app-website-form-header [close_btn]="true" [Title]="'Select User'"></app-website-form-header>
+      
+      <div class="d__flex tab-div gap-10">
+        <div class="tab mouse" [class.border-b]="tab[0].name == activeTab" (click)="handleClick(item,i)" [ngClass]="item.active ? 'tab-active' : ''" *ngFor="let item of tab;index as i">
+          <p class="">{{item.name}}</p>
+        </div>
+      </div>
+      
+      <app-common-search *ngIf="tab[0].name != activeTab" [noFilter]="true"  [placeholder]="'Search'" (call_clear_txt)="clear_txt()" (search_txt_value)="load_search($event)"></app-common-search>
+    </div>
+
+
+    <div *ngIf="!skeleton" class="user_list_" (scroll)="no_products ? null : load_more($event)">
+
+        <div *ngIf="selectedUser.length != 0 || db.user_list.length != 0">
+          <div (click)="get_data(item,i)" [class.selected]="item['selected']" class="d__flex box_" *ngFor="let item of ((tab[0].name == activeTab && !notInsert) ? selectedUser : db.user_list);let i = index">
+            <div class="d__flex image">
+              <p *ngIf="!item.user_image" class="av_name" [ngStyle]="{'background-color': db.color_list[(i % db.color_list.length)]}">{{item.full_name ? item.full_name[0] : (item.user_name ? item.user_name[0] : '')}}</p>
+              <img *ngIf="item.user_image" class="userImage" [src]="db.profileImg(item.user_image, item)">
+              <!-- <img class="userImage" [src]="item.UserAvatar ? item.UserAvatar : db.profileImg(item.user_image, item)"> -->
+              <img *ngIf="item['selected']" class="tick" src="/assets/profile/blue-tick.svg">
+            </div>
+            <div>
+              <h4 *ngIf="item.full_name || item.user_name" class="m-0 head_">{{item.full_name || item.user_name}}</h4>
+              <h4 *ngIf="item.email || item.email_id" class="sub_head">{{item.email || item.email_id}}</h4>
+            </div>
+          </div>
+        </div>
+
+        <app-no-record-found *ngIf="!skeleton && (tab[0].name == activeTab && selectedUser && selectedUser.length == 0)" height="calc(100vh - 290px)" [column]="true" [heading]="'No users found'" [image]="'assets/icon/no-comments.svg'"></app-no-record-found>
+        <app-no-record-found *ngIf="!skeleton && (tab[0].name != activeTab && db.user_list && db.user_list.length == 0)" height="calc(100vh - 290px)" [column]="true" [heading]="'No users found'" [image]="'assets/icon/no-comments.svg'"></app-no-record-found>
+
+    </div>
+
+
+
+    <div class="user_list_ expenceSketon" *ngIf="skeleton">
+        <div class="divF d__flex" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+            <ion-skeleton-text [animated]="true" style="width:43px;height:43px;border-radius:50%;margin:0 8px 0 0"></ion-skeleton-text>
+            <div class="b-2">
+              <ion-skeleton-text [animated]="true" style="width:80%;height:17px;margin:0 0 8px 0;border-radius:5px"></ion-skeleton-text>
+              <ion-skeleton-text [animated]="true" style="width:60%;height:15px;border-radius:5px"></ion-skeleton-text>
+            </div>
+          </div>
+    </div> 
+
+  
+    <div *ngIf="!skeleton" class="footer">
+      <ion-button class="apply" fill="outline" (click)="add_filter()">
+        <ion-spinner name="circular" *ngIf="buttonLoader"></ion-spinner>
+        <span *ngIf="!buttonLoader">Done</span>
+      </ion-button>
+    </div>
+
+  </div>
+
+</ion-content>

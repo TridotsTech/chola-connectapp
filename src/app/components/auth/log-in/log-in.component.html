@@ -1,0 +1,27 @@
+<div class="container" [class.otp_form]="!db.normal_login">
+
+  <div class="w-100" *ngIf="db.normal_login">
+      <app-normal-login></app-normal-login>
+  </div>
+
+  <div class="w-100" *ngIf="!db.normal_login">
+      <app-otp-login ></app-otp-login>
+  </div>
+
+  <div *ngIf="false" class="container-desc-header ion-text-center">
+    <!-- <h1>Welcome Back!</h1> clear_otp()-->
+    <div class="line" [class.mt-2rem]="!db.ismobile" [class.mt-3rem]="db.ismobile"></div>
+    <div class="rergister_ mouse" (click)="db.registerform = true">
+      <p class="m-0">Don’t have an account? <span class="user-select alternative">Register here</span></p>
+    </div>
+  </div>  
+
+  <div *ngIf="false"  class="ion-text-center login-with">
+    <span> </span>
+    <span class="m-0 ion-text-center">or  </span>
+    <ul class="d__flex just-c">
+      <li class="mouse" (click)="db.normal_login?db.normal_login = false:db.normal_login = true"> Login With {{db.normal_login == false ? 'Email' :'OTP'}} </li>
+    </ul>
+  </div>
+
+

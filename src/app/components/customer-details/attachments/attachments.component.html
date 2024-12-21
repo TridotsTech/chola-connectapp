@@ -1,0 +1,44 @@
+<div *ngIf="!db.ismobile" class="forms__">
+  <div class="d__flex gap-10 mar-0-10">
+    <ion-icon class="mouse" (click)="modalCtrl.dismiss()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white">Attachment</p>
+  </div>
+</div>
+
+<div class="p-15 attach__">
+  <div class="assigned_to" *ngIf="db.selected_list.page != 'HD Ticket'">
+    <ion-label><ion-icon class="icon_" name="person-add-outline"></ion-icon> Assigned To</ion-label>
+    <div class="add_icon mouse" (click)="user_list()"><ion-icon name="add-outline"></ion-icon></div>
+    <div *ngIf="db.selected_mail">
+      <div *ngFor="let item of db.selected_mail;index as i">
+        <div class="selected_mail d__flex just-s mb-10 mouse">
+          <p class="m-0 gray_clr fnt-12 mail__" >{{item.allocated_to}}</p>
+          <!-- (click)="remove_img(item.allocated_to,'email')" -->
+          <ion-icon class="icon__" name="close-outline" (click)="remove_email(i)" ></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="add_picture">
+    <!-- <ion-icon class="icon_" name="attach-outline"></ion-icon> -->
+    <h6 class="title medium_name "> Attachments</h6>
+    <div class="image-input">
+      <div class="picture"></div>
+      <input #file_upload class="image-d" (change)="changeListener($event,each)" [(ngModel)]="image" type="file"
+        class="form-input">
+      <div class=" browser ">
+        <div (click)="file_upload.click()" class="mouse d__flex border-dot name ">
+          <span>Attach File</span><ion-icon slot="start" name="add-outline"></ion-icon>
+        </div>
+      </div>
+      <div *ngIf="multiple_array" class="imge_url">
+        <div *ngFor="let item of multiple_array; let i = index;" class="img_url d__flex just-s mouse" >
+          <p *ngIf="item.file_name || item.file_url" (click)="get_image(item.file_url)" class="medium_name m-0">{{item.file_name || item.file_url.replace('/files/', '')}}</p>
+          <ion-icon (click)="remove_img(item,'image')" name="close-outline"></ion-icon>
+          <!-- <img src="{{product_img(item.file_url)}}" defaultImage="" alt=""> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

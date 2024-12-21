@@ -1,0 +1,69 @@
+<div class="list">
+  <div class=" header">
+    <div class="d__flex just-s w-100">
+      <div>
+        <h6 class="m-0 heading__">Select a {{type}}</h6>
+      </div>
+      <ion-icon (click)="close_modal()" class="mouse" name="close-outline"></ion-icon>
+    </div>
+
+    <div class="search__">
+      <div class="search_bar d__flex">
+        <ion-icon name="search-outline"></ion-icon>
+        <ion-input class="search_input" [(ngModel)]="search_txt" (ionChange)="load_search($event)"
+          placeholder="Search"></ion-input>
+        <ion-icon *ngIf="search_txt" name="close-outline" (click)="clear_txt()"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="is_loaded && type != 'project'" (scroll)="!this.no_products ? loadData($event) : null" class="box_sec">
+    <div [class.active]="item['isActive']" (click)="add(item)" *ngFor="let item of list_values"
+      class="d__flex mouse boxs">
+
+      <h6 class="m-0 name_">1{{item.label}}</h6>
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </div>
+  </div> -->
+
+  <div *ngIf="fieldname_value && !is_loaded && !activity" (scroll)="!this.no_products ? loadData($event) : null"
+    class="box_sec">
+    <div [class.active]="item['isActive']" (click)="added(item)" *ngFor="let item of fieldname_value"
+      class="d__flex mouse boxs">
+      <h6 class="m-0 name_" *ngIf="item.project_name">{{item.project_name}}</h6>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </div>
+  </div>
+
+  <div *ngIf="list_values && !is_loaded && activity" (scroll)="!this.no_products ? loadData($event) : null"
+    class="box_sec">
+    <div [class.active]="item['isActive']" (click)="add(item)" *ngFor="let item of list_values"
+      class="d__flex mouse boxs">
+      <h6 class="m-0 name_" *ngIf="item.name">{{item.name}}</h6>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </div>
+  </div>
+  <div *ngIf="selected_value && !is_loaded" (scroll)="!this.no_products ? loadData($event) : null" class="box_sec">
+    <div [class.active]="item['isActive']" (click)="adding(item)" *ngFor="let item of selected_value"
+      class="d__flex mouse boxs">
+      <h6 class="m-0 name_" *ngIf="item.name">{{item.subject}}</h6>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </div>
+  </div>
+
+  <div *ngIf="is_loaded" class="box_sec">
+    <ion-skeleton-text *ngFor="let item of [1,2,3,4,5,7,8,9,10,1,1,1,1,1,1]" [animated]="true"
+      class="loader"></ion-skeleton-text>
+  </div>
+  <div
+    *ngIf="(list_values && list_values.length == 0 || fieldname_value && fieldname_value.length == 0 || selected_value && selected_value.length == 0) && !is_loaded"
+    class="box_sec">
+    <h6 class="text-c">No Lists Found</h6>
+    <div class="text-c" *ngIf="selected_value">
+      <ion-button fill="clear" class="primary_button " (click)="task_form()">Add Task</ion-button>
+    </div>
+    <div class="text-c" *ngIf="fieldname_value">
+      <!-- <ion-button fill="clear" class="primary_button " (click)="project_form()">Add Project</ion-button> -->
+    </div>
+  </div>
+</div>

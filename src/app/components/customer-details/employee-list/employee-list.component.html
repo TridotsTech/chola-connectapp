@@ -1,0 +1,77 @@
+
+<div [class.big_box]="!db.ismobile" >
+
+  <div *ngIf="db.ismobile">
+
+  
+    <div *ngIf="!db.employee_role && !department_seg && db.employee_shift_dash && db.employee_shift_dash.length != 0" class="attendance_dashboard">
+      <div *ngFor="let item of db.employee_shift_dash;let i = index" class="over_flow">
+        <div class="w-100 d__flex just-s first_sec mb-5">
+          <ion-icon [src]="(db.employeeList[i] && db.employeeList[i].icon) ? db.employeeList[i].icon : db.employeeList[i % (db.employeeList.length)].icon" class="fnt-30"></ion-icon>
+          <p [ngStyle]="{'color':(db.employeeList[i] && db.employeeList[i].color)? db.employeeList[i].color : db.employeeList[i % (db.employeeList.length)].color}" class="m-0 fnt-14 fnt_w500">{{item.count}}</p>
+        </div>
+        <p class="m-0 fnt-12 fnt_w500 label">{{item.label}}</p>
+      </div>
+    </div>
+    
+    <div *ngIf="!department_seg" >
+      <app-common-search placeholder="Search"
+      (call_clear_txt)="call_clear_txt.emit('')" (sendFavorite)="sendFavorite($event)" [favoriteFilter]="false" [noFilter]="false" [showSort]="true" (search_txt_value)="search_txt_value.emit($event)" (tab_filter)="tab_filter.emit($event)"  (supplier_filter)="supplier_filter.emit('')" (open_filter)="open_filter($event)"></app-common-search>
+    </div>
+  </div>
+
+  <app-common-dashboard *ngIf="!db.employee_role && !db.selfView" [icons]="icon_array" [data]="db.employee_shift_dash"></app-common-dashboard>
+
+  <div *ngIf="db.search_filter && db.search_filter.length != 0 && !db.ismobile" [class.bt-none]="(db.employee_role || db.selfView)"  class="search_filter__ w-100 d__flex just-s">
+    <app-filters (filterList)="filterList.emit($event)" [noPopup]="true" [isNotModal]="true" [supplier_id]="supplier_id" [search_filter]="db.search_filter" [page_title]="page_title" [json_filter]="json_filter" [doctype]="doc_type"></app-filters>
+    <app-tab-filter [search]="false" [noSort]="false" [noSortUp]="true"  [noView]="true" [noLeft]="true" [noRight]="true" (tab_filter)="tab_filter.emit($event)"></app-tab-filter>
+  </div>
+
+  <div (scroll)="db.ismobile ? load_data($event) : null" *ngIf="!db.listSkeleton && list_data && list_data.length != 0 && !department_seg" class="scroll_" [ngStyle]="{'height': view != 'mobile' ? '' : (db.employee_role ? 'calc(100vh - 115px)' : 'calc(100vh - 205px)')}" >
+    <div #tabList [class.grid_view]="view == 'web'">
+      <div [class.employee_list_data]="db.employee_role" class="list_data mouse" [class.selected_item]="item.selected && (db.enable_detail || db.ismobile)" *ngFor="let item of list_data;let i = index" (click)="go_detail(item,i)">
+        <div class="d__flex gap-10 employee_">
+          <div [class.image_div]="item.image" class="absolute_">
+            <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div>
+            <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+            <p *ngIf="!item.image && item.employee_name" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+          </div>
+          <div>
+            <p class="m-0 mb-5 fnt-14 fnt_w500 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+            <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16 align_l" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+            <div class="d__flex gap-5">
+              <ion-icon class="fnt-16" slot="start" src="/assets/img/designation.svg"></ion-icon>
+              <p class="m-0 fnt-12 gray_clr webkit-text w-100" [style.--line]="1">{{item.designation ? item.designation : '-'}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="wish_list gap-15">
+          <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5 year_ago">{{getDateDifference(item.date_of_joining)}}</p>
+          <div>
+            <ion-icon class="fnt-16 mouse" (click)="add_wish($event, item)" slot="start" [src]="item['liked_status'] == 'Yes' ? '/assets/img/heart-fill.svg' : '/assets/img/heart.svg'"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="db.listSkeleton && !department_seg" [class.employeeSection-h]="db.employee_role" class="section-h">
+    <div class="d__flex skeleton">
+      <div class="d__flex box_ gap-10" *ngFor="let i of [1, 2, 3, 4 ,5, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3, 4 ,5, 1, 6]">
+        <ion-skeleton-text animated style="width: 90px; height: 70px;border-radius: 5px;"></ion-skeleton-text>
+        <div class="w-100">
+          <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <app-no-record-found *ngIf="list_data && list_data.length == 0 && !db.listSkeleton  && !department_seg"
+  [column]="true" [height]="db.ismobile ? 'calc(100vh - 250px)' : 'calc(100vh - 260px)'" [heading]="'No record found'"
+  [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  <app-employee-department *ngIf="department_seg" [view]="view" [search_filter]="search_filter" (go_to_detail)="go_to_detail.emit($event)"></app-employee-department>
+
+</div>

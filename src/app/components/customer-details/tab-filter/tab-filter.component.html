@@ -1,0 +1,50 @@
+<!-- <div class="d__flex gap-10">
+  <ion-input placeholder="Id" class="input" name="Id"></ion-input>
+  <ion-input placeholder="Employee" class="input" name="Employee"></ion-input>
+  <ion-input placeholder="Employee Name" class="input" name="Employee Name"></ion-input>
+  <ion-input placeholder="Leave Type" class="input" name="Leave Type"></ion-input>
+</div> -->
+
+<div class="d__flex gap-10 just-s ">
+  <div *ngIf="filters && filters.length > 0" class="d__flex gap-10">
+    <div *ngFor="let item of filters;index as i">
+      <ion-input [readonly]="item.read_only == 1 ? true : false" (input)="filterData($event,item)" class="filter_inputs" *ngIf="item.type == 'text'" [(ngModel)]="item.value" [name]="item.name"
+        [placeholder]="item.placeholder"><ion-icon *ngIf="item.value" name="close-outline" class="mouse fnt-18" (click)="clearFilter($event,item)"></ion-icon></ion-input>
+      <ion-select [readonly]="item.read_only == 1 ? true : false"  (ionChange)="filterData($event,item)" interface="popover" class="filter_inputs color_unset"
+        *ngIf="item.type == 'select' && (item.options && item.options.length > 0)" [value]="item.options[0].name">
+        <ion-select-option *ngFor="let val of item.options" [value]="val.name">{{val.name}}</ion-select-option>
+      </ion-select>
+
+      <ion-input [readonly]="item.read_only == 1 ? true : false" (click)="item.read_only == 1 ? null : open_drop_down_options(item)"
+        [ngModel]="(db.drop_down_value_task && db.drop_down_value_task[item.name]) ? db.drop_down_value_task[item.name] : item.value ? item.value : ''"
+        [value]="(db.drop_down_value_task && db.drop_down_value_task[item.name]) ? db.drop_down_value_task[item.name] : item.value ? item.value : ''"
+        [name]="item.name" (ionChange)="filterData($event,item)" [placeholder]="item.placeholder"
+        class="filter_inputs color_unset" *ngIf="item.type == 'Link'">
+        <ion-icon *ngIf="(db.drop_down_value_task && db.drop_down_value_task[item.name])" name="close-outline" class="mouse fnt-18" (click)="clearFilter($event,item)"></ion-icon>
+      </ion-input>
+    </div>
+  </div>
+
+  <div class="flex-auto d__flex just-e gap-10">
+    
+    <ion-input (ionChange)="filterData($event,'search')" class="filter_inputs" *ngIf="search" name="name" placeholder="search..."></ion-input>
+    <div [class.activeFilter]="(sort == 'creation ASC')" *ngIf="!noSort" class="d__flex border p510 mouse" (click)="sort_by()">
+      <ion-icon class="icon" [src]="(sort == 'creation ASC') ? '/assets/salary/sortUp-active.svg' : '/assets/salary/sort.svg'"></ion-icon>
+      <!-- <ion-icon class="icon" [src]="sort == 'creation ASC' ? '/assets/salary/sortUp.svg' : '/assets/salary/sort.svg'"></ion-icon> -->
+    </div>
+    <!-- <div [class.activeFilter]="(sort == 'creation ASC' && activeSortup)" *ngIf="!noSortUp" class="d__flex border p510 mouse" (click)="sort_up_by()">
+      <ion-icon class="icon" [src]="(sort == 'creation ASC' && activeSortup) ? '/assets/salary/sortUp-active.svg' : '/assets/salary/sortUp.svg'"></ion-icon>
+    </div> -->
+    <div *ngIf="!noView" class="d__flex border p510 mouse" (click)="freezeEvent.emit('')">
+      <!-- <div *ngIf="!noView" class="d__flex border p510 mouse" (click)="toggleKanban_task.emit()"> -->
+      <ion-icon class="icon" src="/assets/salary/grid.svg"></ion-icon>
+    </div>
+    <!-- <div *ngIf="!noLeft" class="d__flex border p510 mouse">
+      <ion-icon class="fnt-14" src="/assets/salary/left.svg"></ion-icon>
+    </div>
+    <div *ngIf="!noRight" class="d__flex border p510 mouse">
+      <ion-icon class="fnt-14" src="/assets/salary/right.svg"></ion-icon>
+    </div> -->
+  </div>
+
+<!-- </div> -->

@@ -1,0 +1,25 @@
+<!-- <div class="forms__">
+  <div class="d__flex gap-10 mar-0-10">
+    <ion-icon class="mouse" (click)="backbtn()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white">{{page_title ? page_title : page_route}}</p>
+  </div>
+</div> -->
+
+<div class="quickEntry">
+    <app-website-form-header [primary_bg]="true" [Title]="page_title ? page_title : page_route"></app-website-form-header>
+
+    <div class="body__"  *ngIf="page_route && edit_form == 1">
+      <app-new-wizard-form [dailyUpdateDetail]="dailyUpdateDetail" [sale_order_id]="sale_order_id" [parentTaskName]="parentTaskName" [page]="page" [parentTaskId]="parentTaskId" [popup_centre]="popup_centre" [modal]="modal" [add_new_form]="edit_form_values ? false : true" [forms_route]="page_route" [tabs_top]="1" [enable_height]="enable_height" [new_form]="true" [edit_form]="edit_form" [edit_form_values]="edit_form_values" [web_forms]="(page_route == 'Lead' || page_route == 'Opportunity' || page_route == 'Quotation' || page_route == 'Customer') ? true : false"></app-new-wizard-form>
+    </div>
+    <!-- <div *ngIf="page_route && edit_form == 1">
+    <app-side-menu-forms [add_new_form]="true" [forms_route]="page_route" [tabs_top]="1" [enable_height]="enable_height"
+      [new_form]="true" [edit_form]="edit_form" [edit_form_values]="edit_form_values" [web_forms]="(page_route == 'Lead' || page_route == 'Opportunity' || page_route == 'Quotation' || page_route == 'Customer') ? true : false"></app-side-menu-forms>
+    </div> -->
+    <!-- <div *ngIf="page_route && !edit_form">
+    <app-side-menu-forms [add_new_form]="true" [forms_route]="page_route" [tabs_top]="1" [enable_height]="enable_height" [loader_f]="loader_f" [load_doc]="load_doc"
+      [new_form]="true" [enable_save]="enable_save" [web_forms]="(page_route == 'Lead' || page_route == 'Opportunity' || page_route == 'Quotation' || page_route == 'Customer') ? true : false"></app-side-menu-forms>
+    </div> -->
+    <div class="body__"  *ngIf="page_route && !edit_form">
+      <app-new-wizard-form [dailyUpdateDetail]="dailyUpdateDetail" [sale_order_id]="sale_order_id" [parentTaskName]="parentTaskName" [page]="page" [parentTaskId]="parentTaskId" [popup_centre]="popup_centre" [modal]="modal" [add_new_form]="edit_form_values ? false : true" [forms_route]="page_route" [tabs_top]="1" [enable_height]="enable_height" [loader_f]="loader_f" [load_doc]="load_doc" [new_form]="true" [enable_save]="enable_save" [web_forms]="(page_route == 'Lead' || page_route == 'Opportunity' || page_route == 'Quotation' || page_route == 'Customer') ? true : false"></app-new-wizard-form>
+    </div>
+</div>

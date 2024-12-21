@@ -1,0 +1,87 @@
+
+
+// for mobile
+@media screen and (min-width: 992px) {
+  .change__password{
+    form{
+        max-width: 360px
+    }
+  }
+}
+
+@media screen and (max-width:768px) {
+    .input-item {
+      width: 100%;
+      ion-input,ion-select{
+        height: 40px;
+        font-size: 14px;
+      }
+    }
+}
+
+.custom-input {
+  width: 100%;
+  margin: 7px 0;
+  border: 1px solid var(--border-col);
+  border-radius: 6px;
+  ion-input {
+      --padding-start: 15px;
+  }
+  ion-icon {
+      font-size: 18px;
+      color: var(--secondary-text);
+      padding: 9px 10px;
+      // border-right: 1px solid;
+      // border-color: var(--border-col);
+  }
+}
+
+.h-unset{
+  height: unset !important;
+}
+
+
+
+.container .custom-input ion-icon{
+  border-right: unset;
+  border-color: unset;
+}
+
+.secondary_color{
+  color: var(--secondary-bg);
+}
+
+.action-button{
+  background: var(--primary-color);
+  height: 42px;
+  border-radius: 6px;
+  text-transform: capitalize;
+  margin-top: 15px;
+}
+.forget{
+  margin-top: 2rem;
+  span{
+    color: var(--primary-color) !important;
+  }
+}
+
+.error {
+  font-size: 10px;
+  color: red;
+  // background: #ff000014;
+  padding-left: 10px;
+}
+
+.input__title{
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sc-ion-input-md-h{
+  font-size: 14px !important;
+
+}
+
+label,ion-input,ion-button,span,ion-label{
+  font-family: var(--go1-global-primary-f);
+}

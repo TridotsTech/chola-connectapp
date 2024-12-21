@@ -1,0 +1,46 @@
+<div *ngIf="selectedDate" class="p-10 d__flex gap-10 just-s">
+  <div *ngIf="!dateCal && !hideDate; else emptyDiv">
+    <app-month-year-picker [selectDate]="selectedDate" (dateChange)="onDateChange($event)"></app-month-year-picker>
+  </div>
+
+  <app-custom-calendar *ngIf="dateCal && selectedDate" [selectedDate]="selectedDate" format="Date"
+    (onChange)="date_change($event)"></app-custom-calendar>
+
+  <ng-template #emptyDiv>
+    <h3 *ngIf="titleName" class="m-0 fnt-15 fnt_w500">{{titleName}}</h3>
+
+    <div *ngIf="search" class="search_bar d__flex">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-input class="search_input" [(ngModel)]="search_value" (ionInput)="search_text_send($event)"
+        (ionFocus)="onInputFocus($event)" (ionBlur)="onInputBlur($event)" placeholder="Search..."></ion-input>
+      <ion-icon name="close-outline" (click)="clear_txt()" *ngIf="search_value"></ion-icon>
+    </div>
+  </ng-template>
+
+  <div class="d__flex gap-10">
+    <div [class.activeFilter]="(sort == 'creation ASC')" *ngIf="!noSort" class="d__flex border p510 mouse"
+      (click)="sort_by()">
+      <ion-icon class="icon"
+        [src]="(sort == 'creation ASC') ? '/assets/salary/sortUp-active.svg' : '/assets/salary/sort.svg'"></ion-icon>
+    </div>
+
+    <div *ngIf="search_filter && search_filter.length != 0" (click)="filters()" class="border p-10 rounded-10 d__flex">
+      <ion-icon src="/assets/expense-claim/filter.svg" class="fnt-20"></ion-icon>
+    </div>
+  </div>
+
+</div>
+
+<ion-backdrop *ngIf="showCalendar" (ionBackdropTap)="hideDiv()"></ion-backdrop>
+
+<div id="clickbox" *ngIf="showCalendar" class="attendanceSummary">
+  <div class="d__flex just-s w-100">
+    <h5>Calendar</h5>
+    <ion-icon class="fnt-20" src="/assets/Employee-Home/more.svg"></ion-icon>
+  </div>
+  <div class="calendar_att">
+    <!-- value="2023-01-01" [value]="(selectedDate | date:'yyyy-mm-dd')"-->
+    <ion-datetime [presentation]="month_year ? 'month-year' : 'date'" (ionChange)="onDateChange($event)"
+      [value]="selectedDate"></ion-datetime>
+  </div>
+</div>

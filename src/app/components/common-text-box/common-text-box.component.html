@@ -1,0 +1,11 @@
+<div class="border w-100 bg_white">
+  <quill-editor (keyup.enter)="onsubmit()" (click)="handlePropo($event)" class="text-editor1" [class.hideToolbar]="!toolbarShow" [modules]="modules" [(ngModel)]="message_data"
+    [ngModelOptions]="{standalone: true}"
+    [placeholder]="placeholder"
+    style="min-height:40px;width:100%">
+  </quill-editor>
+  <div class="p-10 d__flex just-e gap-10">
+    <ion-icon class="mouse" (click)="enableEditor()" name="create-outline"></ion-icon>
+    <ion-icon (click)="onsubmit()" class="mouse" name="send-outline"></ion-icon>
+  </div>
+</div>

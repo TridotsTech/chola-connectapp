@@ -1,0 +1,11 @@
+<app-website-form-header [close_btn]="false" [Title]="'Select Job'"></app-website-form-header>
+
+<div *ngIf="jobOpeningList && jobOpeningList.length != 0" class="jobList">
+  <div *ngFor="let item of jobOpeningList" class="jobBox mouse" [class.selectedItem]="item['isSelected']" (click)="sendJob(item)">
+    <div>
+      <p class="m-0 fnt-14 fnt_w500">{{item.job_title}}</p>
+      <p class="m-0 fnt-13 gray_clr">{{item.name}}</p>
+    </div>
+    <app-status [status]="item.status"></app-status>
+  </div>
+</div>

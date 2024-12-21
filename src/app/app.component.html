@@ -1,0 +1,47 @@
+<ion-app [ngStyle]= "db.set_primary_color(db.sales_dashboard)">
+  <ion-menu *ngIf="db.cust_name && (db.path == '/' || db.path == '/dashboard' || db.path == '/tabs/dashboard')" [class.attach_menu]="db.attachment_menu" contentId="main" menuId="main" [side]="db.ismobile?'start':'end'">
+    <ion-content class="menu__content" [ngClass]="db.ismobile?'side-menu-bg':''">
+      <app-mobile-menu  *ngIf="db.ismobile "></app-mobile-menu>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet main [animated]="db.ismobile" id="main"></ion-router-outlet>
+  <ion-content>
+    
+    <ion-split-pane *ngIf="db.side_menu_show && db.path" contentId="main" class="profileMenu">  
+      
+      <div *ngIf="!db.ismobile && !(db.path.includes('web-page?'))  && !(db.path == '/register') && db.path != '/page-not-found'"  (click)="db.profile_side_menu =! db.profile_side_menu" class="profile_more mouse" [class.side_active]="db.profile_side_menu">
+          <ion-icon class="profile_icon" [name]="db.profile_side_menu ? 'chevron-forward-outline' : 'chevron-back-outline' "></ion-icon>
+      </div>
+
+      <div autoHide="false" *ngIf="!db.ismobile && !(db.path.includes('web-page?'))  &&  !(db.path == '/register') && db.path != '/page-not-found'" [class.container_profile]="db.profile_side_menu"  class="container__">
+        <div class="container_1 ">
+          <!-- <app-mobile-menu></app-mobile-menu> -->
+          <app-side-tabs type="menu"></app-side-tabs>
+          <div [class.progress_]="db.profile_side_menu">
+            <!-- <app-profile-card type="side_bar"></app-profile-card> -->
+            <!-- <app-side-tabs type="policy"></app-side-tabs> -->
+          </div>
+        </div>
+      </div>
+      <ion-router-outlet main [animated]="db.ismobile" id="main"></ion-router-outlet>
+    </ion-split-pane>
+
+    <ion-split-pane *ngIf="!db.side_menu_show"  contentId="main" class="profileMenu">
+      <ion-router-outlet  main [animated]="db.ismobile" id="main" ></ion-router-outlet>
+    </ion-split-pane>
+
+  </ion-content>
+
+  <!-- {{alert_animatings | json}} -->
+  <div *ngIf="alert_animatings && alert_animatings.length != 0" class="alert_msg tostifyy" [ngClass]="db.success_alert ? 'success__alert' : 'error__alert'">
+    <div class="tostify d__flex" *ngFor="let item of alert_animatings; let i = index" (click)="alert_animatings.splice(i, 1)">
+      <div class="success-txt">
+        <span>{{item}}...</span>
+      </div>
+      <ion-icon name="close-outline"></ion-icon>
+    </div>
+  </div>
+
+</ion-app>
+
+

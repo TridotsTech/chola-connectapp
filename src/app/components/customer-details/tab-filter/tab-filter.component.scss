@@ -1,0 +1,30 @@
+.color_unset {
+    color: unset !important;
+}
+
+
+.p510 {
+    border-radius: 7px;
+    height: 30px;
+    padding: 0 8px;
+}
+
+.filter_inputs {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.activeFilter {
+    border: 1px solid #069855;
+    background: #e4f4ec;
+}
+
+.actionButtonSelect {
+    select {
+        width: 100px;
+        border-color: var(--primary-color);
+        border-radius: 5px;
+        padding: 3px;
+    }
+}

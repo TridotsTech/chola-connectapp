@@ -1,0 +1,21 @@
+<div class="calendar-picker">
+  <div class="calendar-header">
+    <button (click)="changeMonth(-1)" class="nav-button">&#10094;</button>
+    <h3 class="m-0 fnt-16 fnt_w700">{{ months[currentMonth] }} {{ currentYear }}</h3>
+    <button (click)="changeMonth(1)" class="nav-button">&#10095;</button>
+  </div>
+
+  <div class="days-of-week">
+    <div class="days" *ngFor="let day of daysOfWeek">{{ day }}</div>
+  </div>
+
+  <div class="calendar-days-wrapper" [class.slide-left]="slideDirection === 'left'" [class.slide-right]="slideDirection === 'right'" (animationend)="resetAnimation()">
+    <div class="calendar-days">
+      <!-- (click)="selectDate(day)" -->
+      <div *ngFor="let day of days" class="bg-change" [class.selected]="isSelected(day?.day)" [class.disabled]="day?.isDisabled" [ngStyle]="day?.styles">
+        <span  class="weekday" *ngIf="day" class="bg-change" [ngStyle]="{color: day?.styles?.color}">{{ day.day }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,226 @@
+<div class="w-100 d__flex just-s p-5-10 border-b" *ngIf="!skeleton && doctype == 'Employee' && employeeDetail">
+
+  <div class="d__flex gap-10">
+    <ion-icon class="fnt-20" slot="start" (click)="collapseList()" src="/assets/img/grip-horizontal.svg"></ion-icon>
+    <div class="d__flex gap-10">
+      <div class="avatar">
+        <p class="av_name">
+          {{employeeDetail.employee_name ? employeeDetail.employee_name.slice(0, 2) : ''}}
+        </p>
+      </div>
+      <div>
+        <p class="m-0 fnt-16 fnt_w500">{{employeeDetail.employee_name}}</p>
+        <p class="m-0 fnt-12 gray_clr">{{employeeDetail.employee}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="d__flex gap-10 buttons_save">
+    <ion-button [disabled]="button_loader" class="next_prev" expand="block" fill="clear" (click)="next_doc(1)"><ion-icon
+        class="gray_clr" name="chevron-back-outline"></ion-icon></ion-button>
+    <ion-button [disabled]="button_loader" class="next_prev" expand="block" fill="clear" (click)="next_doc(0)"><ion-icon
+        class="gray_clr" name="chevron-forward-outline"></ion-icon></ion-button>
+    <ion-button *ngIf="isSaveBtn" class="save-btn" expand="block" fill="clear"
+      (click)="save_details()">Save</ion-button>
+    <ion-icon class="fnt-25 primary_clr mouse" (click)="close_detail()" name="close-circle-outline"></ion-icon>
+  </div>
+</div>
+
+<!-- [@fadeInOut] -->
+
+<div *ngIf="!skeleton && employeeDetail" class="employeeDetail_section" [class.disableList]="collapseListIcon">
+
+  <div *ngIf="doctype == 'Employee'" class="flex-1">
+    <div class="search border-b">
+      <app-common-search [noFilter]="true" placeholder="Search" (call_clear_txt)="clear_txt('')"
+        (search_txt_value)="searchTxtValue($event)"></app-common-search>
+    </div>
+
+    <div *ngIf="listSkeleton" class="section-h">
+      <div class="d__flex skeleton_">
+        <div class="d__flex box_ gap-10"
+          *ngFor="let i of [1, 2, 3, 4 ,5, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3, 4 ,5, 1, 6]">
+          <ion-skeleton-text animated style="width: 90px; height: 70px;border-radius: 5px;"></ion-skeleton-text>
+          <div class="w-100">
+            <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!listSkeleton && employeeList && employeeList.length == 0" class="bodySec">
+      <app-no-record-found [column]="true" [height]="'calc(100vh - 250px)'" [heading]="'No record found'"
+        [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    </div>
+
+    <div #tabList *ngIf="!listSkeleton && employeeList && employeeList.length != 0" class="bodySec"
+      (scroll)="loadMoreEmployee($event)">
+      <div (click)="loadEmployee(item)" [class.selectBox]="selectedIndexs == i"
+        *ngFor="let item of employeeList;let i = index" class="box-Ui mouse">
+        <div class="d__flex gap-10 employee_">
+          <div [class.image_div]="item.image" class="absolute_">
+            <div class="dot_active">
+              <div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}">
+              </div>
+            </div>
+            <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+            <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+          </div>
+          <div>
+            <p class="m-0 mb-5 fnt-14 fnt_w500 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+            <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start"
+                src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+            <div class="d__flex gap-5">
+              <ion-icon class="fnt-16" slot="start" src="/assets/img/designation.svg"></ion-icon>
+              <p class="m-0 fnt-12 gray_clr webkit-text w-100" [style.--line]="1">{{item.designation ? item.designation
+                : '-'}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="wish_list gap-15">
+          <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5 year_ago">{{getDateDifference(item.date_of_joining)}}</p>
+          <ion-icon (click)="add_wish($event, item)" class="fnt-16" class="mb-5 mouse" slot="start"
+            [src]="item['liked_status'] == 'Yes' ? '/assets/img/heart-fill.svg' : '/assets/img/heart.svg'"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="!skeleton" [class.flex-2]="doctype == 'Employee'"
+    [class.employeeDetail]="doctype == 'Employee'" class="w-100">
+    <div *ngIf="doctype == 'Employee'">
+      <div class="border-box">
+        <div class="relative border-r">
+          <div *ngIf="employeeDetail.image" class="image_div">
+            <img [src]="db.product_img(employeeDetail.image)" alt="">
+          </div>
+          <p *ngIf="!employeeDetail.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">
+            {{employeeDetail.employee_name[0]}}</p>
+          <ion-icon class="mouse camera" (click)="file_upload.click()" name="camera"></ion-icon>
+          <input #file_upload type="file" class="img-input" (change)="changeListener1($event)" multiple>
+        </div>
+        <div class="detail">
+          <div class="upper_sec">
+            <div>
+              <div class="d__flex gap-20 mb-5">
+                <p class="m-0 fnt-15 fnt_w500">{{employeeDetail.employee_name}}</p>
+                <p class="m-0 fnt-14 d__flex gap-10"
+                  [ngStyle]="{'color': employeeDetail.status == 'Active' ? '#28A713' : '#E21B22'}"><ion-icon
+                    slot="start" src="/assets/img/active-dot.svg"></ion-icon>{{employeeDetail.status}}</p>
+              </div>
+              <p class="m-0 fnt-14 d__flex gap-5 rewards_"
+                *ngIf="employeeDetail.leave_balance && employeeDetail.leave_balance.length == 0"><ion-icon slot="start"
+                  src="/assets/img/rewards.svg"></ion-icon> 2 Rewards</p>
+              <div *ngIf="employeeDetail.leave_balance && employeeDetail.leave_balance.length != 0"
+                class="leavesDetails">
+                <div *ngFor="let itemLeaves of employeeDetail.leave_balance;let i = index;let last = last;">
+                  <p class="m-0 fnt-14 pr-5" [class.border-r]="!last">{{itemLeaves.label}}: <span
+                      class="fnt_w500">{{itemLeaves.count}}</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="d__flex gap-10">
+              <ion-icon [class.opacity]="!employeeDetail.user_id" class="fnt-30 mouse"
+                (click)="employeeDetail.user_id ? social('mail', employeeDetail.user_id) : null" slot="start"
+                src="/assets/img/mail.svg"></ion-icon>
+              <ion-icon [class.opacity]="!employeeDetail.cell_number" class="fnt-30 mouse"
+                (click)="employeeDetail.cell_number ? social('wahtsapp', employeeDetail.cell_number) : null"
+                slot="start" src="/assets/img/whatsapp.svg"></ion-icon>
+            </div>
+          </div>
+          <div class="bottom_sec">
+            <div class="box__">
+              <p class="m-0 fnt-12 gray_clr mb-5">Employee ID</p>
+              <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.employee}}</p>
+            </div>
+            <div class="box__">
+              <p class="m-0 fnt-12 gray_clr mb-5">Company</p>
+              <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.company}}</p>
+            </div>
+            <div class="box__">
+              <p class="m-0 fnt-12 gray_clr mb-5">Designation</p>
+              <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.designation ? employeeDetail.designation : '-'}}</p>
+            </div>
+            <div class="box__">
+              <p class="m-0 fnt-12 gray_clr mb-5">Department</p>
+              <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.department ? employeeDetail.department : '-'}}</p>
+            </div>
+            <div class="box__">
+              <p class="m-0 fnt-12 gray_clr mb-5">Experience</p>
+              <p class="m-0 fnt-14 fnt_w500 max">{{employeeDetail.date_of_joining ?
+                getDateDifference(employeeDetail.date_of_joining) : '-'}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="min-h"
+      [class.d_none]="doctype == 'Project' && (!this.collapseListIcon && db.get_saleslist.data && db.get_saleslist.data.length == 0)"
+      [class.d___flex]="doctype == 'Project'" *ngIf="segment_name == 'Overview'">
+      <div [class.overview_section]="!db.employee_role && !employeeRole"
+        [class.w-100]="(db.employee_role || employeeRole)">
+        <app-new-wizard-form [loaderTabs]="true" [loaderEnabled]="true" [enabled_read_only]="readonly"
+          [hideCosting]="(db.employee_role || employeeRole) ? true : false" loaderEnabledHeight="calc(100vh - 250px)"
+          [edit_form]="1" [forms_route]="forms_route" [tabs_top]="1"
+          [edit_form_values]="employeeDetail"></app-new-wizard-form>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<div *ngIf="skeleton && !db.ismobile && doctype == 'Employee'" class="">
+
+  <div class="headers d__flex just-s">
+    <ion-skeleton-text animated style="width: 55%; height: 36px;border-radius: 5px;"></ion-skeleton-text>
+    <div class="d__flex gap-10">
+      <ion-skeleton-text animated style="width: 50px; height: 36px;border-radius: 5px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 50px; height: 36px;border-radius: 5px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100px; height: 36px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+  </div>
+
+  <div class="skeleton">
+
+    <div class="d__flex head-sec">
+      <div class="sec-1">
+        <ion-skeleton-text animated style="width: 100px; height: 100px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+      <div class="sec-2 w-100">
+        <div class="box-1">
+          <ion-skeleton-text animated style="width: 75%; height: 22px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 20%; height: 22px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+
+        <div class="box-2">
+          <div class="sec" *ngFor="let i of [1,2,3,4]">
+            <ion-skeleton-text animated style="width: 75%; height: 22px;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 50%; height: 22px;border-radius: 5px;"></ion-skeleton-text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d__flex gap-10 search-skeleton">
+      <ion-skeleton-text *ngFor="let i of [1,2,3,4,5,6]" animated
+        style="width: 100px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+    </div>
+
+    <div class="formUi">
+      <div *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,1,2,3,4,5,6]">
+        <ion-skeleton-text animated
+          style="width: 50%; height: 20px;border-radius: 5px;margin:7px 0;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 95%; height: 40px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+    </div>
+  </div>
+</div>
+
+

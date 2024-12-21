@@ -1,0 +1,25 @@
+<div class="forms__">
+  <div class="d__flex gap-10 mar-0-10">
+    <ion-icon class="mouse" (click)="modalCtrl.dismiss()" name="chevron-back-outline"></ion-icon>
+    <p class="fnt_w500 fnt-14 white">Employee Filter</p>
+  </div>
+</div>
+
+<div class="p-10 attendance_tool_filter">
+  <ion-input class="fnt-14" placeholder="Select Company" type="text" [(ngModel)]="company_" (click)="db.open_drop_down_options('Company','company','','')">
+    <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+  </ion-input>
+
+  <ion-input class="fnt-14" placeholder="Select Department" type="text" [(ngModel)]="department_" (click)="db.open_drop_down_options('Department','department','','')">
+    <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+  </ion-input>
+
+  <ion-input class="fnt-14" placeholder="Select Branch" type="text" [(ngModel)]="branch_" (click)="db.open_drop_down_options('Branch','branch','','')">
+    <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+  </ion-input>
+</div>
+
+<div class="footer" >
+  <ion-button class="clear_" (click)="clear_filter()">Clear</ion-button>
+  <ion-button class="apply_" (click)="apply_filter()">Apply</ion-button>
+</div>

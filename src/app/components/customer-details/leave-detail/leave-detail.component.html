@@ -1,0 +1,93 @@
+<div class="full_div">
+  <div class="body_sec">
+    <div class="p-10">
+      <div class="dash_board">
+        <img class="blue" src="/assets/timesheet/blue.svg" />
+        <img class="yellow" src="/assets/timesheet/yellow.svg" />
+        <img class="detail_img" *ngIf="emp_detail && emp_detail.image" [src]="db.product_img(emp_detail.image)" />
+        <p *ngIf="emp_detail && !emp_detail.image && emp_detail.employee_name" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{emp_detail.employee_name[0]}}</p>
+    
+        <div class="w-100">
+          <div class="d__flex gap-10 just-s pb-5 flex-wrap">
+            <h6 class="m-0 bold_name-14" >{{data.employee_name}}</h6>
+          </div>
+    
+          <div class="d__flex  just-s gap-5 pb-5">
+            <p class="m-0 text_2 fnt-13">{{data.employee}}</p>
+            <h6 class="m-0 fnt-11" *ngIf="emp_detail && emp_detail.date_of_joining">{{getDateDifference(emp_detail.date_of_joining)}} </h6>
+          </div>
+          <div class="d__flex gap-5"><ion-icon class="fnt-14" src="/assets/leaves/job.svg"></ion-icon>
+            <p class="m-0 text_2 fnt-12" *ngIf="emp_detail && emp_detail.designation">{{emp_detail.designation}}</p>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    
+    <div class="border-t border-b p-10">
+      <div class="d__flex gap-10 just-s pb-10">
+        <h6 class="m-0 fnt-14 text_2">Total Allocated Leaves</h6>
+        <h6 class="m-0 fnt-14 leave">{{(dash_board && dash_board.length > 0) ? dash_board[0]['count'] : 0}}</h6>
+      </div>
+    
+      <div class="d__flex gap-10 just-s">
+        <h6 class="m-0 fnt-14 text_2">Balance Leaves</h6>
+        <h6 class="m-0 fnt-14">{{data.leave_balance ? data.leave_balance : 0}}</h6>
+      </div>
+    </div>
+    
+    <div class="p-10 border-b">
+    
+      <div class="d__flex just-s w-100 mb-10">
+        <h6 class="m-0 text_2_h">Leave Details</h6>
+        <ion-icon name="create-outline" *ngIf="data && data.docstatus == 0" (click)="editLeaveApplication(data)"></ion-icon>
+      </div>
+
+      <div class="d__flex gap-20 flex-wrap pb-10">
+        <h6 class="m-0 text_2 fnt-13 flex-35">Status</h6>
+        <app-status [status]="data.status ? data.status : data.workflow_state"></app-status>
+      </div>
+    
+      <div class="d__flex gap-20 flex-wrap pb-10">
+        <h6 class="m-0 text_2 fnt-13 flex-35">Series</h6>
+        <p class="m-0 fnt-14">{{data.name}}</p>
+      </div>
+    
+      <div class="d__flex gap-20 flex-wrap pb-10">
+        <h6 class="m-0 text_2 fnt-13 flex-35">Leave Type</h6>
+        <p class="m-0 fnt-14">{{data.leave_type}}</p>
+      </div>
+    
+      <div class="d__flex gap-20 flex-wrap pb-10">
+        <h6 class="m-0 text_2 fnt-13 flex-35">From Date</h6>
+        <p class="m-0 fnt-14">{{data.from_date}}</p>
+      </div>
+    
+      <div class="d__flex gap-20 flex-wrap pb-10">
+        <h6 class="m-0 text_2 fnt-13 flex-35">To Date</h6>
+        <p class="m-0 fnt-14">{{data.to_date}}</p>
+      </div>
+    
+      <div class="d__flex gap-20 flex-wrap pb-10">
+        <h6 class="m-0 text_2 fnt-13 flex-35">Total Days</h6>
+        <p class="m-0 fnt-14">{{data.total_leave_days}}</p>
+      </div>
+        
+    </div>
+    
+    <div class="p-10">
+      <h6 class="m-0 text_2_h">Reason</h6>
+      <p class="m-0 fnt-13 gray_clr capitalize reason_">{{data.description}}</p>
+    </div>
+    
+  </div>
+
+  <div class="d__flex gap-10 p-1015 btnSec" [class.wi-100]="data.docstatus == 1" *ngIf="db.hr_manager_role">
+    <div class="btn1 d__flex mouse" *ngIf="data.docstatus != 1" (click)="leave_confirms($event,data,'Reject')"><ion-icon name="close-outline" alt=""></ion-icon><span class="fnt-12 m-0">Reject</span></div>
+    <div class="btn2 d__flex mouse" *ngIf="data.docstatus != 1" (click)="leave_confirms($event,data,'Approve')"><ion-icon name="checkmark-outline" alt=""></ion-icon><span class="fnt-12 m-0">Approve</span></div>
+  </div>
+
+  <div class="d__flex gap-10 p-1015 btnSec" *ngIf="!db.hr_manager_role">
+    <div class="btnWithdraw d__flex mouse" (click)="withdrawLeave()"><ion-icon name="refresh-outline"></ion-icon><span class="fnt-12 m-0">Withdraw my leave</span></div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+.updateTimesheet {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .header {
+    padding: 0 10px;
+    border-bottom: 1px solid #ddd;
+
+    ion-icon {
+      background: var(--dynamic-color);
+      border-radius: 50%;
+      padding: 5px;
+      color: #ffff;
+    }
+
+    .white {
+      color: var(--dynamic-color);
+    }
+  }
+
+  .body_sec {
+    overflow: auto;
+    height: 100%;
+    padding: 0 0 20px 0;
+  }
+
+  .body_sec::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+.employeeDetails {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 10px;
+  position: relative;
+
+  .details {
+    gap: 8px;
+
+    .title {
+      .name {
+        width: 65%;
+      }
+
+      .label {
+        background: #f1f1f1;
+        padding: 4px 10px;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+    }
+
+    .id {
+      margin: 5px 0;
+    }
+
+    .role {
+      .workIcon {
+        height: 16px;
+        width: 16px;
+      }
+    }
+
+    .imageDiv {
+      height: 75px;
+      width: 110px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f1f1;
+
+      img {
+        height: 70px;
+        width: 100%;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+.opacity {
+  opacity: 0.3;
+}
+
+.detailViewJob {
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: unset;
+
+  .Icon {
+    height: 15px;
+    width: 16px;
+    margin: 0px 0px 0 5px;
+    vertical-align: middle;
+  }
+
+  h4:nth-child(odd) {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-color);
+    width: calc(40% - 10px);
+    margin: 10px 0;
+  }
+
+  h4:nth-child(even) {
+    font-size: 15px;
+    font-weight: 500;
+    width: 50%;
+    margin: 10px 0;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.detailView {
+
+  .Icon {
+    height: 15px;
+    width: 16px;
+    margin: 0px 0px 0 5px;
+    vertical-align: middle;
+  }
+
+  .heading {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-color);
+    margin: 10px 0;
+    width: 30%;
+  }
+
+  h4:nth-child(even) {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 10px 0;
+    text-transform: capitalize;
+  }
+}
+
+.resume {
+  font-size: 12px !important;
+  color: #000ee5 !important;
+  text-decoration: underline;
+}
+
+.leavesDetails {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 10px;
+
+  .box__ {
+    border: 1px solid var(--border-col);
+    padding: 7px;
+    border-radius: 5px;
+  }
+}

@@ -1,0 +1,28 @@
+<div class="timepicker">
+  <div class="px-10">
+    <p class="m-0 mouse fnt-13" (click)="togglePicker()">{{selectedHr + " : " + (selectedMin ? selectedMin : '0') + " : " + selectedType}}</p>
+  </div>
+
+  <div class="timepicker_div" *ngIf="show_picker">
+    <div class="custom-hr-h">
+      <div class="values" [class.selected]="selectedHr == hr.value" *ngFor="let hr of hours"
+        (click)="setHours(hr.value)" [id]="hr.value">
+        <p class="m-0">{{hr.value}}</p>
+      </div>
+    </div>
+
+    <div class="custom-hr-h">
+      <div class="values" (click)="selectMinute(min.value)" [class.selected]="selectedMin == min.value"
+        *ngFor="let min of minutes" [id]="'min'+min.value">
+        <p class="m-0">{{min.value}}</p>
+      </div>
+    </div>
+
+    <div class="custom-hr-h">
+      <div class="values" (click)="selectType(t.value)" [class.selected]="selectedType == t.value"
+        *ngFor="let t of type" [id]="t.value">
+        <p class="m-0">{{t.value}}</p>
+      </div>
+    </div>
+  </div>
+</div>

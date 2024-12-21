@@ -1,0 +1,215 @@
+
+
+<form [formGroup]="register_form"  >
+  <div class="d__flex just-s">
+    <div class="input-item"  style="flex: 0 0 calc(50% - 15px);">
+      <label  class="input__title" *ngIf="labels">First Name</label>
+      <div class="custom-input d__flex" [ngClass]="focus.foucs1?'focused':''">
+        <!-- <ion-icon *ngIf="!affiliated" name="person-outline"></ion-icon> -->
+        <ion-input (ionFocus)="focus.foucs1 = true" (ionBlur)="focus.foucs1 = false" type="text" placeholder="Name" name="first_name" formControlName="first_name"> </ion-input>
+      </div>
+      <p class="m-0 error" *ngIf="submitted && !first_name.valid && first_name.errors.required"> First Name is required </p>
+    </div>
+    <div class="input-item" style="flex: 0 0 calc(50% - 15px);">
+        <label  class="input__title" *ngIf="labels">Last Name</label>
+        <div class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+          <!-- <ion-icon *ngIf="!affiliated" name="person-outline"></ion-icon> -->
+          <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="text" placeholder="Lastname" name="last_name" formControlName="last_name" ></ion-input>
+        </div>
+        <p class="m-0 error" *ngIf="submitted && !last_name.valid && last_name.errors.required" > Last Name is required </p>
+    </div>
+  </div>
+
+  <div class="input-item" >
+    <label  class="input__title"  *ngIf="labels">Mobile No</label>
+    <div class="custom-input d__flex" [ngClass]="focus.foucs3?'focused':''">
+      <!-- <ion-icon *ngIf="!affiliated" name="mail-outline"></ion-icon> -->
+      <ion-select value="+91" formControlName="country_code" class="country_code" [(ngModel)]="default_code">
+        <ion-select-option *ngFor="let code of country_codes" value="{{code}}">{{code}}</ion-select-option>
+      </ion-select>
+      <ion-input (ionFocus)="focus.foucs3 = true" (ionBlur)="focus.foucs3 = false" type="number" placeholder="Number" name="number" formControlName="mobile_no"> </ion-input>
+    </div>
+    <p class="m-0 error" *ngIf="submitted && !mobile_no.valid && mobile_no.errors.required">Enter Your Mobile Number</p>
+    <p class="m-0 error" *ngIf="submitted && !mobile_no.valid && mobile_no.errors.pattern">Enter a valid Mobile Number</p>
+    <!-- <p class="m-0 error" *ngIf="submitted && !mobile_no.valid && mobile_no.errors.required" > Mobile No is required </p>
+    <p class="m-0 error" *ngIf="submitted && !mobile_no.valid && mobile_no.errors.email" > Not a valid Number </p> -->
+</div> 
+
+  <div class="input-item" >
+      <label  class="input__title"  *ngIf="labels">Email</label>
+      <div class="custom-input d__flex" [ngClass]="focus.foucs3?'focused':''">
+        <!-- <ion-icon *ngIf="!affiliated" name="mail-outline"></ion-icon> -->
+        <ion-input (ionFocus)="focus.foucs3 = true" (ionBlur)="focus.foucs3 = false" type="text" placeholder="Email" name="email" formControlName="user_email"> </ion-input>
+      </div>
+      <p class="m-0 error" *ngIf="submitted && !user_email.valid && user_email.errors.required" > Email-Id is required </p>
+      <p class="m-0 error" *ngIf="submitted && !user_email.valid && user_email.errors.email" > Not a valid Email </p>
+  </div>
+
+  <div *ngIf="false" class="input-item">
+    <label  class="input__title" *ngIf="labels">High level of education</label>
+    <!-- <div class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+      <ion-icon *ngIf="!affiliated" name="person-outline"></ion-icon>
+      <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="text" placeholder="Select" name="education" formControlName="education"  [(ngModel)]="register_data.education"></ion-input>
+    </div> -->
+    <!-- <ion-list>
+      <ion-item>
+        <ion-select interface="popover" placeholder="Select" value="">
+          <ion-select-option value="apples">Bachelor</ion-select-option>
+          <ion-select-option value="oranges">Master's</ion-select-option>
+          <ion-select-option value="bananas">School</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list> -->
+    <ion-select  class="custom-input" placeholder="Select" interface="popover" formControlName="education_level" (ionChange)="value_changed($event)" [value]="register_data.education_level">
+      <ion-select-option *ngFor="let c of values" value="{{c.label}}">{{c.label}}</ion-select-option>
+    </ion-select>
+    <p class="m-0 error" *ngIf="submitted && !education_level.valid && education_level.errors.required" > Education is required </p>
+  </div>
+
+  <div *ngIf="false" class="input-item">
+    <label  class="input__title" *ngIf="labels">Current/Most Recent job title</label>
+    <div class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+      <!-- <ion-icon *ngIf="!affiliated" name="person-outline"></ion-icon> -->
+      <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="text" placeholder="E.g: Regional Manager, Student" name="job_title" formControlName="most_recent_job_title" ></ion-input>
+    </div>
+    <p class="m-0 error" *ngIf="submitted && !most_recent_job_title.valid && most_recent_job_title.errors.required" > Job  title is required </p>
+  </div>
+
+  <div *ngIf="false" class="input-item">
+    <label  class="input__title" *ngIf="labels">Current/Most Recent Salary</label>
+    <div class="salary_buttons">
+      <!-- <ion-input class="my-10"  name="Salary Type" formControlName="salary_type" (click)="salary_val($event)"> -->
+        <ion-list class="d__flex gap-5" lines="none">
+            <ion-button *ngFor="let item of cur_salary;let i=index" (click)="button_true(cur_salary,i)" [class.selected]="item.button" fill="clear">{{item.label}}</ion-button> 
+        </ion-list>
+      <!-- </ion-input> -->
+    </div>
+
+    <div  class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+      <!-- <ion-icon *ngIf="!affiliated" name="person-outline"></ion-icon> -->
+      <!-- <input name="Annual Salary" formControlName="annual_salary"  [(ngModel)]="register_data.annual_salary" id='numeric' value='1'  />  -->
+
+      <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="number" placeholder="Annual salary" name="Annual Salary" formControlName="annual_salary"></ion-input>
+    </div>
+
+    <p class="m-0 error" *ngIf="submitted && !salary_type.valid && salary_type.errors.required" > Salary is required </p>
+  </div>
+
+  <div class="input-item" *ngIf="false">
+    <label  class="input__title" *ngIf="labels">Current/Most Recent Salary</label>
+    <div  class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+     <!-- <ion-icon *ngIf="!affiliated" name="person-outline"></ion-icon> -->
+     <!-- <input name="Annual Salary" formControlName="annual_salary"  [(ngModel)]="register_data.annual_salary" id='numeric' value='1'  />  -->
+     <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="text" placeholder="Annual salary" name="Annual Salary" formControlName="annual_salary"></ion-input>
+    </div>
+  </div>
+
+  <div class="input-item">
+    <div class="d__flex">
+      <label  class="input__title" *ngIf="labels">Password </label>
+    </div>  
+      <div class="custom-input d__flex" [ngClass]="focus.foucs4?'focused':''">
+        <!-- <ion-icon (click)="show_pass =! show_pass" [name]="(show_pass)?'lock-closed-outline':'lock-open-outline'"></ion-icon> -->
+        <ion-input (ionFocus)="focus.foucs4 = true" (ionBlur)="focus.foucs4 = false" [type]="(!show_pass_confirm)?'password':'text'" placeholder="Password" name="password" formControlName="password"> </ion-input>
+        <ion-icon class="mouse" (click)="show_pass_confirm ?show_pass_confirm = false: show_pass_confirm = true" [name]="(!show_pass_confirm)? 'eye':'eye-off'"></ion-icon>
+      </div>
+      <p class="m-0 error" *ngIf="submitted && !password.valid && password.errors.required"> Password is required </p>
+  </div>
+
+  <div class="input-item">
+    <label class="input__title ">Confirm Password</label>
+    <!-- <div *ngIf="db.website_settings.password_validation" class="alert__">
+      <div class="p_alert mouse" (mouseenter)="db.password_alert = true" (mouseleave)="db.password_alert = false">
+        <img src="/assets/icon/help.svg">
+      </div>
+      <div *ngIf="db.password_alert" class="pop_up">
+         <p class="m-0 txt fnt-12">Minimum of <span>{{db.website_settings.password_validation.min_password_length}}</span> character and must contain atleast <span>{{db.website_settings.password_validation.password_policy}}</span></p>
+      </div>
+    </div> -->
+    <div class="custom-input  d__flex j-s" [ngClass]="focus.foucs3?'focused':''">
+        <ion-input (ionFocus)="focus.foucs3 = true" (ionBlur)="focus.foucs3 = false" [type]="(!show_pass_confirm1)?'password':'text'" placeholder="confirm password" formControlName="c_password" name="c_password"></ion-input>
+        <ion-icon class="mouse" (click)="show_pass_confirm1?show_pass_confirm1 = false: show_pass_confirm1 = true" [name]="(!show_pass_confirm1)? 'eye':'eye-off'"></ion-icon>
+    </div>
+    <div *ngIf="submitted && !c_password?.valid">
+        <!-- <p class="error" *ngIf="c_password.errors.required">Confirm password is required</p> -->
+    </div>
+</div>
+<div *ngIf="source_array " class="input-item">
+  <label class="m-0 input__title">Selected resource</label>
+   <div class="d__flex primary_source" >
+    <p *ngFor="let source of source_array" class="m-0 source"> 
+      {{source}}
+    </p>             
+   </div>
+   <ion-button class="btn btn-primary edit_button" fill="clear" routerLink="/p/pricing">Edit</ion-button>
+</div>
+  <!-- <div class="input-item" *ngIf="db.website_settings.enable_referral == 1 && false" >
+    <label  class="input__title" *ngIf="labels">Referral</label>
+    <div class="custom-input" [ngClass]="focus.foucs7?'focused':''">
+      <ion-input (ionFocus)="focus.foucs7 = true" (ionBlur)="focus.foucs7 = false" type="text" placeholder="Referral" name="referral" formControlName="referral"  [(ngModel)]="register_data.referral"> <ion-icon name="person-outline"></ion-icon> </ion-input>
+    </div>
+    <p class="m-0 error" *ngIf="submitted && !pwd.valid && pwd.errors.required"> Password is required </p>
+  </div> -->
+
+  <!-- <div class="input-item" *ngIf="!affiliated">
+    <label class="input__title" *ngIf="labels">Mobile Number</label>
+    <div class="custom-input d__flex" [ngClass]="focus.foucs5?'focused':''">
+      <ion-icon name="call-outline"></ion-icon>
+      <ion-input (ionFocus)="focus.foucs5 = true" (ionBlur)="focus.foucs5 = false"  type="tele"  placeholder="Mobile Number" name="phone" formControlName="phone"  [(ngModel)]="register_data.phone"></ion-input>
+    </div>
+    <div class="error-container">
+      <p class="m-0 error" *ngIf="submitted && !phone.valid && phone.errors.required"> mobile number is required </p>  
+      <p class="m-0 error" *ngIf="submitted && !phone.valid && phone.errors.pattern" > Not a valid mobile number </p>  
+      <p class="m-0 error" *ngIf="submitted && !phone.valid && phone.errors.pattern.actualValue &&phone.errors.pattern.actualValue == 'undefined'"> mobile number is required </p>
+      <p class="m-0 error" *ngIf="submitted && !phone.valid && phone.errors.pattern.actualValue &&phone.errors.pattern.actualValue != 'undefined' && phone.errors.pattern" > Not a valid mobile number </p>  
+    </div>
+  </div> -->
+
+  <!-- For Affiliated Register -->
+  <!-- <div class="input-item" *ngIf="affiliated">
+    <label  class="input__title" *ngIf="labels">Your Website</label>
+    <div class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="text" placeholder="Website" name="website" formControlName="website"  [(ngModel)]="register_data.website"></ion-input>
+    </div>
+    <p class="m-0 error" *ngIf="submitted && !website.valid && website.errors.required"> website is required </p>
+ </div> -->
+ <!-- <div class="input-item" *ngIf="affiliated">
+  <label  class="input__title" *ngIf="labels">How will you promote us?</label>
+  <div class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+    <ion-icon name="person-outline"></ion-icon>
+    <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="text" placeholder="Promote" name="promote_us" formControlName="promote_us"  [(ngModel)]="register_data.promote_us"></ion-input>
+  </div>
+  <p class="m-0 error" *ngIf="submitted && !promote_us.valid && promote_us.errors.required"> Promote is required </p>
+</div> -->
+
+<!-- <div class="input-item" *ngIf="affiliated">
+  <label  class="input__title" *ngIf="labels">How did you hear about us?</label>
+  <div class="custom-input d__flex" [ngClass]="focus.foucs2?'focused':''">
+    <ion-icon name="person-outline"></ion-icon>
+    <ion-input (ionFocus)="focus.foucs2 = true" (ionBlur)="focus.foucs2 = false" type="text" placeholder="about us" name="about_us" formControlName="about_us"  [(ngModel)]="register_data.about_us"></ion-input>
+  </div>
+  <p class="m-0 error" *ngIf="submitted && !last_name.valid && last_name.errors.required" > website is required </p>
+</div> -->
+</form>
+
+<div class="log-button ion-text-center" >
+  <ion-button   class="action-button m-0" [ngClass]="shake?'shaking':''" expand="full" fill="clear" (click)="register()">Register</ion-button>
+  <p class="m-0 error" *ngIf="alert_message">{{alert_message}}</p>
+</div>
+
+<div>
+  <div id="sign-in-button"></div>
+</div>  
+
+<div >
+  <form [formGroup]="otp_form">
+    <div class="custom-input">
+      <ion-input formControlName="otp_no" type="number" name="" id=""  placeholder='Enter OTP'></ion-input>
+    </div>
+  </form>
+  <div class="d__flex gap-20">
+    <ion-button fill="clear" class="otp_btn" (click)="submit_otp()">Submit</ion-button>
+    <ion-button fill="clear" class="resend_btn" (click)="resend()">Resend</ion-button>
+  </div>
+</div>

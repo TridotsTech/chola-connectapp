@@ -1,0 +1,111 @@
+<app-header title="Leave Withdrawal" [showYear]="false" [model]="false"></app-header>
+
+<ion-content [fullscreen]="true">
+  
+  <div class="section_3">
+    <form [formGroup]="withdrawal_form">
+      
+      <div class="pb-10">
+        <label for="employee" class="pb-10">Employee <span *ngIf="false" class="impt-star"> *</span></label>
+        <div class="custom-input">
+          <ion-input type="text" [disabled]="true" [ngModel]="db.cust_name" [ngModelOptions]="{standalone: true}" placeholder="Employee" class="form-input"></ion-input>
+        </div>
+        <!-- <p class="impt-star pt-5" *ngIf="submitted && !employee.valid && employee.errors.required">Employee is
+          required</p> -->
+      </div>
+
+      <div class="d__flex gap-10">
+        <div class="pb-10">
+          <label for="filter_start_date" class="pb-10">Start Date <span *ngIf="false" class="impt-star"> *</span></label>
+          <app-custom-calendar format="Date" [selectedDate]="filterStartDate" (onChange)="datePickerChange('from_date',$event)"></app-custom-calendar>
+        </div>
+        <div class="pb-10">
+          <label for="filter_end_date" class="pb-10">End Date <span *ngIf="false" class="impt-star"> *</span></label>
+          <app-custom-calendar format="Date" [selectedDate]="filterEndDate" (onChange)="datePickerChange('end_date',$event)"></app-custom-calendar>
+        </div>
+      </div>
+
+      <div class="pb-10">
+        <label for="reason" class="pb-10">Reason <span *ngIf="false" class="impt-star"> *</span></label>
+        <div class="custom-input">
+          <ion-textarea class="text-area" name="reason" formControlName="reason"
+            placeholder="Enter Your reason Here..."></ion-textarea>
+        </div>
+      </div>
+
+      <div class="pb-10 leavePreview">
+        <label for="reason" class="pb-10">Leave Preview</label>
+        <div *ngIf="leave_preview && leave_preview.length != 0">
+          <div *ngFor="let item of leave_preview; let i = index" class="boxes_" (click)="editLeaveLeavePreview(leave_preview,'Leave Preview',item,i)">
+            <div class="d__flex just-s">
+              <div class="d__flex gap-5">
+                <div (click)="eventPropagation($event)" class="checkBox">
+                  <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+                </div>
+  
+                <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} <span class="fnt_w500">To</span> {{item.to_date | date: 'MMM d, y'}}</p>
+              </div>
+              <div class="d__flex">
+                <app-status [status]="item.status"></app-status>
+              </div>
+            </div>
+            <div class="d__flex just-s">
+              <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p>
+              <p class="m-0 fnt-14 d__flex gap-5">{{item.leave_type}}</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="no_record" *ngIf="leave_preview && leave_preview.length == 0">No Leave Preview</p>
+
+        <div class="d__flex just-s withdrawBtn">
+          <div class="d__flex gap-10" *ngIf="newForm">
+            <ion-icon *ngIf="checkIfLeaveSelected()" (click)="deleteLeave()" src="/assets/form/delete.svg" class="fnt-15 delete_icon"></ion-icon>
+            <ion-icon class="add_icon" (click)="addNewForm(leave_preview,'Leave Preview')" name="add-outline"></ion-icon>
+          </div>
+          <ion-button *ngIf="leave_preview && leave_preview.length != 0" (click)="sendLeaveWithdraw()" fill="clear">Withdraw</ion-button>
+        </div>
+      </div>
+
+      <div class="pb-10 leavePreview">
+        <label for="reason" class="pb-10">Leave Withdraw Date</label>
+        <div *ngIf="leave_withdarawal_list && leave_withdarawal_list.length != 0">
+          <div *ngFor="let item of leave_withdarawal_list; let i = index" class="boxes_" (click)="editLeaveLeavePreview(leave_withdarawal_list,'Leave Withdraw',item,i)">
+            <div class="d__flex just-s">
+              <div class="d__flex gap-5">
+                <div (click)="eventPropagation($event)" class="checkBox">
+                  <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+                </div>
+  
+                <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} <span class="fnt_w500">To</span> {{item.to_date | date: 'MMM d, y'}}</p>
+              </div>
+              <div class="d__flex">
+                <app-status [status]="item.status"></app-status>
+              </div>
+            </div>
+            <div class="d__flex just-s">
+              <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p>
+              <p class="m-0 fnt-14 d__flex gap-5">{{item.leave_type}}</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="no_record" *ngIf="leave_withdarawal_list && leave_withdarawal_list.length == 0">No Leave Withdrawal</p>
+
+        <div class="d__flex just-s withdrawBtn">
+          <div class="d__flex gap-10" *ngIf="newForm">
+            <ion-icon *ngIf="checkIfWithdrawSelected()" (click)="deleteWithdraw()" src="/assets/form/delete.svg" class="fnt-15 delete_icon"></ion-icon>
+            <ion-icon class="add_icon" (click)="addNewForm(leave_withdarawal_list,'Leave Withdraw')" name="add-outline"></ion-icon>
+          </div>
+          <ion-button *ngIf="leave_withdarawal_list && leave_withdarawal_list.length != 0" fill="clear" (click)="sendLeavePreview()">Remove Withdraw</ion-button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="submit-btn">
+    <ion-button (click)="sure_submit()" fill="clear">{{sendApproval ? 'Send For Approval' : 'Save'}}</ion-button>
+  </div>
+
+</ion-content>

@@ -1,0 +1,10 @@
+{
+  "name": "Chola HRMS",
+  "integrations": {
+    "capacitor": {},
+    "web": {
+      "suppressGlobal": true
+    }
+  },
+  "type": "angular"
+}

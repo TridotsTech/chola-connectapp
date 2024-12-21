@@ -1,0 +1,42 @@
+.search_filter {
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--border-col);
+}
+
+.employee_att {
+    .s-1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+}
+
+
+.min-h{
+    // min-height: calc(90vh - 110px);
+    min-height: 95vh;
+}
+
+.employee_checkin_list{
+    height: 400px;
+    overflow: auto;   
+}
+
+.employee_checkin_list::-webkit-scrollbar{
+    display: none;
+}
+
+.header-Sec{
+  padding: 0px 0 0 10px;
+  border-bottom: 1px solid var(--border-col);
+  height: 50px;
+}
+
+.w-15{
+    width: 15%;
+}
+
+.h-30{
+    height: 30px;
+}
