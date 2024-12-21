@@ -591,6 +591,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         { doc_type: "Resignation Letter", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
         { doc_type: "Job Opening", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
         { doc_type: "Performance Evaluation", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
+        { doc_type: "Voluntary PF", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
       ]
     } else {
       data = [
@@ -3094,7 +3095,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   }
 
   getSearchScreens(){
-    if(this.doc_type == 'Resignation Letter' || this.doc_type == 'Compensatory Leave Request' || this.doc_type == 'Employee Grievance' || this.doc_type == 'Performance Evaluation'){
+    if(this.doc_type == 'Resignation Letter' || this.doc_type == 'Compensatory Leave Request' || this.doc_type == 'Employee Grievance' || this.doc_type == 'Performance Evaluation' || this.doc_type == 'Voluntary PF'){
       return true
     }else{
       return false

@@ -1,6 +1,6 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
 
-<div class="p-10">
+<div class="p-10" *ngIf="!type">
 
   <div class="d__flex gap-10">
     <div class="pb-10">
@@ -34,6 +34,47 @@
     </ion-select>
   </div>
 
+</div>
+<div class="p-10" *ngIf="type == 'regulariztion'">
+  <div class="gap-10">
+    <div class="pb-10">
+      <label class="pb-10">Date</label>
+      <div class="custom-input">
+        <ion-input type="date" [(ngModel)]="editFormValues.date" placeholder="Date" class="form-input" disabled="true"></ion-input>
+      </div>
+    </div>
+
+    <div class="pb-10">
+      <label class="pb-10">Duration</label>
+      <ion-select aria-label="Duration" interface="popover" placeholder="Duration" mode="md" (ionChange)="changeDuration($event,editFormValues)" [value]="editFormValues.duration">
+        <ion-select-option *ngFor="let types of LeaveType" [value]="types.name">{{types.name}}</ion-select-option>
+      </ion-select>
+    </div>
+
+    <div class="gap-10">
+      <div class="pb-10">
+        <label class="pb-10">Time</label>
+        <div class="custom-input p-10">
+        <app-time-picker [each]="{item:'in_time'}" [selectedTime]="editFormValues.in_time" (onChange)="datePickerChange('in_time',$event)"></app-time-picker>
+      </div>
+      </div>
+    </div>
+
+    <div class="pb-10">
+      <label class="pb-10">Reason</label>
+      <ion-select aria-label="Reason" interface="popover" placeholder="Reason" mode="ios" (ionChange)="changeReason($event,editFormValues)" [value]="editFormValues.reg_reason">
+        <ion-select-option *ngFor="let types of regularizationReason" [value]="types.name">{{types.name}}</ion-select-option>
+      </ion-select>
+    </div>
+
+    <div class="pb-10" *ngIf="editFormValues.reg_reason && editFormValues.reg_reason == 'Others'">
+      <label class="pb-10">Description</label>
+      <div class="custom-input">
+      <ion-textarea [(ngModel)]="editFormValues.description" placeholder="Description" [pattern]="'^[A-Za-z ]*$'" class="form-input" required></ion-textarea>
+    </div>
+    </div>
+
+  </div>
 </div>
 
 <div class="submit-btn">

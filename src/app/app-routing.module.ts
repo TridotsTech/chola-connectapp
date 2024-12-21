@@ -284,9 +284,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/probation-module/performance-evaluation/performance-evaluation.module').then( m => m.PerformanceEvaluationPageModule)
   },
   {
+    path: 'approvals',
+    loadChildren: () => import('./pages/approvals/approvals.module').then( m => m.ApprovalsPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+
 
 
 

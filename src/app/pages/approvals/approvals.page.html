@@ -1,0 +1,41 @@
+<app-header title="Approvals" [showYear]="false" [model]="false"></app-header>
+
+<ion-content [fullscreen]="true">
+
+  <app-common-search (call_clear_txt)="clear_txt($event)" placeholder="Search for Doctype"
+      (search_txt_value)="searchDoctype($event)"></app-common-search>
+
+  <div class="normalSketon" *ngIf="skeleton">
+    <div class="divF d__flex gap-5 just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+      <div class="b-1">
+          <ion-skeleton-text [animated]="true" style="width:90%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:70%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+      <div class="b-2">
+        <ion-skeleton-text [animated]="true" style="width: 65%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:45%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+      </div>
+
+     </div>
+  </div>
+
+  <div *ngIf="!skeleton && approvalList && approvalList.length != 0" class="approvalHeight" (scroll)="load_more($event)">
+    <div *ngFor="let item of approvalList" class="box_" (click)="send_to_detail(item)">
+      <div class="d__flex just-s">
+        <p class="m-0 fnt-13">{{item.reference_doctype}}</p>
+        <p class="m-0 fnt-12"><span class="gray_clr fnt-13">Created: </span>{{item.creation | date: 'MMM d, y'}}</p>
+      </div>
+      <div class="d__flex just-s">
+        <p class="m-0 fnt-12">{{item.reference_name}}</p>
+        <div class="d__flex">
+          <app-status [status]="item.status"></app-status>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-no-record-found *ngIf="!skeleton && no_products && approvalList && approvalList.length == 0" [column]="true"
+    height="calc(100vh - 270px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+</ion-content>

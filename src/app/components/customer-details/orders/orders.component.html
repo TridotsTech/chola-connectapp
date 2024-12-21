@@ -368,6 +368,42 @@
 
 </div>
 
+<!-- Mobile Voluntary PF -->
+
+<div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Voluntary PF' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
+  <div *ngIf="(db.enable_material || db.ismobile)">
+    <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
+      [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+      [class.tab_active_heigth]="db.path.includes('/tabs')">
+      <div id="click_item" [class.selected_item]="db.selectedId == item.name"
+        (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
+        [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
+        class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+        <div class="s-1">
+  
+          <div class="d__flex just-s mb-5">
+            <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[1]]}}</h3>
+            <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2"><span class="fnt-11">Effective From : </span> {{item[db.get_saleslist.keys[6]]}}</h3>
+          </div>
+  
+          <div class="d__flex just-s mb-5">
+            <h2 class="m-0 fnt-13 d__flex gap-5" *ngIf="item[db.get_saleslist.keys[5]]"><span class="fnt-11">Contribution : </span> {{item[db.get_saleslist.keys[5]]}}</h2>
+            <h2 class="m-0 fnt-13 d__flex gap-5" *ngIf="item[db.get_saleslist.keys[3]] && item[db.get_saleslist.keys[5]] == 'Fixed Amount'"><span class="fnt-11">Amount : </span> {{item[db.get_saleslist.keys[3]]}}</h2>
+            <h2 class="m-0 fnt-13 d__flex gap-5" *ngIf="item[db.get_saleslist.keys[4]] && item[db.get_saleslist.keys[5]] == 'Percentage Salary'"><span class="fnt-11">Percentage (out of 100) : </span> {{item[db.get_saleslist.keys[4]]}}</h2>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-common-grid-table height="calc(100vh - 180px)" [rightDetail]="true"
+    *ngIf="!db.ismobile && !db.enable_detail" [detailPage]="true" (go_to_detail)="go_to_detail($event,-1)"
+    [list_data]="db.get_saleslist" [headerData]="db.hr_manager_role ? db.get_saleslist['table'] : employee_table"
+    [doctype]="doc_type"></app-common-grid-table>
+
+</div>
+
 
 <!-- Ticket Mobile -->
 <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"

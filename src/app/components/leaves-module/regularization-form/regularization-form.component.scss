@@ -12,3 +12,18 @@ ion-select {
     min-height: 30px;
     font-size: 14px;
 }
+
+.overflow_auto{
+    overflow-y: auto;
+}
+
+ion-checkbox {
+    --checkbox-background-checked: var(--primary-color);
+    // margin-left: 10px;
+    // height: 100%;
+    --size: 13px;
+}
+
+ion-checkbox::part(container) {
+    border: 2px solid var(--primary-color);
+}

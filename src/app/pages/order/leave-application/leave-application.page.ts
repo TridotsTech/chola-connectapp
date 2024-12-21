@@ -37,7 +37,9 @@ export class LeaveApplicationPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    this.save_only = true;
+    if(!this.editFormValues){
+      this.save_only = true;
+    }
     this.db.drop_down_value = {};
     this.db.parentDoctype = 'Leave Request';
   }
@@ -87,8 +89,10 @@ export class LeaveApplicationPage implements OnInit {
 
     console.log(this.editFormValues,'editFormValues')
     if(this.editFormValues){
+      this.save_only = false;
       this.db.drop_down_value['leave_type'] = this.editFormValues.leave_type ? this.editFormValues.leave_type : ''
       this.leave_form.patchValue(this.editFormValues)
+      this.leave_preview = this.editFormValues.leave_preview ? this.editFormValues.leave_preview : []
     }
   }
 
@@ -296,6 +300,7 @@ export class LeaveApplicationPage implements OnInit {
             setTimeout(() => {
               this.nav.back()
             }, 500);
+            this.save_only = false;
           }else{
             if(res._server_messages){
               let d = JSON.parse(res._server_messages)

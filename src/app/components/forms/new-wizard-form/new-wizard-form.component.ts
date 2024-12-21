@@ -937,6 +937,36 @@ export class NewWizardFormComponent  implements OnInit,OnDestroy {
         if(res && res.fieldname && res.fieldname == 'employee' && this.doctype == "Leave Application" && this.db.hr_manager_role){
           this.get_leave_approver(res.name);
         }
+
+        if(this.doctype == "Voluntary PF" && res.fieldname == 'contribution_type'){
+          console.log(res)
+          
+            this.info.map(resW => {
+              if(res.name == 'Fixed Amount'){
+                if(resW && resW.fieldname == 'amount'){
+                  resW.hidden = 0;
+                  resW.reqd = 1;
+                  this.form_data.setControl(resW.fieldname, this.formBuilder.control('', [Validators.required]));
+                }
+                if(resW && resW.fieldname == 'percentage'){
+                  resW.hidden = 1;
+                  resW.reqd = 0;
+                  this.form_data.setControl(resW.fieldname, this.formBuilder.control(''));
+                }
+              }else{
+                if(resW && resW.fieldname == 'percentage'){
+                  resW.hidden = 0;
+                  resW.reqd = 1;
+                  this.form_data.setControl(resW.fieldname, this.formBuilder.control('', [Validators.required]));
+                }
+                if(resW && resW.fieldname == 'amount'){
+                  resW.hidden = 1;
+                  resW.reqd = 0;
+                  this.form_data.setControl(resW.fieldname, this.formBuilder.control(''));
+                }
+              }
+            })
+        }
       }
       this.db.selecting_drop_down = false;
       this.ref.detectChanges()
@@ -1911,6 +1941,20 @@ export class NewWizardFormComponent  implements OnInit,OnDestroy {
                 res.hidden = 0;
               }else{
                 res.hidden = 1;
+              }
+            }
+          })
+        }
+
+        if(this.doctype == 'Voluntary PF' && this.edit_form_values){
+          this.info.map(res => {
+            if(this.edit_form_values.contribution_type && this.edit_form_values.contribution_type == 'Percentage Salary'){
+              if(res.fieldname == 'percentage'){
+                res.hidden = 0;
+              }
+            }else{
+              if(res.fieldname == 'amount'){
+                res.hidden = 0;
               }
             }
           })

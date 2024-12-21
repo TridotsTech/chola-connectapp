@@ -1,5 +1,5 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
-<div class="p-10">
+<div class="p-10 overflow_auto">
   <div *ngIf="missing_days && missing_days.length != 0">
     <div *ngFor="let item of missing_days; let i = index" class="boxes_" (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)">
       <div class="d__flex just-s">
@@ -12,9 +12,11 @@
         </div>
         <div class="d__flex">
           <!-- <app-status [status]="item.status"></app-status> -->
+          <p class="m-0 fnt-14 d__flex gap-5">{{item.duration}}</p>
         </div>
       </div>
       <div class="d__flex just-s">
+        <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.in_time}} </p>
         <!-- <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p> -->
         <p class="m-0 fnt-14 d__flex gap-5">{{item.reason}}</p>
       </div>

@@ -1476,9 +1476,18 @@ export class DbService {
             },
           ];
 
+          let approval_screen = [
+            {
+              page: 'Approvals',
+              page_name: 'Approvals',
+              route: '/approvals',
+            }
+          ]
+
           // this.project_role ? this.dashboard_values.splice(0, 0, pushProjectMeeting) : null;
           this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
           this.project_role ? this.dashboard_values = [...this.dashboard_values, ...pushProjectMeeting] : null;
+          this.hr_manager_role ? this.dashboard_values = [...this.dashboard_values,...approval_screen] : null;
           this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
         }
         this.chartOptions.series = dash_board.values;

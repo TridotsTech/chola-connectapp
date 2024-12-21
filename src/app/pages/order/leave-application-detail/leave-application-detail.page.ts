@@ -31,7 +31,8 @@ export class LeaveApplicationDetailPage implements OnInit {
   detail_loader = true;
   leaveApplicationDetails: any;
   @ViewChild('tabList') tabList: ElementRef | any;
-  fab_lead = [{ name: 'Leave Application', icon: '/assets/dashboard/LeaveApplication-w.svg' }, { name: 'Leave Request', icon: '/assets/dashboard/CompensatoryLeaveRequest-w.svg' }];
+  // fab_lead = [{ name: 'Leave Application', icon: '/assets/dashboard/LeaveApplication-w.svg' }, { name: 'Leave Request', icon: '/assets/dashboard/CompensatoryLeaveRequest-w.svg' }];
+  fab_lead = [{ name: 'Leave Request', icon: '/assets/dashboard/LeaveApplication-w.svg' }, { name: 'Leave Withdrawal', icon: '/assets/dashboard/CompensatoryLeaveRequest-w.svg' }];
 
   tabs_array = [{ "name": "All", "route": "All" }, { "name": "Open", "route": "Open" }, { "name": "Approved", "route": "Approved" }, { "name": "Rejected", "route": "Rejected" }]
   status = '';
@@ -338,18 +339,26 @@ export class LeaveApplicationDetailPage implements OnInit {
 
   navigate_to_next(item) {
 
-    let leaveApplicationDetails: any;
+    // let leaveApplicationDetails: any;
 
-    if (item.name == "Leave Application") {
-      leaveApplicationDetails = this.db.dashboard_values.find(res => { return res.page == "Leave Application" })
-    } else if (item.name == "Leave Request") {
-      leaveApplicationDetails = this.db.dashboard_values.find(res => { return res.page == "Compensatory Leave Request" })
-    }
+    // if (item.name == "Leave Application") {
+    //   leaveApplicationDetails = this.db.dashboard_values.find(res => { return res.page == "Leave Application" })
+    // } else if (item.name == "Leave Request") {
+    //   leaveApplicationDetails = this.db.dashboard_values.find(res => { return res.page == "Compensatory Leave Request" })
+    // }
+    // this.db.hasClass = !this.db.hasClass;
+    // leaveApplicationDetails = JSON.stringify(leaveApplicationDetails);
+    // leaveApplicationDetails = JSON.parse(leaveApplicationDetails);
+    // this.create_new(leaveApplicationDetails, item)
+
     this.db.hasClass = !this.db.hasClass;
-    leaveApplicationDetails = JSON.stringify(leaveApplicationDetails);
-    leaveApplicationDetails = JSON.parse(leaveApplicationDetails);
+    console.log(item)
 
-    this.create_new(leaveApplicationDetails, item)
+    if(item.name == 'Leave Withdrawal'){
+      this.router.navigateByUrl('/leave-withdrawal/New')
+    }else{
+      this.router.navigateByUrl('/leave-application')
+    }
   }
 
   menu_name(eve) {

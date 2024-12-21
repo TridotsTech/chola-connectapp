@@ -28,10 +28,10 @@
   <div class="body_sec">
     <h5 *ngIf="attendance && !db.ismobile" class="card-title">Check In/Out</h5>
     <div *ngIf="!showChekinout" class="text-c time">
-      <div class="d__flex gap-5 s-1-d" *ngIf="show_timer">
+      <!-- <div class="d__flex gap-5 s-1-d" *ngIf="show_timer">
         <ion-icon class="text-c" src="/assets/home-genie/Timericon.svg"></ion-icon>
         <h4>{{ formatElapsedTime() }}</h4>
-      </div>
+      </div> -->
 
       <p class="current_day fnt-15">{{today | date:'MMM d, y'}}</p>
     </div>

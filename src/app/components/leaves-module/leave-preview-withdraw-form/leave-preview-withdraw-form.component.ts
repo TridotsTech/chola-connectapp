@@ -10,6 +10,7 @@ import { DbService } from 'src/app/services/db.service';
 export class LeavePreviewWithdrawFormComponent  implements OnInit {
 @Input() editFormValues: any;
 @Input() title: any;
+@Input() type: any;
   constructor(public db: DbService,public modalCntrl: ModalController) { }
 
   ngOnInit() {
@@ -19,6 +20,18 @@ export class LeavePreviewWithdrawFormComponent  implements OnInit {
       this.editFormValues.leave_type = res.name
     });
   }
+
+  LeaveType= [
+    {name: 'Full Day'},
+    {name: 'First Half'},
+    {name: 'Second Half'}]
+
+    regularizationReason= [
+      {name: 'Forgot to Punch'},
+      {name: 'On-duty'},
+      {name: 'Training'},
+      {name: 'Client Meeting'},
+      {name: 'Others'}]
 
   statusType = [
     {name: 'Open'},
@@ -49,9 +62,17 @@ export class LeavePreviewWithdrawFormComponent  implements OnInit {
       this.editFormValues.to_date = event.value;
     }
   }
-
+  
   changeStatus(event,item){
     item['status'] = event.detail.value
+  }
+
+  changeDuration(event,item){
+    item['duration'] = event.detail.value
+  }
+
+  changeReason(event,item){
+    item['reg_reason'] = event.detail.value
   }
 
   save(){

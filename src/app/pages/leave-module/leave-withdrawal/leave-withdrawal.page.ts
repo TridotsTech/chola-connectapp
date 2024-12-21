@@ -250,6 +250,12 @@ export class LeaveWithdrawalPage implements OnInit {
         }
         this.filterStartDate = res.message[1].filter_start_date
         this.filterEndDate = res.message[1].filter_end_date
+
+        if(this.withdrawalDetail && this.withdrawalDetail.docstatus == 0){
+          this.sendApproval = true;
+        }else{
+          this.sendApproval = false;
+        }
       }
     })
   }

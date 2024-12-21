@@ -25,7 +25,7 @@
           <label for="leave_type" class="pb-10">Leave Type <span class="impt-star"> *</span></label>
           <div class="custom-input">
             <ion-input type="text"
-              [ngModel]="(db.drop_down_value && db.drop_down_value['leave_type'] ? db.drop_down_value['leave_type'] : '')"
+              [ngModel]="(db.drop_down_value && db.drop_down_value['leave_type'] ? db.drop_down_value['leave_type'] : leave_form.value.leave_type)"
               placeholder="Leave type" (click)="open_dropdown()" name="leave_type" formControlName="leave_type"
               class="form-input"></ion-input>
           </div>
@@ -94,7 +94,7 @@
     </div>
 
     <div class="submit-btn">
-      <ion-button (click)="sure_submit()" fill="clear">{{save_only ? 'Save' : 'Submit'}}</ion-button>
+      <ion-button (click)="sure_submit()" fill="clear">{{save_only ? 'Save' : 'Send For Approval'}}</ion-button>
     </div>
 
   </div>

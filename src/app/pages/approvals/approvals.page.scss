@@ -1,0 +1,34 @@
+.approvalHeight {
+    height: calc(100vh - 55px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .box_ {
+        padding: 10px;
+        border-bottom: 1px solid var(--border-col);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.normalSketon {
+    .divF {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+
+        .b-1,
+        .b-2 {
+            width: 100%;
+        }
+
+        .b-2 {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+        }
+    }
+}

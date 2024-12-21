@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
+import { LeavePreviewWithdrawFormComponent } from '../leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 
 @Component({
   selector: 'app-regularization-form',
@@ -11,7 +12,7 @@ export class RegularizationFormComponent  implements OnInit {
 
   @Input() title;
   missing_days:any=[];
-  constructor(public db: DbService,public modalCntrl: ModalController) { }
+  constructor(public db: DbService,public modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.get_missing_date()
@@ -32,8 +33,24 @@ export class RegularizationFormComponent  implements OnInit {
   })
   }
 
-  editLeaveLeavePreview(missing_days,tyep,item,i){
+  async editLeaveLeavePreview(missing_days,tyep,item,i){
+    const modal = await this.modalCtrl.create({
+      component: LeavePreviewWithdrawFormComponent,
+      cssClass: 'job-detail-popup',
+      componentProps: {
+        title:'Attendance Adjustment Tool',
+        type:'regulariztion',
+        editFormValues: item
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data && data) {
 
+
+    }
   }
 
   eventPropagation(event){
