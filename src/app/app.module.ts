@@ -25,6 +25,9 @@ import { RevoGridModule } from '@revolist/angular-datagrid';
 // import { FrappeDataTableModule } from 'frappe-datatable';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
+import { File } from '@awesome-cordova-plugins/file/ngx';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 // import { FrappeChartsModule } from 'ngx-frappe-chart';
 // import { IonCalendarModule } from '@heliomarpm/ion-calendar';
 
@@ -43,7 +46,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   //   provide: Keyboard,
   //   useFactory: () => import('@capacitor/keyboard')
   // },
-   Geolocation, SocialSharing,DatePipe,AppVersion,LocationAccuracy],
+   Geolocation, SocialSharing,DatePipe,AppVersion,FileOpener,File,LocationAccuracy],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
 })

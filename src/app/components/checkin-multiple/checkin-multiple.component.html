@@ -231,7 +231,7 @@
       </div>
     </div>
 
-    <app-no-record-found *ngIf="employee_checkin_list && employee_checkin_list.length == 0" [column]="true"
+    <app-no-record-found *ngIf="employee_checkin_list && employee_checkin_list.length == 0 && false" [column]="true"
       height="showChekinout ? calc(100vh - 180px) : calc(100vh - 480px)" [heading]="'No Check In/Out found'"
       [image]="'assets/icon/empty.svg'"></app-no-record-found>
   </div>

@@ -10,8 +10,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    // redirectTo: '/tabs/dashboard',
-    redirectTo: '/dashboard',
+    redirectTo: '/tabs/dashboard',
+    // redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {

@@ -37,17 +37,17 @@ export class TabsPage implements OnInit {
   // ];
 
   employeePopUp:any = [
-    {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
-    {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
+    // {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
+    // {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
     {label:'Leave Application', doctype:'Leave Application', icon:'/assets/Employee-Home/LeaveApplication.svg', route:'/forms/leave-application'},
-    {label:'Leave Request', doctype:'Compensatory Leave Request', icon:'/assets/Employee-Home/CompensatoryLeaveRequest.svg', route:'/forms/compensatory-leave-request'},
+    {label:'Leave Request', doctype:'Leave Request', icon:'/assets/Employee-Home/CompensatoryLeaveRequest.svg', route:'/leave-application'},
   ];
 
   hrEmployeePopUp:any = [
-    {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
-    {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
+    // {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
+    // {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
     {label:'Leave Application', doctype:'Leave Application', icon:'/assets/Employee-Home/LeaveApplication.svg', route:'/forms/leave-application'},
-    {label:'Leave Request', doctype:'Compensatory Leave Request', icon:'/assets/Employee-Home/CompensatoryLeaveRequest.svg', route:'/forms/compensatory-leave-request'},
+    {label:'Leave Request', doctype:'Compensatory Leave Request', icon:'/assets/Employee-Home/CompensatoryLeaveRequest.svg', route:'/leave-application'},
     // {label:'Salary Slip', icon:'/assets/Employee-Home/SalarySlip.svg', route:'/forms/leave-application'},
   ];
 

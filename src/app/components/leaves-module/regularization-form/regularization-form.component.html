@@ -1,25 +1,27 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
 <div class="p-10 overflow_auto">
   <div *ngIf="missing_days && missing_days.length != 0">
-    <div *ngFor="let item of missing_days; let i = index" class="boxes_" (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)">
+    <div *ngFor="let item of missing_days; let i = index" class="boxes_" >
       <div class="d__flex just-s">
         <div class="d__flex gap-5">
           <div (click)="eventPropagation($event)" class="checkBox">
             <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
           </div>
 
-          <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.date | date: 'MMM d, y'}} </p>
+          <p (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)" class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.date | date: 'MMM d, y'}} </p>
         </div>
-        <div class="d__flex">
-          <!-- <app-status [status]="item.status"></app-status> -->
+        <div class="d__flex" (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)">
           <p class="m-0 fnt-14 d__flex gap-5">{{item.duration}}</p>
         </div>
       </div>
-      <div class="d__flex just-s">
-        <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.in_time}} </p>
-        <!-- <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p> -->
-        <p class="m-0 fnt-14 d__flex gap-5">{{item.reason}}</p>
+      <div class="d__flex just-s" (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)">
+        <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.in_time | date: 'h:mm a'}} </p>
+        <p class="m-0 fnt-14 d__flex gap-5">{{item.reg_reason}}</p>
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="show_btn" class="save_">
+  <ion-button class="clear_btn" (click)="leave_request(missing_days)">Leave Request</ion-button>
+  <ion-button class="save_btn" (click)="create_regularization()">Regulariztion</ion-button>
 </div>

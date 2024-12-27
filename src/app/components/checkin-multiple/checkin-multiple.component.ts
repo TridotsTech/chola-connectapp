@@ -405,6 +405,17 @@ export class CheckinMultipleComponent  implements OnInit {
       else{
         let alert = (res.message && res.message.message) ? res.message.message : 'Something went wrong try again later'
         this.db.alert(alert);
+        // const modal = await this.modalCtrl.create({
+        //   component: RegularizationFormComponent,
+        //   // cssClass: 'yearPopup',
+        //   componentProps: {
+        //     title:'Attendance Adjustment Tool',
+        //     selectedYear: this.selectedYear
+        //   },
+        //   enterAnimation: this.db.enterAnimation,
+        //   leaveAnimation: this.db.leaveAnimation,
+        // });
+        // await modal.present();
       }
       })
     })

@@ -1,7 +1,6 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
 
 <div class="p-10" *ngIf="!type">
-
   <div class="d__flex gap-10">
     <div class="pb-10">
       <label class="pb-10">From Date</label>
@@ -35,7 +34,7 @@
   </div>
 
 </div>
-<div class="p-10" *ngIf="type == 'regulariztion'">
+<div class="p-10 overflow_auto" *ngIf="type == 'regulariztion'">
   <div class="gap-10">
     <div class="pb-10">
       <label class="pb-10">Date</label>
@@ -61,22 +60,28 @@
     </div>
 
     <div class="pb-10">
-      <label class="pb-10">Reason</label>
-      <ion-select aria-label="Reason" interface="popover" placeholder="Reason" mode="ios" (ionChange)="changeReason($event,editFormValues)" [value]="editFormValues.reg_reason">
+      <label class="pb-10">Reason <span class="red">*</span></label>
+      <ion-select aria-label="Reason" interface="popover" placeholder="Reason" (ionChange)="changeReason($event,editFormValues)" [value]="editFormValues.reg_reason">
         <ion-select-option *ngFor="let types of regularizationReason" [value]="types.name">{{types.name}}</ion-select-option>
       </ion-select>
     </div>
 
     <div class="pb-10" *ngIf="editFormValues.reg_reason && editFormValues.reg_reason == 'Others'">
-      <label class="pb-10">Description</label>
+      <label class="pb-10">Description <span class="red">*</span></label>
       <div class="custom-input">
-        <ion-textarea [(ngModel)]="editFormValues.description" placeholder="Description" [pattern]="'^[A-Za-z ]*$'" class="form-input" required></ion-textarea>
+        <ion-textarea [(ngModel)]="editFormValues.description" placeholder="Description" (input)="validateInput($event)" class="form-input" required></ion-textarea>
       </div>
     </div>
 
   </div>
 </div>
+<div class="p-10 overflow_auto" *ngIf="type == 'leave request'">
 
-<div class="submit-btn">
+</div>
+
+<div *ngIf="!type" class="submit-btn">
   <ion-button (click)="save()" fill="clear">Save</ion-button>
+</div>
+<div *ngIf="type == 'regulariztion'" class="submit-btn">
+  <ion-button (click)="reg_save()" fill="clear">Save</ion-button>
 </div>

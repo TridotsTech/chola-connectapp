@@ -352,7 +352,7 @@ export class LeaveApplicationDetailPage implements OnInit {
     // this.create_new(leaveApplicationDetails, item)
 
     this.db.hasClass = !this.db.hasClass;
-    console.log(item)
+    // console.log(item)
 
     if(item.name == 'Leave Withdrawal'){
       this.router.navigateByUrl('/leave-withdrawal/New')

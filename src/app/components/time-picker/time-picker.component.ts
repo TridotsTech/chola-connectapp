@@ -19,7 +19,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
   type = [{ value: "AM" }, { value: "PM" }]
   show_picker: boolean = false
-  selectedHr: any = '12'
+  selectedHr: any = '9'
   selectedMin: any = '0'
   selectedType: any = 'AM'
 

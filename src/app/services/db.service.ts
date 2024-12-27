@@ -1058,6 +1058,16 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  create_regularization_before_save(Info): Observable<any> {
+    let endpoint = 'td_shift_and_attendance.td_shift_and_attendance.utils.mobile_api.create_regularization_before_save';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  get_manager_team_members(Info): Observable<any> {
+    let endpoint = 'td_shift_and_attendance.td_shift_and_attendance.utils.mobile_api.get_manager_team_members';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
 
   delete_docs(data: any): Observable<any> { //later
     let endpoint = this.go1_apps_api + 'delete_doc';
@@ -1833,7 +1843,8 @@ export class DbService {
   }
 
   get_salary_slip_content(Info): Observable<any> {
-    let endpoint = 'td_payroll.tdpayroll.doctype.my_slips.my_slips.get_salary_slip_content';
+    let endpoint = 'td_payroll.apis.payroll_api.get_pdf_files';
+    // let endpoint = 'td_payroll.tdpayroll.doctype.my_slips.my_slips.get_salary_slip_content';
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 

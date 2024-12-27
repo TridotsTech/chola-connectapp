@@ -1,6 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Platform } from '@ionic/angular';
+// import { FileOpener } from 'capacitor-file-opener';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 @Component({
   selector: 'app-payroll-detail',
@@ -45,7 +50,7 @@ export class PayrollDetailComponent implements OnInit {
   sub: any;
   skeleton = false
   no_products = false
-  constructor(public db: DbService, public route: ActivatedRoute) { }
+  constructor(private file: File, private fileOpener: FileOpener,public db: DbService, public route: ActivatedRoute,private platform: Platform) { }
 
   ngOnInit() {
 
@@ -163,14 +168,39 @@ export class PayrollDetailComponent implements OnInit {
 
   download_payroll(info) {
     let data = {'salary_slip_select_year': '2024-2025', 'salary_slip_select_month': 'December', 'employee': info.employee, 'doctype': 'Salary Slip'}
-    this.db.get_salary_slip_content(data).subscribe(res => {
-      console.log(res)
-      // if (res && res.status && res.status == 'Success') {
+    this.db.get_salary_slip_content({filters:{'salary_slip_select_year': '2024-2025', 'salary_slip_select_month': 'November', 'employee': info.employee, 'doctype': 'Salary Slip'}}).subscribe(res => {
+      // console.log(res)
+      if (res && res.status && res.status == 'Success') {
       //   this.detail_name = res.message;
       //   this.get_doc_details()
-      // } else {
-      //   this.db.alert('No Further Records')
-      // }
+      // 
+
+      const fileContent = res.message.fcontent;
+    const fileName = res.message.fname
+    const blob = new Blob([new Uint8Array(fileContent)], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    console.log(url)
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    setTimeout(() => {
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(url);
+    }, 5000);
+
+    // const downloadLink = document.createElement("a");
+    // const url = URL.createObjectURL(blob);
+    // downloadLink.href = url;
+    // downloadLink.download = fileName;
+    // document.body.appendChild(downloadLink);
+    // downloadLink.click();
+    // URL.revokeObjectURL(url);
+  } else {
+      this.db.alert('No Further Records')
+    }
 
     }, error => {
       console.error(error)
@@ -187,6 +217,72 @@ export class PayrollDetailComponent implements OnInit {
     // URL.revokeObjectURL(url);
     // let url = this.db.baseUrl + `printview?doctype=Salary%20Slip&name=${this.detail_name}&format=Salary%20Slip%20Standard&no_letterhead=0&letterhead=Tridots&settings=%7B%7D&_lang=en`
     // window.open(url, '_blank');
+  }
+
+  async downloadAndOpenPDF(info) {
+    try {
+      this.db.get_salary_slip_content({filters:{'salary_slip_select_year': '2024-2025', 'salary_slip_select_month': 'November', 'employee': info.employee, 'doctype': 'Salary Slip'}}).subscribe(async res => {
+        if (res && res.status && res.status == 'Success') {
+        const fileContent = res.message.fcontent;
+        const fileName = res.message.fname
+      // Step 1: Download the PDF file from the URL
+      // const response = await Http.get({ url: this.pdfUrl, responseType: 'arraybuffer' });
+    const pdfBlob = new Blob([new Uint8Array(fileContent)], { type: "application/pdf" });
+    // console.log(pdfBlob)
+
+      // const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+      // Step 2: Save the PDF file to the device's filesystem
+      // const fileName = 'downloaded_file.pdf';
+      const filePath = await this.saveFileToDevice(pdfBlob, fileName);
+          // console.log(filePath,'filepath')
+      // Step 3: Open the downloaded PDF file
+      await this.openFile(filePath);
+    } else {
+      this.db.alert('No Further Records')
+    }
+
+    }, error => {
+      console.error(error)
+    })
+    } catch (error) {
+      console.error('Error downloading or opening PDF file', error);
+    }
+  }
+
+  async saveFileToDevice(blob: Blob, fileName: string): Promise<string> {
+    // const filePath = this.platform.is('ios') ? this.file.documentsDirectory : this.file.externalDataDirectory;
+    const base64Data = await this.convertBlobToBase64(blob);
+    // console.log(base64Data,'base64')
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Documents,
+      encoding: Encoding.Base64,
+    });
+    // console.log(savedFile,'save')
+    return savedFile.uri;  // Return the file URI for later use
+  }
+
+  async convertBlobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async openFile(filePath: string) {
+    this.fileOpener.open(filePath, 'application/pdf')
+          .then(() => {
+            alert('success')
+          })
+          .catch(err => {
+            // this.loader = false
+            alert('faild')
+            console.error('Error opening PDF', err)
+            // this.alert1('Loading failed', 'Menu', 'failed')
+          });
   }
 
   initialCall(dates) {
