@@ -14,7 +14,7 @@
           required</p> -->
       </div>
 
-      <div class="d__flex gap-10">
+      <!-- <div class="d__flex gap-10">
         <div class="pb-10">
           <label for="filter_start_date" class="pb-10">Start Date <span *ngIf="false" class="impt-star"> *</span></label>
           <app-custom-calendar format="Date" [selectedDate]="filterStartDate" (onChange)="datePickerChange('from_date',$event)"></app-custom-calendar>
@@ -23,15 +23,9 @@
           <label for="filter_end_date" class="pb-10">End Date <span *ngIf="false" class="impt-star"> *</span></label>
           <app-custom-calendar format="Date" [selectedDate]="filterEndDate" (onChange)="datePickerChange('end_date',$event)"></app-custom-calendar>
         </div>
-      </div>
+      </div> -->
 
-      <div class="pb-10">
-        <label for="reason" class="pb-10">Reason <span *ngIf="false" class="impt-star"> *</span></label>
-        <div class="custom-input">
-          <ion-textarea class="text-area" name="reason" formControlName="reason"
-            placeholder="Enter Your reason Here..."></ion-textarea>
-        </div>
-      </div>
+      
 
       <div class="pb-10 leavePreview">
         <label for="reason" class="pb-10">Leave Preview</label>
@@ -98,6 +92,14 @@
             <ion-icon class="add_icon" (click)="addNewForm(leave_withdarawal_list,'Leave Withdraw')" name="add-outline"></ion-icon>
           </div>
           <ion-button *ngIf="leave_withdarawal_list && leave_withdarawal_list.length != 0" fill="clear" (click)="sendLeavePreview()">Remove Withdraw</ion-button>
+        </div>
+      </div>
+
+      <div class="pb-10">
+        <label for="reason" class="pb-10">Reason <span *ngIf="false" class="impt-star"> *</span></label>
+        <div class="custom-input">
+          <ion-textarea class="text-area" name="reason" formControlName="reason"
+            placeholder="Enter Your reason Here..."></ion-textarea>
         </div>
       </div>
 

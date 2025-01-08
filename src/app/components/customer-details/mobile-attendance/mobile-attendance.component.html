@@ -52,21 +52,20 @@
           <div class="w-100 employee_att">
             <div class="s-1 mb-5">
               <h3 class="m-0 fnt-15 fnt_w500">{{transform_att_date(item.attendance_date)}}</h3>
-              <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours)
-                : ' - '}}</h2>
+              <!-- <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours)
+                : ' - '}}</h2> -->
             </div>
 
             <div class="s-1 mb-5">
               
-              <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5">{{item.name ? item.name : ' -
-                '}}</h3>
+              <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5">{{item.name ? item.name : ' -'}}</h3>
 
               <h3 *ngIf="!db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5 webkit-text"
                 [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
               <app-status [status]="item.status"></app-status>
             </div>
 
-            <div class="s-1 mb-5">
+            <!-- <div class="s-1 mb-5">
              
               <h3 class="m-0 fnt-12 gray_clr fnt_w400 d__flex gap-5"><ion-icon
                   src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin &&
@@ -75,7 +74,7 @@
               <h3 class="m-0 fnt-12 gray_clr fnt_w400 d__flex gap-5"><ion-icon
                   src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&&
                 item.last_checkout!= "00:00") ? (item.last_checkout | date: 'h:mm a') : ' - '}}</h3>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

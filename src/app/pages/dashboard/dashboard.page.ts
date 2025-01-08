@@ -11,24 +11,6 @@ import { ModalController, LoadingController, AlertController } from '@ionic/angu
 import { WebsiteFormsComponent } from 'src/app/components/forms/website-forms/website-forms.component';
 import * as moment from 'moment';
 import { IonContent } from '@ionic/angular';
-
-// import { ILoadedEventArgs, ChartComponent, ChartTheme } from '@syncfusion/ej2-angular-charts';
-// import { Browser } from '@syncfusion/ej2-base';
-// import { ChartComponent } from "ng-apexcharts";
-
-// import {
-//   ApexNonAxisChartSeries,
-//   ApexResponsive,
-//   ApexChart
-// } from "ng-apexcharts";
-
-// export type ChartOptions = {
-//   series: ApexNonAxisChartSeries;
-//   chart: ApexChart;
-//   responsive: ApexResponsive[];
-//   labels: any;
-// };
-
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -44,21 +26,16 @@ import {
   ApexTooltip
 } from "ng-apexcharts";
 import { Router } from '@angular/router';
-
-// import { dataSeries } from "src/app/data";
 import { QuickviewdragComponent } from 'src/app/components/quickviewdrag/quickviewdrag.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./dashboard.page.scss']
 })
 
 export class DashboardPage implements OnInit {
-
   @ViewChild(IonContent) content: IonContent | any;
-
   name = 'Angular';
   chart: any;
   greeting: any;
@@ -69,7 +46,6 @@ export class DashboardPage implements OnInit {
   checkout = true;
   new_dashboard_values: any;
   ess_dashboard_data: any
-
   @ViewChild(ApexChartDashboardComponent) appApexChartDashboardComponent:
   | ApexChartDashboardComponent
   | any;
@@ -79,17 +55,8 @@ export class DashboardPage implements OnInit {
   highlightedDates: any;
   currentMonth: any;
   currentYear: any;
-
   currentChartValue: any = 'Daily'
   chartDataNew: any;
-
-  // chart: am4charts.XYChart;
-  // count: any = [];
-  // public chartOptions: Partial<ChartOptions>;
-
-  // @ViewChild("chart") charts: any = ChartComponent;
-
-
   public series: ApexAxisChartSeries | any;
   public charts: ApexChart | any;
   public dataLabels: ApexDataLabels | any;
@@ -99,11 +66,9 @@ export class DashboardPage implements OnInit {
   public yaxis: ApexYAxis | any;
   public xaxis: ApexXAxis | any;
   public tooltip: ApexTooltip | any;
-  // hr_dashboard_data: any;
-
   formattedDate: any;
   check_in_condition: any = [];
-  // @ViewChild('myDatetime', { static: false }) datetime: ElementRef | undefined;
+  is_Attendance:any = false;
   constructor(
     private zone: NgZone,
     public db: DbService,
@@ -114,12 +79,10 @@ export class DashboardPage implements OnInit {
   ) {
     this.db.chartOptions = {
       series: [],
-      // series: [44, 55, 13, 43, 22 ,44, 55, 13, 43, 22],
       chart: {
         type: 'donut',
       },
       labels: [],
-      // labels: ["Team A", "Team B", "Team C", "Team D", "Team E","Team F","Team G","Team H","Team I"],
       responsive: [
         {
           breakpoint: 480,
@@ -137,34 +100,15 @@ export class DashboardPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.db.get_dashboard();
     this.db.side_menu_show = true;
     this.setGreeting();
-    // setTimeout(()=>{
-    //   this.heatMap();
-    // },3000);
-    // this.crm_dashboard_value()
-    // this.db.get_path()
-
-    // this.db.dashboard.subscribe((res:any)=>{
-    //   if(res && res['triggered']){
-    //     delete res['triggered'];
-    //     this.get_chart(res);
-    //   }
-    // })
-
-    // console.log(this.db.chartOptions)
-
     am4core.useTheme(am4themes_animated);
-
     this.db.chartOptions = {
       series: [],
-      // series: [44, 55, 13, 43, 22 ,44, 55, 13, 43, 22],
       chart: {
         type: 'donut',
       },
       labels: [],
-      // labels: ["Team A", "Team B", "Team C", "Team D", "Team E","Team F","Team G","Team H","Team I"],
       responsive: [
         {
           breakpoint: 480,
@@ -180,7 +124,6 @@ export class DashboardPage implements OnInit {
       ],
     };
     this.get_attendance();
-
     if(this.db.employee_role){
       this.checkIn();
     }
@@ -193,74 +136,29 @@ export class DashboardPage implements OnInit {
   }
 
   ionViewWillEnter() {
-
     this.scrollToTop();
-
     this.formattedDate = this.getFormattedDate();
-
-    // console.log('dataSeries',dataSeries)
-
-    // this.initChartData()
-
     const parts = this.db.current_event_date.split('-');
-    
     const year = parseInt(parts[0]);
     const month = parseInt(parts[1]);
-
     this.currentMonth = month
     this.currentYear = year
-
-    // if(this.db.employee_role){
-
     if(this.db.app_name == 'Go1 HR'){
       this.get_hr_dashboard();
       this.get_ess_dashboard();
       this.getChartHr()
     }  
-      
-    // }
-
-    // if(this.db.hr_manager_role){
-      // if(this.db.app_name == 'Go1 HR')
-        // this.get_hr_dashboard();
-    // }
-    // this.db.searchDataValues = '';
-    // if(this.db.sales_manager_role){
-      
-    // }
 
     if(this.db.employee_role){
       this.checkIn();
     }
-    // this.db.get_path()
+
     this.db.side_menu_show = true;
     if (!this.db.ismobile) {
       this.db.get_dashboard();
     }
-    // this.db.get_permission_details();
-    // console.log(this.db.path)
 
   }
-
-  push_sales_data = [
-    {
-      page: 'Task',
-      page_name: 'Tasks',
-      route: '/list/tasks',
-      enable: 1,
-    },
-    {
-      page: 'Meeting',
-      page_name: 'Meeting',
-      route: '/list/meeting',
-      enable: 1,
-    }, {
-      page: 'Content',
-      page_name: 'Content',
-      route: '/messages',
-      enable: 1,
-    },
-  ]
 
   scrollToTop() {
     this.content.scrollToTop(400);
@@ -282,90 +180,19 @@ export class DashboardPage implements OnInit {
       "employee_name": localStorage['CustomerName'],
       "date":this.changedDate
     }
-    this.db.checkIn({data : datas}).subscribe(res => {
-      // console.log(res)
-      if(res && res.message && res.status == "success"){
-        // this.spinner = false;
-        if(res.message.length != 0){
-          this.check_in_condition = res.message
-          res.message.map(res => {
-            if(res.log_type == "IN"){
-              this.db.checkin = false
-            }else if(res.log_type == "OUT"){
-              this.db.checkin = true;
-            }
-          })
-        }else{
-          this.db.checkin = true;
-          this.check_in_condition = [];
-        }
+    this.db.checkIn(datas).subscribe(res => {
+      if(res && res.message && res.message.status == "success"){
+        this.is_Attendance = true;
       }else if(res && res.message && res.status == "Employee Not Found"){
         this.db.alert(res.message)
       }
     })
   }
 
-  // checkIn() {
-  //   this.db.checkIn({ date: this.changedDate }).subscribe(res => {
-  //     if (res && res.data.length != 0) {
-  //       this.db.emp_checkIn({ id: res.data[0].name }).subscribe(res => {
-  //         if (res && res.data) {
-
-  //           if(res.data.length != 0){
-  //             let lastIndex = 0
-  //             let obj = res.data[lastIndex]
-  //             let time = this.getTimeFromTimestamp(obj['time'])
-  //             this.db.checkInOutTime = time;
-  //             this.db.checkInOutDetail = obj['log_type'] == "IN" ? 'Your last check in was ' + time : 'Your last check out was ' + time
-  //             if(obj['log_type'] == "IN"){
-  //               this.db.checkin = false;
-  //             }else{
-  //               this.db.checkin = true;
-  //             }
-  //           }else{
-  //             this.db.checkin = true;
-  //           }
-
-  //         }
-  //       })
-  //     } else {
-  //       this.db.checkin = true;
-  //     }
-  //   })
-  //   this.db.checkin_var_load = false;
-  // }
-
   getTimeFromTimestamp(timestamp) {
     const date = new Date(timestamp);
     return this.datePipe.transform(date, 'h:mm a');
   }
-
-  // checkIn() {
-  //   // if(this.db.current_address){
-  //   // console.log(this.db.checkin_enable_from)
-  //   this.db.checkIn({ date: this.changedDate }).subscribe((res) => {
-  //     if (res && res.data.length != 0) {
-  //       this.db.emp_checkIn({ id: res.data[0].name }).subscribe((res) => {
-  //         if (res && res.data) {
-  //           res.data.map((res) => {
-  //             if (res.log_type == 'IN') {
-  //               this.checkin = false;
-  //             } else if (res.log_type == 'OUT') {
-  //               this.checkout = false;
-  //             }
-  //           });
-  //         }
-  //       });
-  //     } else {
-  //       this.checkin = true;
-  //       this.checkout = true;
-  //     }
-  //   });
-  //   // }else {
-  //   //   this.db.alert("Please Turn On your Location")
-  //   // }
-  //   this.db.checkin_var_load = false;
-  // }
 
   get_attendance() {
     let today = new Date();
@@ -450,67 +277,43 @@ export class DashboardPage implements OnInit {
 
   check_In(type) {
     this.router.navigateByUrl('/check-in');
-    // this.get_attendance();
-    // let data = {
-    //   employee: localStorage['employee_id'],
-    //   employee_name: localStorage['CustomerName'],
-    //   log_type: type,
-    //   // "shift": "Day Shift",
-    //   time: this.changedDate + ' ' + this.time,
-    //   device_id: this.db.current_address,
-    // };
-    // this.db.employee_checkin({ data: data }).subscribe((res) => {
-    //   if (res && res.data && res.data.status == 'Success') {
-    //     if (type == 'IN') {
-    //       // console.log(this.db.location_info)
-    //       this.checkin = false;
-    //     } else {
-    //       this.checkout = false;
-    //     }
-    //     let alert = type == 'IN' ? 'Check in successful' : 'Check out successful'
-    //     this.db.sendSuccessMessage(alert);
-    //   } else {
-    //     this.db.alert(res.data.message);
-    //   }
-    // });
   }
 
   search_txt(data) {
-    // console.log(data)
   }
 
 
-  get_colors(data) {
-    if (data == 'Lead') {
-      return {
-        background: '#FFF4EC',
-      };
-    } else if (data == 'Quotation') {
-      return {
-        background: '#EFEAFF',
-      };
-    } else if (data == 'Opportunity') {
-      return {
-        background: '#ECFBFC',
-      };
-    } else if (data == 'Customer') {
-      return {
-        background: '#FAF5FE',
-      };
-    }
-  }
+  // get_colors(data) {
+  //   if (data == 'Lead') {
+  //     return {
+  //       background: '#FFF4EC',
+  //     };
+  //   } else if (data == 'Quotation') {
+  //     return {
+  //       background: '#EFEAFF',
+  //     };
+  //   } else if (data == 'Opportunity') {
+  //     return {
+  //       background: '#ECFBFC',
+  //     };
+  //   } else if (data == 'Customer') {
+  //     return {
+  //       background: '#FAF5FE',
+  //     };
+  //   }
+  // }
 
-  get_progress_colors(data) {
-    if (data == 'Lead') {
-      return 'radial-gradient(circle at 10% 20%, #FF7919 0%, rgb(245 245 245) 90%)';
-    } else if (data == 'Quotation') {
-      return 'radial-gradient(circle at 10% 20%, #0D84E6 0%, rgb(245 245 245) 90%)';
-    } else if (data == 'Opportunity') {
-      return 'radial-gradient(circle at 10% 20%, #32D4DE 0%, rgb(245 245 245) 90%)';
-    } else if (data == 'Customer') {
-      return 'radial-gradient(circle at 10% 20%, #A33BE3 0%, rgb(245 245 245) 90%)';
-    }
-  }
+  // get_progress_colors(data) {
+  //   if (data == 'Lead') {
+  //     return 'radial-gradient(circle at 10% 20%, #FF7919 0%, rgb(245 245 245) 90%)';
+  //   } else if (data == 'Quotation') {
+  //     return 'radial-gradient(circle at 10% 20%, #0D84E6 0%, rgb(245 245 245) 90%)';
+  //   } else if (data == 'Opportunity') {
+  //     return 'radial-gradient(circle at 10% 20%, #32D4DE 0%, rgb(245 245 245) 90%)';
+  //   } else if (data == 'Customer') {
+  //     return 'radial-gradient(circle at 10% 20%, #A33BE3 0%, rgb(245 245 245) 90%)';
+  //   }
+  // }
 
   get_icon(value) {
     let img = '';
@@ -580,7 +383,6 @@ export class DashboardPage implements OnInit {
     };
 
     this.db.get_dashboard_details(data).subscribe(res => {
-      // console.log(res)
       if(res && res.message && res.status == 'Success'){
         this.db.hr_dashboard_data = res.message;
       }
@@ -652,12 +454,6 @@ export class DashboardPage implements OnInit {
             break;
         }
       });
-
-      // console.log('const presentDates =', presentDates);
-      // console.log('const workFromHomeDates =', workFromHomeDates);
-      // console.log('const onLeaveDates =', onLeaveDates);
-      // console.log('const absentDates =', absentDates);
-
     }
     
     const dynamicGreenDates = presentDates;
@@ -686,10 +482,7 @@ export class DashboardPage implements OnInit {
   }
 
   getCalendarDate(eve){
-    // console.log(eve)
-
     const parts = eve.detail.value.split('-');
-    
     const year = parseInt(parts[0]);
     const month = parseInt(parts[1]);
 
@@ -702,7 +495,6 @@ export class DashboardPage implements OnInit {
   @HostListener('document:click', ['$event'])
   handleGlobalClick(event: Event) {
     const target:any = event.target as HTMLElement;
-    // console.log(target.mode)
     if (target.mode && target.mode == 'ios') {
       this.handleButtonClick();
     }
@@ -1023,8 +815,6 @@ export class DashboardPage implements OnInit {
   };
   
   loopArray(data){
-    // console.log(data)
-
     this.chartObject.month = [];
     this.chartObject.count = [];
 
@@ -1032,8 +822,7 @@ export class DashboardPage implements OnInit {
       this.chartObject.month.push(res.date)
       this.chartObject.count.push(res.value)
     })
-    
-    // console.log('this.chartObject',this.chartObject)
+  
   }
 
   getFormattedDate() {
@@ -1066,24 +855,6 @@ export class DashboardPage implements OnInit {
       return '#F2D0D0'
     }
   }
-
-
-  // heatmapData = {
-  //   dataPoints: this.getdatapoints(),
-  //   start: new Date('2018-01-01'),
-  //   end: new Date('2018-12-31')
-  // };
-
-  // getdatapoints() {
-  //   const points:any = {};
-  //   const now = new Date('2018-12-31');
-  //   const daysOfYear = [];
-  //   for (const d = new Date(2018, 0, 1); d <= now; d.setDate(d.getDate() + 1)) {
-  //     const date = d.getTime() / 1000;
-  //     points[date] = Math.floor(Math.random() * 100 + 1);
-  //   }
-  //   return points;
-  // }
 
   heatmapData:any = {
     dataPoints: [],
@@ -1131,7 +902,7 @@ export class DashboardPage implements OnInit {
   }
 
   routeToSpecificPage(data){
-    // console.log(data)
+    this.db.routeAttendancePage = data.label
     if(data.label == "Claimed Expences"){
       this.router.navigateByUrl('/list/expense-claim')
     }else if(data.label == "Leave Applications"){
@@ -1151,173 +922,4 @@ export class DashboardPage implements OnInit {
     })
     this.changeCalendarDay(item,i);
   }
-
-//  chartOptions:any = {};
-
-
-//  heatMap() {
-//   this.chartOptions = {
-//     series: [{
-//       name: 'Heatmap',
-//       data: this.heatmapData.dataPoints.map((point: any) => ({
-//         x: new Date(point.timestamp * 1000),
-//         y: point.label,
-//         value: point.value
-//       }))
-//     }],
-//     chart: {
-//       height: 350,
-//       type: 'heatmap',
-//     },
-//     plotOptions: {
-//       heatmap: {
-//         colorScale: {
-//           ranges: [{
-//             from: 0,
-//             to: 50,
-//             name: 'Low',
-//             color: '#FFD700'
-//           },
-//           {
-//             from: 51,
-//             to: 100,
-//             name: 'High',
-//             color: '#7FFF00'
-//           }]
-//         }
-//       }
-//     },
-//     dataLabels: {
-//       enabled: false
-//     },
-//     xaxis: {
-//       type: 'category',
-//       categories: this.heatmapData['categories'], // Example: Access categories from heatmapData
-//     },
-//     title: {
-//       text: 'Heatmap Chart'
-//     }
-//   };
-// }
-
-// generateAttendanceData() {
-//   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-//   const attendanceData:any = [];
-
-//   months.forEach((month, monthIndex) => {
-//     const daysInMonth = new Date(2023, monthIndex + 1, 0).getDate(); // Get number of days in the month
-//     for (let day = 1; day <= daysInMonth; day++) {
-//       const attendanceCount = Math.floor(Math.random() * 100); // Generate random attendance count (0-100)
-//       attendanceData.push({
-//         x: month,
-//         y: day.toString(),
-//         value: attendanceCount
-//       });
-//     }
-//   });
-
-//   return attendanceData;
-// }
-
-// generateMonthLabels() {
-//   return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-// }
-
-
-//  heatmapData = {
-//   dataPoints: this.getDatapoints(),
-//   start: new Date('2018-01-01'),
-//   end: new Date('2018-12-31')
-// };
-
-// constructor() { }
-
-// ngOnInit(): void {
-//   this.updateChartOptions();
-// }
-
-// getDatapoints() {
-//   const points: any = {};
-//   const now = new Date('2018-12-31');
-//   const daysOfYear = [];
-//   for (let d = new Date(2018, 0, 1); d <= now; d.setDate(d.getDate() + 1)) {
-//     const date = d.getTime() / 1000;
-//     points[date] = Math.floor(Math.random() * 100 + 1);
-//   }
-//   return points;
-// }
-
-//  heatMap() {
-//   this.chartOptions = {
-//     series: [{
-//       name: 'Heatmap',
-//       data: Object.keys(this.heatmapData.dataPoints).map(key => ({
-//         x: new Date(parseInt(key) * 1000),
-//         y: this.heatmapData.dataPoints[key]
-//       }))
-//     }],
-//     chart: {
-//       height: 350,
-//       type: 'heatmap',
-//     },
-//     dataLabels: {
-//       enabled: false
-//     },
-//     xaxis: {
-//       type: 'datetime',
-//       labels: {
-//         format: 'dd MMM'
-//       },
-//       min: this.heatmapData.start.getTime(),
-//       max: this.heatmapData.end.getTime()
-//     },
-//     title: {
-//       text: 'Dynamic Heatmap Chart'
-//     }
-//   };
-// }
-
-// Optional: If your data needs to be updated dynamically, you can implement a function to refresh the data.
-// refreshData() {
-//   this.heatmapData.dataPoints = this.getDatapoints();
-//   this.heatMap();
-// }
-
-  // heatMap(){
-  //   this.chartOptions = {
-  //     series: [{
-  //       name: 'Metric1',
-  //       data: [
-  //         { x: 'Monday', y: 5 },
-  //         { x: 'Tuesday', y: 10 },
-  //         { x: 'Wednesday', y: 15 },
-  //         { x: 'Thursday', y: 20 },
-  //         { x: 'Friday', y: 25 }
-  //       ]
-  //     }, {
-  //       name: 'Metric2',
-  //       data: [
-  //         { x: 'Monday', y: 30 },
-  //         { x: 'Tuesday', y: 25 },
-  //         { x: 'Wednesday', y: 20 },
-  //         { x: 'Thursday', y: 15 },
-  //         { x: 'Friday', y: 10 }
-  //       ]
-  //     }],
-  //     chart: {
-  //       height: 350,
-  //       type: 'heatmap',
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     xaxis: {
-  //       type: 'category'
-  //     },
-  //     title: {
-  //       text: 'Heatmap Chart'
-  //     }
-  //   };
-  //  }
-  
 }

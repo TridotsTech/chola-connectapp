@@ -62,7 +62,7 @@ ion-label {
 
 .menu-icon {
   margin-right: 10px;
-  font-size: 23px;
+  font-size: 16px;
   // color: var(--dark1);
   // margin-top: -3px;
 }
@@ -295,7 +295,7 @@ ion-avatar {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  height: calc(100vh - 236px);
+  height: calc(100vh - 145px);
   overflow: auto;
 
   .selected_label {

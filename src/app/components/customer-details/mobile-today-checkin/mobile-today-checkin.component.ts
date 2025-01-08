@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import {
   ApexNonAxisChartSeries,
@@ -26,48 +26,96 @@ export type ChartOptions = {
   templateUrl: './mobile-today-checkin.component.html',
   styleUrls: ['./mobile-today-checkin.component.scss'],
 })
-export class MobileTodayCheckinComponent implements OnInit {
+export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
 
   @ViewChild("chart") chart: ChartComponent | any;
   public chartOptions: Partial<ChartOptions> | any;
   viewType = 'Overview';
-  options = [{ name: "Overview", route: "Overview" }, { name: "List", route: "List" }];
+  // options = [{ name: "Overview", route: "Overview" }, { name: "List", route: "List" }];
+  options: any = [];
   // db.current_dateAttendance:any;
-  filters: any = {};
+  filters:any = {};
   chartValues: any = {
     label: '',
     count: '',
     totalCount: 0
   };
-  listData: any = [];
-  showCalendar: any;
+  listData:any = [];
+  showCalendar:any;
   page_no = 1;
   page_size = 20;
   no_products = false;
   skeleton = true;
-  today_employee: any;
+  today_employee:any;
   // status:any;
 
-  constructor(public db: DbService, public modalCtrl: ModalController) { }
+  employee_search_txt: any;
+  viewTypeName: any;
+  constructor(public db:DbService, public modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.getLoad();
+    this.getTabs();
+    // this.getLoad();
 
-    this.db.selectedYearSubject.subscribe(res => {
-      if (res && this.db.selected_year && this.db.path == '/list/attendance') {
+    this.db.selectedYearSubject.subscribe(res=>{
+      //  console.log('this.db.path',this.db.path)
+      if(res && this.db.selected_year && this.db.path.includes('/list/attendance')){
+        // this.db.timeSheetDetail = undefined;
         const year = this.db.selectedYear
         let date = new Date(this.db.current_dateAttendance);
         const month = String(this.db.selectedMonth).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`;
         this.db.current_dateAttendance = formattedDate;
-        this.getMonthAndYear(year, month);
+        this.getMonthAndYear(year,month);
         this.db.selected_year = false;
       }
     })
+
+    if(this.db.routeAttendancePage){
+      this.viewTypeName = this.db.routeAttendancePage
+      console.log(this.db.routeAttendancePage,'this.db.routeAttendancePage');
+      this.db.tab_buttons(this.options, this.db.routeAttendancePage, 'route');
+      this.chartOptions = undefined;
+      this.viewType = 'List'
+      this.getLoad();
+      // if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+      //   this.viewType = 'List'
+      //   const currentDate = new Date();
+      //   const year = currentDate.getFullYear();
+      //   const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      //   const day = String(currentDate.getDate()).padStart(2, '0');
+      //   const formattedDate = `${year}-${month}-${day}`;
+      //   this.db.current_dateAttendance = formattedDate;
+      //   this.getLoad();
+      // }
+    }else{
+      this.db.tab_buttons(this.options,this.options[0].route,'route');
+      this.getLoad();
+    }
   }
 
-  getLoad() {
+  getTabs(){
+    if(this.db.hr_manager_role){
+      this.options = [
+        { name: "Overview", route: "Overview" }, 
+        // { name: "List", route: "List" }, 
+        // { name: "Late Arrivals", route: "List" }, 
+        { name: "Absent", route: "List" }, 
+        { name: "Present", route: "List" }
+      ]
+    }else{
+      this.options = [
+        { name: "Overview", route: "Overview" }, 
+        { name: "List", route: "List" }, 
+      ]
+    }
+  }
+
+  // ionViewWillEnter(){
+  // }
+
+  getLoad(){
     this.page_no = 1;
     // this.page_size = 20;
     const currentDate = new Date();
@@ -79,17 +127,23 @@ export class MobileTodayCheckinComponent implements OnInit {
     this.initialCall();
   }
 
-  getValue() {
+  getValue(){
+
+    // this.filters['attendance_date'] = this.db.current_dateAttendance;
+    // this.filters['company'] = (this.db.default_values && this.db.default_values.default_company) ? this.db.default_values.default_company : '';
 
     let data = {
       "date": this.db.current_dateAttendance,
       "page_no": this.page_no,
-      "page_length": this.page_size,
+      "page_length":  this.page_size,
+      "search_employee": this.employee_search_txt ? this.employee_search_txt : ""
     }
 
-    this.db.get_employee_first_checkin(data).subscribe((res: any) => {
+    // data['company'] = (this.db.default_values && this.db.default_values.default_company) ? this.db.default_values.default_company : '';
+
+    this.db.get_employee_first_checkin(data).subscribe((res:any)=>{
       this.skeleton = false;
-      if (res.status && res.status == "Success") {
+      if(res.status && res.status == "Success"){
         // this.getPieChart(res.message,);
 
         let label: any = []
@@ -106,34 +160,32 @@ export class MobileTodayCheckinComponent implements OnInit {
         // Absent Calculation
         let absentCount = 0
 
-        let getValue = res.message.dashboard.findIndex((resp: any) => { return resp.label.toLowerCase() == "absent" })
+        let getValue = res.message.dashboard.findIndex((resp: any) => {return resp.label.toLowerCase() == "absent"})
         // let checkIn = res.message.dashboard.findIndex((resp: any) => {return resp.label.toLowerCase() == "check in"})
-
-        if (getValue >= 0) {
-          count.map((res, i) => {
-            if (getValue != i) {
+       
+        if(getValue >= 0){
+          count.map((res,i)=>{
+            if(getValue != i){
               absentCount = absentCount + res;
             }
           })
-          
-          // absentCount = res.message.dashboard[getValue]['count']
-          
-          if (this.today_employee > absentCount) {
-            count[getValue] = this.today_employee - absentCount
-            label[getValue] = 'Absent - ' + count[getValue]
-          }
+
+          // if(this.today_employee > absentCount){
+          //   count[getValue] = this.today_employee - absentCount
+          //   label[getValue] = 'Absent - ' +  count[getValue]
+          // }
         }
         // Absent Calculation
 
 
         this.chartValues.label = label
         this.chartValues.count = count
-        this.chartValues.totalCount = totalCounts
+        this.chartValues.totalCount = totalCounts 
         this.getPieChart(this.chartValues, res.message.employee_count);
-        if (this.page_no == 1) {
+        if(this.page_no == 1){
           this.listData = res.message.employee_checkin;
-        } else {
-          this.listData = [...this.listData, ...res.message.employee_checkin];
+        }else{
+          this.listData = [...this.listData,...res.message.employee_checkin];
           res.message.employee_checkin.length < 30 ? this.no_products = true : null
         }
       }
@@ -141,7 +193,7 @@ export class MobileTodayCheckinComponent implements OnInit {
   }
 
 
-  getPieChart(values, employee_count) {
+  getPieChart(values, employee_count){
 
     this.chartOptions = {
       series: values.count,
@@ -164,6 +216,24 @@ export class MobileTodayCheckinComponent implements OnInit {
         }
       ]
     };
+    // const totalEmployees = employee_count;
+    // this.chartOptions = {
+    //   // series: values.count.map(count => (count / totalEmployees) * 100),
+    //   series: values.count.map(count => ((count / totalEmployees) * 100).toFixed(2)),
+    //   // series: (values.count[0] / totalEmployees) * 100,
+    //   chart: {
+    //     height: 250,
+    //     type: "radialBar"
+    //   },
+    //   plotOptions: {
+    //     radialBar: {
+    //       hollow: {
+    //         size: "70%"
+    //       }
+    //     }
+    //   },
+    //   labels: values.label
+    // };
 
   }
 
@@ -179,10 +249,14 @@ export class MobileTodayCheckinComponent implements OnInit {
     this.chartOptions = undefined
     this.no_products = false;
     this.viewType = eve.route
-
-    if (this.viewType == 'Overview') {
+    this.viewTypeName = eve.name;
+    if(this.viewType == 'Overview'){
       this.skeleton = true;
       this.getLoad();
+    }else if(eve.name == 'Late Arrivals' || eve.name == 'Present' || eve.name == 'Absent'){
+      this.getEmployeeAttendanceList(eve.name)
+    }else{
+      this.getValue();
     }
     // this.db.tab_buttons(this.options, this.options[0].route, 'route');
   }
@@ -233,46 +307,46 @@ export class MobileTodayCheckinComponent implements OnInit {
     return `${hours}:${minutes ? minutes : '00'} ${suffix}`
   }
 
-  getFilters(eve) {
-
+  getFilters(eve){
+  
   }
 
-  getDateFromCalendar(eve) {
+  getDateFromCalendar(eve){
+    
+      if (eve.sort) {
 
-    if (eve.sort) {
-
-    } else {
-      this.skeleton = true;
-      this.page_no = 1
-      this.no_products = false;
-      this.db.current_dateAttendance = eve;
-      this.getValue();
-    }
+      }else{
+        this.skeleton = true;
+        this.page_no = 1
+        this.no_products = false;
+        this.db.current_dateAttendance = eve;
+        this.getValue();
+      }
   }
 
   filtersLabel = [
-    { label: 'Present', icon: '/assets/attendance/present.svg', activeIcon: '/assets/attendance/present-active.svg', isActive: true },
-    { label: 'Absent', icon: '/assets/attendance/Absent.svg', activeIcon: '/assets/attendance/Absent-active.svg' },
-    { label: 'Half Day', icon: '/assets/attendance/Onleave.svg', activeIcon: '/assets/attendance/Onleave-active.svg' },
+    {label:'Present', icon:'/assets/attendance/present.svg', activeIcon:'/assets/attendance/present-active.svg', isActive:true},
+    {label:'Absent', icon:'/assets/attendance/Absent.svg', activeIcon:'/assets/attendance/Absent-active.svg'},
+    {label:'Half Day', icon:'/assets/attendance/Onleave.svg', activeIcon:'/assets/attendance/Onleave-active.svg'},
   ]
-
-  applyFilter(item, index) {
+  
+  applyFilter(item, index){
     this.skeleton = true;
 
-    this.filtersLabel.map((res, i) => {
-      if (i != index) {
-        res['isActive'] = false;
-      }
+    this.filtersLabel.map((res,i)=>{
+     if(i != index){
+       res['isActive'] = false;
+     }
     })
 
-    item['isActive'] = !item['isActive']
+    item['isActive'] =! item['isActive']
     this.no_products = false;
 
-    if (item['isActive']) {
+    if(item['isActive']){
       this.page_no = 1
       this.filters['status'] = item.label;
       this.getValue();
-    } else {
+    }else{
       this.page_no = 1
       this.filters['status'] = undefined;
       this.getValue();
@@ -320,7 +394,7 @@ export class MobileTodayCheckinComponent implements OnInit {
   }
 
 
-  async do_to_details(item) {
+  async do_to_details(item){
     item.attendance_date = item.attendance_date ? item.attendance_date : item.date;
     const modal = await this.modalCtrl.create({
       component: CheckinMultipleComponent,
@@ -328,7 +402,7 @@ export class MobileTodayCheckinComponent implements OnInit {
       componentProps: {
         detail: item,
         popup: true,
-        showChekinout: true
+        showChekinout:true
       },
     });
     await modal.present();
@@ -336,13 +410,13 @@ export class MobileTodayCheckinComponent implements OnInit {
   }
 
   // db.current_dateAttendance:any;
-  year: any;
-  month: any;
+  year:any;
+  month:any;
   // db.tableHeaders:any;
-  today: any;
+  today:any;
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  initialCall() {
+  initialCall(){
     this.today = new Date();
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -352,78 +426,130 @@ export class MobileTodayCheckinComponent implements OnInit {
     this.db.current_dateAttendance = formattedDate;
     this.db.selectedYear = year;
     this.db.selectedMonth = month;
-    this.getMonthAndYear(year, month);
+    this.getMonthAndYear(year,month);
     // this.getTimesheetDetail(formattedDate);
   }
 
-  getMonthAndYear(year, month) {
+  getMonthAndYear(year,month){
     this.year = year;
     this.month = this.monthNames[Number(month) - 1];
     this.getDaysArray(year, Number(month));
   }
 
-  daysArray: any = [];
+  daysArray:any = [];
   getDaysArray(year, month) {
     // Array to hold the result
     this.daysArray = [];
-
+  
     // Get the number of days in the month
     const daysInMonth = new Date(year, month, 0).getDate();
     // this.daysInMonth = daysInMonth
 
-    const daysOfWeek: any = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
+    const daysOfWeek:any = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  
     // Loop through all days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       // Create a new date object for each day
       const date = new Date(year, (month - 1), day);
-
+  
       // Format the day and date
       const dayOfWeek = daysOfWeek[date.getDay()];
       const formattedDate = day.toString().padStart(2, '0');
       month = month.toString();
-      month = month.length == 1 ? ('0' + month) : month;
+      month = month.length == 1 ? ('0' + month) :  month;
       let date1 = `${year}-${month}-${formattedDate}`;
-      this.daysArray.push({ date: formattedDate, day: dayOfWeek, date_: date1 });
+      this.daysArray.push({ date: formattedDate, day: dayOfWeek, date_: date1});
     }
     // this.db.tableHeaders = []
-    this.db.tableHeaders = this.daysArray;
+    this.db.tableHeaders =  this.daysArray;
     // console.log(this.db.tableHeaders)
     // this.getTimesheetDetail(this.db.current_dateAttendance);
     this.scrollTocenter();
-    this.getValue();
+    
+    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+      this.getEmployeeAttendanceList(this.viewTypeName)
+    }else{
+      this.getValue();
+    }
 
-  }
+ }
 
-  scrollTocenter() {
-    setTimeout(() => {
-      let data = '';
-      const element = document.getElementById(this.db.current_dateAttendance + data + (this.db.path.includes('tabs') ? 's' : ''));
-      if (element) {
-        // console.log('1234');
-        element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      } else {
-        let month: any = this.monthNames.findIndex(res => { return res == this.month });
-        month = month + 1;
-        month = month.toString();
-        month = month.length == 1 ? ('0' + month) : month;
-        let date1 = `${this.year}-${month}-01`;
-        const element1 = document.getElementById(date1 + data);
-        element1 ? element1.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' }) : null;
-      }
-    }, 1500);
-  }
-
-
-  chooseDate(item) {
-    // this.db.timeSheetDetail = undefined;
-    this.db.current_dateAttendance = item.date_;
-    this.getValue();
-    const element = document.getElementById(this.db.current_dateAttendance);
+ scrollTocenter(){
+  setTimeout(()=>{
+    let data = '';
+    const element = document.getElementById(this.db.current_dateAttendance + data + (this.db.path.includes('tabs') ? 's' : ''));
     if (element) {
+      // console.log('1234');
       element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }else{
+      let month:any = this.monthNames.findIndex(res=>{ return res == this.month });
+      month = month + 1;
+      month = month.toString();
+      month = month.length == 1 ? ('0' + month) :  month;
+      let date1 = `${this.year}-${month}-01`;
+      const element1 = document.getElementById(date1 + data);
+      element1 ? element1.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' }) : null;
+    }
+  },1500);
+ }
+
+ 
+ chooseDate(item){
+  // this.db.timeSheetDetail = undefined;
+  this.db.current_dateAttendance = item.date_;
+  
+  if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+    this.getEmployeeAttendanceList(this.viewTypeName)
+  }else{
+    this.getValue();
+  }
+
+  const element = document.getElementById(this.db.current_dateAttendance);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+  }
+  }
+
+  search_txt(event){
+    // console.log(event)
+    this.employee_search_txt = event.detail.value;
+    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+      this.getEmployeeAttendanceList(this.viewTypeName)
+    }else{
+      this.getValue();
     }
   }
 
+  clear_txt(){
+    // console.log('Clear Text')
+    this.employee_search_txt = '';
+    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+      this.getEmployeeAttendanceList(this.viewTypeName)
+    }else{
+      this.getValue();
+    }
+  }
+
+  getEmployeeAttendanceList(status){
+    let data = {
+      date: this.db.current_dateAttendance,
+      filter: status,
+      search_data: this.employee_search_txt ? this.employee_search_txt : ''
+    }
+    this.db.get_employee_attendance_list(data).subscribe(res => {
+      this.skeleton = false;
+      console.log(res)
+      if(res && res.message && res.message.data && res.message.data.length != 0 && res.message.status == 'Success'){
+        this.listData = res.message.data
+      }else{
+        this.listData = [];
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    console.log('Items destroyed');
+    this.db.routeAttendancePage = undefined;
+  }
 
 }

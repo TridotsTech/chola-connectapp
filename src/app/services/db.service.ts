@@ -240,6 +240,8 @@ export class DbService {
   randomClassNameCommonGrid: any;
   commonGridNavigationInput: any;
 
+  routeAttendancePage: any;
+
   constructor(
     private animationCtrl: AnimationController,
     private http: HttpClient,
@@ -418,52 +420,52 @@ export class DbService {
   OneSignalInit(key: any): void {
     OneSignal.setAppId(key);
     OneSignal.setNotificationOpenedHandler((data) => {
-      if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
-        setTimeout(() => {
-          this.playAudio()
-        }, 3000);
-      }
+      // if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
+      //   setTimeout(() => {
+      //     this.playAudio()
+      //   }, 3000);
+      // }
     });
 
     OneSignal.setNotificationWillShowInForegroundHandler((data: any) => {
       // console.log(data)
-      if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
-        setTimeout(() => {
-          this.playAudio()
-        }, 3000);
-      }
+      // if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
+      //   setTimeout(() => {
+      //     this.playAudio()
+      //   }, 3000);
+      // }
     });
 
     OneSignal.setInAppMessageClickHandler((data: any) => {
-      if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
-        setTimeout(() => {
-          this.playAudio()
-        }, 3000);
-      }
+      // if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
+      //   setTimeout(() => {
+      //     this.playAudio()
+      //   }, 3000);
+      // }
     });
     OneSignal.promptForPushNotificationsWithUserResponse((accepted: any) => {
       console.log('User accepted notifications: ' + accepted);
     });
     OneSignal.getDeviceState((res) => {
       localStorage['player_id'] = res.userId;
-      localStorage['player_id'] != undefined && localStorage['player_id'] != 'undefined' && localStorage['adminRefId'] != undefined && localStorage['adminRefId'] != 'undefined' ? this.update_onsignal_id().subscribe(res => { console.log("one signal id updated..", res) }) : null
+      localStorage['player_id'] != undefined && localStorage['player_id'] != 'undefined' && localStorage['customerRefId'] != undefined && localStorage['customerRefId'] != 'undefined' ? this.update_onsignal_id().subscribe(res => { console.log("one signal id updated..", res) }) : null
     })
   }
 
-  async playAudio() {
-    const audio_File = 'assets/sound.mp3'; // Replace with the path to your audio file
-    try {
-      let audioFile = await new Howl({ src: audio_File })
-      await audioFile.play();
-    } catch (error) {
-      console.error('Error playing audio', error);
-    }
-  }
+  // async playAudio() {
+  //   const audio_File = 'assets/sound.mp3'; // Replace with the path to your audio file
+  //   try {
+  //     let audioFile = await new Howl({ src: audio_File })
+  //     await audioFile.play();
+  //   } catch (error) {
+  //     console.error('Error playing audio', error);
+  //   }
+  // }
 
   update_onsignal_id() {
     var data = {
-      document: 'Shop User',
-      user: localStorage['adminRefId'],
+      document: 'Employee',
+      user: localStorage['customerRefId'],
       device_id: localStorage['player_id'],
       enabled: 1
     }
@@ -1023,7 +1025,7 @@ export class DbService {
     // let endpoint ='Attendance' +`?filters=[["attendance_date","=","${Info.date}"],["employee_name","=","${localStorage['CustomerName']}"]]`;
     // let endpoint = 'Attendance' + `?filters=[["attendance_date","=","${Info.date}"],["employee","=","${localStorage['employee_id']}"]]`;
     // let endpoint = 'Employee Checkin' + `?filters=[["time", ["Between", ["2024-07-15 00:00:00", "2024-07-15 23:59:59"]]],["employee","=","${localStorage['employee_id']}"]]`;
-    let endpoint = this.go1_apps_custom_api + 'check_in_condition';
+    let endpoint = 'td_shift_and_attendance.td_shift_and_attendance.utils.mobile_api.check_attendance';
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
@@ -1367,11 +1369,11 @@ export class DbService {
             page_name: 'Dashboard',
             route: '/dashboard',
           };
-          let push_employee_att = {
-            page: 'Employee Attendance Tool',
-            page_name: 'Attendance Tool',
-            route: '/employee-attendance-tool',
-          };
+          // let push_employee_att = {
+          //   page: 'Employee Attendance Tool',
+          //   page_name: 'Attendance Tool',
+          //   route: '/employee-attendance-tool',
+          // };
 
           let push_buyback_calc = {
             page: 'Buyback Calculator',
@@ -1386,9 +1388,10 @@ export class DbService {
               res.route = this.hr_manager_role ? '/leave-application-detail' : '/leave-application-detail/' + localStorage['employee_id']
             }
           })
-          this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
-          this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
-          this.hr_manager_role ? this.side_tab_dashboard.splice(0, 0, push_employee_att) : null;
+          // this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+          // this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
+          // this.hr_manager_role ? this.side_tab_dashboard.splice(0, 0, push_employee_att) : null;
+          this.hr_manager_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
 
           !this.sales_manager_role ? this.side_tab_dashboard.splice(0, 0, push_data) : null;
 
@@ -1461,11 +1464,11 @@ export class DbService {
             })
           }
 
-          let push_employee_att = {
-            page: 'Employee Attendance Tool',
-            page_name: 'Attendance Tool',
-            route: '/employee-attendance-tool',
-          };
+          // let push_employee_att = {
+          //   page: 'Employee Attendance Tool',
+          //   page_name: 'Attendance Tool',
+          //   route: '/employee-attendance-tool',
+          // };
 
           let push_buyback_calc = {
             page: 'Buyback Calculator',
@@ -1473,18 +1476,18 @@ export class DbService {
             route: '/buy-back-calculator',
           }
 
-          let pushProjectMeeting = [
-            {
-              page: 'Meeting',
-              page_name: 'Meeting',
-              route: '/list/meeting',
-            },
-            {
-              page: 'Daily Update',
-              page_name: 'Daily Update',
-              route: '/daily-updates',
-            },
-          ];
+          // let pushProjectMeeting = [
+          //   {
+          //     page: 'Meeting',
+          //     page_name: 'Meeting',
+          //     route: '/list/meeting',
+          //   },
+          //   {
+          //     page: 'Daily Update',
+          //     page_name: 'Daily Update',
+          //     route: '/daily-updates',
+          //   },
+          // ];
 
           let approval_screen = [
             {
@@ -1495,10 +1498,14 @@ export class DbService {
           ]
 
           // this.project_role ? this.dashboard_values.splice(0, 0, pushProjectMeeting) : null;
-          this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
-          this.project_role ? this.dashboard_values = [...this.dashboard_values, ...pushProjectMeeting] : null;
+          // this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+          // this.project_role ? this.dashboard_values = [...this.dashboard_values, ...pushProjectMeeting] : null;
           this.hr_manager_role ? this.dashboard_values = [...this.dashboard_values,...approval_screen] : null;
-          this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
+          // this.hr_manager_role ? this.dashboard_values.splice(0, 0, approval_screen) : null;
+          // this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
+
+          this.hr_manager_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+
         }
         this.chartOptions.series = dash_board.values;
         this.chartOptions.labels = dash_board.pages;
@@ -1987,27 +1994,40 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 
-  get_leave_requests_list(): Observable<any> {
-    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.get_leave_requests_list';
-    return this.get(this.baseMethod + endpoint);
+  get_leave_requests_list(type): Observable<any> {
+    let data={
+      employee: localStorage['employee_id']
+    }
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.';
+    let apipoint = type == 'Pending' ? 'get_leave_requests_list_for_employee' :'get_leave_requests_list_for_manager'
+    return this.postmethod(this.baseMethod + endpoint + apipoint, data)
+    // let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.get_leave_requests_list';
+    // return this.get(this.baseMethod + endpoint);
+  }
+
+  leave_approve_reject(data): Observable<any> {
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leave_approve_reject_api';
+    return this.postmethod(this.baseMethod + endpoint, data)
   }
 
   get_leave_withdraw_preview(data: any): Observable<any> {
-    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.get_leave_withdraw_preview';
+    // let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.get_leave_withdraw_preview';
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.get_filter_leave_withdraw_preview';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  get_employee_attendance_list(data): Observable<any> {
+    let endpoint = this.go1_apps_apis_hrmls + 'get_employee_attendance_list';
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 
   get_app_version(): Observable<any> {
-    // let url = 'https://go1-purchase-default-rtdb.firebaseio.com';
     let endpoint = 'https://chola-hr-default-rtdb.firebaseio.com/app_version.json'
-    // let endpoint = url + "/go1_hr.json";
     return this.http.get(endpoint);
   }
 
   get_onesignal(): Observable<any> {
-    // let url = 'https://go1-purchase-default-rtdb.firebaseio.com';
     let endpoint = 'https://chola-hr-default-rtdb.firebaseio.com/onesignal_id.json';
-    // let endpoint = url + "/go1_hr_id.json";
     return this.http.get(endpoint);
   }
 
@@ -2024,11 +2044,8 @@ export class DbService {
   ];
 
   get_icon(value) {
-
     let img = '';
     let data = '';
-
-    // let data = '/assets/dashboard/' + value + '.svg'
     if (value && value.includes(' ')) {
       value = value.replace(/ /g, '');
       data = '/assets/dashboard/' + value + '.svg';

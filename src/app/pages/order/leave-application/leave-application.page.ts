@@ -24,6 +24,7 @@ export class LeaveApplicationPage implements OnInit {
   // search_data:any;
   save_only = false;
   total_leave_days: any = 0;
+  res_name:any;
   constructor(public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
       leave_type: new FormControl('', [Validators.required]),
@@ -109,7 +110,7 @@ export class LeaveApplicationPage implements OnInit {
 
   leave_details(id) {
     let data = {
-      doctype: this.selectedTabSec == 'Pending' ? "Leave Request" : "Leave Application",
+      doctype: this.selectedTabSec == 'Pending' || this.selectedTabSec == 'Awaiting Approval' ? "Leave Request" : "Leave Application",
       name: id
     }
 
@@ -234,8 +235,8 @@ export class LeaveApplicationPage implements OnInit {
   async sure_submit() {
     if(!this.save_only){
       const alert = await this.alertController.create({
-        header: 'Submit',
-        message: 'Are you sure do you want to Submit..?',
+        header: 'Approval',
+        message: 'Are you sure do you want to Send for Approval..?',
         buttons: [
           {
             text: 'Cancel',
@@ -262,7 +263,7 @@ export class LeaveApplicationPage implements OnInit {
     // console.log(this.leave_form, "form")
     if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
       let val = (this.leave_form.value['half_day_check'] && this.leave_form.value['half_day'] != '') || !this.leave_form.value['half_day_check']
-
+      // 
       if (val) {
         let datas = {
           doctype: "Leave Request",
@@ -288,19 +289,33 @@ export class LeaveApplicationPage implements OnInit {
 
         if(this.save_only){
           datas['docstatus'] = 0;
+          datas['workflow_state'] = 'Draft';
+          this.res_name = undefined
         }else{
-          datas['docstatus'] = 1;
+          datas['name'] = datas['name'] ? datas['name'] : this.res_name
+          datas['workflow_state'] = 'Awaiting Approval';
+          // datas['docstatus'] = 1;
         }
 
         // this.leave_form.value
         this.db.inset_docs({ data: datas }).subscribe(res => {
           // console.log(res)
           if (res && res.message && res.message.status == 'Success') {
-            this.db.sendSuccessMessage("Leave Request created successfully!")
-            setTimeout(() => {
-              this.nav.back()
-            }, 500);
-            this.save_only = false;
+            
+            if(res.message.data && res.message.data.name)
+              datas['name'] = res.message.data.name
+             this.res_name = res.message.data.name
+            if(datas['workflow_state'] == 'Awaiting Approval'){
+              this.db.sendSuccessMessage("Leave Request Send For Approval successfully!")
+              setTimeout(() => {
+                this.nav.back()
+              }, 500);
+            }
+            else
+              this.db.sendSuccessMessage("Leave Request created successfully!")
+
+            this.save_only = !this.save_only;
+            // this.save_only = false;
           }else{
             if(res._server_messages){
               let d = JSON.parse(res._server_messages)
@@ -309,6 +324,12 @@ export class LeaveApplicationPage implements OnInit {
             }else{
               this.db.sendErrorMessage(res.message.message)
             }
+          }
+        }, error => {
+          if(error.error){
+            let d = JSON.parse(error.error._server_messages)
+            let f = JSON.parse(d[0])
+            this.db.sendErrorMessage(f.message)
           }
         })
       }
@@ -378,33 +399,41 @@ export class LeaveApplicationPage implements OnInit {
   }
 
   approve_leaves(event) {
-    this.approve_leave(event.data, event.type)
+    this.approve_leave(event.data,event.item, event.type)
   }
 
-  approve_leave(data, type) {
-    // console.log(data)
-
-    data._user_tags
-    data._user_tags
-
-
-    data.docstatus = 1
-    data.status = type == 'Approve' ? 'Approved' : 'Rejected';
-    data.doctype = "Leave Application"
-    this.db.inset_docs({ data: data }).subscribe(res => {
-      // console.log(res)
-      if (res && res.message && res.message.status == 'Success') {
-        this.db.alert("Updated Successfully")
-        this.leave_details(this.leave_id)
-        // this.list_data.data.splice(index, 1);
-        //  this.get_tempate_and_datas.emit("Leave Application")
-      }else{
-        data.docstatus = 0
-        data.status = 'Open';
-        // data.status = type == 'Approve' ? 'Approved' : 'Rejected';
-        this.db.alert(res.message.message)
-      }
-    })
+  approve_leave(data,item, type) {
+    console.log(data)
+    let datas:any=[];
+    // data.leave_preview.map(res =>{
+      // if(res.isChecked == true){
+        datas.push({date:item.date, status:item.status, rejected_reason:item.rejected_reason})
+      // }
+  // })
+    let res_data ={
+      employee:data.employee,
+      "from_date":data.from_date,
+      "to_date": data.to_date,
+      leave_preview:datas
+    }
+    console.log(res_data)
+    // if(datas.length == data.leave_preview.length){
+    this.db.leave_approve_reject(res_data).subscribe(res => {
+        if(res.message.status == 'Success'){
+          this.db.alert(res.message.message)
+        }
+        else if (res._server_messages) {
+          var d = JSON.parse(res._server_messages);
+          var d1 = JSON.parse(d);
+          this.db.alert(d1.message)
+        }
+        else{
+          this.db.alert(res.message.message)
+        }
+      })
+    // }
+    // else
+    //   this.db.alert('Pls select the all status')
   }
 
   getDateDifference(startDate: Date) {

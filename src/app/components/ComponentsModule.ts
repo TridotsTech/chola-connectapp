@@ -89,6 +89,7 @@ import { CommonTextBoxComponent } from './common-text-box/common-text-box.compon
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { LeavePreviewWithdrawFormComponent } from './leaves-module/leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 import { RegularizationFormComponent } from './leaves-module/regularization-form/regularization-form.component';
+import { RegularizationDetailComponent } from './regularization-detail/regularization-detail.component';
 
 @NgModule({
   declarations: [
@@ -171,7 +172,8 @@ import { RegularizationFormComponent } from './leaves-module/regularization-form
     CommonTextBoxComponent,
     TimePickerComponent,
     LeavePreviewWithdrawFormComponent,
-    RegularizationFormComponent
+    RegularizationFormComponent,
+    RegularizationDetailComponent
   ],
   imports: [
     CommonModule,
@@ -266,7 +268,8 @@ import { RegularizationFormComponent } from './leaves-module/regularization-form
     CommonTextBoxComponent,
     TimePickerComponent,
     LeavePreviewWithdrawFormComponent,
-    RegularizationFormComponent
+    RegularizationFormComponent,
+    RegularizationDetailComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -8,11 +8,21 @@
 
   <div *ngIf="db.ismobile" class="bg_primary strickyHeader">
     <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
-    [bg_white]="db.ismobile ? false : true" [tabs_array]="options" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+    [bg_white]="db.ismobile ? false : true" [tabs_array]="options" [Lead_seg]="db.sales_manager_role ? true : false" [no_initial_active]="true"></app-tabs-button>
   </div>
 
   <div *ngIf="!skeleton" class="full_sec">
     
+    <!-- <div class="month-filter"> 
+      <app-month-filter [noSort]="true" [showCalendar]="showCalendar" [selectedDate]="db.current_dateAttendance" (getDateFromCalendar)="getDateFromCalendar($event)" (getFilters)="getFilters($event)" [search_data]="{}" [search_filter]="[]"></app-month-filter>
+      
+      <div class="d__flex gap-10" *ngIf="false && viewType == 'List'" >
+        <div (click)="applyFilter(item, i)" [class.activebtnUif]="item['isActive']" *ngFor="let item of filtersLabel;let i = index" class="btnUif d__flex">
+         <ion-icon class="icon" [src]="item['isActive'] ? item.activeIcon : item.icon"></ion-icon>
+        </div>
+      </div>
+    </div> -->
+
     <div class="d__flex dateSec">
       <div class="box_" [class.activeDate]="db.current_dateAttendance == item.date_" id="{{item.date_ ? (item.date_ + (db.path.includes('tabs') ?  's' : '')) : item.title}}" (click)="chooseDate(item)" *ngFor="let item of db.tableHeaders;let i = index">
        <h5 class="date m-0 fnt-12 fnt_w500 text-c" *ngIf="item.date">{{item.date}}</h5>
@@ -29,7 +39,14 @@
         [labels]="chartOptions.labels"
         [responsive]="chartOptions.responsive">
       </apx-chart>
-      
+  
+      <!-- <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [plotOptions]="chartOptions.plotOptions"
+        [labels]="chartOptions.labels"
+      ></apx-chart> -->
+    
       <ng-container *ngIf="listData && listData.length != 0">
     
         <div class="d__flex just-s header-cs">
@@ -45,6 +62,7 @@
             <div class="list_data mouse" (click)="do_to_details(item)" *ngFor="let item of listData.slice(0,10);let i = index" >
               <div class="d__flex gap-10 employee_">
                 <div [class.image_div]="item.image" class="absolute_">
+                  <!-- <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div> -->
                   <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
                   <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
                 </div>
@@ -52,6 +70,7 @@
                   <p class="m-0 mb-5 fnt-13 fnt_w500 webkit-text" [style.--line]="2">{{item.employee_name}}</p>
                   <div class="d__flex just-s w-100">
                     <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+                    <!-- <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3> -->
                   </div>
     
                   <div class="d__flex just-s w-100">
@@ -64,24 +83,48 @@
       
             </div>
           </div>
-        </div>  
+        </div>
+ 
+  
+  
+        <!-- <div *ngFor="let item of listData.slice(0,10)" class="w-100 employee_att">
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-15 fnt_w500">{{item.attendance_date | date:'MMM d, y'}}</h3>
+            <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours) : ' - '}}</h2>
+          </div>
+    
+          <div class="s-1 mb-10">
+            <h3 *ngIf="db.selfView" class="m-0 fnt-14 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/company.svg" class="fnt-20"></ion-icon>{{item.company ? item.company : ' - '}}</h3>
+            <h3 *ngIf="!db.selfView" class="m-0 fnt-14 gray_clr w-80 d__flex gap-5 webkit-text" [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
+            <app-status [status]="item.status"></app-status>
+          </div>
+      
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&& item.last_checkout!= "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+          </div>
+        </div> -->
+  
       </ng-container>
     
     </div>
     
     
     
-    <div (scroll)="scrollEvent($event)" class="liststyle" *ngIf="viewType == 'List'">
+    <div (scroll)="scrollEvent($event)" [class.liststyle]="db.path && db.path.includes('/tabs')" *ngIf="viewType == 'List'" [class.liststyle1]="db.path && !db.path.includes('/tabs')">
     
       <div *ngIf="skeleton">
         <app-skeleton-loader [type]="'left3_right1'" [list_len_count]="'20'" ></app-skeleton-loader>
       </div>
+      
+      <app-common-search [placeholder]="'Search employee'" [noFilter]="true" (search_txt_value)="search_txt($event)" (call_clear_txt)="clear_txt()"></app-common-search>
     
       <ng-container *ngIf="!skeleton && listData.length != 0">
   
         <div class="list_data mouse" (click)="do_to_details(item)" *ngFor="let item of listData;let i = index" >
           <div class="d__flex gap-10 employee_">
             <div [class.image_div]="item.image" class="absolute_">
+              <!-- <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div> -->
               <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
               <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
             </div>
@@ -90,19 +133,42 @@
               <div class="d__flex just-s w-100 mb-5">
                 <p class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
                 <p *ngIf="item.status" class="fnt-12 m-0">{{item.status}}</p>
+                <!-- <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3> -->
               </div>
 
               <div class="d__flex just-s w-100">
-                <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+                <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : item.time ? (item.time | date: 'h:mm a') : item.department ? item.department : ' - '}}</h3>
                 <h3 *ngIf="item.last_checkout && item.last_checkout != '00:00'" class="checkoutTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout && item.last_checkout != "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
               </div>
+
             </div>
           </div>
+  
         </div>
+  
+        <!-- <div *ngFor="let item of listData" class="w-100 employee_att">
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-15 fnt_w500">{{item.attendance_date | date:'MMM d, y'}}</h3>
+            <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours) : ' - '}}</h2>
+          </div>
+      
+          <div class="s-1 mb-10">
+            <h3 *ngIf="db.selfView" class="m-0 fnt-14 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/company.svg" class="fnt-20"></ion-icon>{{item.company ? item.company : ' - '}}</h3>
+            <h3 *ngIf="!db.selfView" class="m-0 fnt-14 gray_clr w-80 d__flex gap-5 webkit-text" [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
+            <app-status [status]="item.status"></app-status>
+          </div>
+    
+          <div class="s-1 mb-5">
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
+            <h3 class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/logout-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout&& item.last_checkout!= "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+          </div>
+      
+        </div> -->
       </ng-container>
     
-      <app-no-record-found *ngIf="!skeleton && listData.length == 0" [column]="true" height="calc(100vh - 100px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+      <app-no-record-found *ngIf="!skeleton && listData.length == 0" [column]="true" height="calc(100vh - 300px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
     </div>
+
 
     <div *ngIf="!db.ismobile" class="d__flex w-100 just-s pagination_sec">
       <div class="d__flex border">
@@ -115,6 +181,12 @@
   
   <!-- Skeleton Loader -->
   <div *ngIf="skeleton" class="full_sec">
+
+    <!-- <div *ngIf="db.ismobile" class="tab_skeleton">
+      <div *ngFor="let val of [1,2]">
+        <app-skeleton-loader type="tabs" ></app-skeleton-loader>
+      </div>
+    </div> -->
 
     <div *ngIf="viewType == 'Overview'" style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 25px;">
       <ion-skeleton-text [animated]="true" style="height: 30px; width: 200px;border-radius: 5px;"></ion-skeleton-text>

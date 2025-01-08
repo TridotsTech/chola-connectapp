@@ -332,7 +332,7 @@
     min-height: 30px !important;
     width: 100%;
     height: 40px;
-    background: var(--primary-color);
+    // background: var(--primary-color);
   }
 
   .checkout_btn {
@@ -962,13 +962,15 @@ g[opacity="0.4"] {
 
     .employeeDetails {
       margin: 0 10px;
+      // background: #fff;
       background: linear-gradient(183deg, #DDE0FF 5.56%, rgb(255 255 255) 70.75%);
+      // background: linear-gradient(183deg, #ffffff85 5.56%, rgb(255 255 255) 70.75%)
       border-radius: 12px;
       position: absolute;
       bottom: -100px;
       z-index: 9999;
       width: 95%;
-
+      border: 1px solid #f9f9f9;
       .imageDiv {
         flex: 0 0 20%;
         height: 65px;
@@ -993,8 +995,8 @@ g[opacity="0.4"] {
         width: 100%;
         height: 40px;
         position: relative;
-        // --background: linear-gradient(42deg, #7CC4FF 30.56%, #048EFF 88.75%);
-        --background: linear-gradient(42deg, #7da0c6 30.56%, #254281 88.75%);
+        --background:#003f88;
+        // --background: linear-gradient(42deg, #7da0c6 30.56%, #254281 88.75%);
         border-radius: 0 0 12px 12px;
       }
 

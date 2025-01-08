@@ -1,0 +1,49 @@
+<app-header title="Teams" [showYear]="false" [model]="false"></app-header>
+
+<ion-content [fullscreen]="true">
+
+  <app-common-search placeholder="Search" (call_clear_txt)="clear_txt($event)" [noFilter]="true"
+      (search_txt_value)="search_txt_value($event)"></app-common-search>
+
+  <div *ngIf="skeleton" class="section-h">
+    <div class="p-10">
+      <div class="d__flex box_ gap-10" *ngFor="let i of [1, 2, 3, 4 ,5, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3, 4 ,5, 1, 6]">
+        <ion-skeleton-text animated style="width: 90px; height: 70px;border-radius: 5px;"></ion-skeleton-text>
+        <div class="w-100">
+          <ion-skeleton-text animated style="width: 70%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 85%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 50%; height: 21px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div (scroll)="load_more($event)" *ngIf="!skeleton && teamList && teamList.length != 0" class="scroll_">
+    <div class="list_data mouse" *ngFor="let item of teamList;let i = index" (click)="openEmployeeDetail(item)">
+      <div class="d__flex gap-10 employee_">
+        <div [class.image_div]="item.image" class="absolute_">
+          <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div>
+          <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+          <p *ngIf="!item.image && item.employee_name" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
+        </div>
+        <div>
+          <p class="m-0 mb-5 fnt-14 fnt_w500 webkit-text" [style.--line]="1">{{item.employee_name}}</p>
+          <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16 align_l" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
+          <div class="d__flex gap-5">
+            <ion-icon class="fnt-16" slot="start" src="/assets/img/designation.svg"></ion-icon>
+            <p class="m-0 fnt-12 gray_clr webkit-text w-100" [style.--line]="1">{{item.designation ? item.designation : '-'}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="wish_list gap-15">
+        <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5 year_ago">{{getDateDifference(item.date_of_joining)}}</p>
+        <div>
+          <ion-icon class="fnt-16 mouse" (click)="add_wish($event, item)" slot="start" [src]="item['liked_status'] == 'Yes' ? '/assets/img/heart-fill.svg' : '/assets/img/heart.svg'"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <app-no-record-found *ngIf="no_products && teamList && teamList.length == 0 && !skeleton" [column]="true" [height]="'calc(100vh - 250px)'" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+</ion-content>

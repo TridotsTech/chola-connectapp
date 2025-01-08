@@ -41,13 +41,13 @@
 }
 
 .btnSec {
-    padding: 10px;
-    border-top: 1px solid var(--border-col);
-    box-shadow: 0 0 5px #ddd;
+    // padding: 10px;
+    // border-top: 1px solid var(--border-col);
+    // box-shadow: 0 0 5px #ddd;
 
     .btn1,
     .btn2 {
-        width: 50%;
+        width: 100%;
         height: 40px;
         display: flex;
         align-items: center;
@@ -133,4 +133,35 @@
     justify-content: center;
     background: #f1f1f1;
     border-radius: 4px;
+}
+
+.boxes_ {
+    padding: 10px;
+    border: 1px solid var(--border-col);
+    margin: 0px 0 10px 0;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+ion-select {
+    min-height: 30px;
+    font-size: 14px;
+}
+
+.overflow_auto{
+    overflow-y: auto;
+    height: 100vh;
+}
+
+ion-checkbox {
+    --checkbox-background-checked: var(--primary-color);
+    // margin-left: 10px;
+    // height: 100%;
+    --size: 13px;
+}
+
+ion-checkbox::part(container) {
+    border: 2px solid var(--primary-color);
 }

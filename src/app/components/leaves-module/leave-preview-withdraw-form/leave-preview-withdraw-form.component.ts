@@ -11,11 +11,14 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   @Input() editFormValues: any;
   @Input() title: any;
   @Input() type: any;
+  posting_date:any = new Date();
   constructor(public db: DbService, public modalCntrl: ModalController) {}
 
   ngOnInit() {
     console.log(this.editFormValues, 'this.editFormValues');
-
+    if(this.type == 'leave request'){
+      // this.editFormValues.posting_date = this.posting_date
+    }
     this.db.select_drop_down.subscribe((res: any) => {
       this.editFormValues.leave_type = res.name;
     });
@@ -41,6 +44,11 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
     { name: 'Pending' },
     { name: 'Withdraw' },
   ];
+
+  leaveStatus = [
+    { name: 'Pending' },
+    { name: 'Approved' },
+    { name: 'Rejected' }]
 
   open_dropdown() {
     let val = {
@@ -112,5 +120,14 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       else this.db.alert('Please enter the description');
     else
       this.editFormValues.reg_reason ? this.modalCntrl.dismiss(this.editFormValues) : this.db.alert('Please enter the any reason');
+  }
+
+  leave_req_save(){
+    if (this.editFormValues.status && this.editFormValues.status == 'Rejected')
+      if (this.editFormValues.rejected_reason)
+        this.modalCntrl.dismiss(this.editFormValues);
+      else this.db.alert('Please enter the Rejected Reason');
+    else
+      this.editFormValues.status == 'Approved' || this.editFormValues.status == 'Rejected' ? this.modalCntrl.dismiss(this.editFormValues) : this.db.alert('Please enter the any status');
   }
 }

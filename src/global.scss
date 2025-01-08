@@ -1752,6 +1752,22 @@ ion-fab-button {
     }
   }
 
+  .regularization-popup {
+    --width: 100% !important;
+    --height: 60% !important;
+    display: flex;
+    align-items: end;
+    --border-radius: 10px 10px 0 0px;
+    justify-content: end;
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.5) !important;
+    --ion-backdrop-color: var(--primary-bg);
+
+    .ion-page {
+      display: unset !important;
+      overflow: auto !important;
+    }
+  }
+
   .gmail-popup {
     --width: 100% !important;
     --height: 74% !important;
@@ -2588,7 +2604,7 @@ ion-fab-button {
   height: 35px;
   border-bottom-left-radius: 180px;
   border-bottom-right-radius: 180px;
-  background: #DDDFFF;
+  background: #003f8826;
 }
 
 .ion-fab_home .ion-fab-button_ {
@@ -4509,7 +4525,8 @@ ion-icon {
 
   .detailDirecory-popup {
     --width: 100% !important;
-    --height: 82% !important;
+    // --height: 82% !important;
+    --height: 90% !important;
     display: flex;
     align-items: end;
     --border-radius: 10px 10px 0px 0px;

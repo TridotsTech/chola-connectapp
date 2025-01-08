@@ -76,7 +76,30 @@
   </div>
 </div>
 <div class="p-10 overflow_auto" *ngIf="type == 'leave request'">
+  <div class="gap-10">
+    <div class="pb-10">
+      <label class="pb-10">Date</label>
+      <div class="custom-input">
+        <ion-input type="date" [(ngModel)]="posting_date" placeholder="Date" class="form-input" disabled="true"></ion-input>
+      </div>
+    </div>
 
+  </div>
+</div>
+
+<div class="p-10 overflow_auto" *ngIf="type == 'leave request tool'">
+  <!-- <div class="pb-10">
+    <label class="pb-10">Status <span class="red">*</span></label>
+    <ion-select aria-label="Status" interface="popover" placeholder="Status" (ionChange)="changeStatus($event,editFormValues)" [value]="editFormValues.status">
+      <ion-select-option *ngFor="let types of leaveStatus" [value]="types.name">{{types.name}}</ion-select-option>
+    </ion-select>
+  </div> -->
+  <div class="pb-10" *ngIf="editFormValues.status && editFormValues.status == 'Rejected'">
+    <label class="pb-10">Rejected Reason <span class="red">*</span></label>
+    <div class="custom-input">
+      <ion-textarea [(ngModel)]="editFormValues.rejected_reason" placeholder="Rejected Reason" (input)="validateInput($event)" class="form-input" required></ion-textarea>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="!type" class="submit-btn">
@@ -84,4 +107,7 @@
 </div>
 <div *ngIf="type == 'regulariztion'" class="submit-btn">
   <ion-button (click)="reg_save()" fill="clear">Save</ion-button>
+</div>
+<div *ngIf="type == 'leave request tool'" class="submit-btn">
+  <ion-button (click)="leave_req_save()" fill="clear">Save</ion-button>
 </div>

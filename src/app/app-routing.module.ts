@@ -288,9 +288,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/approvals/approvals.module').then( m => m.ApprovalsPageModule)
   },
   {
+    path: 'team-member-list',
+    loadChildren: () => import('./pages/team-member-list/team-member-list.module').then( m => m.TeamMemberListPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+
 
 
 

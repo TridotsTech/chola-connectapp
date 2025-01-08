@@ -37,20 +37,14 @@
       </div>
     </div>
 
-    <!-- <div *ngIf="employeeDetail.leave_balance && employeeDetail.leave_balance.length != 0">
-      <h2 class="fnt-15 fnt_w500 p-10 m-0">Leave Details</h2>
-  
-      <div class="leavesDetails">
-        <div *ngFor="let itemLeaves of employeeDetail.leave_balance;let i = index;let last = last;" class="box__">
-          <p class="m-0 fnt-14">{{itemLeaves.label}}</p>
-          <p class="m-0 fnt-14 fnt_w500">{{itemLeaves.count}}</p>
-        </div>
-       </div>
-    </div> -->
+    <!-- Leave Details -->
 
     <div *ngIf="employeeDetail && employeeDetail.leave_balance && employeeDetail.leave_balance.length > 0" class="w-100">
-      <h2 class="fnt-15 fnt_w500 p-10 m-0">Leave Details</h2>
-      <div class="section">
+      <div class="d__flex just-s p-10">
+        <h2 class="fnt-15 fnt_w500 m-0">Leave Details</h2>
+        <ion-icon (click)="employeeDetail['showLeaveDetails'] =! employeeDetail['showLeaveDetails']" [name]="!employeeDetail['showLeaveDetails'] ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+      </div>
+      <div class="section" *ngIf="!employeeDetail['showLeaveDetails']">
         <div class="box_1" *ngFor="let itemLeaves of employeeDetail.leave_balance">
           <div class="m-7 d__flex just-s">
             <ion-icon class="fnt-16 icon " [ngClass]="itemLeaves.label ? checkImages(itemLeaves.label,'class') : ''"
@@ -61,29 +55,73 @@
         </div>
       </div>
     </div>
+    
+    <!-- Working Branch Details -->
 
-    <h2 class="fnt-15 fnt_w500 p-10 m-0">Employee Details</h2>
+    <div *ngIf="employeeDetail && !employeeDetail.custom_same_working_branch">
+      <div class="d__flex just-s p-10">
+        <h2 class="fnt-15 fnt_w500 m-0">Working Branch Details</h2>
+        <ion-icon (click)="employeeDetail['workingBranchDetails'] =! employeeDetail['workingBranchDetails']" [name]="!employeeDetail['workingBranchDetails'] ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+      </div>
+  
+      <div class="d__flex detailView p-10" *ngIf="!employeeDetail['workingBranchDetails']">
+        <h4 class="m-0">Branch</h4>
+        <h4 class="m-0 text-transform-none">{{employeeDetail.custom_working_branch ? employeeDetail.custom_working_branch : '-'}}</h4>
+        <h4 class="m-0">Branch Code</h4>
+        <h4 class="m-0">{{employeeDetail.custom_working_branch_code ? employeeDetail.custom_working_branch_code : '-'}}</h4>
+        <h4 class="m-0">SBU</h4>
+        <h4 class="m-0">{{employeeDetail.custom_working_sbu ? employeeDetail.custom_working_sbu : '-'}}</h4>
+        <h4 class="m-0">SBU Code</h4>
+        <h4 class="m-0">{{employeeDetail.custom_working_sbu_code ? employeeDetail.custom_working_sbu_code : '-'}}</h4>
+        <h4 class="m-0">Department</h4>
+        <h4 class="m-0">{{employeeDetail.custom_working_department ? employeeDetail.custom_working_department : '-'}}</h4>
+        <h4 class="m-0">Department Code</h4>
+        <h4 class="m-0">{{employeeDetail.custom_working_department_code ? employeeDetail.custom_working_department_code : '-'}}</h4>
+        <h4 class="m-0">Function</h4>
+        <h4 class="m-0">{{employeeDetail.custom_working_function ? employeeDetail.custom_working_function : '-'}}</h4>
+        <h4 class="m-0">Product</h4>
+        <h4 class="m-0">{{employeeDetail.custom_working_product ? employeeDetail.custom_working_product : '-'}}</h4>
 
-    <div class="d__flex detailView p-10">
-      <h4 class="m-0">Email</h4>
-      <h4 (click)="employeeDetail.personal_email ? social('mail', employeeDetail.personal_email) : null"  class="m-0 text-transform-none">
-        <ion-icon [class.opacity]="!employeeDetail.personal_email" class="fnt-25 mouse"  slot="start" src="/assets/img/mail.svg"></ion-icon>
-        {{employeeDetail.personal_email ? employeeDetail.personal_email : '-'}}
-      </h4>
-      <h4 class="m-0">Phone Number</h4>
-      <h4 (click)="employeeDetail.cell_number ? social('call', employeeDetail.cell_number) : null" class="m-0">
-        <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/call.svg"></ion-icon>
-        {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
-      </h4>
-      <h4 class="m-0">What's App</h4>
-      <h4 (click)="employeeDetail.cell_number ? social('whatsapp', employeeDetail.cell_number) : null"  class="m-0">
-        <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/whatsapp.svg"></ion-icon>
-        {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
-      </h4>
-      <h4 class="m-0">Date Of Birth</h4>
-      <h4 class="m-0">{{employeeDetail.date_of_birth ? (employeeDetail.date_of_birth | date: 'MMM d, y') : '-'}}</h4>
-      <h4 class="m-0">Designation</h4>
-      <h4 class="m-0">{{employeeDetail.designation ? employeeDetail.designation : '-'}}</h4>
+        <div *ngIf="employeeDetail && employeeDetail.custom_working_sub_product && employeeDetail.custom_working_sub_product.length != 0" class="w-100">
+          <h4 class="m-0">Sub Product</h4>
+          <div class="subProdList mt-5">
+            <p class="m-0 fnt-15 fnt_w500" *ngFor="let itemSub of employeeDetail.custom_working_sub_product">{{itemSub.sub_product}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Details -->
+
+    <div *ngIf="employeeDetail">
+      <div class="d__flex just-s p-10">
+        <h2 class="fnt-15 fnt_w500 m-0">Employee Details</h2>
+        <ion-icon (click)="employeeDetail['showEmployeeDetails'] =! employeeDetail['showEmployeeDetails']" [name]="!employeeDetail['showEmployeeDetails'] ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+      </div>
+  
+      <div class="d__flex detailView p-10" *ngIf="!employeeDetail['showEmployeeDetails']">
+        <h4 class="m-0" *ngIf="employeeDetail.custom_same_working_branch">Branch</h4>
+        <h4 class="m-0 text-transform-none" *ngIf="employeeDetail.custom_same_working_branch">Your Current Branch</h4>
+        <h4 class="m-0">Email</h4>
+        <h4 (click)="employeeDetail.personal_email ? social('mail', employeeDetail.personal_email) : null"  class="m-0 text-transform-none">
+          <ion-icon [class.opacity]="!employeeDetail.personal_email" class="fnt-25 mouse"  slot="start" src="/assets/img/mail.svg"></ion-icon>
+          {{employeeDetail.personal_email ? employeeDetail.personal_email : '-'}}
+        </h4>
+        <h4 class="m-0">Phone Number</h4>
+        <h4 (click)="employeeDetail.cell_number ? social('call', employeeDetail.cell_number) : null" class="m-0">
+          <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/call.svg"></ion-icon>
+          {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
+        </h4>
+        <h4 class="m-0">What's App</h4>
+        <h4 (click)="employeeDetail.cell_number ? social('whatsapp', employeeDetail.cell_number) : null"  class="m-0">
+          <ion-icon [class.opacity]="!employeeDetail.cell_number"  class="fnt-25 mouse" slot="start" src="/assets/img/whatsapp.svg"></ion-icon>
+          {{employeeDetail.cell_number ? employeeDetail.cell_number : '-'}}
+        </h4>
+        <h4 class="m-0">Date Of Birth</h4>
+        <h4 class="m-0">{{employeeDetail.date_of_birth ? (employeeDetail.date_of_birth | date: 'MMM d, y') : '-'}}</h4>
+        <h4 class="m-0">Designation</h4>
+        <h4 class="m-0">{{employeeDetail.designation ? employeeDetail.designation : '-'}}</h4>
+      </div>
     </div>
 
   </div> 

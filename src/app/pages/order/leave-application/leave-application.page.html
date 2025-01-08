@@ -3,7 +3,7 @@
 <ion-content [fullscreen]="true">
   <app-leave-detail (leave_confirm)="approve_leaves($event)"
     *ngIf="leave_detail  && (leave_dashboard && leave_dashboard.length > 0)" [emp_detail]="employee_details"
-    [dash_board]="leave_dashboard" [data]="leave_detail">
+    [dash_board]="leave_dashboard" [data]="leave_detail" [selectedTab]="selectedTabSec">
   </app-leave-detail>
 
   <div class="body" *ngIf="!skeleton && employee_details && !leave_detail">

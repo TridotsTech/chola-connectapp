@@ -1,0 +1,20 @@
+<app-header [title]="'Regularization Detail'" [showYear]="false" [model]="true"></app-header>
+
+<div class="d__flex detailView p-10" *ngIf="regularizationDetail">
+    <h4 class="m-0">Employee Name</h4>
+    <h4 class="m-0 text-transform-none">{{regularizationDetail.employee_name ? regularizationDetail.employee_name : '-'}}</h4>
+    <h4 class="m-0">Employee</h4>
+    <h4 class="m-0">{{regularizationDetail.employee ? regularizationDetail.employee : '-'}}</h4>
+    <h4 class="m-0">Date</h4>
+    <h4 class="m-0">{{regularizationDetail.date ? regularizationDetail.date : '-'}}</h4>
+    <h4 class="m-0">Status</h4>
+    <h4 class="m-0">{{regularizationDetail.status ? regularizationDetail.status : '-'}}</h4>
+    <h4 class="m-0">Reason</h4>
+    <h4 class="m-0">{{regularizationDetail.regularization_reason ? regularizationDetail.regularization_reason : '-'}}</h4>
+
+    <div class="w-100">
+        <p class="m-0 fnt-14 fnt_w400 gray_clr">Description</p>
+        <p class="mt-5 fnt-15 fnt_w500 descriptionBox" [innerHtml]="regularizationDetail.description ? regularizationDetail.description : '-'"></p>
+        <!-- <p class="mt-5 fnt-15 fnt_w500 descriptionBox">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere corporis hic blanditiis dicta rem cumque vitae vero, ad placeat veritatis, quos saepe eveniet nam, ipsam inventore eius doloremque velit magnam?</p> -->
+    </div>
+</div>

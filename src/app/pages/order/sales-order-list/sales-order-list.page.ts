@@ -18,6 +18,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { JobApplicantListPage } from '../../job-applicant-list/job-applicant-list.page';
 import { FreezeColumnComponent } from 'src/app/components/freeze-column/freeze-column.component';
 import { JobOpeningListComponent } from 'src/app/components/customer-details/job-opening-list/job-opening-list.component';
+import { RegularizationFormComponent } from 'src/app/components/leaves-module/regularization-form/regularization-form.component';
+import { RegularizationDetailComponent } from 'src/app/components/regularization-detail/regularization-detail.component';
 // import { BugsheetQuickformComponent } from 'src/app/components/bug-sheets/bugsheet-quickform/bugsheet-quickform.component';
 
 @Component({
@@ -250,7 +252,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
           //  || this.doc_type == 'Lead'
           if (this.doc_type == 'Project' || this.doc_type == 'Employee' || this.doc_type == 'Holiday List') {
             this.db.viewListType = 'Grid';
-          } else if (this.doc_type == 'Attendance' || this.doc_type == 'Performance Evaluation') {
+          } else if (this.doc_type == 'Attendance' || this.doc_type == 'Probation Evaluation') {
             this.db.viewListType = 'Table';
           } else if (this.doc_type == 'Lead' || this.doc_type == 'Quotation' || this.doc_type == 'Opportunity' || this.doc_type == 'Customer' || this.doc_type == 'ToDo' || this.doc_type == 'Employee Advance') {
             this.db.viewListType = 'Table';
@@ -555,7 +557,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   }
 
   checkBorderB(){
-    if(this.doc_type == 'Employee Letter Request' || this.doc_type == 'Resignation Letter' || this.doc_type == 'Job Opening' || this.doc_type == 'Leave Withdrawal' || this.doc_type == 'Performance Evaluation'){
+    if(this.doc_type == 'Employee Letter Request' || this.doc_type == 'Resignation Letter' || this.doc_type == 'Job Opening' || this.doc_type == 'Leave Withdrawal' || this.doc_type == 'Probation Evaluation'){
       return true
     }else{
       return false
@@ -590,8 +592,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         { doc_type: "Leave Withdrawal", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
         { doc_type: "Resignation Letter", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
         { doc_type: "Job Opening", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
-        { doc_type: "Performance Evaluation", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
+        { doc_type: "Probation Evaluation", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
         { doc_type: "Voluntary PF", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
+        { doc_type: "Regularization", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
       ]
     } else {
       data = [
@@ -2357,8 +2360,10 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.router.navigateByUrl('/timesheet-detail/' + data.name);
     } else if (this.doc_type && this.doc_type == 'Leave Withdrawal') {
       this.router.navigateByUrl('/leave-withdrawal/' + data.name);
-    } else if (this.doc_type && this.doc_type == 'Performance Evaluation') {
+    } else if (this.doc_type && this.doc_type == 'Probation Evaluation') {
       this.router.navigateByUrl('/performance-evaluation/' + data.name);
+    } else if (this.doc_type && this.doc_type == 'Regularization') {
+      this.openRegularizationDetail(data)
     } else if (this.db.selected_list && this.db.selected_list.detail_route && this.salary_no_route) {
       if (this.db.selected_list.page == "Project" && this.db.ismobile) {
         if (this.db.hr_manager_role) {
@@ -2370,6 +2375,18 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         this.router.navigateByUrl(this.db.selected_list.detail_page_route + '/' + data.name);
       }
     }
+  }
+
+  async openRegularizationDetail(data) {
+    const modal = await this.modalCtrl.create({
+      component: RegularizationDetailComponent,
+      cssClass: 'regularization-popup',
+      componentProps: {
+        regularizationDetail: data,
+      },
+    });
+    await modal.present();
+    const val = await modal.onWillDismiss();
   }
 
 
@@ -2939,7 +2956,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
 
           // this.search_data = JSON.stringify(data);
-        } else if (this.doc_type == 'Attendance' || this.doc_type == 'Employee' || this.doc_type == 'Resignation Letter' || this.doc_type == 'Performance Evaluation') {
+        } else if (this.doc_type == 'Attendance' || this.doc_type == 'Employee' || this.doc_type == 'Resignation Letter' || this.doc_type == 'Probation Evaluation' || this.doc_type == 'Regularization') {
           data = {
             employee_name: ['Like', '%' + term.target.value + '%'],
             status: this.search_data.status,
@@ -3095,7 +3112,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   }
 
   getSearchScreens(){
-    if(this.doc_type == 'Resignation Letter' || this.doc_type == 'Compensatory Leave Request' || this.doc_type == 'Employee Grievance' || this.doc_type == 'Performance Evaluation' || this.doc_type == 'Voluntary PF'){
+    if(this.doc_type == 'Resignation Letter' || this.doc_type == 'Compensatory Leave Request' || this.doc_type == 'Employee Grievance' || this.doc_type == 'Probation Evaluation' || this.doc_type == 'Voluntary PF' || this.doc_type == 'Regularization'){
       return true
     }else{
       return false
@@ -3299,8 +3316,10 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.router.navigateByUrl('/timesheet-detail');
     }else if (data && data.name && data.name == 'Leave Withdrawal') {
       this.router.navigateByUrl('/leave-withdrawal/New');
-    }else if (data && data.name && data.name == 'Performance Evaluation') {
+    }else if (data && data.name && data.name == 'Probation Evaluation') {
       this.router.navigateByUrl('/performance-evaluation');
+    }else if (data && data.name && data.name == 'Regularization') {
+      this.openRegularizationForm();
     }
     // else if(data.name == 'Timesheet' && this.db.ismobile){
     //   this.router.navigateByUrl('/timesheet-detail')
@@ -3309,6 +3328,21 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.create_new(data['route'])
       // this.create_new(data['route'])
     }
+  }
+
+  async openRegularizationForm() {
+    const modal = await this.modalCtrl.create({
+      component: RegularizationFormComponent,
+      // regularization-popup
+      cssClass: '',
+      componentProps: {
+        title: 'Regularization'
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
   }
 
   create_new(data) {

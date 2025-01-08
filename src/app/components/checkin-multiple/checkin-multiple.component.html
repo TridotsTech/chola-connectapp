@@ -38,20 +38,21 @@
 
     <div *ngIf="!showChekinout">
       <div class="d__flex just-c m-20-0" [class.opacity]="!show_timer">
-        <div (click)="check_In(checkin ? 'IN' :'OUT')" class="icon-container mouse">
+        <div (click)="check_In(!is_Attendance ? 'IN' :'OUT')" class="icon-container mouse">
           <ion-icon class="wave_icon zoom-icon"
-            [src]="checkin ? '/assets/home-genie/wave.svg' : '/assets/home-genie/red-wave.svg'"></ion-icon>
+            [src]="!is_Attendance ? '/assets/home-genie/wave.svg' : '/assets/home-genie/red-wave.svg'"></ion-icon>
           <div class="check_in_btn ">
             <ion-icon class="p-10"
-              [src]="checkin ? '/assets/home-genie/wave-checkin.svg' : '/assets/home-genie/red-wave-checkout.svg'"></ion-icon>
+              [src]="!is_Attendance ? '/assets/home-genie/wave-checkin.svg' : '/assets/home-genie/red-wave-checkout.svg'"></ion-icon>
           </div>
         </div>
       </div>
       <p class="check_in-d text-c" *ngIf="db.checkInOutDetail">{{db.checkInOutDetail}}</p>
-      <p *ngIf="checkin" class="fnt-12 gray_clr text-c">Click here to {{checkin ? ' Check In' :' Check Out'}}</p>
+      <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c">Click here to {{checkin ? ' Check In' :' Check Out'}}</p>
+      <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c">Already Check In</p>
     </div>
 
-    <div *ngIf="!showChekinout && false" class="d__flex just-ar time_btns">
+    <!-- <div *ngIf="!showChekinout && false" class="d__flex just-ar time_btns">
       <div class="b-1">
         <p *ngIf="fromTime" class="fnt-12 fnt_w600 text-c  m-0">{{fromTime | date:'hh:mm a'}}</p>
         <p *ngIf="!fromTime" class="fnt-12 fnt_w600 text-c  m-0">--:--</p>
@@ -76,7 +77,7 @@
           <p class="fnt-12 text-c primary_clr m-0">Working Hrs</p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- <h4 class="headerS m-0">Summary</h4> -->
 
@@ -189,7 +190,7 @@
     </div>
 
     <app-no-record-found
-      *ngIf="employee_checkin_list && employee_checkin_list.length == 0 && (!attendance || (attendance && db.ismobile))"
+      *ngIf="employee_checkin_list && employee_checkin_list.length == 0 && (!attendance || (attendance && db.ismobile)) && false"
       [column]="true" height="calc(100vh - 480px)" [heading]="'No Check In/Out found'"
       [image]="'assets/icon/empty.svg'"></app-no-record-found>
 

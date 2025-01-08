@@ -16,9 +16,16 @@ export class PerformanceEvaluationPage implements OnInit {
   rating_value = 0;
   performanceDetails: any;
   performanceId: any;
+  save_only = false;
+
   constructor(public db: DbService,private formBuilder: FormBuilder,private nav: NavController,private route: ActivatedRoute) { }
 
   ngOnInit() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
 
     this.route.params.subscribe(res => {
       if(res && res['id']){
@@ -45,14 +52,24 @@ export class PerformanceEvaluationPage implements OnInit {
       this.getEmployee_detail(res.name);
     });
 
+    this.evaluation_form.patchValue({
+      evaluation_date: formattedDate,
+    });
+
     // if(!this.performanceId){
       this.getPerformanceDetailList();
     // }
   }
 
+  ionViewWillEnter(){
+    // if(!this.evaluation_form){
+    //   this.save_only = true;
+    // }
+  }
+
   getPerformanceDetails(id){
     let data = {
-      doctype: 'Performance Evaluation',
+      doctype: 'Probation Evaluation',
       name: id
     }
     this.db.doc_detail(data).subscribe(res => {
@@ -67,6 +84,8 @@ export class PerformanceEvaluationPage implements OnInit {
             })
           }
           this.evaluationDetails = this.performanceDetails.evaluation_details
+          if(this.evaluationDetails.workflow_state == 'Draft')
+            this.save_only = true;
         }
       }
     })
@@ -174,8 +193,8 @@ export class PerformanceEvaluationPage implements OnInit {
   get_rating(item,rating){
     // this.rating_value = rating;
     item['rating'] = rating
-    console.log(item)
-    console.log(rating)
+    // console.log(item)
+    // console.log(rating)
   }
 
   submit(){
@@ -184,7 +203,7 @@ export class PerformanceEvaluationPage implements OnInit {
     if(this.evaluation_form.status == 'VALID'){
       console.log(this.evaluation_form,'this.evaluation_form')
       data = this.evaluation_form.value
-      data.doctype = 'Performance Evaluation'
+      data.doctype = 'Probation Evaluation'
 
       if(this.evaluationDetails && this.evaluationDetails.length != 0){
         data.evaluation_details = this.evaluationDetails;
@@ -194,13 +213,21 @@ export class PerformanceEvaluationPage implements OnInit {
         data.name = this.performanceDetails.name;
       }
 
+      this.save_only ? data.workflow_state = 'Awaiting Approval' : data.workflow_state = 'Draft'
+
       this.db.inset_docs({data: data}).subscribe(res => {
         if (res && res.message && res.message.status == 'Success') {
-          this.db.sendSuccessMessage("Performance Evaluation created successfully!")
+          if(data.workflow_state == 'Awaiting Approval'){
+          this.db.sendSuccessMessage("Probation Evaluation Send For Approval successfully!")
           setTimeout(() => {
             this.nav.back()
           }, 500);
+        }
+        else
+          this.db.sendSuccessMessage("Probation Evaluation created successfully!")
+
           this.performanceDetails = res.message.data;
+          this.save_only = !this.save_only;
         }else{
           if(res._server_messages){
             let d = JSON.parse(res._server_messages)

@@ -71,7 +71,9 @@ export class LeaveApplicationDetailPage implements OnInit {
   ngOnInit() {
 
     this.selectedTabSec = 'Pending'
-
+    // if(this.db.hr_manager_role){
+    //   this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
+    // }
     this.db.triggerSidemenu.subscribe(res => {
       if (res && res == 'loadPermission') {
         let route = this.db.permission_details.find((r) => { return r.page == 'Leave Application' });
@@ -91,6 +93,8 @@ export class LeaveApplicationDetailPage implements OnInit {
     }
 
     if (this.db.hr_manager_role) {
+      this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
+
       // let val = { name: "My Leaves", route: "my" }
       // this.options.push(val)
       this.employee = false
@@ -105,7 +109,9 @@ export class LeaveApplicationDetailPage implements OnInit {
       this.skeleton = true
       this.employee_id = res['id'];
       // this.getLeaveRequestList();
-      this.leave_details(res['id'])
+      // if(this.selectedTabSec != 'Pending')
+        this.leave_details(res['id'])
+
       this.get_employee_details(res['id'])
     })
 
@@ -127,9 +133,9 @@ export class LeaveApplicationDetailPage implements OnInit {
       }
     })
 
-    if(this.selectedTabSec == 'Pending'){
-      this.getLeaveRequestList();
-    }
+    // if(this.selectedTabSec == 'Pending'){
+    //   this.getLeaveRequestList('Pending');
+    // }
 
 
   }
@@ -154,6 +160,9 @@ export class LeaveApplicationDetailPage implements OnInit {
         localStorage['selected_list'] = JSON.stringify(route);
         this.db.selected_list = localStorage['selected_list'] != "undefined" ? JSON.parse(localStorage['selected_list']) : null;
       }
+    }
+    if(this.selectedTabSec == 'Pending'){
+      this.getLeaveRequestList('Pending');
     }
   }
 
@@ -190,8 +199,8 @@ export class LeaveApplicationDetailPage implements OnInit {
 
   }
 
-  getLeaveRequestList(){
-    this.db.get_leave_requests_list().subscribe(res => {
+  getLeaveRequestList(type){
+    this.db.get_leave_requests_list(type).subscribe(res => {
       console.log(res)
       if(res && res.message && res.message.length != 0){
         this.leave_list = res.message;
@@ -372,11 +381,14 @@ export class LeaveApplicationDetailPage implements OnInit {
       this.search_data = { status: eve.route }
       this.status = eve.name == 'All' ? '' : eve.name
     }
-    
-    this.leave_details(this.employee_id);
+    if(this.selectedTabSec == 'Approved')
+      this.leave_details(this.employee_id);
 
     if(this.selectedTabSec == 'Pending'){
-      this.getLeaveRequestList();
+      this.getLeaveRequestList('Pending');
+    }
+    if(this.selectedTabSec == 'Awaiting Approval'){
+      this.getLeaveRequestList('Awaiting Approval');
     }
 
     setTimeout(() => {

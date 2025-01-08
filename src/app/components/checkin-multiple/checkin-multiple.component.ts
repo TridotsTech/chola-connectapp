@@ -41,7 +41,6 @@ export class CheckinMultipleComponent  implements OnInit {
   @Input() detail:any;
   @Input() popup:any;
   @Input() showChekinout:any;
-  // disable_timer = false;
   show_timer:boolean = false;
   page_title:any=''
   doc_type:any = "Attendance"
@@ -53,14 +52,13 @@ export class CheckinMultipleComponent  implements OnInit {
     // {name: 'Daily', selected: false, route: 'Daily'},
   ]
   employee_id:any;
-
+  is_Attendance:any = false;
   constructor(private http: HttpClient,private geo: Geolocation,private locationAccuracy: LocationAccuracy,private loadingCtrl:LoadingController,private platform: Platform,public db:DbService, public datePipe:DatePipe, public alertCtrl:AlertController, public modalCtrl: ModalController) { }
 
   ngOnInit() {
     if(this.db.employee_role && !this.popup){
       this.db.getCurrentLocation()
     }
-
     if (this.platform.is('android')) 
      this.db.enable_location();
     
@@ -100,7 +98,6 @@ export class CheckinMultipleComponent  implements OnInit {
     }
 
     this.changedDate = ChangedFormat;
-    // this.checkInDetails();
     this.employee_id = employee_id;
     this.get_employee_checkin(employee_id)
 
@@ -226,31 +223,31 @@ export class CheckinMultipleComponent  implements OnInit {
   //   // }
   // }
 
-  startTimer() {
+  // startTimer() {
 
-    if (!this.fromTime) {
-      this.fromTime = moment();
-    }
+  //   if (!this.fromTime) {
+  //     this.fromTime = moment();
+  //   }
 
-    if (this.toTime) {
-      const elapsedMilliseconds = moment().diff(this.fromTime);
-      this.fromTime = moment().subtract(elapsedMilliseconds);
-    }
+  //   if (this.toTime) {
+  //     const elapsedMilliseconds = moment().diff(this.fromTime);
+  //     this.fromTime = moment().subtract(elapsedMilliseconds);
+  //   }
 
-    this.toTime = null;
-    this.updateElapsedTime();
+  //   this.toTime = null;
+  //   this.updateElapsedTime();
 
-    this.timerInterval = setInterval(() => {
-      this.updateElapsedTime();
-    }, 1000);
+  //   this.timerInterval = setInterval(() => {
+  //     this.updateElapsedTime();
+  //   }, 1000);
 
-  }
+  // }
 
-  stopTimer() {
-    this.fromTime = undefined;
-    this.elapsedTime = undefined;
-    this.formatElapsedTime();
-  }
+  // stopTimer() {
+  //   this.fromTime = undefined;
+  //   this.elapsedTime = undefined;
+  //   this.formatElapsedTime();
+  // }
 
   formatElapsedTime(): any {
     if (this.elapsedTime) {
@@ -282,39 +279,57 @@ export class CheckinMultipleComponent  implements OnInit {
   }
 
   get_employee_checkin(employee_id){
-    let data = {
-        employee_id : employee_id,
-        date: this.current_date
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    this.changedDate = `${year}-${month}-${day}`;
+    let datas = {
+      "employee": localStorage['employee_id'],
+      "employee_name": localStorage['CustomerName'],
+      "date":this.changedDate
     }
-    this.db.get_employee_checkin(data).subscribe(res => {
-      // console.log(res)
+    this.db.checkIn(datas).subscribe(res => {
       this.loadNext = false;
-
-      if(res && res.status && res.status == "Success" && (res.message && res.message.length != 0)){
-        this.employee_checkin_list = res.message;
-        this.calculateTotalDuration();
-
-        let lastIndex = 0
-        let obj = this.employee_checkin_list[lastIndex]
-        let time =  this.getTimeFromTimestamp(obj['out_time'] ? obj['out_time'] : obj['in_time'])
-        this.db.checkInOutDetail = obj['out_time'] ? 'Your last check out was ' + time : 'Your last check in was ' + time 
-        this.last_check_In_name = obj
-        
-        if(obj['out_time']){
-          this.checkin = true
-          this.db.checkin = true;
-        }else{
-          this.checkin = false;
-          this.db.checkin = false;
-          this.fromTime = obj.in_time;
-          this.startTimer()
-        }
-      }else{
-        this.employee_checkin_list = []
-        this.checkin = true
-        this.db.checkin = true;
+      if(res && res.message && res.message.status == "success"){
+        this.is_Attendance = true;
+      }else if(res && res.message && res.status == "Employee Not Found"){
+        this.db.alert(res.message)
       }
     })
+    // let data = {
+    //     employee_id : employee_id,
+    //     date: this.current_date
+    // }
+    // this.db.get_employee_checkin(data).subscribe(res => {
+    //   // console.log(res)
+    //   this.loadNext = false;
+
+    //   if(res && res.status && res.status == "Success" && (res.message && res.message.length != 0)){
+    //     this.employee_checkin_list = res.message;
+    //     this.calculateTotalDuration();
+
+    //     let lastIndex = 0
+    //     let obj = this.employee_checkin_list[lastIndex]
+    //     let time =  this.getTimeFromTimestamp(obj['out_time'] ? obj['out_time'] : obj['in_time'])
+    //     this.db.checkInOutDetail = obj['out_time'] ? 'Your last check out was ' + time : 'Your last check in was ' + time 
+    //     this.last_check_In_name = obj
+        
+    //     if(obj['out_time']){
+    //       this.checkin = true
+    //       this.db.checkin = true;
+    //     }else{
+    //       this.checkin = false;
+    //       this.db.checkin = false;
+    //       this.fromTime = obj.in_time;
+    //       // this.startTimer()
+    //     }
+    //   }else{
+    //     this.employee_checkin_list = []
+    //     this.checkin = true
+    //     this.db.checkin = true;
+    //   }
+    // })
   }
 
   calculateTotalDuration(): string {
@@ -357,11 +372,11 @@ export class CheckinMultipleComponent  implements OnInit {
       const longitude = resp.coords.longitude;
     this.today = new Date();
     this.time = new Date().toLocaleTimeString([], { hour12: false })
-    this.changedDate = '';
-    let pipe = new DatePipe('en-US');
-    let ChangedFormat = pipe.transform(this.today, 'YYYY-MM-dd');
-    this.changedDate = ChangedFormat;
-
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    this.changedDate = `${year}-${month}-${day}`;
     let data = {
       user:localStorage['customerRefId'],
       "time":this.changedDate +' '+ this.time,
@@ -373,16 +388,10 @@ export class CheckinMultipleComponent  implements OnInit {
         setTimeout(() => {
           loader.dismiss()
         }, 100);
-      if(res && res.data && res.data.status && res.data.status == 'Success' || (res && res.status && res.status == 'Success')){
-        if(type == 'IN'){
-          this.checkin = false;
-          this.db.alert('Check In successfully');
-        }else{
-          this.db.alert('Check Out successfully');
+      if(res && res.message && res.message.status && res.message.status == 'success'){
+          this.db.alert('Attendance created successfully');
           this.fromTime = undefined;
           this.checkin = true;
-          this.stopTimer()
-        }
         this.get_employee_checkin(localStorage['employee_id'])
       }else if(res.message.missing_days){
         const modal = await this.modalCtrl.create({

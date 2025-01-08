@@ -73,19 +73,36 @@ ion-checkbox::part(container) {
 .evaluationMain {
     border: 1px solid var(--border-col);
     border-radius: 5px;
+    border-bottom: none;
 
     .title {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        padding: 10px;
+        display: flex;
+        margin-bottom: 0px;
+        // display: grid;
+        // grid-template-columns: repeat(2, 1fr);
+        // padding: 10px;
         border-bottom: 1px solid var(--border-col);
+        p{
+            flex: 0 0 65%;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+        }
     }
 
     .values {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        padding: 10px;
+        display: flex;
+        // display: grid;
+        // grid-template-columns: repeat(2, 1fr);
+        // padding: 10px;
         border-bottom: 1px solid var(--border-col);
+        p{
+            flex: 0 0 65%;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+        }
+        div{
+            padding: 10px;
+        }
     }
 }
 

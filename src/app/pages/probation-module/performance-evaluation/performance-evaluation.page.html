@@ -30,21 +30,21 @@
         <p class="impt-star pt-5" *ngIf="submitted && !probation_extended.valid && probation_extended.errors.required">Probation Extended is required</p>
       </div>
 
-      <div class="pb-10">
+      <!-- <div class="pb-10">
         <p class="title">Evaluator ID</p>
         <div class="custom-input">
           <ion-input type="text" [readonly]="true" placeholder="Evaluator ID" formControlName="evaluator_id" name="evaluator_id"></ion-input>
         </div>
-      </div>
+      </div> -->
 
-      <div class="pb-10">
+      <div *ngIf="false" class="pb-10">
         <p class="title">Evaluation Date <span class="impt-star"> *</span></p>
         <app-custom-calendar format="Date" [selectedDate]="evaluation_form.value.evaluation_date" (onChange)="datePickerChange('evaluation_date',$event)"></app-custom-calendar>
 
         <p class="impt-star pt-5" *ngIf="submitted && !evaluation_date.valid && evaluation_date.errors.required">Evaluation Date is required</p>
       </div>
 
-      <ion-checkbox class="mb-10 fnt-14" formControlName="no_more_extention" name="no_more_extention" (ionChange)="changeExtension($event)" labelPlacement="end">No More Extention</ion-checkbox>
+      <!-- <ion-checkbox class="mb-10 fnt-14" formControlName="no_more_extention" name="no_more_extention" (ionChange)="changeExtension($event)" labelPlacement="end">No More Extention</ion-checkbox> -->
 
       <h5 *ngIf="evaluationDetails && evaluationDetails.length != 0" class="fnt-15 fnt_w500 mb-10 m-0">Evaluation Details</h5>
 
@@ -55,7 +55,7 @@
         <div *ngFor="let evaluations of evaluationDetails" class="values">
           <p class="m-0 fnt-14">{{evaluations.parameter}}</p>
           <div>
-            <ion-icon (click)="get_rating(evaluations,i)" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i as index" [class.active_star]="i <= evaluations.rating" [name]="i <= evaluations.rating ? 'star' : 'star-outline'"></ion-icon>
+            <ion-icon (click)="get_rating(evaluations,i)" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i = index" [class.active_star]="i <= evaluations.rating" [name]="i <= evaluations.rating ? 'star' : 'star-outline'"></ion-icon>
           </div>
         </div>
       </div>
@@ -74,7 +74,8 @@
     </form>
 
   </div>
+  <!-- *ngIf="performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" -->
   <div class="submit-btn">
-    <ion-button (click)="submit()" fill="clear">Save</ion-button>
+    <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
   </div>
 </ion-content>
