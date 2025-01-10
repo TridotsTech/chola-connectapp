@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, SimpleChanges, Input, EventEmitter, ElementRef, Renderer2, Output, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, SimpleChanges, Input, EventEmitter, ElementRef, Renderer2, Output, HostListener, NgZone } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { CheckinMultipleComponent } from '../../checkin-multiple/checkin-multiple.component';
@@ -37,7 +37,7 @@ export class MobileAttendanceComponent implements OnInit {
     }
   }
 
-  constructor(public db:DbService, public cdr:ChangeDetectorRef, private modalCtrl:ModalController, private renderer: Renderer2, private elementRef: ElementRef) { }
+  constructor(private ngZone: NgZone,public db:DbService, public cdr:ChangeDetectorRef, private modalCtrl:ModalController, private renderer: Renderer2, private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.db.tab_buttons(this.options, this.options[0].route, 'route');
@@ -110,7 +110,11 @@ export class MobileAttendanceComponent implements OnInit {
   }
 
   menu_name1(eve: any) {
-    this.view = eve.route
+    this.view = eve.route;
+    this.ngZone.run(() => {
+      // this.getCalendarDate.emit(eve);
+      // this.highlightedDates = this.highlightedDates; // Ensure view updates on change
+    });
   }
 
   attendance_dashboard_icon = [
@@ -126,100 +130,100 @@ export class MobileAttendanceComponent implements OnInit {
   ]
 
   async do_to_details(item){
-    const modal = await this.modalCtrl.create({
-      component: CheckinMultipleComponent,
-      cssClass: 'add-worker-popup',
-      componentProps: {
-        detail: item,
-        popup: true,
-        showChekinout:true
-      },
-    });
-    await modal.present();
-    const val = await modal.onWillDismiss();
+    // const modal = await this.modalCtrl.create({
+    //   component: CheckinMultipleComponent,
+    //   cssClass: 'add-worker-popup',
+    //   componentProps: {
+    //     detail: item,
+    //     popup: true,
+    //     showChekinout:true
+    //   },
+    // });
+    // await modal.present();
+    // const val = await modal.onWillDismiss();
   }
 
-  @HostListener('document:click', ['$event'])
-  handleGlobalClick(event: Event) {
-    const target:any = event.target as HTMLElement;
-    // console.log(target.mode)
-    if (target.mode && target.mode == 'ios') {
-      this.handleButtonClick();
-    }
-  }
+  // @HostListener('document:click', ['$event'])
+  // handleGlobalClick(event: Event) {
+  //   const target:any = event.target as HTMLElement;
+  //   console.log(target.mode)
+  //   if (target.mode && target.mode == 'ios') {
+  //     this.handleButtonClick();
+  //   }
+  // }
 
-  swipeStartX: any;
-  swipeEndX: any;
-  swipeThreshold:any = 50; // Minimum distance in pixels to be considered a swipe
+  // swipeStartX: any;
+  // swipeEndX: any;
+  // swipeThreshold:any = 50; // Minimum distance in pixels to be considered a swipe
 
-  @HostListener('document:touchstart', ['$event'])
-  onTouchStart(event: TouchEvent) {
-    this.swipeStartX = event.touches[0].clientX;
-  }
+  // @HostListener('document:touchstart', ['$event'])
+  // onTouchStart(event: TouchEvent) {
+  //   this.swipeStartX = event.touches[0].clientX;
+  // }
 
-  @HostListener('document:touchmove', ['$event'])
-  onTouchMove(event: TouchEvent) {
-    if (this.swipeStartX !== undefined) {
-      this.swipeEndX = event.touches[0].clientX;
-    }
-  }
+  // @HostListener('document:touchmove', ['$event'])
+  // onTouchMove(event: TouchEvent) {
+  //   if (this.swipeStartX !== undefined) {
+  //     this.swipeEndX = event.touches[0].clientX;
+  //   }
+  // }
 
-  @HostListener('document:touchend', ['$event'])
-  onTouchEnd(event: TouchEvent) {
-    if (this.swipeStartX !== undefined && this.swipeEndX !== undefined) {
-      const deltaX = this.swipeEndX - this.swipeStartX;
+  // @HostListener('document:touchend', ['$event'])
+  // onTouchEnd(event: TouchEvent) {
+  //   if (this.swipeStartX !== undefined && this.swipeEndX !== undefined) {
+  //     const deltaX = this.swipeEndX - this.swipeStartX;
 
-      // Determine if it's a horizontal swipe and meets the threshold
-      if (Math.abs(deltaX) > this.swipeThreshold) {
-        if (deltaX > 0) {
-          this.handleButtonClick();
-        } else {
-          this.handleButtonClick();
-        }
-      }
+  //     // Determine if it's a horizontal swipe and meets the threshold
+  //     if (Math.abs(deltaX) > this.swipeThreshold) {
+  //       if (deltaX > 0) {
+  //         this.handleButtonClick();
+  //       } else {
+  //         this.handleButtonClick();
+  //       }
+  //     }
 
-      // Reset swipe variables
-      this.swipeStartX = undefined;
-      this.swipeEndX = undefined;
-    }
-  }
+  //     // Reset swipe variables
+  //     this.swipeStartX = undefined;
+  //     this.swipeEndX = undefined;
+  //   }
+  // }
 
-  handleButtonClick() {
-    const hostElement = document.querySelector('.calendar_att1 ion-datetime');
+  // handleButtonClick() {
+  //   const hostElement = document.querySelector('.calendar_att1 ion-datetime');
     
-    if (hostElement) {
-      // Access the shadow root
-      const shadowRoot = hostElement.shadowRoot;
+  //   if (hostElement) {
+  //     // Access the shadow root
+  //     const shadowRoot = hostElement.shadowRoot;
   
-      if (shadowRoot) {
-        // Query the ion-label element inside the shadow DOM
-        const ionLabel:any = shadowRoot.querySelector('ion-label');
+  //     if (shadowRoot) {
+  //       // Query the ion-label element inside the shadow DOM
+  //       const ionLabel:any = shadowRoot.querySelector('ion-label');
   
-        if (ionLabel) {
-          // Get the text content of the ion-label
-          setTimeout(()=>{
-            const labelText = ionLabel.textContent.trim();
-            const parts = labelText.split(' ');
-            const month = parts[0]; // "June"
-            const year = parts[1];
-            let index = this.db.monthLists.findIndex((res)=>{ return res.label == month})
-            let event = {
-              detail:{
-                value:year + '-' + (index + 1)
-              }
-            }
-            this.getCalendarDate.emit(event);
+  //       if (ionLabel) {
+  //         // Get the text content of the ion-label
+  //         setTimeout(()=>{
+  //           const labelText = ionLabel.textContent.trim();
+  //           const parts = labelText.split(' ');
+  //           const month = parts[0]; // "June"
+  //           const year = parts[1];
+  //           let index = this.db.monthLists.findIndex((res)=>{ return res.label == month})
+  //           let event = {
+  //             detail:{
+  //               value:year + '-' + (index + 1)
+  //             }
+  //           }
+  //           this.getCalendarDate.emit(event);
 
-          },1000)
-        } else {
-          console.log('ion-label element not found inside shadow root.');
-        }
-      } else {
-        console.log('Shadow root not found.');
-      }
-    } else {
-      console.log('Host element containing shadow root not found.');
-    }
-  }
+  //         },1000)
+  //       } else {
+  //         console.log('ion-label element not found inside shadow root.');
+  //       }
+  //     } else {
+  //       console.log('Shadow root not found.');
+  //     }
+  //   } else {
+  //     console.log('Host element containing shadow root not found.');
+  //   }
+  // }
 
 }

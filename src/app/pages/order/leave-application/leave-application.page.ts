@@ -534,7 +534,7 @@ export class LeaveApplicationPage implements OnInit {
       "employee": localStorage['employee_id'],
       "from_date": from_date,
       "to_date": to_date,
-      "holiday_list": "New Test Holiday - 2024"
+      leave_type:this.db.drop_down_value['leave_type']
     }
     this.db.calculate_leave_preview(data).subscribe(res => {
       console.log(res);

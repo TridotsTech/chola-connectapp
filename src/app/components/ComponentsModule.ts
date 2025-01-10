@@ -90,6 +90,8 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
 import { LeavePreviewWithdrawFormComponent } from './leaves-module/leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 import { RegularizationFormComponent } from './leaves-module/regularization-form/regularization-form.component';
 import { RegularizationDetailComponent } from './regularization-detail/regularization-detail.component';
+import { LetterRequestDetailComponent } from './letter-request-detail/letter-request-detail.component';
+import { CreateLetterRequestComponent } from './create-letter-request/create-letter-request.component';
 
 @NgModule({
   declarations: [
@@ -173,7 +175,9 @@ import { RegularizationDetailComponent } from './regularization-detail/regulariz
     TimePickerComponent,
     LeavePreviewWithdrawFormComponent,
     RegularizationFormComponent,
-    RegularizationDetailComponent
+    RegularizationDetailComponent,
+    LetterRequestDetailComponent,
+    CreateLetterRequestComponent
   ],
   imports: [
     CommonModule,
@@ -269,7 +273,9 @@ import { RegularizationDetailComponent } from './regularization-detail/regulariz
     TimePickerComponent,
     LeavePreviewWithdrawFormComponent,
     RegularizationFormComponent,
-    RegularizationDetailComponent
+    RegularizationDetailComponent,
+    LetterRequestDetailComponent,
+    CreateLetterRequestComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -35,7 +35,8 @@ export class ApprovalsPage implements OnInit {
       page_size : 20,
       filters : { 
         reference_doctype : 
-        ['Like' , '%' + (this.searchDoctypeTest ? this.searchDoctypeTest : '') + '%' ]
+        ['Like' , '%' + (this.searchDoctypeTest ? this.searchDoctypeTest : '') + '%' ],
+        status:'Open'
       }
     }
     this.db.get_list(data).subscribe(res => {

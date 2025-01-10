@@ -1,0 +1,23 @@
+<app-header [title]="'Letter Request Detail'" [showYear]="false" [model]="true"></app-header>
+
+<div class="d__flex detailView p-10" *ngIf="letterrequestDetail">
+    <h4 class="m-0">Employee Name</h4>
+    <h4 class="m-0 text-transform-none">{{letterrequestDetail.employee_name ? letterrequestDetail.employee_name : '-'}}</h4>
+    <h4 class="m-0">Letter Type</h4>
+    <h4 class="m-0">{{letterrequestDetail.letter_type ? letterrequestDetail.letter_type : '-'}}</h4>
+    <h4 class="m-0">Request Date</h4>
+    <h4 class="m-0">{{letterrequestDetail.request_date ? letterrequestDetail.request_date : '-'}}</h4>
+    <h4 class="m-0">Status</h4>
+    <h4 class="m-0">{{letterrequestDetail.workflow_state ? letterrequestDetail.workflow_state : '-'}}</h4>
+    <!-- <h4 class="m-0">Purpose of the Letter</h4>
+    <h4 class="m-0">{{letterrequestDetail.remarks ? letterrequestDetail.remarks : '-'}}</h4> -->
+    <h4 class="m-0">Download</h4>
+    <div class="border p-810 mouse d__flex" (click)="downloadAndOpenPDF(letterrequestDetail)">
+      <ion-icon src="/assets/printer.svg" class="fnt-20"></ion-icon>
+    </div>
+    <div class="w-100">
+        <p class="m-0 fnt-14 fnt_w400 gray_clr">Purpose of the Letter</p>
+        <p class="mt-5 fnt-15 fnt_w500 descriptionBox" [innerHtml]="letterrequestDetail.remarks ? letterrequestDetail.remarks : '-'"></p>
+    </div>
+    
+</div>

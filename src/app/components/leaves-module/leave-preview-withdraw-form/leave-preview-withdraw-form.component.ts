@@ -17,7 +17,12 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   ngOnInit() {
     console.log(this.editFormValues, 'this.editFormValues');
     if(this.type == 'leave request'){
-      // this.editFormValues.posting_date = this.posting_date
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const day = String(currentDate.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+      this.posting_date = formattedDate
     }
     this.db.select_drop_down.subscribe((res: any) => {
       this.editFormValues.leave_type = res.name;
@@ -109,7 +114,7 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   }
 
   save() {
-    console.log(this.editFormValues, 'this.editFormValues');
+    
     this.modalCntrl.dismiss(this.editFormValues);
   }
 
@@ -117,17 +122,27 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
     if (this.editFormValues.reg_reason && this.editFormValues.reg_reason == 'Others')
       if (this.editFormValues.description)
         this.modalCntrl.dismiss(this.editFormValues);
-      else this.db.alert('Please enter the description');
+      else this.db.sendErrorMessage('Please enter the description');
     else
-      this.editFormValues.reg_reason ? this.modalCntrl.dismiss(this.editFormValues) : this.db.alert('Please enter the any reason');
+      this.editFormValues.reg_reason ? this.modalCntrl.dismiss(this.editFormValues) : this.db.sendErrorMessage('Please enter the any reason');
   }
 
   leave_req_save(){
     if (this.editFormValues.status && this.editFormValues.status == 'Rejected')
       if (this.editFormValues.rejected_reason)
         this.modalCntrl.dismiss(this.editFormValues);
-      else this.db.alert('Please enter the Rejected Reason');
+      else this.db.sendErrorMessage('Please enter the Rejected Reason');
     else
-      this.editFormValues.status == 'Approved' || this.editFormValues.status == 'Rejected' ? this.modalCntrl.dismiss(this.editFormValues) : this.db.alert('Please enter the any status');
+      this.editFormValues.status == 'Approved' || this.editFormValues.status == 'Rejected' ? this.modalCntrl.dismiss(this.editFormValues) : this.db.sendErrorMessage('Please enter the any status');
+  }
+
+  leave_req(){
+    console.log(this.editFormValues, 'this.editFormValues');
+  }
+
+  letter_req_save(){
+    if (this.editFormValues.remarks)
+      this.modalCntrl.dismiss(this.editFormValues);
+    else this.db.sendErrorMessage('Please enter the Purpose of the Letter');
   }
 }

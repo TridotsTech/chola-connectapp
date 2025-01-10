@@ -241,7 +241,7 @@ export class DbService {
   commonGridNavigationInput: any;
 
   routeAttendancePage: any;
-
+  roles:any;
   constructor(
     private animationCtrl: AnimationController,
     private http: HttpClient,
@@ -636,6 +636,7 @@ export class DbService {
         }
         localStorage['default_values'] = JSON.stringify(this.default_values);
         this.check_project_manager(res.roles);
+        this.roles = res.roles;
         // this.check_project_manager(this.permission_details);
         this.checkMobileMenu();
 
@@ -1855,6 +1856,11 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  employee_letter_request_download(Info): Observable<any> {
+    let endpoint = 'go1_elc.go1_elc.doctype.employee_letter_request.employee_letter_request.download_pdf';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   custom_doc_fields(Info): Observable<any> {
     // let endpoint = (this.erp14 ? this.seapi_api:  this.go1_apps_api) + 'get_fields';
     let endpoint = this.go1_apps_api + 'get_form_fields';
@@ -2221,6 +2227,13 @@ export class DbService {
   remove_tags(Info: any): Observable<any> {
     let endpoint = this.go1_apps_api + 'remove_tags';
     return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  check_role(role){
+    let check = this.roles.find(obj => obj.role == role)
+    return check ? true : false
+    // if(check)
+    //   return tr
   }
 
 

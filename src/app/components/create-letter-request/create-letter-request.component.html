@@ -1,0 +1,9 @@
+<app-header [title]="title" [showYear]="false" [model]="true"></app-header>
+<div class="box_sec">
+  <div [class.active]="item['isActive']" (click)="add(item)" *ngFor="let item of letterType" class="d__flex mouse boxs">
+    <div>
+      <h6 class="m-0 name_">{{item.label ? item.label : item.name}}</h6>
+    </div>
+    <ion-icon name="checkmark-circle-outline"></ion-icon>
+  </div>
+</div>

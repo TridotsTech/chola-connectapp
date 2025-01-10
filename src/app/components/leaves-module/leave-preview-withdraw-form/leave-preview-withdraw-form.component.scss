@@ -47,5 +47,12 @@ ion-select {
 
 .overflow_auto{
     overflow-y: auto;
-    height: 100vh;
+    height: calc(73vh - 55px);
+    // height: 100vh;
+}
+
+.l_date{
+    margin: 0;
+    font-size: 14px;
+    margin-top: 5px;
 }

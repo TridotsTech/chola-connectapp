@@ -247,7 +247,7 @@
               <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-13">{{item.employee_name}}</span></p>
             </ng-template>
 
-            <p class="m-0 flex-auto  bold_name-13">{{item.total_leave_days + (item.total_leave_days > 1 ? " days" : " day")}}</p>
+            <p *ngIf="item.total_leave_days" class="m-0 flex-auto  bold_name-13">{{item.total_leave_days + (item.total_leave_days > 1 ? " days" : " day")}}</p>
           </div>
 
           <div class="d__flex gap-10 just-s pb-5">

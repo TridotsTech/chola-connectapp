@@ -109,3 +109,37 @@ ion-checkbox::part(container) {
 .active_star {
     color: #ffbf00;
 }
+
+.btn{
+    display: flex;
+    gap: 10px;
+}
+
+.btn1 {
+    // border-radius: 5px;
+    --background: #FBE9EA !important;
+    color: #DC1414;
+    // gap: 5px;
+    // padding: 5px;
+    // width: 82px;
+
+    // ion-icon,
+    // span {
+    //     color: #DC1414;
+    // }
+}
+
+.btn2 {
+    --background: #69e2be52 !important;
+    color: #458F5A;
+    // background: #69e2be52;
+    // border-radius: 5px;
+    // gap: 5px;
+    // padding: 5px;
+    // width: 82px;
+
+    // ion-icon,
+    // span {
+    //     color: #458F5A;
+    // }
+}

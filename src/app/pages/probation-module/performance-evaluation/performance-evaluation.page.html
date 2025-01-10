@@ -75,7 +75,11 @@
 
   </div>
   <!-- *ngIf="performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" -->
-  <div class="submit-btn">
+  <div *ngIf="db.check_role('L1 Manager')" class="submit-btn">
     <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
+  </div>
+  <div *ngIf="db.check_role('L2 Manager')" class="submit-btn btn">
+    <ion-button class="btn1" (click)="submit_approval('Rejected')" fill="clear">Reject</ion-button>
+    <ion-button class="btn2" (click)="submit_approval('Approved')" fill="clear">Approve</ion-button>
   </div>
 </ion-content>

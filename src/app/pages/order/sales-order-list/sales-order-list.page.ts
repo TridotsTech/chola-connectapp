@@ -20,6 +20,8 @@ import { FreezeColumnComponent } from 'src/app/components/freeze-column/freeze-c
 import { JobOpeningListComponent } from 'src/app/components/customer-details/job-opening-list/job-opening-list.component';
 import { RegularizationFormComponent } from 'src/app/components/leaves-module/regularization-form/regularization-form.component';
 import { RegularizationDetailComponent } from 'src/app/components/regularization-detail/regularization-detail.component';
+import { LetterRequestDetailComponent } from 'src/app/components/letter-request-detail/letter-request-detail.component';
+import { CreateLetterRequestComponent } from 'src/app/components/create-letter-request/create-letter-request.component';
 // import { BugsheetQuickformComponent } from 'src/app/components/bug-sheets/bugsheet-quickform/bugsheet-quickform.component';
 
 @Component({
@@ -2364,7 +2366,10 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.router.navigateByUrl('/performance-evaluation/' + data.name);
     } else if (this.doc_type && this.doc_type == 'Regularization') {
       this.openRegularizationDetail(data)
-    } else if (this.db.selected_list && this.db.selected_list.detail_route && this.salary_no_route) {
+    }else if (this.doc_type && this.doc_type == 'Employee Letter Request') {
+      this.openletterrequestDetail(data)
+    }
+     else if (this.db.selected_list && this.db.selected_list.detail_route && this.salary_no_route) {
       if (this.db.selected_list.page == "Project" && this.db.ismobile) {
         if (this.db.hr_manager_role) {
           this.router.navigateByUrl(this.db.selected_list.detail_page_route + '/' + data.item.name);
@@ -2375,6 +2380,18 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         this.router.navigateByUrl(this.db.selected_list.detail_page_route + '/' + data.name);
       }
     }
+  }
+
+  async openletterrequestDetail(data) {
+    const modal = await this.modalCtrl.create({
+      component: LetterRequestDetailComponent,
+      cssClass: 'regularization-popup',
+      componentProps: {
+        letterrequestDetail: data,
+      },
+    });
+    await modal.present();
+    const val = await modal.onWillDismiss();
   }
 
   async openRegularizationDetail(data) {
@@ -3112,7 +3129,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   }
 
   getSearchScreens(){
-    if(this.doc_type == 'Resignation Letter' || this.doc_type == 'Compensatory Leave Request' || this.doc_type == 'Employee Grievance' || this.doc_type == 'Probation Evaluation' || this.doc_type == 'Voluntary PF' || this.doc_type == 'Regularization'){
+    if(this.doc_type == 'Resignation Letter' || this.doc_type == 'Employee Grievance' || this.doc_type == 'Probation Evaluation' || this.doc_type == 'Voluntary PF' || this.doc_type == 'Regularization'){
       return true
     }else{
       return false
@@ -3321,6 +3338,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     }else if (data && data.name && data.name == 'Regularization') {
       this.openRegularizationForm();
     }
+    else if (data && data.name && data.name == 'Letter Request') {
+      this.openLetterRequestForm();
+    }
     // else if(data.name == 'Timesheet' && this.db.ismobile){
     //   this.router.navigateByUrl('/timesheet-detail')
     // }
@@ -3333,16 +3353,32 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   async openRegularizationForm() {
     const modal = await this.modalCtrl.create({
       component: RegularizationFormComponent,
-      // regularization-popup
       cssClass: '',
       componentProps: {
         title: 'Regularization'
+      },
+      // enterAnimation: this.db.enterAnimation,
+      // leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+  }
+
+  async openLetterRequestForm() {
+    const modal = await this.modalCtrl.create({
+      component: CreateLetterRequestComponent,
+      // regularization-popup
+      cssClass: '',
+      componentProps: {
+        title: 'Add Letter Request'
       },
       enterAnimation: this.db.enterAnimation,
       leaveAnimation: this.db.leaveAnimation,
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
+    if(data)
+      this.get_tempate_and_datas(this.doc_type)
   }
 
   create_new(data) {

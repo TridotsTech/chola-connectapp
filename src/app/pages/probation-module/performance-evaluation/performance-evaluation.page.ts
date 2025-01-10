@@ -84,7 +84,7 @@ export class PerformanceEvaluationPage implements OnInit {
             })
           }
           this.evaluationDetails = this.performanceDetails.evaluation_details
-          if(this.evaluationDetails.workflow_state == 'Draft')
+          if(this.performanceDetails.workflow_state == 'Draft')
             this.save_only = true;
         }
       }
@@ -195,6 +195,32 @@ export class PerformanceEvaluationPage implements OnInit {
     item['rating'] = rating
     // console.log(item)
     // console.log(rating)
+  }
+
+  submit_approval(type){
+    let data:any={
+       doctype :'Probation Evaluation',
+       workflow_state:type
+    }
+    if(this.performanceDetails && this.performanceDetails.name){
+      data.name = this.performanceDetails.name;
+    }
+    this.db.inset_docs({data: data}).subscribe(res => {
+      if (res && res.message && res.message.status == 'Success') {
+        type == 'Rejected' ? this.db.sendSuccessMessage("Probation Evaluation Rejected successfully!") :this.db.sendSuccessMessage("Probation Evaluation Approved successfully!")
+        setTimeout(() => {
+          this.nav.back()
+        }, 500);
+      }else{
+        if(res._server_messages){
+          let d = JSON.parse(res._server_messages)
+          let f = JSON.parse(d[0])
+          this.db.sendErrorMessage(f.message)
+        }else{
+          this.db.sendErrorMessage(res.message.message)
+        }
+      }
+    })
   }
 
   submit(){

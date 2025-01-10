@@ -19,25 +19,27 @@
       </div>
     </div>
 
-    <div *ngIf="view == 'list'">
-      <app-month-filter [doctype]="doc_type" [showCalendar]="showCalendar" [selectedDate]="db.current_event_date"
-        (getDateFromCalendar)="getDateFromCalendars.emit($event)" (getFilters)="getFilters.emit($event)"
-        [search_data]="search_data" [search_filter]="search_filter"></app-month-filter>
-    </div>
+    
 
     <div class="bg_primary__">
       <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name1($event)" [bg_white]="true"
         bg_color="#f6f7f9" [tabs_array]="options1" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
     </div>
 
-
+    <div *ngIf="view == 'list'">
+      <app-month-filter [doctype]="doc_type" [showCalendar]="showCalendar" [selectedDate]="db.current_event_date"
+        (getDateFromCalendar)="getDateFromCalendars.emit($event)" (getFilters)="getFilters.emit($event)"
+        [search_data]="search_data" [search_filter]="search_filter"></app-month-filter>
+    </div>
     <div *ngIf="view == 'calendar'" class="p-10">
-      <div class="d__flex w-100 just-s header" (click)="show_att_cal.emit('')">
+      <div class="d__flex w-100 just-s header">
         <h5 class="m-0 fnt-15">Monthly Attendance</h5>
-        <ion-icon name="chevron-down-outline"></ion-icon>
+        <!-- <ion-icon name="chevron-down-outline"></ion-icon> -->
       </div>
+      <!-- (click)="show_att_cal.emit('')" -->
+      <!-- *ngIf="show_attendance"  -->
 
-      <div *ngIf="show_attendance" class="calendar_att1">
+      <div class="calendar_att1">
         <app-month-calendar [highlightedDates]="highlightedDates"
           (onChange)="getCalendarDate.emit($event)"></app-month-calendar>
       </div>

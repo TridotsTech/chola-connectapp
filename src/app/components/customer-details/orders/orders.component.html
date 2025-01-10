@@ -205,6 +205,10 @@
       <div class="s-1 w-50">
         <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}
         </h3>
+        
+        <!-- <p class="m-0 fnt-13 status_box webkit-text text-c" [ngClass]="db.get_style(item.workflow_state)">
+          {{item.workflow_state}}</p> -->
+        <!-- <div><span class="order_status" [ngClass]="db.get_style(item.status)">{{item.workflow_state}}</span> -->
         <h2 class="m-0 fnt-11 Invoice webkit-text" [style.--line]="2">{{get_values(db.get_saleslist.keys[6])}} <span
             class="gray_clr">{{item[db.get_saleslist.keys[6]]}}</span></h2>
         <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 fnt-11"><span
@@ -218,6 +222,9 @@
         <!-- <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
           <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
         </div> -->
+        <div *ngIf="item.workflow_state" class="sec__2d">
+          <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
+        </div>
         <h2 *ngIf="item[db.get_saleslist.keys[3]]" class="m-0 fnt-11"><span
           class="gray_clr">{{item[db.get_saleslist.keys[3]]
           }}</span></h2>
@@ -418,8 +425,8 @@
 
         <div class="d__flex just-s mb-5">
           <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}</h3>
-          <div *ngIf="item[db.get_saleslist.keys[4]]" class="sec__2d">
-            <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[4]]"></app-status>
+          <div *ngIf="item.workflow_state" class="sec__2d">
+            <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
           </div>
         </div>
 

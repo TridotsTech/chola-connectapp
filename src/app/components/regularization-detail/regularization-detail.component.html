@@ -8,7 +8,7 @@
     <h4 class="m-0">Date</h4>
     <h4 class="m-0">{{regularizationDetail.date ? regularizationDetail.date : '-'}}</h4>
     <h4 class="m-0">Status</h4>
-    <h4 class="m-0">{{regularizationDetail.status ? regularizationDetail.status : '-'}}</h4>
+    <h4 class="m-0">{{regularizationDetail.workflow_state ? regularizationDetail.workflow_state : '-'}}</h4>
     <h4 class="m-0">Reason</h4>
     <h4 class="m-0">{{regularizationDetail.regularization_reason ? regularizationDetail.regularization_reason : '-'}}</h4>
 
@@ -18,3 +18,8 @@
         <!-- <p class="mt-5 fnt-15 fnt_w500 descriptionBox">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere corporis hic blanditiis dicta rem cumque vitae vero, ad placeat veritatis, quos saepe eveniet nam, ipsam inventore eius doloremque velit magnam?</p> -->
     </div>
 </div>
+
+<div *ngIf="db.check_role('L1 Manager')" class="save_">
+    <ion-button class="clear_btn" >Leave Request</ion-button>
+    <ion-button class="save_btn">Regulariztion</ion-button>
+  </div>

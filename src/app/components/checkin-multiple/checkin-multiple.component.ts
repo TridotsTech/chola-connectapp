@@ -383,6 +383,7 @@ export class CheckinMultipleComponent  implements OnInit {
       ip:ip_address,
       latitude: latitude,
       longitude:longitude,
+      platform:'Mobile'
     }
       this.db.attendance_checkin(data).subscribe(async res =>{
         setTimeout(() => {
