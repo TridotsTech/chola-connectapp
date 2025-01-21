@@ -1,10 +1,10 @@
 <app-header title="Buyback Calculator" [showYear]="false" [model]="false"></app-header>
 
 <ion-content [fullscreen]="true">
-  <div class="p-10 formHeight">
+  <div class="p-10">
     <form [formGroup]="buyback_form">
 
-      <div class="pb-10">
+      <!-- <div class="pb-10">
         <p class="title">Employee Code</p>
         <div class="custom-input">
           <ion-input [disabled]="true" (click)="open_dropdown()" type="text" placeholder="Employee Code" formControlName="employee_code" name="employee_code"></ion-input>
@@ -16,18 +16,29 @@
         <div class="custom-input">
           <ion-input [disabled]="true" type="text" placeholder="Employee Name" formControlName="employee_name" name="employee_name"></ion-input>
         </div>
-      </div>
+      </div> -->
 
       <div class="pb-10">
         <p class="title">Asset Type</p>
         <div class="custom-input">
-          <ion-select interface="popover" placeholder="Asset Type" formControlName="asset_type" name="asset_type">
+          <ion-select interface="popover" placeholder="Asset Type" formControlName="asset_type" name="asset_type" (ionChange)="onassettypeChange($event)">
             <ion-select-option *ngFor="let assets of assetsType" [value]="assets.name">{{assets.name}}</ion-select-option>
           </ion-select>
         </div>
       </div>
-
       <div class="pb-10">
+        <p class="title">Asset</p>
+        <div class="custom-input">
+          <ion-select interface="popover" placeholder="Asset" formControlName="asset" name="asset" (ionChange)="onassetChange($event,'')">
+            <ion-select-option *ngFor="let ass of assets_list" [value]="ass.name">{{ass.name}}</ion-select-option>
+          </ion-select>
+          <!-- <ion-input type="text"
+            placeholder="Asset" (click)="open_dropdown1()" name="asset" formControlName="asset"
+            class="form-input"></ion-input> -->
+        </div>
+      </div>
+
+      <div *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="pb-10">
         <p class="title">Vehicle Registration No</p>
         <div class="custom-input">
           <ion-input type="text" placeholder="Vehicle Registration No" formControlName="vehicle_registration_no" name="vehicle_registration_no"></ion-input>
@@ -48,7 +59,7 @@
 
       </div>
 
-
+      
       <div class="pb-10">
         <p class="title">Ex Showroom Cost</p>
         <div class="custom-input">
@@ -69,45 +80,58 @@
           <ion-input type="number" placeholder="Total Capitalized Value" formControlName="total_capitalized_value" name="total_capitalized_value"></ion-input>
         </div>
       </div>
+      <div class="pb-10" *ngIf="buyback_form.value.life_of_the_car">
+        <p class="title">Total Capitalized Value</p>
+        <div class="custom-input">
+          <ion-input type="text" [disabled]="true" placeholder="Life Of The Asset" formControlName="life_of_the_car" name="life_of_the_car"></ion-input>
+        </div>
+      </div>
 
       <h5 class="fnt-15 fnt_w500 mb-10 m-0">Buyback Rate</h5>
-
-      <div *ngIf="false">
-        <div class="pb-10">
+      <div class="section2">
+        <div *ngIf="buyback_form.value.year0" class="pb-10">
+          <p class="title">Year0</p>
+          <div class="custom-input">
+            <ion-input type="number" [disabled]="true" placeholder="Year0" formControlName="year0" name="year0"></ion-input>
+          </div>
+        </div>
+        <div *ngIf="buyback_form.value.year1" class="pb-10">
           <p class="title">Year1</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="Year1" formControlName="year1" name="year1"></ion-input>
+            <ion-input type="number" [disabled]="true" placeholder="Year1" formControlName="year1" name="year1"></ion-input>
           </div>
         </div>
   
-        <div class="pb-10">
+        <div *ngIf="buyback_form.value.year2" class="pb-10">
           <p class="title">Year2</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="Year2" formControlName="year2" name="year2"></ion-input>
+            <ion-input type="number" [disabled]="true" placeholder="Year2" formControlName="year2" name="year2"></ion-input>
           </div>
         </div>
   
-        <div class="pb-10">
+        <div *ngIf="buyback_form.value.year3" class="pb-10">
           <p class="title">Year3</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="Year3" formControlName="year3" name="year3"></ion-input>
+            <ion-input type="number" [disabled]="true" placeholder="Year3" formControlName="year3" name="year3"></ion-input>
           </div>
         </div>
   
-        <div class="pb-10">
+        <div *ngIf="buyback_form.value.year4" class="pb-10">
           <p class="title">Year4</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="Year4" formControlName="year4" name="year4"></ion-input>
+            <ion-input type="number" [disabled]="true" placeholder="Year4" formControlName="year4" name="year4"></ion-input>
           </div>
         </div>
+        <div *ngIf="buyback_form.value.perk_tax" class="pb-10">
+          <p class="title">Perk Tax</p>
+          <div class="custom-input">
+            <ion-input type="number" [disabled]="true" placeholder="Perk Tax" formControlName="perk_tax" name="perk_tax"></ion-input>
+          </div>
+        </div>
+
       </div>
 
-      <div class="pb-10">
-        <p class="title">Perk Tax</p>
-        <div class="custom-input">
-          <ion-input type="number" placeholder="Perk Tax" formControlName="perk_tax" name="perk_tax"></ion-input>
-        </div>
-      </div>
+      
 
       <div *ngIf="yearCalculator && yearCalculator.length != 0" class="year_calculator mb-10">
         <div *ngFor="let item of yearCalculator" class="boxes__">
@@ -168,7 +192,7 @@
     </form>
 
   </div>
-  <div class="submit-btn">
+  <!-- <div class="submit-btn">
     <ion-button (click)="submit()" fill="clear">Save</ion-button>
-  </div>
+  </div> -->
 </ion-content>

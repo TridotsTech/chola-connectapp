@@ -1,5 +1,5 @@
 <div [class.pos-r]="table">
-  <div class="date-picker" [class.border-none]="table" [class.readOnlyClass]="web_form && each && !task_form && each.read_only == 1" [class.ov-hidden]="table" (click)="togglePicker($event)">
+  <div class="date-picker" [class.border-none]="table" [class.readOnlyClass]="(web_form && each && !task_form && each.read_only == 1) || read_only" [class.ov-hidden]="table" (click)="read_only ? null : togglePicker($event)">
     <input readonly *ngIf="!web_form && !task_form" (input)="dateChange($event)" type="text" class="date-input"  [ngModel]="dateFormat1(selectedDateTime)" />
     <input readonly *ngIf="web_form && each && !task_form" (input)="dateChange($event)" type="text" [class.readOnlyClass]="each.read_only == 1" class="date-input custom-input" [ngModel]="dateFormat1(selectedDateTime)" />
     <p *ngIf="task_form" class="box_1 m-0 fnt-13 mb-5 fnt_w400 d__flex gap-5" (click)="enableStart()"><ion-icon name="calendar-outline"></ion-icon>{{dateFormat1(selectedDateTime)}}</p>

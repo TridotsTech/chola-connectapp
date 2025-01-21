@@ -378,7 +378,7 @@ export class DashboardPage implements OnInit {
 
   get_hr_dashboard() {
     let data = {
-      dashboard_name: 'HR Dashboard',
+      dashboard_name: 'Manager Dashboard',
       employee_id: localStorage['employee_id'],
     };
 

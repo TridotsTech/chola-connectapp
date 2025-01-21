@@ -94,7 +94,7 @@ export class LeaveApplicationDetailPage implements OnInit {
 
     if (this.db.hr_manager_role) {
       this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
-
+      this.selectedTabSec = 'Awaiting Approval'
       // let val = { name: "My Leaves", route: "my" }
       // this.options.push(val)
       this.employee = false

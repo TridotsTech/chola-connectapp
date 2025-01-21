@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, HostListener, ElementRef, Output, EventEmitter,OnChanges, SimpleChanges } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class CustomCalendarComponent implements OnInit {
   @Input() selectedDate: any;
   @Input() web_form: any;
   @Input() each: any;
+  @Input() read_only: any;
   @Input() field_name: any;
   @Input() table: any;
   @Input() task_form: any;
@@ -48,8 +49,23 @@ export class CustomCalendarComponent implements OnInit {
     this.generateDays();
   }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedDate']) {
+      // console.log(this.selectedDate)
+      if (this.selectedDate) {
+        this.selectedDateTime = this.dateFormat1(this.selectedDate)
+        let sel_date = new Date(this.selectedDateTime)
+        this.currentMonth = sel_date.getMonth();
+        this.currentYear = sel_date.getFullYear();
+        this.generateDays();
+        this.extractTime(this.selectedDate, 'init')
+      }
+      // console.log('Input data has changed:', changes['selectedDate'].currentValue);
+    }
+  }
 
+  ngOnInit() {
+    // console.log(this.selectedDate)
     if (this.selectedDate) {
       this.selectedDateTime = this.dateFormat1(this.selectedDate)
       let sel_date = new Date(this.selectedDateTime)

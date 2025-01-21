@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div *ngIf="db.check_role('L1 Manager')" class="save_">
-    <ion-button class="clear_btn" >Leave Request</ion-button>
-    <ion-button class="save_btn">Regulariztion</ion-button>
+<div *ngIf="db.check_role('L1 Manager') && regularizationDetail.status != 'Approved' && regularizationDetail.status != 'Rejected'" class="save_">
+    <ion-button (click)="approve(regularizationDetail,'Rejected')" class="clear_btn" >Reject</ion-button>
+    <ion-button (click)="approve(regularizationDetail,'Approved')" class="save_btn">Approve</ion-button>
   </div>

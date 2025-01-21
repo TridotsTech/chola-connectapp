@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { Platform } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 // import { FileOpener } from 'capacitor-file-opener';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
@@ -50,7 +50,7 @@ export class PayrollDetailComponent implements OnInit {
   sub: any;
   skeleton = false
   no_products = false
-  constructor(private file: File, private fileOpener: FileOpener,public db: DbService, public route: ActivatedRoute,private platform: Platform) { }
+  constructor(public loadingCtrl:LoadingController, private file: File, private fileOpener: FileOpener,public db: DbService, public route: ActivatedRoute,private platform: Platform) { }
 
   ngOnInit() {
 
@@ -221,6 +221,11 @@ export class PayrollDetailComponent implements OnInit {
 
   async downloadAndOpenPDF(info) {
     try {
+      let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+      await loader.present();
+      setTimeout(() => {
+        loader.dismiss();
+      }, 10000);
       this.db.get_salary_slip_content({filters:{'salary_slip_select_year': '2024-2025', 'salary_slip_select_month': 'November', 'employee': info.employee, 'doctype': 'Salary Slip'}}).subscribe(async res => {
         if (res && res.status && res.status == 'Success') {
         const fileContent = res.message.fcontent;
@@ -237,8 +242,14 @@ export class PayrollDetailComponent implements OnInit {
           // console.log(filePath,'filepath')
       // Step 3: Open the downloaded PDF file
       await this.openFile(filePath);
+      setTimeout(() => {
+        loader.dismiss();
+      }, 2000);
     } else {
       this.db.alert('No Further Records')
+      setTimeout(() => {
+        loader.dismiss();
+      }, 450);
     }
 
     }, error => {

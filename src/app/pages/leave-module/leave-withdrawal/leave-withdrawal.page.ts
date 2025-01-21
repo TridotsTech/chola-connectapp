@@ -53,8 +53,8 @@ export class LeaveWithdrawalPage implements OnInit {
       this.selectedEmployee = res.name
       this.withdrawal_form.value['employee'] = res.label;
     });
-
-    this.calculateLeavePreview()
+    if(this.newForm)
+      this.calculateLeavePreview()
   }
 
   statusType = [

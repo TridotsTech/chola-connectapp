@@ -292,13 +292,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/team-member-list/team-member-list.module').then( m => m.TeamMemberListPageModule)
   },
   {
+    path: 'approval-list',
+    loadChildren: () => import('./pages/approval-list/approval-list.module').then( m => m.ApprovalListPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
-
-
-
-
 
 ];
 

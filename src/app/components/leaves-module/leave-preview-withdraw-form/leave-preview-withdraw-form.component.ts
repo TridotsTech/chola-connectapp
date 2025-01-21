@@ -9,13 +9,14 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class LeavePreviewWithdrawFormComponent implements OnInit {
   @Input() editFormValues: any;
+  @Input() leave_preview: any =[];
   @Input() title: any;
   @Input() type: any;
   posting_date:any = new Date();
   constructor(public db: DbService, public modalCntrl: ModalController) {}
 
   ngOnInit() {
-    console.log(this.editFormValues, 'this.editFormValues');
+    console.log(this.leave_preview, 'this.editFormValues');
     if(this.type == 'leave request'){
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -137,7 +138,35 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   }
 
   leave_req(){
-    console.log(this.editFormValues, 'this.editFormValues');
+    // console.log(this.leave_preview, 'this.editFormValues');
+    if(!this.editFormValues.leave_type)
+      this.db.sendErrorMessage('Please enter the Leave Type');
+    else if(!this.editFormValues.reason)
+      this.db.sendErrorMessage('Please enter the Reason'); 
+    else{
+      let l_p:any= [];
+      let total_leave:any = 0;
+      this.leave_preview.map(res =>{
+        l_p.push({
+          date:res.date,
+          duration:res.duration,
+          count:res.duration == 'Full Day' ? '1d' :'0.5d',
+          status:'Pending',
+        })
+        total_leave += res.duration == 'Full Day' ? 1 : 0.5;
+      })
+      let data={
+        employee: localStorage['employee_id'],
+        employee_name: localStorage['employee_name'],
+        posting_date: this.posting_date,
+        reason: this.editFormValues.reason,
+        leave_type: this.editFormValues.leave_type,
+        total_leave_days:total_leave,
+        leave_preview: l_p
+      }
+      this.modalCntrl.dismiss(data)
+      // console.log(data)
+    } 
   }
 
   letter_req_save(){

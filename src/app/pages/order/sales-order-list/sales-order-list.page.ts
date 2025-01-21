@@ -1754,6 +1754,11 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     if (this.doc_type == 'Employee') {
       data['order_by'] = data['order_by'] == 'creation ASC' ? 'creation DESC' : 'creation ASC';
     }
+    
+    if(this.doc_type == 'Leave Withdrawal'){
+      let val = JSON.parse(localStorage['default_values'])
+      data['company'] = val.default_company
+    }
 
     if ((this.db.ismobile || !this.db.ismobile) && (this.doc_type != "Attendance")) {
       this.db.get_tempate_and_datas(data).subscribe((res) => {
@@ -1986,9 +1991,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
           this.doc_type == 'Holiday List' ? this.db.get_saleslist['data'] = res.message.list_details : null
 
 
-          if (doctype == 'Request for Quotation') {
-            this.revoGridAssigning();
-          }
+          // if (doctype == 'Request for Quotation') {
+          //   this.revoGridAssigning();
+          // }
 
           //   if(this.db.employee_role && doctype == "Expense Claim" && this.db.ismobile){
           //     // let val = this.db.get_saleslist.options
@@ -2404,6 +2409,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     });
     await modal.present();
     const val = await modal.onWillDismiss();
+    console.log(val)
+    if(val)
+      data.status = val.data.status
   }
 
 
@@ -3362,6 +3370,8 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
+    // if(data)
+    //   this.get_tempate_and_datas(this.doc_type)
   }
 
   async openLetterRequestForm() {

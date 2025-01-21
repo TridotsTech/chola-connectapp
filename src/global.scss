@@ -5511,3 +5511,8 @@ table:active {
   margin-right: 3px;
   /* Adjust as needed */
 }
+
+ion-select::part(select-icon) {
+  font-size: 36px;        /* Adjust icon size */
+  color: red;             /* Change icon color */
+}

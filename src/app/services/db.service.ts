@@ -47,11 +47,9 @@ export class DbService {
   seapi_api = 'seapi.seapi.api.';
   go1_apps_api = 'go1_apps.go1_apps.api.'
   go1_apps_custom_api = 'go1_apps.go1_apps.custom_api.'
+  
   app_name = 'Go1 HR';
-  // app_name = localStorage['app_name'];
-  // currentRole = localStorage['currentRole'];
   currentRole = 'HR';
-  // currentRole = 'Employee';
 
   ismobile: any;
   modal = false;
@@ -418,54 +416,32 @@ export class DbService {
   }
 
   OneSignalInit(key: any): void {
+    
     OneSignal.setAppId(key);
     OneSignal.setNotificationOpenedHandler((data) => {
-      // if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
-      //   setTimeout(() => {
-      //     this.playAudio()
-      //   }, 3000);
-      // }
+      
     });
 
     OneSignal.setNotificationWillShowInForegroundHandler((data: any) => {
-      // console.log(data)
-      // if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
-      //   setTimeout(() => {
-      //     this.playAudio()
-      //   }, 3000);
-      // }
+     
     });
 
     OneSignal.setInAppMessageClickHandler((data: any) => {
-      // if (data.notification.body.indexOf('ORD') != -1 || data.notification.body.indexOf('ord') != -1) {
-      //   setTimeout(() => {
-      //     this.playAudio()
-      //   }, 3000);
-      // }
+     
     });
     OneSignal.promptForPushNotificationsWithUserResponse((accepted: any) => {
       console.log('User accepted notifications: ' + accepted);
     });
     OneSignal.getDeviceState((res) => {
       localStorage['player_id'] = res.userId;
-      localStorage['player_id'] != undefined && localStorage['player_id'] != 'undefined' && localStorage['customerRefId'] != undefined && localStorage['customerRefId'] != 'undefined' ? this.update_onsignal_id().subscribe(res => { console.log("one signal id updated..", res) }) : null
+      localStorage['player_id'] != undefined && localStorage['player_id'] != 'undefined' && localStorage['employee_id'] != undefined && localStorage['employee_id'] != 'undefined' ? this.update_onsignal_id().subscribe(res => { console.log("one signal id updated..", res) }) : null
     })
   }
-
-  // async playAudio() {
-  //   const audio_File = 'assets/sound.mp3'; // Replace with the path to your audio file
-  //   try {
-  //     let audioFile = await new Howl({ src: audio_File })
-  //     await audioFile.play();
-  //   } catch (error) {
-  //     console.error('Error playing audio', error);
-  //   }
-  // }
 
   update_onsignal_id() {
     var data = {
       document: 'Employee',
-      user: localStorage['customerRefId'],
+      user: localStorage['employee_id'],
       device_id: localStorage['player_id'],
       enabled: 1
     }
@@ -1030,6 +1006,11 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  create_leave_request(Info): Observable<any> {
+    let endpoint = 'td_shift_and_attendance.td_shift_and_attendance.doctype.attendance_adjustment_tool.attendance_adjustment_tool.create_leave_request';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   emp_checkIn(Info): Observable<any> {
     // let endpoint = 'Employee Checkin' + `?fields=["employee","name","log_type","time"]&filters=[["attendance","=","${Info.id}"]]`;
     let endpoint = 'Employee Checkin' + `?fields=["employee","name","log_type","time"]&filters=[["attendance","=","${Info.id}"]]&order_by=name%20desc`;
@@ -1068,6 +1049,31 @@ export class DbService {
 
   get_manager_team_members(Info): Observable<any> {
     let endpoint = 'td_shift_and_attendance.td_shift_and_attendance.utils.mobile_api.get_manager_team_members';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  validate_asset(Info): Observable<any> {
+    let endpoint = 'tdasset.tdasset.doctype.buyback_calculator.buyback_calculator.validate_asset';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  fetch_buyback_years(Info): Observable<any> {
+    let endpoint = 'tdasset.tdasset.doctype.buyback_calculator.buyback_calculator.fetch_buyback_years';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  buyback_calculator_asset(Info): Observable<any> {
+    let endpoint = 'tdasset.tdasset.doctype.buyback_calculator.buyback_calculator.asset';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  get_asset_detail(Info): Observable<any> {
+    let endpoint = 'tdasset.tdasset.doctype.buyback_calculator.buyback_calculator.get_asset_detail';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  permission_fields(Info): Observable<any> {
+    let endpoint = 'tdasset.api.permission_fields';
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
@@ -1494,7 +1500,7 @@ export class DbService {
             {
               page: 'Approvals',
               page_name: 'Approvals',
-              route: '/approvals',
+              route: '/approval-list',
             }
           ]
 

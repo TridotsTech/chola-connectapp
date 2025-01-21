@@ -1,0 +1,11 @@
+<app-header title="Approval" [showYear]="false" [model]="false"></app-header>
+<ion-content [fullscreen]="true">
+  <div class="box_sec">
+    <div [class.active]="item['isActive']" (click)="add(item)" *ngFor="let item of approvallist" class="d__flex mouse boxs">
+      <div>
+        <h6 class="m-0 name_">{{item.label ? item.label : item.name}}</h6>
+      </div>
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+    </div>
+  </div>
+</ion-content>

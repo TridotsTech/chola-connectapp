@@ -1,28 +1,29 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
 
 <div class="p-10" *ngIf="!type">
-  <div class="d__flex gap-10">
+  <!-- <div class="d__flex gap-10"> -->
     <div class="pb-10">
       <label class="pb-10">From Date</label>
-      <app-custom-calendar format="Date" [selectedDate]="editFormValues.from_date" (onChange)="datePickerChange('from_date',$event)"></app-custom-calendar>
+      <app-custom-calendar format="Date" [read_only]="true" [selectedDate]="editFormValues.from_date" (onChange)="datePickerChange('from_date',$event)"></app-custom-calendar>
     </div>
-    <div class="pb-10">
+    <!-- <div class="pb-10">
       <label for="filter_end_date" class="pb-10">To Date</label>
       <app-custom-calendar format="Date" [selectedDate]="editFormValues.to_date " (onChange)="datePickerChange('end_date',$event)"></app-custom-calendar>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 
   <div class="pb-10">
     <label class="pb-10">Leave Type</label>
     <div class="custom-input">
-      <ion-input type="text" (click)="open_dropdown()" [(ngModel)]="editFormValues.leave_type" placeholder="Leave Type" class="form-input"></ion-input>
+      <!-- (click)="open_dropdown()" -->
+      <ion-input type="text" disabled="true"  [(ngModel)]="editFormValues.leave_type" placeholder="Leave Type" class="form-input"></ion-input>
     </div>
   </div>
 
   <div class="pb-10">
     <label class="pb-10">Count</label>
     <div class="custom-input">
-      <ion-input type="number" [(ngModel)]="editFormValues.total_leave_days" placeholder="Count" class="form-input"></ion-input>
+      <ion-input type="number" disabled="true" [(ngModel)]="editFormValues.total_leave_days" placeholder="Count" class="form-input"></ion-input>
     </div>
   </div>
 
@@ -85,14 +86,20 @@
     </div>
 
     <div class="pb-10">
-      <label class="pb-10">Leave Type</label>
+      <label class="pb-10">Leave Type <span class="red">*</span></label>
       <div class="custom-input">
         <ion-input type="text" (click)="open_dropdown()" [(ngModel)]="editFormValues.leave_type" placeholder="Leave Type" class="form-input"></ion-input>
       </div>
     </div>
     <div class="pb-10">
+      <label class="pb-10">Reason <span class="red">*</span></label>
+      <div class="custom-input">
+        <ion-textarea rows="6" [(ngModel)]="editFormValues.reason" placeholder="Reason" (input)="validateInput($event)" class="form-input" required></ion-textarea>
+      </div>
+    </div>
+    <div class="pb-10">
       <label class="pb-10">Leave Date</label>
-      <p class="l_date" *ngFor="let r of editFormValues">{{r.date}} - {{r.duration}} {{r.duration == 'Full Day' ? '(1d)' :'(0.5d)'}}</p>
+      <p class="l_date" *ngFor="let r of leave_preview">{{r.date}} - {{r.duration}} {{r.duration == 'Full Day' ? '(1d)' :'(0.5d)'}}</p>
     </div>
   </div>
 </div>

@@ -124,7 +124,8 @@ export class RegularizationFormComponent  implements OnInit {
       componentProps: {
         title:'Leave Request',
         type:'leave request',
-        editFormValues: datas
+        editFormValues: datas,
+        leave_preview: datas
       },
       enterAnimation: this.db.enterAnimation,
       leaveAnimation: this.db.leaveAnimation,
@@ -133,6 +134,14 @@ export class RegularizationFormComponent  implements OnInit {
     const { data } = await modal.onWillDismiss();
     if (data && data) {
       console.log(data)
+      this.db.create_leave_request(data).subscribe(res => {
+        if(res.status == 'failed')
+          this.db.alert(res.message)
+        else{
+          this.db.alert('Leave Request created successfully')
+          this.modalCtrl.dismiss()
+        }  
+      })
     }
     }
   }

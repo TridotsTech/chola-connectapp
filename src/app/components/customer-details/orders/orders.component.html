@@ -218,17 +218,18 @@
             class="gray_clr">{{item[db.get_saleslist.keys[5]]
             }}</span></h2>
       </div>
-      <div class="s-2">
+      <div class="flex40">
         <!-- <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
           <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
         </div> -->
         <div *ngIf="item.workflow_state" class="sec__2d">
           <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
         </div>
-        <h2 *ngIf="item[db.get_saleslist.keys[3]]" class="m-0 fnt-11"><span
+        <h2 *ngIf="item[db.get_saleslist.keys[3]]" class="m-0 fnt-11 d__flex just-e"><span
           class="gray_clr">{{item[db.get_saleslist.keys[3]]
-          }}</span></h2>
-        <ion-icon name="chevron-forward-outline"></ion-icon>
+          }}</span>
+          <ion-icon name="chevron-forward-outline"></ion-icon></h2>
+        
       </div>
     </div>
   </div>
@@ -426,7 +427,7 @@
         <div class="d__flex just-s mb-5">
           <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}</h3>
           <div *ngIf="item.workflow_state" class="sec__2d">
-            <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
+            <app-status [reverse]="true" [status]="item.status? item.status :item.workflow_state"></app-status>
           </div>
         </div>
 

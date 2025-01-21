@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-letter-request-detail',
@@ -12,7 +12,7 @@ import { LoadingController } from '@ionic/angular';
 
 export class LetterRequestDetailComponent  implements OnInit {
   @Input() letterrequestDetail;
-  constructor(public loadingCtrl: LoadingController,private fileOpener: FileOpener,public db: DbService) { }
+  constructor(public modalctrl:ModalController, public alertController:AlertController,public loadingCtrl: LoadingController,private fileOpener: FileOpener,public db: DbService) { }
 
   ngOnInit() {
     this.get_employee_l_r_detail()
@@ -101,6 +101,53 @@ export class LetterRequestDetailComponent  implements OnInit {
         alert('Failed')
         console.error('Error opening PDF', err)
       });
+  }
+
+  async approve(item,type){
+    const alert = await this.alertController.create({
+      header: type == 'Approved' ?'Approval':'Reject',
+      message: `Are you sure do you want to ${type == 'Approved' ?'Approval':'Reject'} for letter request..?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            this.alertController.dismiss();
+          },
+        },
+        {
+          text: 'Ok',
+          handler: () => {
+            this.submit({doctype:'Letter Request',name:item.name,workflow_state:type,docstatus:1},type)
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  submit(data,type){
+    this.db.inset_docs({ data: data }).subscribe(res => {
+      if (res && res.message && res.message.status == 'Success') {
+          this.db.sendSuccessMessage(`Letter Request ${type} successfully!`)
+          setTimeout(() => {
+            this.modalctrl.dismiss(res.message.data);
+          }, 500);
+      }else{
+        if(res._server_messages){
+          let d = JSON.parse(res._server_messages)
+          let f = JSON.parse(d[0])
+          this.db.sendErrorMessage(f.message)
+        }else{
+          this.db.sendErrorMessage(res.message.message)
+        }
+      }
+    }, error => {
+      if(error.error){
+        let d = JSON.parse(error.error._server_messages)
+        let f = JSON.parse(d[0])
+        this.db.sendErrorMessage(f.message)
+      }
+    })
   }
 
 }

@@ -224,7 +224,7 @@
     <div *ngFor="let item of db.permission_details" (click)="db.doctype_select(item.page)">
       <ion-menu-toggle *ngIf="item.enable == 1">
         <div class="d__flex" (click)="router_mobile('', item)">
-          <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
+          <ion-icon *ngIf="item.page" class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
           <ion-label>{{item.page_name}}</ion-label>
         </div>
       </ion-menu-toggle>
