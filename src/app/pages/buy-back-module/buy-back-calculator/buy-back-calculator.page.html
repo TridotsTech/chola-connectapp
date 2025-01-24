@@ -3,21 +3,6 @@
 <ion-content [fullscreen]="true">
   <div class="p-10">
     <form [formGroup]="buyback_form">
-
-      <!-- <div class="pb-10">
-        <p class="title">Employee Code</p>
-        <div class="custom-input">
-          <ion-input [disabled]="true" (click)="open_dropdown()" type="text" placeholder="Employee Code" formControlName="employee_code" name="employee_code"></ion-input>
-        </div>
-      </div>
-
-      <div class="pb-10">
-        <p class="title">Employee Name</p>
-        <div class="custom-input">
-          <ion-input [disabled]="true" type="text" placeholder="Employee Name" formControlName="employee_name" name="employee_name"></ion-input>
-        </div>
-      </div> -->
-
       <div class="pb-10">
         <p class="title">Asset Type</p>
         <div class="custom-input">
@@ -63,25 +48,25 @@
       <div class="pb-10">
         <p class="title">Ex Showroom Cost</p>
         <div class="custom-input">
-          <ion-input type="number" placeholder="Ex Showroom Cost" formControlName="ex_showroom_cost" name="ex_showroom_cost"></ion-input>
+          <ion-input type="text" placeholder="Ex Showroom Cost" formControlName="ex_showroom_cost" name="ex_showroom_cost"></ion-input>
         </div>
       </div>
 
       <div class="pb-10">
         <p class="title">Road Tax and Registration Charges</p>
         <div class="custom-input">
-          <ion-input type="number" placeholder="Road Tax and Registration Charges" formControlName="road_tax_and_registration_charges" name="road_tax_and_registration_charges"></ion-input>
+          <ion-input type="text" placeholder="Road Tax and Registration Charges" formControlName="road_tax_and_registration_charges" name="road_tax_and_registration_charges"></ion-input>
         </div>
       </div>
 
       <div class="pb-10">
         <p class="title">Total Capitalized Value</p>
         <div class="custom-input">
-          <ion-input type="number" placeholder="Total Capitalized Value" formControlName="total_capitalized_value" name="total_capitalized_value"></ion-input>
+          <ion-input type="text" placeholder="Total Capitalized Value" formControlName="total_capitalized_value" name="total_capitalized_value"></ion-input>
         </div>
       </div>
       <div class="pb-10" *ngIf="buyback_form.value.life_of_the_car">
-        <p class="title">Total Capitalized Value</p>
+        <p class="title">Life Of The Asset</p>
         <div class="custom-input">
           <ion-input type="text" [disabled]="true" placeholder="Life Of The Asset" formControlName="life_of_the_car" name="life_of_the_car"></ion-input>
         </div>
@@ -136,12 +121,13 @@
       <div *ngIf="yearCalculator && yearCalculator.length != 0" class="year_calculator mb-10">
         <div *ngFor="let item of yearCalculator" class="boxes__">
           <div class="d__flex just-s">
-            <p class="m-0 fnt-14"><span class="gray_clr">Year : </span>{{item.year}}</p>
-            <p class="m-0 fnt-14"><span class="gray_clr">Car Value : </span>{{item.value_of_the_car | currency: (db.default_values && db.default_values.default_currency) ? db.default_values.default_currency : 'INR'}}</p>
+            <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Year : </span>{{item.index}}</p>
+            <!-- | currency: (db.default_values && db.default_values.default_currency) ? db.default_values.default_currency : 'INR' -->
+            <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Value of the Car: </span>₹ {{item.value}}</p>
           </div>
-          <div class="d__flex just-s">
-            <p class="m-0 fnt-14"><span class="gray_clr">Depreciation : </span>{{item.depreciation | currency: (db.default_values && db.default_values.default_currency) ? db.default_values.default_currency : 'INR'}}</p>
-            <p class="m-0 fnt-14"><span class="gray_clr">WDV : </span>{{item.wdv | currency: (db.default_values && db.default_values.default_currency) ? db.default_values.default_currency : 'INR'}}</p>
+          <div >
+            <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Depreciation : </span>₹ {{item.depreciation}}</p>
+            <p class="m-0 fnt-14"><span class="gray_clr fnt-12">WDV : </span>₹ {{item.wdv}}</p>
           </div>
         </div>
       </div>
@@ -151,14 +137,14 @@
         <div class="pb-10">
           <p class="title">Buyback Amount</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="Buyback Amount" formControlName="buyback_amount" name="buyback_amount"></ion-input>
+            <ion-input type="text" placeholder="Buyback Amount" formControlName="buyback_amount" name="buyback_amount"></ion-input>
           </div>
         </div>
 
         <div class="pb-10">
           <p class="title">Perk Amount</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="Perk Amount" formControlName="perk_amount" name="perk_amount"></ion-input>
+            <ion-input type="text" placeholder="Perk Amount" formControlName="perk_amount" name="perk_amount"></ion-input>
           </div>
         </div>
 
@@ -169,14 +155,14 @@
         <div class="pb-10">
           <p class="title">GST Amount</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="GST Amount" formControlName="gst_amount" name="gst_amount"></ion-input>
+            <ion-input type="text" placeholder="GST Amount" formControlName="gst_amount" name="gst_amount"></ion-input>
           </div>
         </div>
 
         <div class="pb-10">
           <p class="title">Tax On Perk Amount</p>
           <div class="custom-input">
-            <ion-input type="number" placeholder="Tax On Perk Amount" formControlName="tax_on_perk_amount" name="tax_on_perk_amount"></ion-input>
+            <ion-input type="text" placeholder="Tax On Perk Amount" formControlName="tax_on_perk_amount" name="tax_on_perk_amount"></ion-input>
           </div>
         </div>
 
@@ -185,7 +171,7 @@
       <div class="pb-10">
         <p class="title">Amount Payable To Company</p>
         <div class="custom-input">
-          <ion-input type="number" placeholder="Amount Payable To Company" formControlName="amount_payable_to_company" name="amount_payable_to_company"></ion-input>
+          <ion-input type="text" placeholder="Amount Payable To Company" formControlName="amount_payable_to_company" name="amount_payable_to_company"></ion-input>
         </div>
       </div>
 

@@ -30,6 +30,7 @@ export class LeaveWithdrawalPage implements OnInit {
       if(res && res['id']){
         if(res['id'] != 'New'){
           this.getWithdrawalDetail(res['id'])
+          this.get_workflow_states(res['id'])
         }else{
           this.newForm = true;
         }
@@ -166,6 +167,7 @@ export class LeaveWithdrawalPage implements OnInit {
         resS.oldStatus = resS.status
         resS.status = 'Pending'
       }
+      // else if(resS.status != 'Open'){}
     })
     this.leave_withdarawal_list = [...this.leave_withdarawal_list,...selectedArray];
     this.leave_preview = this.leave_preview.filter(res => {return !res['isChecked']});
@@ -232,6 +234,21 @@ export class LeaveWithdrawalPage implements OnInit {
       }
     })
   }
+
+  
+  get_workflow_states(id){
+    let data = {
+      doctype: 'Leave Withdrawal',
+      docname: id
+    }
+    this.db.get_workflow_states(data).subscribe(res => {
+      console.log(res)
+      if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
+       
+      }
+    })
+  }
+  
 
   getWithdrawalDetail(id){
     let data = {

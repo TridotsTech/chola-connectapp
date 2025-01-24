@@ -12,8 +12,22 @@ export class RegularizationDetailComponent  implements OnInit {
   constructor(public db: DbService,public alertController:AlertController,public modalctrl:ModalController) { }
 
   ngOnInit() {
+    // this.get_workflow_states(this.regularizationDetail.name)
     // console.log(this.regularizationDetail,'this.regularizationDetail')
   }
+
+  // get_workflow_states(id){
+  //   let data = {
+  //     doctype: 'Regularization',
+  //     docname: id
+  //   }
+  //   this.db.get_workflow_states(data).subscribe(res => {
+  //     console.log(res)
+  //     if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
+       
+  //     }
+  //   })
+  // }
 
   async approve(item,type){
     const alert = await this.alertController.create({

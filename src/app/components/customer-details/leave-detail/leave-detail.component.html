@@ -30,7 +30,7 @@
         <h6 class="m-0 fnt-14 leave">{{(dash_board && dash_board.length > 0) ? dash_board[0]['count'] : 0}}</h6>
       </div>
     
-      <div class="d__flex gap-10 just-s">
+      <div *ngIf="data.leave_balance" class="d__flex gap-10 just-s">
         <h6 class="m-0 fnt-14 text_2">Balance Leaves</h6>
         <h6 class="m-0 fnt-14">{{data.leave_balance ? data.leave_balance : 0}}</h6>
       </div>
@@ -40,7 +40,7 @@
     
       <div class="d__flex just-s w-100 mb-10">
         <h6 class="m-0 text_2_h">Leave Details</h6>
-        <ion-icon name="create-outline" *ngIf="data && data.docstatus == 0" (click)="editLeaveApplication(data)"></ion-icon>
+        <ion-icon name="create-outline" *ngIf="data && data.docstatus == 0 && data.workflow_state == 'Draft'" (click)="editLeaveApplication(data)"></ion-icon>
       </div>
 
       <div class="d__flex gap-20 flex-wrap pb-10">

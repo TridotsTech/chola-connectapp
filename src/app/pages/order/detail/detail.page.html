@@ -114,7 +114,9 @@
 
     </div>
   </div>
-
+  <div *ngIf="doctype == 'HD Ticket'" class="h-100">
+    <app-ticket-details></app-ticket-details>
+  </div>
 </ion-content>
 
 <ion-content *ngIf="loader_">

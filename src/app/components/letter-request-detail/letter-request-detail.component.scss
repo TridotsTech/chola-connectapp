@@ -2,7 +2,8 @@
     flex-wrap: wrap;
     gap: 10px;
     align-items: unset;
-
+    height: 340px;
+    overflow: auto;
     .Icon {
         height: 15px;
         width: 16px;
@@ -36,5 +37,28 @@
 
     &::-webkit-scrollbar {
         display: none;
+    }
+}
+
+.save_ {
+    // position: fixed;
+    bottom: 0;
+    // width: 25%;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 0 5px #ddd;
+
+    .clear_btn {
+        width: 40%;
+        --background: #fff;
+        border: 1px solid var(--border-col);
+        color: #000;
+    }
+
+    .save_btn {
+        width: 55%;
     }
 }

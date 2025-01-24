@@ -14,6 +14,7 @@ export class RegularizationFormComponent  implements OnInit {
   missing_days:any=[];
   show_btn:any;
   is_no_data:any = false;
+  selectAll:any;
   constructor(public db: DbService,public modalCtrl: ModalController) { }
 
   ngOnInit() {
@@ -97,8 +98,8 @@ export class RegularizationFormComponent  implements OnInit {
       dates:datas
     }
     this.db.create_regularization_before_save(data).subscribe(res => {
-      if(res.status == 'failed')
-        this.db.alert(res.message)
+      if(res.message.status == 'failed')
+        this.db.alert(res.message.message)
       else{
         this.db.alert('Regularization created successfully')
         this.modalCtrl.dismiss()
@@ -107,7 +108,7 @@ export class RegularizationFormComponent  implements OnInit {
     })
   }
   else
-    this.db.alert('Pls create the any one reason')
+    this.db.sendErrorMessage('Pls create the any one reason')
   }
 
   async leave_request(item){
@@ -135,8 +136,8 @@ export class RegularizationFormComponent  implements OnInit {
     if (data && data) {
       console.log(data)
       this.db.create_leave_request(data).subscribe(res => {
-        if(res.status == 'failed')
-          this.db.alert(res.message)
+        if(res.message.status == 'failed' || res.message.status == 'failure')
+          this.db.alert(res.message.error)
         else{
           this.db.alert('Leave Request created successfully')
           this.modalCtrl.dismiss()
@@ -152,6 +153,14 @@ export class RegularizationFormComponent  implements OnInit {
           return this.show_btn = true
         }
     })
+  }
+  select_all1(event) {
+    this.selectAll = !this.selectAll
+    this.missing_days.map(res=>{
+      this.selectAll ? res.isChecked = true: res.isChecked = false;
+    })
+    this.show_btn = false;
+    this.show_reg_btn()
   }
 
 }

@@ -296,9 +296,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/approval-list/approval-list.module').then( m => m.ApprovalListPageModule)
   },
   {
+    path: 'job-referral-list',
+    loadChildren: () => import('./pages/job-referral-list/job-referral-list.module').then( m => m.JobReferralListPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+
 
 ];
 

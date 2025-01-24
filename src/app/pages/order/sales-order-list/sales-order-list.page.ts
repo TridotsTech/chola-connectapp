@@ -22,6 +22,7 @@ import { RegularizationFormComponent } from 'src/app/components/leaves-module/re
 import { RegularizationDetailComponent } from 'src/app/components/regularization-detail/regularization-detail.component';
 import { LetterRequestDetailComponent } from 'src/app/components/letter-request-detail/letter-request-detail.component';
 import { CreateLetterRequestComponent } from 'src/app/components/create-letter-request/create-letter-request.component';
+import { BuybackFormComponent } from 'src/app/components/customer-details/buyback-form/buyback-form.component';
 // import { BugsheetQuickformComponent } from 'src/app/components/bug-sheets/bugsheet-quickform/bugsheet-quickform.component';
 
 @Component({
@@ -2410,7 +2411,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     await modal.present();
     const val = await modal.onWillDismiss();
     console.log(val)
-    if(val)
+    if(val && val.data)
       data.status = val.data.status
   }
 
@@ -3349,6 +3350,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     else if (data && data.name && data.name == 'Letter Request') {
       this.openLetterRequestForm();
     }
+    else if (data && data.name && data.name == 'Buyback') {
+      this.openBuybackForm();
+    }
     // else if(data.name == 'Timesheet' && this.db.ismobile){
     //   this.router.navigateByUrl('/timesheet-detail')
     // }
@@ -3372,6 +3376,23 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     const { data } = await modal.onWillDismiss();
     // if(data)
     //   this.get_tempate_and_datas(this.doc_type)
+  }
+
+  async openBuybackForm() {
+    const modal = await this.modalCtrl.create({
+      component: BuybackFormComponent,
+      // regularization-popup
+      cssClass: '',
+      componentProps: {
+        title: 'Add Buyback'
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data)
+      this.get_tempate_and_datas(this.doc_type)
   }
 
   async openLetterRequestForm() {

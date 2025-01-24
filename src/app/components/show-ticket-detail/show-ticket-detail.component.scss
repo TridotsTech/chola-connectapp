@@ -1,0 +1,44 @@
+.ticket_detail_info {
+    height: calc(100vh - 150px);
+    overflow: auto;
+
+    .detail_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid var(--border-col);
+        padding: 10px;
+    }
+
+    .label {
+        font-size: 13px;
+        // font-weight: 420;
+        color: rgb(76, 76, 76);
+        margin-bottom: 5px;
+        text-align: start;
+    }
+
+    .label_value {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .search_box_select {
+        border: 1px solid var(--border-col);
+        height: 30px;
+        border-radius: 5px;
+        font-size: 13px;
+        width: 100%;
+        background-color: #f7f9fd;
+    }
+}
+
+.active_star {
+    color: #ffbf00;
+}
+
+.border-s {
+    border-bottom-style: dashed;
+    border-color: #c0c0c0;
+}

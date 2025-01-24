@@ -11,8 +11,8 @@
     <h4 class="m-0">{{letterrequestDetail.workflow_state ? letterrequestDetail.workflow_state : '-'}}</h4>
     <!-- <h4 class="m-0">Purpose of the Letter</h4>
     <h4 class="m-0">{{letterrequestDetail.remarks ? letterrequestDetail.remarks : '-'}}</h4> -->
-    <h4 class="m-0">Download</h4>
-    <div class="border p-810 mouse d__flex" (click)="downloadAndOpenPDF(letterrequestDetail)">
+    <h4 *ngIf="letterrequestDetail.workflow_state == 'Approved'" class="m-0">Download</h4>
+    <div *ngIf="letterrequestDetail.workflow_state == 'Approved'" class="border p-810 mouse d__flex" (click)="downloadAndOpenPDF(letterrequestDetail)">
       <ion-icon src="/assets/printer.svg" class="fnt-20"></ion-icon>
     </div>
     <div class="w-100">
@@ -21,7 +21,7 @@
     </div>
     
 </div>
-<!-- <div *ngIf="db.check_role('L1 Manager') && regularizationDetail.workflow_state != 'Approved' && regularizationDetail.workflow_state != 'Rejected'" class="save_">
-  <ion-button (click)="approve(regularizationDetail,'Rejected')" class="clear_btn" >Reject</ion-button>
-  <ion-button (click)="approve(regularizationDetail,'Approved')" class="save_btn">Approve</ion-button>
-</div> -->
+<div *ngIf="db.check_role('L1 Manager',letterrequestDetail.employee_id) && letterrequestDetail.workflow_state == 'Pending'" class="save_">
+  <ion-button (click)="approve(letterrequestDetail,'Rejected')" class="clear_btn" >Reject</ion-button>
+  <ion-button (click)="approve(letterrequestDetail,'Approved')" class="save_btn">Approve</ion-button>
+</div>

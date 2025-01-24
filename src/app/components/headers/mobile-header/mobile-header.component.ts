@@ -35,6 +35,8 @@ export class MobileHeaderComponent implements OnInit {
   @Input() showYear: any;
   @Input() showMonth: any;
   @Input() freeze: any;
+  @Input() selectall:any;
+  @Input() is_select:any;
 
   @Output() create_btn: any = new EventEmitter();
   @Output() menu_name: any = new EventEmitter();
@@ -45,10 +47,13 @@ export class MobileHeaderComponent implements OnInit {
   @Output() toggleKanban_task: any = new EventEmitter();
   @Output() filters: any = new EventEmitter();
   @Output() freezeEvent: any = new EventEmitter();
+  @Output() select_all = new EventEmitter();
 
   constructor(public db: DbService, public location: Location, public menuCtrl: MenuController, public navCtrl: NavController, public router: Router,public route : ActivatedRoute) { }
 
   ngOnInit() {
+    console.log(this.is_select)
+    console.log(this.selectall)
     if(this.title == 'todo'){
       this.title = 'Tasks'
     }
@@ -128,5 +133,9 @@ export class MobileHeaderComponent implements OnInit {
     }
     this.db.headers_search_icon()
   }
+
+  // select_all(){
+  //   this.reg_selectAll.emit();
+  // }
 
 }

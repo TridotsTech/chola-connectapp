@@ -31,6 +31,7 @@ export class PerformanceEvaluationPage implements OnInit {
       if(res && res['id']){
         this.performanceId = res['id'];
         this.getPerformanceDetails(res['id']);
+        this.get_workflow_states(res['id']);
       }
     })
 
@@ -65,6 +66,19 @@ export class PerformanceEvaluationPage implements OnInit {
     // if(!this.evaluation_form){
     //   this.save_only = true;
     // }
+  }
+
+  get_workflow_states(id){
+    let data = {
+      doctype: 'Probation Evaluation',
+      docname: id
+    }
+    this.db.get_workflow_states(data).subscribe(res => {
+      console.log(res)
+      if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
+       
+      }
+    })
   }
 
   getPerformanceDetails(id){

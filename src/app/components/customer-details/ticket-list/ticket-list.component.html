@@ -1,0 +1,153 @@
+<!-- New List UI -->
+<div class="d__flex gap-10 h45" *ngIf="!db.ismobile">
+  <ion-icon class="fnt-20 ml-10 headerIcon" slot="start" src="/assets/dashboard/HDTicket-active.svg"></ion-icon>
+  <p class="m-0 fnt-16 fnt_w500 border-right-txt">Tickets Summary</p>
+</div>
+<div class="bg_white page_border">
+  <!-- <h1 class="m-0 bold_name-15 pt-10 mx-20">Tickets Summary</h1> -->
+  <!-- *ngIf="data && data.number_card && data.number_card.length > 0" -->
+  <div class="summary_sec gap-10" *ngIf="data && data.number_card && data.number_card.length != 0">
+    <div [ngClass]="db.ismobile ? 'box_':''" class="border-r p-20" *ngFor="let item of data.number_card; index as i">
+      <div class="d__flex gap-10 just-s">
+        <div class="ticket_ico">
+          <ion-icon [src]="item.status == 'Open' ? '/assets/tickets/red-ticket.svg' : item.status == 'Replied' ? '/assets/tickets/ticket-replied.svg' : item.status == 'Resolved' ? '/assets/tickets/ticket-resolved.svg' : '/assets/tickets/ticket-closed.svg'"></ion-icon>
+        </div>
+        <!-- <ion-icon src="/assets/tickets/CaretRight.svg"></ion-icon> -->
+      </div>
+
+      <div class="d__flex just-s gap-10">
+        <h6 class="gray_txt">{{ item.status }}</h6>
+        <b>{{ item.count }}</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter_sec">
+    <app-tabs-button [employee_detail_tab]="true" [border_none]="true" [no_mb]="true" [overflow]="overflow"
+      (menu_name)="menu_name.emit($event)" [tabs_array]="tabs"></app-tabs-button>
+  </div>
+
+  <div #tabList (scroll)="load_data.emit($event)" class="list_common_height" *ngIf="!db.ismobile && !skeleton && data && data.data && data.data.length != 0;else no_product">
+    <div class="border p-10 rounded-5 mb-10 mouse animated fadeInUp" *ngFor="let item of data.data; let i = index"
+      (click)="click_data.emit({ item: item, i: i })" [id]="i + 1 + 'scroll'">
+      <div class="d__flex gap-10 just-s mb-10">
+        <div class="d__flex gap-20">
+          <ion-checkbox class="check__box box__icon check"></ion-checkbox>
+          <div class="d__flex">
+            <div class="avatar_" *ngIf="item.subject">
+              <p class="m-0" [ngStyle]="{
+                  'background-color': db.color_list[0 % db.color_list.length]
+                }">
+                {{ item.subject[0] }}
+              </p>
+            </div>
+            <h6 class="m-0 bold_name-13">{{ item.subject }}</h6>
+          </div>
+        </div>
+
+        <div class="d__flex gap-5 bg_high" [ngClass]="item.priority == 'Low' ? 'low_bg' : item.priority == 'Medium' ? 'medium_bg' : 'high_bg'">
+          <ion-icon [name]="check_priority(item.priority)"></ion-icon>
+          <p class="m-0">{{ item.priority }}</p>
+        </div>
+      </div>
+
+      <div class="d__flex gap-10 just-s">
+        <div class="d__flex gap-10">
+          <div class="d__flex gap-5">
+            <ion-icon src="/assets/tickets/user.svg"></ion-icon>
+            <p class="m-0 gray_txt">{{ item.owner_name }}</p>
+          </div>
+          <div class="d__flex gap-5">
+            <ion-icon src="/assets/tickets/user-tag.svg"></ion-icon>
+            <p class="m-0 gray_txt">{{ item.owner }}</p>
+          </div>
+          <div class="d__flex gap-5 border_sec">
+            <ion-icon src="/assets/tickets/company.svg"></ion-icon>
+            <p class="m-0 gray_txt">{{ item.ticket_type }}</p>
+          </div>
+          <div class="d__flex gap-5 border-r pr-10">
+            <ion-icon src="/assets/tickets/message-text.svg"></ion-icon>
+            <p class="m-0 gray_txt">{{ item.message_count }}</p>
+          </div>
+          <div>
+            <app-status [doc_type]="doc_type" [status]="item.status" [reverse]="true"></app-status>
+            <!-- <div class="dot"></div>
+          <p class="m-0">Open</p> -->
+          </div>
+        </div>
+
+        <div class="d__flex gap-5 flex-auto">
+          <p class="m-0 gray_txt">Created</p>
+          <div class="dot mi-0"></div>
+          <p class="m-0 fnt-13">{{ item.creation | date : "MMMM d yyyy" }}</p>
+          <!-- <p class="m-0 fnt-14">April 27th 2024</p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div #tabList (scroll)="load_data.emit($event)" class="list_common_height mobileTicketList" *ngIf="db.ismobile && !skeleton && data && data.data && data.data.length != 0;else no_product">
+    <div class="border p-10 rounded-5 mb-10 mouse animated fadeInUp" *ngFor="let item of data.data; let i = index"
+      (click)="click_data.emit({ item: item, i: i })" [id]="i + 1 + 'scroll'">
+      <div class="d__flex gap-10 just-s">
+        <div class="d__flex gap-20">
+          <div class="d__flex">
+            <h6 class="m-0 bold_name-13 capitalize">{{ item.subject }}</h6>
+          </div>
+        </div>
+
+        <div class="d__flex gap-5 bg_high" [ngClass]="item.priority == 'Low' ? 'low_bg' : item.priority == 'Medium' ? 'medium_bg' : 'high_bg'">
+          <ion-icon [name]="check_priority(item.priority)"></ion-icon>
+          <p class="m-0">{{ item.priority }}</p>
+        </div>
+      </div>
+
+      <div class="">
+        <div class="d__flex gap-5">
+          <ion-icon src="/assets/tickets/user-tag.svg"></ion-icon>
+          <p class="m-0 gray_txt">{{ item.owner_name }}</p>
+        </div>
+        <div class="d__flex just-s">
+          <div class="d__flex gap-5">
+            <ion-icon src="/assets/tickets/user.svg"></ion-icon>
+            <p class="m-0 gray_txt">{{ item.owner }}</p>
+          </div>
+          <div>
+            <app-status [doc_type]="doc_type" [status]="item.status" [reverse]="true"></app-status>
+          </div>
+        </div>
+        <div class="d__flex gap-5">
+          <ion-icon src="/assets/tickets/company.svg"></ion-icon>
+          <p class="m-0 gray_txt">{{ item.ticket_type }}</p>
+        </div>
+        <div class="d__flex gap-5">
+          <ion-icon src="/assets/tickets/message-text.svg"></ion-icon>
+          <p class="m-0 gray_txt">{{ item.message_count }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #no_product>
+  <!-- *ngIf="(!skeleton && !list_data) || (!skeleton && list_data && list_data.data && list_data.data.length == 0) && !db.ismobile" -->
+  <app-no-record-found *ngIf="(!data && !skeleton) || (!skeleton && data && data.data && data.data.length == 0 && !db.ismobile)" [column]="true" height="calc(100vh - 117px)" [heading]="'No record found'"
+    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+</ng-template>
+
+<!--Skeleton-->
+<div class="pl10" *ngIf="skeleton && data && data.data == 0">
+  <ion-item *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]">
+    <ion-label>
+      <h3 class="d__flex just-s">
+        <ion-skeleton-text animated style="width: 20px; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; height: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 10%; height: 16px"></ion-skeleton-text>
+      </h3>
+    </ion-label>
+  </ion-item>
+</div>

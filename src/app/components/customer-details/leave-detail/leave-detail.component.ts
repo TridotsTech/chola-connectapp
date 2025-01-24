@@ -110,16 +110,18 @@ export class LeaveDetailComponent  implements OnInit {
       component: LeaveApplicationPage,
       cssClass: '',
       componentProps: {
-        editFormValues: data
+        editFormValues: data,
+        model:true
       },
       enterAnimation: this.db.enterAnimation,
       leaveAnimation: this.db.leaveAnimation,
     });
     await modal.present();
     const val = await modal.onWillDismiss();
-    if (val && val.data && val.data == 'Success') {
+    console.log(val)
+    // if (val && val.data && val.data == 'Success') {
       // console.log(val)
-    }
+    // }
 
     // this.modalCtrl.dismiss();
     // this.router.navigate(['/leave-application'], { queryParams: { data: JSON.stringify(data) } });

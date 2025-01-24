@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WebsiteFormsComponent } from 'src/app/components/forms/website-forms/website-forms.component';
 import { DetailComponentComponent } from 'src/app/components/customer-details/detail-component/detail-component.component';
 import { LeaveApplicationPage } from '../leave-application/leave-application.page';
+// import { Console } from 'console';
 
 @Component({
   selector: 'app-leave-application-detail',
@@ -31,9 +32,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   detail_loader = true;
   leaveApplicationDetails: any;
   @ViewChild('tabList') tabList: ElementRef | any;
-  // fab_lead = [{ name: 'Leave Application', icon: '/assets/dashboard/LeaveApplication-w.svg' }, { name: 'Leave Request', icon: '/assets/dashboard/CompensatoryLeaveRequest-w.svg' }];
   fab_lead = [{ name: 'Leave Request', icon: '/assets/dashboard/LeaveApplication-w.svg' }, { name: 'Leave Withdrawal', icon: '/assets/dashboard/CompensatoryLeaveRequest-w.svg' }];
-
   tabs_array = [{ "name": "All", "route": "All" }, { "name": "Open", "route": "Open" }, { "name": "Approved", "route": "Approved" }, { "name": "Rejected", "route": "Rejected" }]
   status = '';
   employee_id = '';
@@ -41,7 +40,6 @@ export class LeaveApplicationDetailPage implements OnInit {
   today: any
   page_no = 1
   search_data: any = {};
-  // search_data: any = { status: "Open" };
   @ViewChild('fab') fab!: IonFab | any;
   @ViewChild(IonContent, { static: true }) content: IonContent | any;
   options = [{ name: "Pending", route: "Open" }, { name: "Approved", route: "Approved" }]
@@ -49,7 +47,6 @@ export class LeaveApplicationDetailPage implements OnInit {
   showCalendar: any;
   sort_by_order: any;
   leave_type = "Leaves"
-
 
   // Web view
   page_title: any = "Leaves";
@@ -94,7 +91,7 @@ export class LeaveApplicationDetailPage implements OnInit {
 
     if (this.db.hr_manager_role) {
       this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
-      this.selectedTabSec = 'Awaiting Approval'
+      // this.selectedTabSec = 'Awaiting Approval'
       // let val = { name: "My Leaves", route: "my" }
       // this.options.push(val)
       this.employee = false
@@ -201,7 +198,7 @@ export class LeaveApplicationDetailPage implements OnInit {
 
   getLeaveRequestList(type){
     this.db.get_leave_requests_list(type).subscribe(res => {
-      console.log(res)
+      // console.log(res)
       if(res && res.message && res.message.length != 0){
         this.leave_list = res.message;
       }else{
@@ -212,12 +209,6 @@ export class LeaveApplicationDetailPage implements OnInit {
 
   list_data: any = {};
   leave_details(id) {
-    // let data = {
-    //   employee_id: id,
-    //   status: this.status,
-    //   year: this.currentYear
-    // }
-
     let data = {
       "search_data": this.search_data,
       "page_no": this.page_no,
@@ -228,7 +219,6 @@ export class LeaveApplicationDetailPage implements OnInit {
     }
 
     if (this.sort_by_order) {
-      // data['sort_by'] = this.sort_by_order
       data['order_by'] = this.sort_by_order
     }
     // this.db.hr_manager_role && !this.employee && 
@@ -236,8 +226,6 @@ export class LeaveApplicationDetailPage implements OnInit {
       const now = new Date(data['date'])
       const year = now.getFullYear();
       const month = (now.getMonth() + 1).toString().padStart(2, '0');
-
-      // let val = { month: month, year: year }
       let val = { year: this.currentYear ? this.currentYear : year }
       data['month_filter'] = val
     }
@@ -250,18 +238,13 @@ export class LeaveApplicationDetailPage implements OnInit {
     this.db.leave_details(data).subscribe(res => {
       this.detail_loader = false;
       this.skeleton = false
-      // setTimeout(() => {
-      //   this.skeleton = false;
-      // }, 800)
       if (res && res.message) {
-        // console.log(res.message.data,"res.message.data")
         if (res.message.dashboard && res.message.dashboard.length > 0) {
           if (this.db.employee_role || this.employee)
             res.message.dashboard.splice(3, 1)
         }
         this.leave_dashboard = res.message.dashboard
         this.list_data['dashboard'] = res.message.dashboard;
-
         if(this.selectedTabSec != 'Pending'){
           if (res.message.data && res.message.data.length > 0) {
             this.leave_list = this.page_no == 1 ? res.message.data : [...this.leave_list, ...res.message.data]
@@ -271,7 +254,6 @@ export class LeaveApplicationDetailPage implements OnInit {
             this.page_no == 1 ? this.list_data['data'] = [] : null
           }
         }
-
       } else if (res && res.status == "success") {
         this.leave_dashboard = res.dashboard
         this.leave_list = this.page_no == 1 ? res.leave_list : [...this.leave_list, ...res.leave_list]
@@ -280,7 +262,6 @@ export class LeaveApplicationDetailPage implements OnInit {
         this.page_no == 1 ? this.leave_list = [] : null;
         this.page_no == 1 ? this.list_data = [] : null;
         this.no_products = true
-        // this.no_employee_details = true
       }
       this.loading = false;
     })
@@ -326,7 +307,14 @@ export class LeaveApplicationDetailPage implements OnInit {
       });
       await modal.present();
       const { data } = await modal.onWillDismiss();
-
+      // console.log(data)
+      // console.log(this.selectedTabSec)
+      if(this.selectedTabSec == 'Pending'){
+        this.getLeaveRequestList('Pending');
+      }
+      if(this.selectedTabSec == 'Awaiting Approval'){
+        this.getLeaveRequestList('Awaiting Approval');
+      }
     //   if (data && data == 'Success') {
 
     //   }
@@ -371,7 +359,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   }
 
   menu_name(eve) {
-    console.log(eve, "eve")
+    // console.log(eve, "eve")
     this.selectedTabSec = eve.name
     this.page_no = 1;
     if (eve.route == "my") {
@@ -430,61 +418,22 @@ export class LeaveApplicationDetailPage implements OnInit {
       default:
         return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
     }
-
-    // if (data == "Total Leaves") {
-    //   return "/assets/leaves/calendar-purple.svg"
-    // } else if (data == "Used Leaves") {
-    //   return "/assets/leaves/calendar-yellow.svg"
-    // } else if (data == "Available Leaves") {
-    //   return "/assets/leaves/calendar-green.svg"
-    // } else if (data == "Expired Leaves") {
-    //   return "/assets/leaves/calendar-red.svg"
-    // }
   }
 
   getDateFromCalendar(eve) {
-    // // console.log(eve);
-    // this.no_products = false;
-    this.page_no = 1;
     if (eve.sort) {
       this.sort_by_order = eve['sort_by']
     } else {
       this.db.current_event_date = eve;
     }
-
     this.leave_details(this.employee_id)
   }
 
   getFilters(data) {
-    // this.no_products = false;
     this.page_no = 1;
     this.search_data = data.data;
     this.leave_details(this.employee_id);
   }
-
-
-
-  // Web view
-
-  // leave_application_table = [
-  //   { name: "Employee Name" },
-  //   { name: "Employee Id" },
-  //   { name: "From Date" },
-  //   { name: "Total Leave Days" },
-  //   { name: "Actions" },
-  //   { name: "Modified" },
-  //   // { name: "Id" },
-  // ]
-
-  // leave_request_table = [
-  //   { name: "Employee Name" },
-  //   { name: "Work From date" },
-  //   { name: "Work End date" },
-  //   { name: "Reason" },
-  //   { name: "Leave Type" },
-  //   { name: "Modified" },
-  //   // { name: " " },
-  // ]
 
   leave_application_table = [
     "employee_name",
@@ -510,18 +459,10 @@ export class LeaveApplicationDetailPage implements OnInit {
     let doctype = this.leave_type == "Leaves" ? "Leave Application" : "Compensatory Leave Request"
     this.edit_form = 0
     this.openWebFormPopup(doctype);
-    // this.open_route(doctype)
-    // if (this.get_saleslist && this.get_saleslist.quick_entry == 1) {
-    //   this.openQuickForm(detail_doc)
-    // } else {
-
-    //   this.db.ismobile ? this.createnewFrom(this.detail_doc) : this.open_route(detail_doc)
-    // }
   }
 
   async openWebFormPopup(data) {
     this.db.SubjectEvent = false;
-
     const modal = await this.modalCtrl.create({
       component: WebsiteFormsComponent,
       cssClass: 'childTablecss',
@@ -548,16 +489,10 @@ export class LeaveApplicationDetailPage implements OnInit {
 
     if (val && val.data == 'Success') {
       this.leave_details(this.employee_id);
-      // this.get_tempate_and_datas(this.doc_type);
-
     }
   }
 
-
-
-  // Leave Confirm
   leaveConfirm($event) {
-    // console.log($event)
     this.sure_approve($event.data, $event.type, $event.index)
   }
 
@@ -584,7 +519,6 @@ export class LeaveApplicationDetailPage implements OnInit {
   }
 
   approve_leave(data, type, index) {
-    // console.log(data)
     let datas = {
       doctype: 'Leave Applicaion',
       employee_id: data.employee,
@@ -598,11 +532,8 @@ export class LeaveApplicationDetailPage implements OnInit {
         data.status = type == 'Approve' ? 'Approved' : 'Rejected';
         data.doctype = "Leave Application"
         this.db.inset_docs({ data: data }).subscribe(resp => {
-          // console.log(res)
           if (resp && resp.message && resp.message.status == 'Success') {
             this.db.sendSuccessMessage(type + ' Successfully');
-            // this.list_data.data.splice(index, 1);
-            // this.get_tempate_and_datas.emit("Leave Application")
           } else {
             if (resp._server_messages) {
               var d = JSON.parse(resp._server_messages);
@@ -652,7 +583,6 @@ export class LeaveApplicationDetailPage implements OnInit {
       this.sort_by_order = event.sort_by
       await this.leave_details(this.employee_id)
     } else {
-      // console.log(event, "event")
       this.db.current_leave_segment = event.name
       this.db.tab_buttons(this.profile_menu, event.name, 'value');
       this.leave_type = event.name

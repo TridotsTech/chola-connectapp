@@ -1,0 +1,205 @@
+
+<app-sidemenu-header *ngIf="!db.ismobile" [heading]="'Tickets'"></app-sidemenu-header>
+
+<div [class.centered_content]="db.hd_ticket_show">
+  <!-- db.customer_role_rj && -->
+  <div class="d__flex gap-10 ticket_info"  [class.just-e]="db.ismobile" *ngIf="!db.skeleton_detail">
+    <div class="d__flex gap-5" *ngIf="!db.ismobile">
+      <!-- <div class="ticket_icon">
+        <img src="/assets/icon/ticket.svg" alt="">
+      </div> -->
+      <div>
+        <div class="d__flex just-s">
+          <div class="d__flex gap-15">
+            <h4 [class.fnt-14]="db.ismobile" class="m-0 fnt-16 fnt_w600 ticket_title" *ngIf="ticket_send_details">{{ticket_send_details.subject ? ticket_send_details.subject : ''}} {{db.mail_send_to.name}}</h4>
+            <!-- <p *ngIf="!db.ismobile && db.mail_send_to" class="m-0" class="m-0 fade_text webkit-text"
+              [ngClass]="db.get_style(db.mail_send_to.status ? db.mail_send_to.status : ticket_status_value)" [style.--line]="1">{{db.mail_send_to.status ? db.mail_send_to.status : ticket_status_value}}</p> -->
+              <div *ngIf="!db.ismobile && db.mail_send_to">
+                <app-status [status]="db.mail_send_to.status ? db.mail_send_to.status : ticket_status_value"></app-status>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [class.d__flex]="db.ismobile"  -->
+    <!-- [class.w-100px]="db.ismobile" -->
+    <div class="d__flex gap-5" *ngIf="ticket_send_details">
+      <!-- <ion-input placeholder="select Agent" *ngIf="db.business_role_rj" [(ngModel)]="allocate_agent" type="text" class="select_agent link_field_mouse" (click)="db.open_drop_down_options('HD Agent','agent','',allocate_agent ? allocate_agent : '')">
+        <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
+      </ion-input> -->
+      <!-- <select [(ngModel)]="ticket_status_value" [disabled]="(ticket_send_details.status == 'Closed' || ticket_send_details.status == 'Resolved') ? true : false" *ngIf="(db.customer_role_rj && (ticket_send_details.status == 'Open' || ticket_send_details.status == 'Resolved'))" class="search_box" (change)="update_ticket()">
+        <option *ngFor="let item of ticket_status" value="{{item.name}}">{{item.name}}</option>
+      </select> -->
+      <!-- <select [(ngModel)]="ticket_status_value" [disabled]="ticket_send_details.status == 'Closed' ? true : false" *ngIf="db.business_role_rj" class="search_box" (change)="update_ticket()">
+        <option *ngFor="let item of ticket_status" value="{{item.name}}">{{item.name}}</option>
+      </select> -->
+      <ion-icon *ngIf="!db.ismobile" class="fnt-25 primary_clr mouse" (click)="close_detail()" name="close-circle-outline"></ion-icon>
+      <ion-icon class="fnt-20 primary_clr" *ngIf="db.ismobile" name="document-text-outline" (click)="open_detail()"></ion-icon>
+    </div>
+  </div>
+  
+  <div [class.d___flex]="!db.ismobile" class="seperate_ticket"  *ngIf="ticket_send_details">
+    <div id="msg" class="offer_content" [class.offer_content_position_unset]="!db.ismobile && db.text_width" [class.ticket_offer_content]="db.hd_ticket_show" *ngIf="!db.skeleton_detail">
+      <div class="offer_col1">
+        
+    
+    
+        <div [class.message_container-active]="db.text_width" *ngIf="db.ticket_details && db.ticket_details.length != 0;else empty_detail" class="message_container">
+          <div id="you" class="message_list d__flex " *ngFor="let item of db.ticket_details;let i=index">
+            <div class="message_box" [id]="'ticket'+i">
+              
+              <div class="offer_head">
+                <div class="d___flex gap-10">
+                  <ion-avatar class="msg_avatar">
+                    <p class="m-0 avatar" [style.background]="item.bg_color" [style.color]="item.color">{{item.owner == db.cust_email ? 'Y' : item.owner[0]}}</p>
+                  </ion-avatar>
+                  <div>
+                    <p class="dark-text profile_name_text m-0">{{item.owner == db.cust_email ? 'You' : item.owner}}</p>
+                    <p class="gray_text m-0">{{item.creation | date : 'MMM d, y, h:mm a'}}</p>
+                  </div>
+                </div>
+                <div class="message_body" >
+                  <p *ngIf="item.content" [innerHtml]="item.content" class="fade-400 m-0 message_content" [class.fnt-12]="db.ismobile"></p>
+                </div>
+                <!-- <div class="d__flex gap-5" *ngIf="item.attachments">
+                  <a class="" *ngFor="let item of item.attachments"><img [src]="getName_url(item.file_url)">
+                </a>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <ng-template #empty_detail>
+          <div [class.empty_message-active]="db.text_width" class="empty_message">
+            <ion-icon class="fnt-25" name="chatbox-ellipses-outline"></ion-icon>
+            <ion-label>No messages</ion-label>
+          </div>
+        </ng-template>
+  
+        <!-- gap-10 d__flex -->
+        <div class="message_box  get_msg" [class.unset]="db.text_width && db.ticket_details.length == 0" [class.get_msg_position_unset]="!db.ismobile && db.text_width" [class.ticket_show_get_msg]="db.hd_ticket_show" [class.h-93]="(db.text_width && (db.ticket_details && db.ticket_details.length != 0))">
+          <!--Message Typing box-->
+          <!-- <ion-avatar class="msg_avatar" *ngIf="!db.ismobile">
+            <img src="/assets/icon/profile_upload.svg">
+          </ion-avatar> -->
+          <div class="input_box d__flex ticketText">
+            <!-- *ngIf="db.text_width" -->
+            <div *ngIf="db.text_width" class="input_top_bar d__flex">
+              <div class="top_width">
+                <p class="m-0 fnt-15 gray_clr fnt_w500">Reply</p>
+              </div>
+              <!-- <div class="to_msg">
+                <p class="m-0 gray_clr fnt_w500">To</p>
+                <p class="m-0 gray_clr fnt_w500" [class.fnt-12]="db.ismobile">{{db.mail_send_to.raised_by}}</p>
+              </div> -->
+              <!-- min-height:140px height:270px; -->
+              <quill-editor class="text-editor ticket_quill" [modules]="modules" [(ngModel)]="message_data"
+                (onContentChanged)="validate()" [ngModelOptions]="{standalone: true}"
+                placeholder="Start typing your message..." style="width:100%;height:270px;" [ngStyle]="{'width':'100%','height':db.ismobile ? '270px':''}">
+              </quill-editor>
+              <div class="error">
+                <p *ngIf="error">* required</p>
+              </div>
+  
+              <div *ngIf="attach_list && db.ismobile" class="d__flex gap-10 ion_chip_mobile_head">
+                <div  class="ion_chip_mobile" *ngFor="let item of attach_list;let i=index" >
+                <ion-icon name="close-circle" (click)="removeLink(i)"></ion-icon>
+                <span>{{item.file_name}}</span>
+               </div> 
+              </div> 
+              <!-- if use browse input -->
+              <!-- <app-image-add *ngIf="isattach" class="w-100 attach_ mb-20" [all_file]="true"
+                (insert_images)="submit($event)"></app-image-add> -->
+              
+              <div class="submit_msg d__flex gap-15">
+                <div class="d__flex save_btn w-100">
+                  <ion-button fill="clear" class="send__button fnt-inter" (click)="onsubmit()">Send<ion-icon class="mr-l white" slot="start" name="paper-plane-outline"></ion-icon>
+                  </ion-button>
+                  <!-- <ion-icon name="attach-outline" class="attach_icon mouse" (click)="attach()"></ion-icon> -->
+                 <!--if use attachment only --> 
+                   <ion-icon name="attach-outline" class="attach_icon mouse" (click)="inputFile.click()"></ion-icon>
+                 <div class="d__flex" [class.w-85]="!db.ismobile">
+                   <input #inputFile id="input-file"  style="visibility: hidden;" type="file" (change)="readMultipleFile($event)" 
+                    multiple/>
+                    <div *ngIf="attach_list && !db.ismobile" class="d__flex gap-10 ion-wrap">
+                         <div  class="ion_chip" *ngFor="let item of attach_list;let i=index" >
+                         <ion-icon name="close-circle" (click)="removeLink(i)"></ion-icon>
+                         <span>{{item.file_name}}</span>
+                        </div> 
+                    </div> 
+                 </div>
+                  
+                </div>
+                <ion-button fill="clear" class="cancel_button" (click)="focus()">Cancel
+                  <ion-icon slot="start" name="close-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+            <!-- (ionInput)="getMessage($event)" -->
+            <ion-textarea *ngIf="!db.text_width" class="fnt-inter msg_input fnt-14" [disabled]="db.mail_send_to.status == 'Closed' ? true : false" [class.db.text_width]="db.text_width" (click)="db.mail_send_to.status != 'Closed' ? focus() : null"
+               placeholder="Add your reply here..."></ion-textarea>
+          </div>
+        </div>
+    
+      </div>
+    </div>
+    <div *ngIf="!db.ismobile" class="ticket_detail_info" [class.ticket_detail_info_show]="db.hd_ticket_show">
+      <div class="detail_header">
+        <h5 class="m-0">Details</h5>
+        <!-- <ion-icon name="close-outline"></ion-icon> -->
+      </div>
+      <div class="p-10 border-s" *ngIf="ticket_send_details">
+        <div class="mb-20">
+          <p class="m-0 label">ID</p>
+          <p class="m-0 label_value">{{ticket_send_details.name}}</p>
+        </div>
+        <div class="mb-20" *ngIf="ticket_send_details.response_by">
+          <p class="m-0 label">First response</p>
+          <p class="m-0 label_value">{{ticket_send_details.response_by | date: 'MMM d,h:mm a'}}</p>
+        </div>
+        <div class="mb-20" *ngIf="ticket_send_details.resolution_by">
+          <p class="m-0 label">Resolution</p>
+          <p class="m-0 label_value">{{ticket_send_details.resolution_by | date: 'MMM d,h:mm a'}}</p>
+        </div>
+        <div class="mb-20" *ngIf="ticket_send_details.modified">
+          <p class="m-0 label">Modified</p>
+          <p class="m-0 label_value">{{transform(ticket_send_details.modified)}}</p>
+        </div>
+        <div class="mb-20">
+          <p class="m-0 label" *ngIf="ticket_send_details.feedback_rating">Feedback</p>
+          <p class="m-0 label" *ngIf="ticket_send_details && ticket_send_details.feedback_rating"><ion-icon class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i as index" [class.active_star]="i <= rating_value" [name]="i <= rating_value ? 'star' : 'star-outline'"></ion-icon></p>
+          <p class="m-0 label_value" *ngIf="ticket_send_details.feedback">{{ticket_send_details.feedback}}</p>
+          <p class="m-0 label_value" *ngIf="ticket_send_details.feedback_extra">{{ticket_send_details.feedback_extra}}</p>
+        </div>
+        <div class="mb-20" *ngIf="ticket_send_details.description">
+          <p class="m-0 label">Description</p>
+          <p class="m-0 label_value" [innerHtml]="ticket_send_details.description"></p>
+        </div>
+      </div>
+      
+      <div class="ticket_detail_sec p-10">
+        <div class="mb-20 w-100">
+          <p class="m-0 label">Ticket type</p>
+          <!-- db.customer_role_rj || -->
+          <select [disabled]="((ticket_send_details && ticket_send_details.status == 'Closed')) ? true : false" class="search_box_select" [(ngModel)]="ticket_type_value" (change)="set_value('ticket_type')">
+            <option *ngFor="let item of ticket_type" value="{{item.name}}">{{item.name}}</option>
+          </select>
+        </div>
+        <div class="mb-20 w-100">
+          <p class="m-0 label">Priority</p>
+          <select [disabled]="(ticket_send_details.status === 'Closed') ? true : false" class="search_box_select" [(ngModel)]="priority_value" (change)="set_value('priority')">
+            <option *ngFor="let item of priority" value="{{item.name}}">{{item.name}}</option>
+          </select>
+        </div>
+        <!-- <div class="mb-20 w-100" *ngIf="db.business_role_rj">
+          <p class="m-0 label">Team</p>
+          <select [disabled]="ticket_send_details.status == 'Closed' ? true : false" class="search_box_select" [(ngModel)]="agent_group_value" (change)="set_value('agent_group')">
+            <option *ngFor="let item of agent_team" value="{{item.name}}">{{item.name}}</option>
+          </select>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+</div>

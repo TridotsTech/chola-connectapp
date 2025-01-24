@@ -51,3 +51,14 @@ ion-checkbox::part(container) {
         width: 55%;
     }
 }
+
+.select_all{
+    justify-content: end;
+    margin: 10px 10px 0 10px;
+    p{
+        border: 1px solid #ddd;
+        margin: 0;
+        padding: 7px 10px;
+        border-radius: 5px;
+    }
+}

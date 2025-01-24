@@ -362,9 +362,12 @@ export class CheckinMultipleComponent  implements OnInit {
         loader.dismiss()
       }, 12000);
       let ip_address;
+      // this.db.get_ip().subscribe(async res =>{
+      //   ip_address = res.ip;
+      // })
         this.http.get<{ ip: string }>('https://jsonip.com').subscribe((data) => {
           ip_address = data.ip;
-       
+        });
       this.geo
     .getCurrentPosition()
     .then((resp) => {
@@ -436,7 +439,7 @@ export class CheckinMultipleComponent  implements OnInit {
         this.enable_location(type)
       }, 1000)
     });
-  });
+
     }
     // this.db.location_info.latitude = ''
     // this.db.location_info.longitude = ''

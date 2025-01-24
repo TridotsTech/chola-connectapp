@@ -8,7 +8,7 @@
     <h4 class="m-0">Date</h4>
     <h4 class="m-0">{{regularizationDetail.date ? regularizationDetail.date : '-'}}</h4>
     <h4 class="m-0">Status</h4>
-    <h4 class="m-0">{{regularizationDetail.workflow_state ? regularizationDetail.workflow_state : '-'}}</h4>
+    <h4 class="m-0">{{regularizationDetail.status ? regularizationDetail.status : regularizationDetail.workflow_state}}</h4>
     <h4 class="m-0">Reason</h4>
     <h4 class="m-0">{{regularizationDetail.regularization_reason ? regularizationDetail.regularization_reason : '-'}}</h4>
 
@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div *ngIf="db.check_role('L1 Manager') && regularizationDetail.status != 'Approved' && regularizationDetail.status != 'Rejected'" class="save_">
+<div *ngIf="db.check_role('L1 Manager',regularizationDetail.employee) && regularizationDetail.status != 'Approved' && regularizationDetail.status != 'Rejected'" class="save_">
     <ion-button (click)="approve(regularizationDetail,'Rejected')" class="clear_btn" >Reject</ion-button>
     <ion-button (click)="approve(regularizationDetail,'Approved')" class="save_btn">Approve</ion-button>
   </div>

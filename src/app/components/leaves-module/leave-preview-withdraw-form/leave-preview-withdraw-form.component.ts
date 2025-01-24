@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
+import { LeaveTypeComponent } from '../leave-type/leave-type.component';
 
 @Component({
   selector: 'app-leave-preview-withdraw-form',
@@ -56,24 +57,37 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
     { name: 'Approved' },
     { name: 'Rejected' }]
 
-  open_dropdown() {
-    let val = {
-      type: 'Leave Type',
-      fieldname: 'leave_type',
-      fieldname_value: '',
-      selected_value: this.editFormValues.leave_type,
-      send_all_value: true,
-    };
+  async open_dropdown() {
+     const modal = await this.modalCntrl.create({
+        component: LeaveTypeComponent,
+        cssClass: this.db.ismobile ? 'job-detail-popup' : 'filter-popup',
+        componentProps: {
+          title:'Leave Type' 
+        },
+      });
+      await modal.present();
+      const val = await modal.onWillDismiss();
+      console.log(val)
+      if(val && val.data){
+        this.editFormValues.leave_type = val.data.name
+      }
+    // let val = {
+    //   type: 'Leave Type',
+    //   fieldname: 'leave_type',
+    //   fieldname_value: '',
+    //   selected_value: this.editFormValues.leave_type,
+    //   send_all_value: true,
+    // };
 
-    let selected_value = {
-      doctype: 'Leave Type',
-    };
-    this.db.open_drop_down_options(
-      val.type,
-      val.fieldname,
-      val.fieldname_value,
-      selected_value
-    );
+    // let selected_value = {
+    //   doctype: 'Leave Type',
+    // };
+    // this.db.open_drop_down_options(
+    //   val.type,
+    //   val.fieldname,
+    //   val.fieldname_value,
+    //   selected_value
+    // );
   }
 
   datePickerChange(type, event) {

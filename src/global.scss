@@ -369,6 +369,10 @@ ion-button {
   font-size: 20px;
 }
 
+.fnt-24 {
+  font-size: 24px;
+}
+
 .fnt-25 {
   font-size: 25px;
 }
@@ -1749,6 +1753,39 @@ ion-fab-button {
     align-items: end;
     --border-radius: 10px 10px 0 0px;
     // border-radius: 10px 10px 0 0px;
+    justify-content: end;
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.5) !important;
+    --ion-backdrop-color: var(--primary-bg);
+
+    .ion-page {
+      display: unset !important;
+      overflow: auto !important;
+    }
+  }
+
+  .job-referral-detail {
+    --width: 100% !important;
+    --height: 90% !important;
+    // --height: 503px !important;
+    display: flex;
+    align-items: end;
+    --border-radius: 10px 10px 0 0px;
+    // border-radius: 10px 10px 0 0px;
+    justify-content: end;
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.5) !important;
+    --ion-backdrop-color: var(--primary-bg);
+
+    .ion-page {
+      display: unset !important;
+      overflow: auto !important;
+    }
+  }
+
+  .friend-referral-form {
+    --width: 100% !important;
+    --height: 100% !important;
+    display: flex;
+    align-items: end;
     justify-content: end;
     --backdrop-opacity: var(--ion-backdrop-opacity, 0.5) !important;
     --ion-backdrop-color: var(--primary-bg);
@@ -5513,6 +5550,8 @@ table:active {
 }
 
 ion-select::part(select-icon) {
-  font-size: 36px;        /* Adjust icon size */
-  color: red;             /* Change icon color */
+  font-size: 36px;
+  /* Adjust icon size */
+  color: red;
+  /* Change icon color */
 }

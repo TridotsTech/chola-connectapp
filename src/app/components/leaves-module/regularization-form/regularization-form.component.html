@@ -1,4 +1,8 @@
-<app-header [title]="title" [showYear]="false" [model]="true"></app-header>
+<app-header [title]="title" [showYear]="false" [selectall]="selectAll" [is_select]="true" (select_all)="select_all1($event)"  [model]="true"></app-header>
+<div *ngIf="missing_days && missing_days.length != 0  && missing_days.length != 1" class="d__flex gap-10 select_all">
+  <p class="fnt-14 d__flex gap-5" (click)="select_all1(2)">{{selectAll ? 'Unselect All' :'SelectAll' }}
+  </p>
+</div>
 <div *ngIf="missing_days && missing_days.length != 0" class="p-10 overflow_auto">
   <!-- <div *ngIf="missing_days && missing_days.length != 0"> -->
     <div *ngFor="let item of missing_days; let i = index" class="boxes_" >

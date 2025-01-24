@@ -29,7 +29,7 @@
 
   <div class="pb-10">
     <label class="pb-10">Status</label>
-    <ion-select aria-label="Status" interface="popover" placeholder="Status" mode="ios" (ionChange)="changeStatus($event,editFormValues)" [value]="editFormValues.status">
+    <ion-select disabled="title == 'Leave Withdraw' ? 'true' : 'false'" aria-label="Status" interface="popover" placeholder="Status" mode="ios" (ionChange)="changeStatus($event,editFormValues)" [value]="editFormValues.status">
       <ion-select-option *ngFor="let types of statusType" [value]="types.name">{{types.name}}</ion-select-option>
     </ion-select>
   </div>

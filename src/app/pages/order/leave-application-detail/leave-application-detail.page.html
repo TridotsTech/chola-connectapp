@@ -1,4 +1,4 @@
-<app-header title="Leaves" [showYear]="'getYearLeave'" [model]="false"></app-header>
+<app-header title="Leaves" [showYear]="selectedTabSec == 'Approved' ? 'getYearLeave' : false" [model]="false"></app-header>
 <!-- [showYear]="'getYearLeave'" -->
 <ion-content class="ion-content" [fullscreen]="true">
 

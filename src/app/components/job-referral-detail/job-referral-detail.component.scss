@@ -1,0 +1,127 @@
+.main-Sec {
+
+    .scrollSection {
+        height: calc(100vh - 215px);
+        overflow: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .headerSec {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        .avatar_name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 50px;
+            height: 50px;
+            border-radius: 5px;
+            background: #f5f5f5;
+        }
+
+        .beforedays {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .dots {
+                width: 8px;
+                height: 8px;
+                background: #bbbbbb;
+                border-radius: 50px;
+            }
+        }
+    }
+
+    .jobDescrition {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-col);
+    }
+
+    .addressSection {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        .couponsss_ {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            h6 {
+                flex: 0 0 calc(50% - 10px);
+            }
+        }
+    }
+
+    .employementSection {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        .couponsss_ {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            h6 {
+                flex: 0 0 calc(50% - 10px);
+            }
+        }
+    }
+
+    .experienceSection {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        .experience_list {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            p {
+                padding: 6px;
+                background: #eef0f5;
+                border-radius: 7px;
+            }
+        }
+    }
+
+    .educationSection {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        .education_list {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            p {
+                padding: 6px;
+                background: #eef0f5;
+                border-radius: 7px;
+            }
+        }
+    }
+
+    .referButton {
+        padding: 10px;
+        border-top: 1px solid var(--border-col);
+
+        ion-button {
+            height: 40px;
+            width: 100%;
+        }
+    }
+
+}

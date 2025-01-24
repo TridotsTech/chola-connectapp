@@ -1,0 +1,55 @@
+<div class="ticket_detail_info" *ngIf="ticket_send_details">
+  <div class="detail_header">
+    <h5 class="m-0">Details</h5>
+    <ion-icon (click)="modalCtrl.dismiss()" name="close-outline"></ion-icon>
+  </div>
+  <div class="p-10 border-s" *ngIf="ticket_send_details">
+    <div class="mb-20">
+      <p class="m-0 label">ID</p>
+      <p class="m-0 label_value">{{ticket_send_details.name}}</p>
+    </div>
+    <div class="mb-20" *ngIf="ticket_send_details.response_by">
+      <p class="m-0 label">First response</p>
+      <p class="m-0 label_value">{{ticket_send_details.response_by | date: 'MMM d,h:mm a'}}</p>
+    </div>
+    <div class="mb-20" *ngIf="ticket_send_details.resolution_by">
+      <p class="m-0 label">Resolution</p>
+      <p class="m-0 label_value">{{ticket_send_details.resolution_by | date: 'MMM d,h:mm a'}}</p>
+    </div>
+    <div class="mb-20" *ngIf="ticket_send_details.modified">
+      <p class="m-0 label">Modified</p>
+      <p class="m-0 label_value">{{transform(ticket_send_details.modified)}}</p>
+    </div>
+    <div class="mb-20">
+      <p class="m-0 label" *ngIf="ticket_send_details.feedback_rating">Feedback</p>
+      <p class="m-0 label" *ngIf="ticket_send_details.feedback_rating"><ion-icon class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i as index" [class.active_star]="i <= rating_value" [name]="i <= rating_value ? 'star' : 'star-outline'"></ion-icon></p>
+      <p class="m-0 label_value" *ngIf="ticket_send_details.feedback_text">{{ticket_send_details.feedback_text}}</p>
+      <p class="m-0 label_value" *ngIf="ticket_send_details.feedback">{{ticket_send_details.feedback}}</p>
+    </div>
+    <div class="mb-20" *ngIf="ticket_send_details.description">
+      <p class="m-0 label">Description</p>
+      <p class="m-0 label_value" [innerHtml]="ticket_send_details.description"></p>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="ticket_detail_sec p-10">
+    <div class="mb-20 w-100">
+      <p class="m-0 label">Ticket type</p>
+      <select [disabled]="(ticket_send_details.status == 'Closed') ? true : false" class="search_box_select" [(ngModel)]="ticket_type_value" (change)="set_value('ticket_type')">
+        <option *ngFor="let item of ticket_type" value="{{item.name}}">{{item.name}}</option>
+      </select>
+    </div>
+    <div class="mb-20 w-100">
+      <p class="m-0 label">Priority</p>
+      <select [disabled]="(ticket_send_details.status === 'Closed') ? true : false" class="search_box_select" [(ngModel)]="priority_value" (change)="set_value('priority')">
+        <option *ngFor="let item of priority" value="{{item.name}}">{{item.name}}</option>
+      </select>
+    </div>
+    <div class="mb-20 w-100">
+      <p class="m-0 label">Team</p>
+      <select [disabled]="(ticket_send_details.status == 'Closed') ? true : false" class="search_box_select" [(ngModel)]="agent_group_value" (change)="set_value('agent_group')">
+        <option *ngFor="let item of agent_team" value="{{item.name}}">{{item.name}}</option>
+      </select>
+    </div>
+  </div>
+</div>

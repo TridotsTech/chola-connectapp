@@ -92,6 +92,13 @@ import { RegularizationFormComponent } from './leaves-module/regularization-form
 import { RegularizationDetailComponent } from './regularization-detail/regularization-detail.component';
 import { LetterRequestDetailComponent } from './letter-request-detail/letter-request-detail.component';
 import { CreateLetterRequestComponent } from './create-letter-request/create-letter-request.component';
+import { JobReferralDetailComponent } from './job-referral-detail/job-referral-detail.component';
+import { ReferFriendFormComponent } from './refer-friend-form/refer-friend-form.component';
+import { LeaveTypeComponent } from './leaves-module/leave-type/leave-type.component';
+import { BuybackFormComponent } from './customer-details/buyback-form/buyback-form.component';
+import { TicketListComponent } from './customer-details/ticket-list/ticket-list.component';
+import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
+import { ShowTicketDetailComponent } from './show-ticket-detail/show-ticket-detail.component';
 
 @NgModule({
   declarations: [
@@ -177,7 +184,14 @@ import { CreateLetterRequestComponent } from './create-letter-request/create-let
     RegularizationFormComponent,
     RegularizationDetailComponent,
     LetterRequestDetailComponent,
-    CreateLetterRequestComponent
+    CreateLetterRequestComponent,
+    JobReferralDetailComponent,
+    ReferFriendFormComponent,
+    LeaveTypeComponent,
+    BuybackFormComponent,
+    TicketListComponent,
+    TicketDetailsComponent,
+    ShowTicketDetailComponent
   ],
   imports: [
     CommonModule,
@@ -275,7 +289,14 @@ import { CreateLetterRequestComponent } from './create-letter-request/create-let
     RegularizationFormComponent,
     RegularizationDetailComponent,
     LetterRequestDetailComponent,
-    CreateLetterRequestComponent
+    CreateLetterRequestComponent, 
+    JobReferralDetailComponent,
+    ReferFriendFormComponent,
+    LeaveTypeComponent,
+    BuybackFormComponent,
+    TicketListComponent,
+    TicketDetailsComponent,
+    ShowTicketDetailComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

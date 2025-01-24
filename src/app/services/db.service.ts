@@ -59,6 +59,7 @@ export class DbService {
   httpHeaders: any;
   next_previous = new Subject();
   clearFilters = new Subject();
+  reg_selectAll = new Subject();
   listSkeleton = false;
   bodySkeleton = false;
   profile_side_menu = false;
@@ -240,6 +241,14 @@ export class DbService {
 
   routeAttendancePage: any;
   roles:any;
+
+  ticket_details: any = []
+  loadTicketDetails = new Subject();
+  loadTicketDetailName = false;
+  allocate_agent = false;
+  text_width = false;
+
+
   constructor(
     private animationCtrl: AnimationController,
     private http: HttpClient,
@@ -1256,6 +1265,100 @@ export class DbService {
     await modal.present();
   }
 
+  getRandomColor(data) {
+
+    if (data && data.length != 0) {
+      data.map(r => {
+        var color = Math.floor(Math.random() * 16777215).toString(16);
+        color = '#' + ('000000' + color).slice(-6);
+        r.color = color;
+        r.bg_color = this.hexToRgb(r.color, 0.1);
+      })
+    }
+  }
+
+  hexToRgb(hex, alpha) {
+    hex = hex.replace('#', '');
+    var r = parseInt(hex.length == 3 ? hex.slice(0, 1).repeat(2) : hex.slice(0, 2), 16);
+    var g = parseInt(hex.length == 3 ? hex.slice(1, 2).repeat(2) : hex.slice(2, 4), 16);
+    var b = parseInt(hex.length == 3 ? hex.slice(2, 3).repeat(2) : hex.slice(4, 6), 16);
+    if (alpha) {
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+    }
+    else {
+      return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+    }
+  }
+
+  get_all_conversation(name) {
+    let data = {
+      ticket: name,
+      page_size: 100,
+      page_no: 0
+    }
+    this.get_all_conversations(data).subscribe(res => {
+
+      if (res && res.status == 'success') {
+        this.skeleton_detail = false;
+        this.skeleton_detail = false;
+        this.ticket_details = res.message
+
+        let ticket = `ticket${this.ticket_details.length - 1}`
+        let el = document.getElementById(ticket)
+
+        el?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+      }
+    })
+  }
+
+  attach_filter(data, color) {
+    var str = data.split('.');
+    let value = str[1];
+    value = value.toLowerCase();
+    if (
+      value &&
+      (value == 'apng' ||
+        value == 'avif' ||
+        value == 'gif' ||
+        value == 'jpeg' ||
+        value == 'jfif' ||
+        value == 'pjpeg' ||
+        value == 'pjp' ||
+        value == 'webp' ||
+        value == 'png' ||
+        value == 'svg' ||
+        value == 'jpg')
+    ) {
+      return `/assets/icon/msg/photo${color}.svg`;
+    } else if (value && value == 'pdf') {
+      return `/assets/icon/msg/pdf${color}.svg`;
+    } else if (value && value == 'ppt') {
+      return `/assets/icon/msg/ppt${color}.svg`;
+    } else if (
+      value &&
+      (value == 'webm' ||
+        value == 'mpg' ||
+        value == 'mp2' ||
+        value == 'mpe' ||
+        value == 'ogg' ||
+        value == 'mp4' ||
+        value == 'm4v' ||
+        value == 'avi' ||
+        value == 'wmv' ||
+        value == 'mov' ||
+        value == 'qt' ||
+        value == 'flv' ||
+        value == 'swf' ||
+        value == 'avchd')
+    ) {
+      return `/assets/icon/msg/video${color}.svg`;
+    } else if (value && value == 'zip') {
+      return `/assets/icon/msg/zip${color}.svg`;
+    } else {
+      return `/assets/icon/msg/pdf${color}.svg`;
+    }
+  }
+
   get_customer = '';
   get_company = '';
 
@@ -1696,6 +1799,11 @@ export class DbService {
     return this.get(this.baseResource + endPoint);
   }
 
+  get_ip(): Observable<any> {
+    let endpoint = 'https://jsonip.com';
+    return this.get(endpoint);
+  }
+
   get_Employees(): Observable<any> {
     let endPoint = 'Employee?fields=["employee_name","employee"]';
     return this.get(this.baseResource + endPoint);
@@ -1705,6 +1813,7 @@ export class DbService {
     let endpoint = this.go1_apps_apis_hrmls + 'get_employee_attendance_details';
     return this.postmethod(this.baseMethod + endpoint, data);
   }
+  
 
   current_date: any
   get_tempate_and_datas(data: any): Observable<any> {
@@ -1862,6 +1971,12 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  get_workflow_states(Info): Observable<any> {
+    let endpoint = 'td_dashboard_data.td_dashboard_data.api.get_workflow_states';
+    // let endpoint = 'td_payroll.tdpayroll.doctype.my_slips.my_slips.get_salary_slip_content';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   employee_letter_request_download(Info): Observable<any> {
     let endpoint = 'go1_elc.go1_elc.doctype.employee_letter_request.employee_letter_request.download_pdf';
     return this.postmethod(this.baseMethod + endpoint, Info);
@@ -1880,6 +1995,16 @@ export class DbService {
 
   update_hd_ticket(data: any): Observable<any> {
     let endpoint = this.go1_apps_api + 'update_hd_ticket';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  set_ticket_value(data: any): Observable<any> {
+    let endpoint = 'frappe.client.set_value';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  submit_conversation_via_agent(data): Observable<any> {
+    let endpoint = this.go1_apps_api + 'submit_conversation_via_agent';
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 
@@ -2004,6 +2129,16 @@ export class DbService {
   calculate_leave_preview(data: any): Observable<any> {
     let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.calculate_leave_preview';
     return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  leave_remaining_balance(data: any): Observable<any> {
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leave_remaining_balance';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  get_job_opening(): Observable<any> {
+    let endpoint = 'candidate_portal.api.get_job_opening';
+    return this.get(this.baseMethod + endpoint);
   }
 
   get_leave_requests_list(type): Observable<any> {
@@ -2235,11 +2370,10 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
-  check_role(role){
+  check_role(role,emp){
+    // console.log(emp)
     let check = this.roles.find(obj => obj.role == role)
-    return check ? true : false
-    // if(check)
-    //   return tr
+    return emp == '' ? check ? true : false : check && emp != localStorage['employee_id'] ? true : false
   }
 
 

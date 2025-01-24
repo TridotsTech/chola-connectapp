@@ -11,10 +11,7 @@ export class BuyBackCalculatorPage implements OnInit {
   buyback_form: any = FormGroup;
   assetsType:any=[];
   assets_list:any=[]; 
-  // = [
-  //   {name: 'Vehicle'},
-  //   {name: 'Mobile'},
-  // ]
+  yearCalculator:any=[]; 
   constructor(public db: DbService,private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -43,12 +40,6 @@ export class BuyBackCalculatorPage implements OnInit {
       tax_on_perk_amount: new FormControl(''),
     });
 
-    // this.db.select_drop_down.subscribe((res: any) => {
-    //   this.buyback_form.patchValue({
-    //     employee_code: res.name
-    //   });
-    // });
-
     let data ={
       "employee":localStorage['employee_id']
     }
@@ -62,8 +53,6 @@ export class BuyBackCalculatorPage implements OnInit {
         console.log(this.assetsType)
       }else{
         this.db.sendErrorMessage(res.message.message)
-        // this.no_products = true;
-        // this.page_no == 1 ? this.approvalList = [] : null;
       }
     })
   }
@@ -144,8 +133,6 @@ export class BuyBackCalculatorPage implements OnInit {
     return this.buyback_form.get('tax_on_perk_amount');
   }
 
-  
-
   datePickerChange(fieldname,event){
     if(fieldname == 'buyback_date'){
       let data ={
@@ -155,14 +142,30 @@ export class BuyBackCalculatorPage implements OnInit {
       this.db.buyback_calculator_asset(data).subscribe(res => {
         if(res && res.message && res.message.status == 'success'){
           console.log(res.message.data)
-          this.buyback_form.get('total_capitalized_value').setValue(res.message.data.amount)
+          this.buyback_form.get('total_capitalized_value').setValue(this.formatCurrencyString(res.message.data.amount))
           this.buyback_form.get('life_of_the_car').setValue(res.message.data.car_life)
+          this.buyback_form.get('amount_payable_to_company').setValue(this.formatCurrencyString(res.message.data.amount_payable_to_company))
+          this.buyback_form.get('gst_amount').setValue(this.formatCurrencyString(res.message.data.gst_amount))
+          this.buyback_form.get('perk_amount').setValue(this.formatCurrencyString(res.message.data.perk_amount))
+          this.buyback_form.get('tax_on_perk_amount').setValue(this.formatCurrencyString(res.message.data.tax_on_perk_amount))
+          this.buyback_form.get('buyback_amount').setValue(this.formatCurrencyString(res.message.data.amount))
+          this.yearCalculator = res.message.data.table
         }else{
           this.db.sendErrorMessage(res.message.message)
         }
       })
     }
     this.buyback_form.value[fieldname] = event.value;
+  }
+
+  formatCurrencyString(value: string): string {
+    if (value) {
+      return new Intl.NumberFormat('en-IN', { // Locale 'en-IN' for Indian formatting
+        style: 'currency',
+        currency: 'INR'// Indian Rupee
+      }).format(parseFloat(value));
+    }
+    return '0.00';
   }
 
   submit(){
@@ -186,27 +189,21 @@ export class BuyBackCalculatorPage implements OnInit {
 
   onassettypeChange(eve){
     this.assets_list = []
-    // console.log(eve.detail.value)
     let data ={
       "employee":localStorage['employee_id'],
       "asset_type":eve.detail.value
     }
     this.db.validate_asset(data).subscribe(res => {
       if(res && res.message && res.message.status == 'success'){
-        console.log(res)
         res.message.data.map((res)=>{
           this.assets_list.push({name:res})
         }) 
-        // this.
         if(this.assets_list.length == 1){
           this.buyback_form.get('asset').setValue(this.assets_list[0].name)
           this.onassetChange('',this.assets_list[0].name)
         }
-        
       }else{
         this.db.sendErrorMessage(res.message.message)
-        // this.no_products = true;
-        // this.page_no == 1 ? this.approvalList = [] : null;
       }
     })
     let year_data ={
@@ -214,15 +211,12 @@ export class BuyBackCalculatorPage implements OnInit {
     }
     this.db.fetch_buyback_years(year_data).subscribe(res => {
       if(res && res.message && res.message.message == 'Success'){
-        console.log(res.message.buyback_data)
         this.buyback_form.get('year0').setValue(res.message.buyback_data.year_0)
         this.buyback_form.get('year1').setValue(res.message.buyback_data.year_1)
         this.buyback_form.get('year2').setValue(res.message.buyback_data.year_2)
         this.buyback_form.get('year3').setValue(res.message.buyback_data.year_3)
         res.message.buyback_data.year_4 ? this.buyback_form.get('year4').setValue(res.message.buyback_data.year_4) : ''
         this.buyback_form.get('perk_tax').setValue(res.message.buyback_data.perk_tax)
-
-       
       }else{
         this.db.sendErrorMessage(res.message.message)
       }
@@ -235,69 +229,43 @@ export class BuyBackCalculatorPage implements OnInit {
     }
     this.db.get_asset_detail(data).subscribe(res => {
       if(res && res.message && res.message.status == 'success'){
-        console.log(res)
         if(res.message.data){
           this.buyback_form.get('date_of_purchase').setValue(res.message.data.asset_capitalization_date)
-          // console.log(this.buyback_form.value.date_of_purchase)
-          // this.buyback_form.value['date_of_purchase'] = res.message.data.asset_capitalization_date;
           this.buyback_form.get('vehicle_registration_no').setValue(res.message.data.registration_no)
-          // this.buyback_form.get('baz_ticket_no').setValue(res.message.data.baz_ticket_no)
-          this.buyback_form.get('ex_showroom_cost').setValue(res.message.data.showroom_cost)
-          this.buyback_form.get('road_tax_and_registration_charges').setValue(res.message.data.road_tax_registration_charges)
+          this.buyback_form.get('ex_showroom_cost').setValue(this.formatCurrencyString(res.message.data.showroom_cost))
+          this.buyback_form.get('road_tax_and_registration_charges').setValue(this.formatCurrencyString(res.message.data.road_tax_registration_charges))
         }
-        // res.message.data.map((res)=>{
-        //   this.assets_list.push({name:res})
-        // }) 
-        // // this.
-        // this.assets_list.length == 1 ?  this.buyback_form.value.asset = this.assets_list[0].name : '' 
       }else{
         this.db.sendErrorMessage(res.message.message)
       }
     })
   }
 
-  // open_dropdown1() {
-  //   let val = {
-  //     type: 'Chola Asset',
-  //     fieldname: 'asset',
-  //     fieldname_value: '',
-  //     selected_value: this.buyback_form.value.asset,
-  //     send_all_value: true
-  //   }
-
-  //   this.db.formStoreValues = {}
-  //   this.db.formStoreValues['employee'] = localStorage['employee_id'];
-  //   let selected_value = {
-  //     doctype: "Chola Asset"
-  //   }
-  //   this.db.open_drop_down_options(val.type, val.fieldname, val.fieldname_value, selected_value)
-  // }
-
-  yearCalculator = [
-    {
-      year: 1,
-      value_of_the_car: 50000,
-      depreciation: 10000,
-      wdv: 40000
-    },
-    {
-      year: 2,
-      value_of_the_car: 40000,
-      depreciation: 8000,
-      wdv: 32000
-    },
-    {
-      year: 3,
-      value_of_the_car: 32000,
-      depreciation: 6400,
-      wdv: 25600
-    },
-    {
-      year: 4,
-      value_of_the_car: 25600,
-      depreciation: 5120,
-      wdv: 20480
-    },
-  ]
+  // yearCalculator = [
+  //   {
+  //     year: 1,
+  //     value_of_the_car: 50000,
+  //     depreciation: 10000,
+  //     wdv: 40000
+  //   },
+  //   {
+  //     year: 2,
+  //     value_of_the_car: 40000,
+  //     depreciation: 8000,
+  //     wdv: 32000
+  //   },
+  //   {
+  //     year: 3,
+  //     value_of_the_car: 32000,
+  //     depreciation: 6400,
+  //     wdv: 25600
+  //   },
+  //   {
+  //     year: 4,
+  //     value_of_the_car: 25600,
+  //     depreciation: 5120,
+  //     wdv: 20480
+  //   },
+  // ]
 
 }
