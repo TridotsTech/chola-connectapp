@@ -24,7 +24,7 @@ export class ApprovalListPage implements OnInit {
   }
 
   add(item){
-    console.log(item)
+    // console.log(item)
     if(item.name == 'Leave request')
       this.router.navigateByUrl('/leave-application-detail');
   }

@@ -117,7 +117,7 @@ export class LetterRequestDetailComponent  implements OnInit {
         {
           text: 'Ok',
           handler: () => {
-            this.submit({doctype:'Letter Request',name:item.name,workflow_state:type,docstatus:1},type)
+            this.submit({doctype:'Employee Letter Request',name:item.name,workflow_state:type},type)
           },
         },
       ],

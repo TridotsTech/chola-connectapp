@@ -55,7 +55,7 @@
         <div *ngFor="let evaluations of evaluationDetails" class="values">
           <p class="m-0 fnt-14">{{evaluations.parameter}}</p>
           <div>
-            <ion-icon (click)="get_rating(evaluations,i)" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i = index" [class.active_star]="i <= evaluations.rating" [name]="i <= evaluations.rating ? 'star' : 'star-outline'"></ion-icon>
+            <ion-icon (click)="get_rating(evaluations,item)" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i = index" [class.active_star]="item <= evaluations.rating" [name]="item <= evaluations.rating ? 'star' : 'star-outline'"></ion-icon>
           </div>
         </div>
       </div>

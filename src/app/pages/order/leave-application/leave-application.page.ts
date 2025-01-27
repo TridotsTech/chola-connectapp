@@ -244,6 +244,17 @@ export class LeaveApplicationPage implements OnInit {
   }
 
   async sure_submit() {
+    this.submitted = true;
+    // console.log(this.leave_form, "form")
+    if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
+      // if(this.leave_preview && this.leave_preview.length != 0){
+      //   this.leave_preview.map(res =>{
+      //     if(res.count != 'Applied'){
+
+      //     }
+      //   })
+      //   // *ngIf="item.count != 'Weekly Off' && item.count != 'Holiday' && item.count != 'Applied'"
+      // }
     // if(!this.save_only){
       const alert = await this.alertController.create({
         header: 'Approval',
@@ -264,15 +275,16 @@ export class LeaveApplicationPage implements OnInit {
         ],
       });
       await alert.present();
+    }
     // }else{
     //   this.submit();
     // }
   }
 
   submit() {
-    this.submitted = true;
+    // this.submitted = true;
     // console.log(this.leave_form, "form")
-    if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
+    // if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
       // let val = (this.leave_form.value['half_day_check'] && this.leave_form.value['half_day'] != '') || !this.leave_form.value['half_day_check']
       // 
       // if (val) {
@@ -345,7 +357,7 @@ export class LeaveApplicationPage implements OnInit {
           }
         })
       // }
-    }
+    // }
   }
 
   checkImages(data, type) {
@@ -421,7 +433,7 @@ export class LeaveApplicationPage implements OnInit {
     let datas:any=[];
     // data.leave_preview.map(res =>{
       // if(res.isChecked == true){
-        datas.push({date:item.date, status:item.status, rejected_reason:item.rejected_reason})
+        // datas.push({date:item.date, status:item.status, rejected_reason:item.rejected_reason})
       // }
   // })
     let res_data ={

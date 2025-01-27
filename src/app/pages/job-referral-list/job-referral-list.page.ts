@@ -11,13 +11,16 @@ import { DbService } from 'src/app/services/db.service';
 export class JobReferralListPage implements OnInit {
   jobReferralList: any = [];
   skeleton = true;
+  page_no: any = 1;
+  no_jobs = false;
   constructor(public db: DbService,public modalCntrl: ModalController) { }
 
   ngOnInit() {
   }
 
   ionViewWillEnter(){
-    this.getJobReferralList();
+    // this.getJobReferralList();
+    this.get_job_referral_list();
   }
 
   getJobReferralList(){
@@ -61,6 +64,31 @@ export class JobReferralListPage implements OnInit {
       }
     })
     await modal.present();
+  }
+
+  get_job_referral_list(){
+    let data = {
+      page_no: this.page_no,
+      "filters": {
+        "location": "",
+        "postion": "",
+        "name": "",
+        "job_type": ""
+      }
+    }
+    this.db.get_jobs(data).subscribe(res => {
+      this.skeleton = false;
+      if(res && res.message && res.message.length != 0){
+        if(this.page_no == 1){
+          this.jobReferralList = res.message
+        }else{
+          this.jobReferralList = [...this.jobReferralList,...res.message]
+        }
+      }else{
+        this.no_jobs = true;
+        this.page_no == 1 ? this.jobReferralList = [] : null;
+      }
+    })
   }
 
 }

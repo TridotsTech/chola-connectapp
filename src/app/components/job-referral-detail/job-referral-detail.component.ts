@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ReferFriendFormComponent } from '../refer-friend-form/refer-friend-form.component';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-job-referral-detail',
@@ -9,10 +10,11 @@ import { ReferFriendFormComponent } from '../refer-friend-form/refer-friend-form
 })
 export class JobReferralDetailComponent  implements OnInit {
 @Input() jobReferralDetail: any;
-  constructor(public modalCntrl: ModalController) { }
+  constructor(public modalCntrl: ModalController,public db: DbService) { }
 
   ngOnInit() {
-    console.log(this.jobReferralDetail,'this.jobReferralDetail')
+    console.log(this.jobReferralDetail,'this.jobReferralDetail');
+    this.getDocDetails();
   }
 
   getBeforeDays(date){
@@ -59,6 +61,16 @@ export class JobReferralDetailComponent  implements OnInit {
       }
     })
     await modal.present();
+  }
+
+  getDocDetails(){
+    let data = {
+      doctype: 'Job Opening',
+      name: this.jobReferralDetail.name
+    }
+    this.db.doc_detail(data).subscribe(res => {
+      console.log(res)
+    })
   }
 
 }

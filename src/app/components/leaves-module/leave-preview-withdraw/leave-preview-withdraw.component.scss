@@ -1,0 +1,135 @@
+.employeeDetails {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 1px;
+    position: relative;
+
+    .details {
+        gap: 8px;
+
+        .title {
+            .name {
+                width: 65%;
+            }
+
+            .label {
+                background: #f1f1f1;
+                padding: 4px 10px;
+                border-radius: 5px;
+                font-size: 13px;
+                font-weight: 500;
+            }
+        }
+
+        .id {
+            margin: 5px 0;
+        }
+
+        .role {
+            .workIcon {
+                height: 16px;
+                width: 16px;
+            }
+        }
+
+        .imageDiv {
+            height: 75px;
+            width: 110px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f1f1;
+
+            img {
+                height: 70px;
+                width: 100%;
+                border-radius: 5px;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.leavePreview {
+    .boxes_ {
+        padding: 10px;
+        border: 1px solid var(--border-col);
+        margin: 10px 0;
+        border-radius: 7px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    ion-select {
+        min-height: 30px;
+        font-size: 14px;
+    }
+}
+
+ion-checkbox {
+    --checkbox-background-checked: var(--primary-color);
+    --size: 13px;
+}
+
+ion-checkbox::part(container) {
+    border: 2px solid var(--primary-color);
+}
+
+.btnSec {
+    position: sticky;
+    bottom: 0;
+    background: #ffff;
+    z-index: 9999;
+    width: 100%;
+    border-top: 1px solid var(--border-col);
+
+    .btn1,
+    .btn2 {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.btn1 {
+    // border: 1px solid var(--border-col);
+    border-radius: 5px;
+    background: #fbe9e9;
+    gap: 5px;
+    padding: 5px;
+    width: 82px;
+
+    ion-icon,
+    span {
+        color: #DC1414;
+    }
+}
+
+.btn2 {
+    // border: 1px solid var(--border-col);
+    background: #69e2be52;
+    border-radius: 5px;
+    gap: 5px;
+    padding: 5px;
+    width: 82px;
+
+    ion-icon,
+    span {
+        color: #458F5A;
+    }
+}
+
+.bodyScrollable {
+    height: calc(100vh - 225px);
+    overflow: auto;
+}
+
+.fullHeight{
+    height: calc(100vh - 160px);
+    // height: unset !important;
+}

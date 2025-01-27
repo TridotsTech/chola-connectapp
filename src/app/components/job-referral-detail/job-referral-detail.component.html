@@ -2,15 +2,15 @@
   
   <div class="p-10 d__flex gap-10 headerSec">
     <div class="avatar_name">
-      <p class="m-0">{{jobReferralDetail.designation[0]}}</p>
+      <p class="m-0" *ngIf="jobReferralDetail.designation">{{jobReferralDetail.designation[0]}}</p>
     </div>
     <div class="w-100">
       <div class="d__flex just-s">
-        <p class="m-0 fnt-14 fnt_w600 mb-5">{{jobReferralDetail.designation.replace('-', '')}}</p>
+        <p class="m-0 fnt-14 fnt_w600 mb-5" *ngIf="jobReferralDetail.designation">{{jobReferralDetail.designation.replace('-', '')}}</p>
         <ion-icon class="flex-auto fnt-18" (click)="modalCntrl.dismiss()" name="close-outline"></ion-icon>
       </div>
       <div class="d__flex gap-10">
-        <p class="m-0 fnt-13 fnt_w400">{{jobReferralDetail.job_title ? jobReferralDetail.job_title.replace('-', '') : ''}}</p>
+        <p class="m-0 fnt-13 fnt_w400" *ngIf="jobReferralDetail.job_title">{{jobReferralDetail.job_title ? jobReferralDetail.job_title.replace('-', '') : ''}}</p>
         <div class="beforedays flex-auto">
           <div class="dots"></div>
           <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{jobReferralDetail.posted_on ? getBeforeDays(jobReferralDetail.posted_on) : ''}}</p>
@@ -72,7 +72,7 @@
     </div>
   
     <div class="educationSection">
-      <h5 class="fnt-14 fnt_w600 m-0 mb-10">Experience</h5>
+      <h5 class="fnt-14 fnt_w600 m-0 mb-10">Education</h5>
       <h6 class="m-0 fnt-14 gray_clr fnt_w500 mb-5">What Jane is looking for</h6>
       
       <div class="education_list" *ngIf="educationList && educationList.length != 0">

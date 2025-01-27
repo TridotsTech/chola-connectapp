@@ -21,10 +21,11 @@ multiple_array: any = {};
     console.log(this.jobReferralDetail,'this.jobReferralDetail')
 
     this.refer_form = this.formBuilder.group({
-      reference_type: new FormControl('', Validators.required),
-      name: new FormControl('', Validators.required),
-      designation_type: new FormControl('', Validators.required),
-      relationship: new FormControl('', Validators.required),
+      // reference_type: new FormControl('', Validators.required),
+      first_name: new FormControl('', Validators.required),
+      last_name: new FormControl('', Validators.required),
+      // designation_type: new FormControl('', Validators.required),
+      // relationship: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
       contact_number: new FormControl('', Validators.required),
       friend_image: new FormControl(''),
@@ -35,8 +36,12 @@ multiple_array: any = {};
     return this.refer_form.get('reference_type')
   }
 
-  get name(){
-    return this.refer_form.get('name')
+  get first_name(){
+    return this.refer_form.get('first_name')
+  }
+
+  get last_name(){
+    return this.refer_form.get('last_name')
   }
 
   get designation_type(){
@@ -85,11 +90,6 @@ multiple_array: any = {};
     {name: 'Developer'},
     {name: 'Testing'},
   ]
-
-  submit(){
-    this.submitted = true;
-    console.log(this.refer_form.value)
-  }
 
   changeListener($event: any) {
     this.base64($event.target);
@@ -159,6 +159,31 @@ multiple_array: any = {};
         this.db.alert('Something went wrong try again later');
       }
     });
+  }
+
+  submit(){
+    this.submitted = true;
+    console.log(this.refer_form.value)
+    if(this.refer_form.status == 'VALID'){
+      let data = {
+        jobname: this.jobReferralDetail.name,
+        ref_details: {
+          first_name: this.refer_form.value.first_name,
+          last_name: this.refer_form.value.last_name,
+          email: this.refer_form.value.email,
+          contact_no: this.refer_form.value.contact_number,
+          resume: this.multiple_array.file_name
+        }
+      }
+      this.db.create_referral_entry(data).subscribe(res => {
+        console.log(res)
+        if(res && res.message && res.message.status == 'success'){
+          this.db.sendSuccessMessage('Referral Sent Successfully')
+        }else{
+          this.db.alert('Something went wrong try again later')
+        }
+      })
+    }
   }
 
 }

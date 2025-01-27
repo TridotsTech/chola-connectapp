@@ -1,1 +1,94 @@
-<app-header [title]="'Letter Withdrawal'" [showYear]="false" [model]="true"></app-header>
+<app-header [title]="'Leave Withdrawal'" [showYear]="false" [model]="true"></app-header>
+
+<div *ngIf="letterrequestDetail">
+    <div class="employeeDetail-s">
+        <div *ngIf="letterrequestDetail" class="employeeDetail">
+            <div class="d__flex gap-10 just-s employeeDetails">
+                <img class="blue" src="/assets/timesheet/blue.svg" />
+                <img class="yellow" src="/assets/timesheet/yellow.svg" />
+                <div class="d__flex m-0 details w-100">
+                    <div class="imageDiv">
+                        <img *ngIf="letterrequestDetail.image" [src]="db.product_img(letterrequestDetail.image)" />
+                        <h4 *ngIf="!letterrequestDetail.image" class="m-0 fnt-15 fnt_w500">
+                            {{letterrequestDetail?.employee_name[0]}}</h4>
+                    </div>
+                    <div class="w-100">
+                        <h4 class="fnt-14 fnt_w500 m-0 name webkit-text capitalize" [style.--line]="1">
+                            {{letterrequestDetail?.employee_name}}</h4>
+                        <div class="d__flex title just-s w-100">
+                            <h4 *ngIf="letterrequestDetail.name" class="fnt-12 fnt_w400 m-0 id gray_clr">
+                                {{letterrequestDetail?.name}}</h4>
+                            <app-status [status]="letterrequestDetail.status"></app-status>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bodyScrollable" [class.fullHeight]="!checkBottomBtn()">
+        <div class="p-10 leavePreview" *ngIf="letterrequestDetail.leave_preview && letterrequestDetail.leave_preview.length != 0">
+            <label for="reason" class="pb-10 fnt-14 fnt_w500">List of Leave Application</label>
+            <div *ngFor="let item of letterrequestDetail.leave_preview; let i = index" class="boxes_">
+                <div class="d__flex just-s">
+                    <div class="d__flex gap-5">
+                        <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} </p>
+                    </div>
+                    <div class="d__flex">
+                        <app-status [status]="item.status"></app-status>
+                    </div>
+                </div>
+                <div class="d__flex just-s">
+                    <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p>
+                    <p class="m-0 fnt-14 d__flex gap-5">{{item.leave_type}}</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="p-10 leavePreview" *ngIf="letterrequestDetail.leave_withdraw_date && letterrequestDetail.leave_withdraw_date.length != 0">
+            <label for="reason" class="pb-10 fnt-14 fnt_w500">Leave Withdraw Approved Application List</label>
+            <div *ngFor="let item of letterrequestDetail.leave_withdraw_date; let i = index" class="boxes_">
+                <div class="d__flex just-s">
+                    <div class="d__flex gap-5">
+                        <div (click)="eventPropagation($event)" class="checkBox" *ngIf="letterrequestDetail.docstatus == 0 && db.hr_manager_role">
+                            <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+                        </div>
+                        <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} </p>
+                    </div>
+                    <div class="d__flex">
+                        <app-status [status]="item.status"></app-status>
+                    </div>
+                </div>
+                <div class="d__flex just-s">
+                    <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p>
+                    <p class="m-0 fnt-14 d__flex gap-5">{{item.leave_type}}</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="p-10 leavePreview" *ngIf="letterrequestDetail.leave_withdraw_open_application_list && letterrequestDetail.leave_withdraw_open_application_list.length != 0">
+            <label for="reason" class="pb-10 fnt-14 fnt_w500">Leave Withdraw Open Application List</label>
+            <div *ngFor="let item of letterrequestDetail.leave_withdraw_open_application_list; let i = index" class="boxes_">
+                <div class="d__flex just-s">
+                    <div class="d__flex gap-5">
+                        <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} </p>
+                    </div>
+                    <div class="d__flex">
+                        <app-status [status]="item.status"></app-status>
+                    </div>
+                </div>
+                <div class="d__flex just-s">
+                    <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Days: </span> {{item.total_leave_days}}</p>
+                    <p class="m-0 fnt-14 d__flex gap-5">{{item.leave_type}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="d__flex gap-10 p-1015 btnSec p-10" *ngIf="checkBottomBtn() && letterrequestDetail.docstatus == 0 && db.hr_manager_role">
+        <div class="btn1 d__flex mouse" (click)="submitWithdrawal('Rejected')"><ion-icon name="close-outline" alt=""></ion-icon><span class="fnt-12 m-0">Reject</span></div>
+        <div class="btn2 d__flex mouse" (click)="submitWithdrawal('Approved')"><ion-icon name="checkmark-outline" alt=""></ion-icon><span class="fnt-12 m-0">Approve</span></div>
+    </div>
+
+</div>

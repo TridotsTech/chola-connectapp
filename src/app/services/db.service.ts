@@ -2143,6 +2143,16 @@ export class DbService {
     return this.get(this.baseMethod + endpoint);
   }
 
+  get_jobs(data: any): Observable<any> {
+    let endpoint = 'td_dashboard_data.td_dashboard_data.api.get_jobs';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  create_referral_entry(data: any): Observable<any> {
+    let endpoint = 'td_dashboard_data.td_dashboard_data.api.create_referral_entry';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
   get_leave_requests_list(type): Observable<any> {
     let data={
       employee: localStorage['employee_id']

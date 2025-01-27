@@ -87,6 +87,11 @@ ion-checkbox::part(container) {
             padding: 10px;
             border-right: 1px solid #ddd;
         }
+        
+        p:nth-child(2){
+            flex: 0 0 35% !important;
+            border-right: unset !important;
+        }
     }
 
     .values {

@@ -10,12 +10,12 @@
             <ion-icon class="fnt-18 flex-auto" src="/assets/job-referral/send.svg"></ion-icon>
           </div>
           <div class="d__flex just-s mb-10">
-            <p class="m-0 fnt-14 fnt_w600 webkit-text" [style.--line]="1">{{item.designation ? item.designation.replace('-', '') : ''}}</p>
+            <p class="m-0 fnt-14 fnt_w600 webkit-text" [style.--line]="1">{{item.position ? item.position.replace('-', '') : ''}}</p>
             <ion-icon class="fnt-18 flex-auto" src="/assets/job-referral/save.svg"></ion-icon>
           </div>
           <div class="d__flex just-s mb-10">
-            <p class="m-0 fnt-13 fnt_w400 gray_clr webkit-text" [style.--line]="1">{{item.description ? changeDescription(item.description) : ''}}</p>
-            <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{item.posted_on ? getBeforeDays(item.posted_on) : ''}}</p>
+            <p class="m-0 fnt-13 fnt_w400 gray_clr webkit-text" [style.--line]="1">{{item.company ? item.company : ''}}</p>
+            <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{item.posted_on ? item.posted_on : ''}}</p>
           </div>
         </div>
         <div class="sec2">
@@ -23,8 +23,8 @@
             <p class="m-0 fnt-14 fnt_w400 d__flex gap-5"><ion-icon class="fnt-18" src="/assets/job-referral/cash.svg"></ion-icon> {{item.currency}} {{item.lower_range}} - {{item.upper_range}} / {{item.salary_per}}</p>
           </div>
           <div *ngIf="item.job_requisition && item.job_requisition.length != 0" class="d__flex just-s">
-            <p class="m-0 fnt-13 gray_clr fnt_w400 d__flex gap-5"><ion-icon class="fnt-18" src="/assets/job-referral/experience.svg"></ion-icon> {{item.job_requisition[0].custom_years_of_experience}} yrs exp</p>
-            <p class="m-0 fnt-13 gray_clr fnt_w400 d__flex gap-5 flex-auto"><ion-icon class="fnt-18" src="/assets/job-referral/map.svg"></ion-icon> {{item.job_requisition[0].custom_location}} / {{item.job_requisition[0].custom_employee_type}}</p>
+            <p class="m-0 fnt-13 gray_clr fnt_w400 d__flex gap-5"><ion-icon class="fnt-18" src="/assets/job-referral/experience.svg"></ion-icon> {{item.years_of_experience}} yrs exp</p>
+            <p class="m-0 fnt-13 gray_clr fnt_w400 d__flex gap-5 flex-auto"><ion-icon class="fnt-18" src="/assets/job-referral/map.svg"></ion-icon> {{item.location}} / {{item.employee_type}}</p>
           </div>
         </div>
       </div>

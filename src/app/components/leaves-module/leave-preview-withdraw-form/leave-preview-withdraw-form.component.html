@@ -111,7 +111,8 @@
       <ion-select-option *ngFor="let types of leaveStatus" [value]="types.name">{{types.name}}</ion-select-option>
     </ion-select>
   </div> -->
-  <div class="pb-10" *ngIf="editFormValues.status && editFormValues.status == 'Rejected'">
+  <!-- *ngIf="editFormValues.status && editFormValues.status == 'Rejected'" -->
+  <div class="pb-10" >
     <label class="pb-10">Rejected Reason <span class="red">*</span></label>
     <div class="custom-input">
       <ion-textarea rows="6" [(ngModel)]="editFormValues.rejected_reason" placeholder="Rejected Reason" (input)="validateInput($event)" class="form-input" required></ion-textarea>

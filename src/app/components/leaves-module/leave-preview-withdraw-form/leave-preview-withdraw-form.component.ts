@@ -17,7 +17,7 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   constructor(public db: DbService, public modalCntrl: ModalController) {}
 
   ngOnInit() {
-    console.log(this.leave_preview, 'this.editFormValues');
+    console.log(this.editFormValues, 'this.editFormValues');
     if(this.type == 'leave request'){
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -143,12 +143,12 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   }
 
   leave_req_save(){
-    if (this.editFormValues.status && this.editFormValues.status == 'Rejected')
+    // if (this.editFormValues.status && this.editFormValues.status == 'Rejected')
       if (this.editFormValues.rejected_reason)
         this.modalCntrl.dismiss(this.editFormValues);
       else this.db.sendErrorMessage('Please enter the Rejected Reason');
-    else
-      this.editFormValues.status == 'Approved' || this.editFormValues.status == 'Rejected' ? this.modalCntrl.dismiss(this.editFormValues) : this.db.sendErrorMessage('Please enter the any status');
+    // else
+      // this.editFormValues.status == 'Approved' || this.editFormValues.status == 'Rejected' ? this.modalCntrl.dismiss(this.editFormValues) : this.db.sendErrorMessage('Please enter the any status');
   }
 
   leave_req(){

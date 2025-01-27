@@ -132,7 +132,7 @@ export class DashboardPage implements OnInit {
   }
 
   ionViewWillLeave(){
-    this.db.highlightedDates = []
+    this.db.highlightedDates = [];
   }
 
   ionViewWillEnter() {
@@ -150,6 +150,7 @@ export class DashboardPage implements OnInit {
     }  
 
     if(this.db.employee_role){
+      this.get_ess_dashboard();
       this.checkIn();
     }
 
@@ -161,7 +162,7 @@ export class DashboardPage implements OnInit {
   }
 
   scrollToTop() {
-    this.content.scrollToTop(400);
+    this.content ? this.content.scrollToTop(400): '';
   }
 
   ionViewDidEnter(){

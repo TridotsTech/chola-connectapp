@@ -8,14 +8,14 @@
 
 <app-header [title]="'Refer a Friend'" [showYear]="false" [model]="true"></app-header>
 
-<div class="p-10 d__flex gap-10 headerSec">
+<div class="p-10 d__flex gap-10 headerSec" *ngIf="jobReferralDetail">
   <div class="avatar_name">
-    <p class="m-0">{{jobReferralDetail.designation[0]}}</p>
+    <p class="m-0" *ngIf="jobReferralDetail.designation">{{jobReferralDetail.designation[0]}}</p>
   </div>
   <div class="w-100">
-    <p class="m-0 fnt-14 fnt_w600 mb-5">{{jobReferralDetail.designation.replace('-', '')}}</p>
+    <p class="m-0 fnt-14 fnt_w600 mb-5" *ngIf="jobReferralDetail.designation">{{jobReferralDetail.designation.replace('-', '')}}</p>
     <div class="d__flex gap-10">
-      <p class="m-0 fnt-13 fnt_w400">{{jobReferralDetail.job_title ? jobReferralDetail.job_title.replace('-', '') : ''}}</p>
+      <p class="m-0 fnt-13 fnt_w400" *ngIf="jobReferralDetail.job_title">{{jobReferralDetail.job_title ? jobReferralDetail.job_title.replace('-', '') : ''}}</p>
       <div class="beforedays flex-auto">
         <div class="dots"></div>
         <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{jobReferralDetail.posted_on ? getBeforeDays(jobReferralDetail.posted_on) : ''}}</p>
@@ -27,7 +27,7 @@
 <div class="p-10 formHeight">
   <form [formGroup]="refer_form">
 
-    <div class="pb-10">
+    <!-- <div class="pb-10">
       <p class="title">Reference Type <span class="impt-star"> *</span></p>
       <div class="custom-input">
         <ion-select interface="popover" placeholder="Reference Type" formControlName="reference_type" name="reference_type">
@@ -38,20 +38,31 @@
 
     <div *ngIf="submitted && !reference_type?.valid">
       <p class="error" *ngIf="reference_type.errors.required">Reference Type is required</p>
-    </div>
+    </div> -->
 
     <div class="pb-10">
-      <p class="title">Name <span class="impt-star"> *</span></p>
+      <p class="title">First Name <span class="impt-star"> *</span></p>
       <div class="custom-input">
-        <ion-input type="text" placeholder="Name" formControlName="name" name="name"></ion-input>
+        <ion-input type="text" placeholder="First Name" formControlName="first_name" name="first_name"></ion-input>
       </div>
     </div>
 
-    <div *ngIf="submitted && !name?.valid">
-      <p class="error" *ngIf="name.errors.required">Name is required</p>
+    <div *ngIf="submitted && !first_name?.valid">
+      <p class="error" *ngIf="first_name.errors.required">First Name is required</p>
     </div>
 
     <div class="pb-10">
+      <p class="title">Last Name <span class="impt-star"> *</span></p>
+      <div class="custom-input">
+        <ion-input type="text" placeholder="Last Name" formControlName="last_name" name="last_name"></ion-input>
+      </div>
+    </div>
+
+    <div *ngIf="submitted && !last_name?.valid">
+      <p class="error" *ngIf="last_name.errors.required">Last Name is required</p>
+    </div>
+
+    <!-- <div class="pb-10">
       <p class="title">Refer Designation <span class="impt-star"> *</span></p>
       <div class="custom-input">
         <ion-select interface="popover" placeholder="Refer Designation" formControlName="designation_type" name="designation_type">
@@ -62,9 +73,9 @@
 
     <div *ngIf="submitted && !designation_type?.valid">
       <p class="error" *ngIf="designation_type.errors.required">Refer Designation is required</p>
-    </div>
+    </div> -->
 
-    <div class="pb-10">
+    <!-- <div class="pb-10">
       <p class="title">Relationship <span class="impt-star"> *</span></p>
       <div class="custom-input">
         <ion-input type="text" placeholder="Relationship" formControlName="relationship" name="relationship"></ion-input>
@@ -73,7 +84,7 @@
 
     <div *ngIf="submitted && !relationship?.valid">
       <p class="error" *ngIf="relationship.errors.required">Relationship is required</p>
-    </div>
+    </div> -->
 
     <div class="pb-10">
       <p class="title">Email <span class="impt-star"> *</span></p>
@@ -100,7 +111,7 @@
     </div>
 
     <div class="input-item image-input">
-      <h6 class="gray_clr m-0 fnt-12 fnt_w500">Upload Photo</h6>
+      <h6 class="gray_clr m-0 fnt-12 fnt_w500">Upload Resume</h6>
       <input #file_upload (change)="changeListener($event)" type="file" class="image-d" name="friend_image" formControlName="friend_image" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx">
       <div class="custom-image" (click)="file_upload.click()">
         <ion-icon class="fnt-24" src="/assets/job-referral/cloud.svg"></ion-icon>
@@ -112,7 +123,7 @@
     </div>
 
     <div *ngIf="submitted && !friend_image?.valid">
-      <p class="error" *ngIf="friend_image.errors.required">Photo is required</p>
+      <p class="error" *ngIf="friend_image.errors.required">Resume is required</p>
     </div>
 
   </form>

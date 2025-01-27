@@ -18,7 +18,7 @@ export class LeaveDetailComponent  implements OnInit {
   @Input() emp_detail:any;
   @Input() selectedTab:any;
   @Output() leave_confirm = new EventEmitter()
-  
+  show_btn = false;
   
   constructor(public alertController:AlertController,public db:DbService, private modalCtrl: ModalController,public router: Router) { }
 
@@ -28,63 +28,139 @@ export class LeaveDetailComponent  implements OnInit {
    }
 
   async leave_confirms(event:MouseEvent,data,item,type){
-    if(type == 'Approve'){
-      const alert = await this.alertController.create({
-        header: 'Approval',
-        message: 'Are you sure do you want to Approval for leave..?',
-        buttons: [
-          {
-            text: 'Cancel',
-            handler: () => {
-              // item.status = "Pending"
-              this.alertController.dismiss();
-            },
-          },
-          {
-            text: 'Ok',
-            handler: () => {
-              item.status = 'Approved'
-              event.stopPropagation()
-              let val = {}
-              val['data'] = data
-              val['item'] = item
-              val['type'] = type
-              this.leave_confirm.emit(val)
-            },
-          },
-        ],
-      });
-      await alert.present();
-    }
-    else{
-      item.status = 'Rejected'
-      const modal = await this.modalCtrl.create({
-        component: LeavePreviewWithdrawFormComponent,
-        cssClass: 'job-detail-popup',
-        componentProps: {
-          title:'Leave Approval Tool',
-          type:'leave request tool',
-          editFormValues: item
-        },
-        enterAnimation: this.db.enterAnimation,
-        leaveAnimation: this.db.leaveAnimation,
-      });
-      await modal.present();
-      const res  = await modal.onWillDismiss();
-      if (res && res.data) {
-        console.log(res)
-        item = res.data
-        event.stopPropagation()
-        let val = {}
-        val['data'] = data
-        val['item'] = item
-        val['type'] = type
-        this.leave_confirm.emit(val)
+    // let check:any;
+    // let item:any;
+    // this.data.leave_preview.map(res =>{
+    //   if(res.isChecked == true){
+    //     check = true
+    //     item = res
+    //   }
+    // })
+    // if(check){
+      if(type == 'Approve'){
+        // if(item.status = 'Approved'){
+          const alert = await this.alertController.create({
+            header: 'Approval',
+            message: 'Are you sure do you want to Approval for leave..?',
+            buttons: [
+              {
+                text: 'Cancel',
+                handler: () => {
+                  // item.status = "Pending"
+                  this.alertController.dismiss();
+                },
+              },
+              {
+                text: 'Ok',
+                handler: () => {
+                  // this.data.leave_preview.map(res =>{
+                  //   if(res.isChecked == true){
+                  //    item.status = 'Approved'
+                  //   }
+                  // })
+                  item.status = 'Approved'
+                  this.show_btn = false
+                  this.show_reg_btn()
+                  // event.stopPropagation()
+                  // let val = {}
+                  // val['data'] = data
+                  // // val['item'] = item
+                  // val['type'] = type
+                  // this.leave_confirm.emit(val)
+                },
+              },
+            ],
+          });
+          await alert.present();
+        // }
+        // else
+        //   this.db.sendErrorMessage()
       }
-      else
-        item.status = "Pending"
-    }
+      else{
+        item.status = 'Rejected'
+        const modal = await this.modalCtrl.create({
+          component: LeavePreviewWithdrawFormComponent,
+          cssClass: 'job-detail-popup',
+          componentProps: {
+            title:'Leave Approval Tool',
+            type:'leave request tool',
+            editFormValues: item
+          },
+          enterAnimation: this.db.enterAnimation,
+          leaveAnimation: this.db.leaveAnimation,
+        });
+        await modal.present();
+        const res  = await modal.onWillDismiss();
+        if (res && res.data) {
+          console.log(data)
+          item.rejected_reason = res.data
+          this.show_btn = false
+          this.show_reg_btn()
+          // event.stopPropagation()
+          // let val = {}
+          // val['data'] = data
+          // // val['reas']
+          // // val['item'] = item
+          // val['type'] = type
+          // this.leave_confirm.emit(val)
+        }
+        else
+          item.status = "Pending"
+      }
+    // }
+    // else
+    //   this.db.sendErrorMessage('Please select any one item')
     // 
+  }
+
+  submit() {
+      let datas = {
+        doctype: "Leave Request",
+        employee: localStorage['employee_id'],
+        posting_date: this.db.current_event_date,
+        // total_leave_days: this.total_leave_days ? this.total_leave_days : 0
+      }
+
+      if(this.data.leave_preview && this.data.leave_preview.length != 0){
+        datas['leave_preview'] = this.data.leave_preview;
+      }
+
+      // datas = {...datas, ...this.leave_form.value}
+      // // datas['half_day'] = datas['half_day'] ? 1 : 0;
+
+      // if(this.leave_detail && this.leave_detail.name){
+      //   datas['name'] = this.leave_detail.name;
+      // }
+
+      // if(this.editFormValues && this.editFormValues.name){
+      //   datas['name'] = this.editFormValues.name;
+      // }
+
+        datas['docstatus'] = 1;
+        datas['name'] = this.data.name
+      this.db.inset_docs({ data: datas }).subscribe(res => {
+        if (res && res.message && res.message.status == 'Success') {  
+          if(res.message.data && res.message.data.name)
+            // this.db.sendSuccessMessage("Leave Request Send For Approval successfully!")
+            setTimeout(() => {
+              this.modalCtrl.dismiss(datas)
+            }, 500);
+        }else{
+          if(res._server_messages){
+            let d = JSON.parse(res._server_messages)
+            let f = JSON.parse(d[0])
+            this.db.sendErrorMessage(f.message)
+          }else{
+            this.db.sendErrorMessage(res.message.message)
+          }
+        }
+      }, error => {
+        if(error.error){
+          let d = JSON.parse(error.error._server_messages)
+          let f = JSON.parse(d[0])
+          this.db.sendErrorMessage(f.message)
+        }
+      })
   }
 
   getDateDifference(startDate: Date) {
@@ -134,8 +210,19 @@ export class LeaveDetailComponent  implements OnInit {
 
   addLeaveWithdrawal(event,item){
     item.isChecked = event.detail.checked
-    // this.show_btn = false
-    // this.show_reg_btn()
+  }
+
+  show_reg_btn(){
+    let check = this.data.leave_preview.filter(res => res.status == 'Approved' || res.status == 'Rejected' || res.count == 'Weekly Off' || res.count == 'Holiday' || res.count == 'Applied')
+    console.log(check)
+    if(check && check.length == this.data.leave_preview.length){
+      this.show_btn = true
+    }
+    // this.data.leave_preview.map(res =>{
+    //     if(res.status == 'Approved' || ){
+    //       return this.show_btn = true
+    //     }
+    // })
   }
 
   async editLeaveLeavePreview(item,index){

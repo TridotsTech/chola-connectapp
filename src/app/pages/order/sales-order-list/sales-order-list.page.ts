@@ -148,7 +148,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.db.full_width = false;
     const currentDate = new Date();
     this.db.currentYearValue = currentDate.getFullYear(); // Returns the 4-digit year (e.g., 2024)
     const currentMonth = currentDate.getMonth() + 1; // Adding 1 to convert to 1-based index
@@ -715,6 +715,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   fab_() {
     let val;
     val = document.getElementById('fab');
+    console.log(val)
     val.click();
     this.db.hasClass = false;
     this.open_notification = false;
@@ -2408,6 +2409,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   async openleavewithdraw(data) {
     const modal = await this.modalCtrl.create({
       component: LeavePreviewWithdrawComponent,
+      cssClass: 'withdraw-detail',
       componentProps: {
         letterrequestDetail: data,
       },
