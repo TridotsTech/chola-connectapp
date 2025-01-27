@@ -99,6 +99,7 @@ import { BuybackFormComponent } from './customer-details/buyback-form/buyback-fo
 import { TicketListComponent } from './customer-details/ticket-list/ticket-list.component';
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 import { ShowTicketDetailComponent } from './show-ticket-detail/show-ticket-detail.component';
+import { LeavePreviewWithdrawComponent } from './leaves-module/leave-preview-withdraw/leave-preview-withdraw.component';
 
 @NgModule({
   declarations: [
@@ -191,7 +192,8 @@ import { ShowTicketDetailComponent } from './show-ticket-detail/show-ticket-deta
     BuybackFormComponent,
     TicketListComponent,
     TicketDetailsComponent,
-    ShowTicketDetailComponent
+    ShowTicketDetailComponent,
+    LeavePreviewWithdrawComponent
   ],
   imports: [
     CommonModule,
@@ -296,7 +298,8 @@ import { ShowTicketDetailComponent } from './show-ticket-detail/show-ticket-deta
     BuybackFormComponent,
     TicketListComponent,
     TicketDetailsComponent,
-    ShowTicketDetailComponent
+    ShowTicketDetailComponent,
+    LeavePreviewWithdrawComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

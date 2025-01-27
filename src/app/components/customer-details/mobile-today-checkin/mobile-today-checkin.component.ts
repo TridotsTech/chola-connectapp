@@ -183,10 +183,10 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
         this.chartValues.totalCount = totalCounts 
         this.getPieChart(this.chartValues, res.message.employee_count);
         if(this.page_no == 1){
-          this.listData = res.message.employee_checkin;
+          this.listData = res.message.employee_attendance;
         }else{
-          this.listData = [...this.listData,...res.message.employee_checkin];
-          res.message.employee_checkin.length < 30 ? this.no_products = true : null
+          this.listData = [...this.listData,...res.message.employee_attendance];
+          res.message.employee_attendance.length < 30 ? this.no_products = true : null
         }
       }
     })

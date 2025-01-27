@@ -51,7 +51,7 @@
           <div style="width: 50%;">
             <label for="from_date" class="pb-10">From date <span class="impt-star"> *</span></label>
             <div class="custom-input">
-              <ion-input type="date"  name="from_date" (ionChange)="datePicker($event,'from_date')" formControlName="from_date"
+              <ion-input type="date" [min]="db.employee_info.date_of_joining"  name="from_date" (ionChange)="datePicker($event,'from_date')" formControlName="from_date"
                 class="form-input"></ion-input>
             </div>
             <p class="impt-star pt-5" *ngIf="submitted && !from_date.valid && from_date.errors.required">From date is
@@ -61,7 +61,7 @@
           <div style="width: 50%;">
             <label for="to_date" class="pb-10">To date <span class="impt-star"> *</span></label>
             <div class="custom-input">
-              <ion-input type="date" name="to_date" (ionChange)="datePicker($event,'to_date')" formControlName="to_date"
+              <ion-input type="date" name="to_date" [min]="leave_form.value.from_date ? leave_form.value.from_date : db.employee_info.date_of_joining" (ionChange)="datePicker($event,'to_date')" formControlName="to_date"
                 class="form-input"></ion-input>
             </div>
             <p class="impt-star pt-5" *ngIf="submitted && !to_date.valid && to_date.errors.required">To date is
@@ -87,7 +87,7 @@
             </div>
             <div class="d__flex just-s">
               <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Count: </span> {{item.count}}</p>
-              <div *ngIf="item.count != 'Weekly Off' && item.count != 'Holiday'">
+              <div *ngIf="item.count != 'Weekly Off' && item.count != 'Holiday' && item.count != 'Applied'">
                 <ion-select aria-label="Duration" interface="popover" (ionChange)="changeDuration(item,$event)" placeholder="Duration" mode="ios" [value]="item.duration">
                   <ion-select-option *ngFor="let types of durationType" [value]="types.name">{{types.name}}</ion-select-option>
                 </ion-select>
@@ -100,7 +100,8 @@
     </div>
 
     <div class="submit-btn">
-      <ion-button (click)="sure_submit()" fill="clear">{{save_only ? 'Save' : 'Send For Approval'}}</ion-button>
+      <ion-button (click)="sure_submit()" fill="clear">Save</ion-button>
+      <!-- <ion-button (click)="sure_submit()" fill="clear">{{save_only ? 'Save' : 'Send For Approval'}}</ion-button> -->
     </div>
 
   </div>

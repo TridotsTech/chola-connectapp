@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
 
     // this.db.get_dashboard();
     if (this.platform.is('android')) {
-      this.db.enable_location();
+      // this.db.enable_location();
       // this.get_app_version();
     }
 

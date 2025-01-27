@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { LeavePreviewWithdrawFormComponent } from '../../../components/leaves-module/leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 
 @Component({
@@ -17,12 +17,13 @@ export class LeaveWithdrawalPage implements OnInit {
   filterEndDate: any;
   leave_preview: any = [];
   leave_withdarawal_list: any = [];
+  leave_withdarawal_open_list: any = [];
   from_date: any;
   to_date: any;
   sendApproval = false;
   withdrawalDetail: any;
   newForm = false;
-  constructor(public db: DbService,private formbuilder:FormBuilder,private route: ActivatedRoute,private modalCtrl: ModalController) { }
+  constructor(private nav:NavController,public alertController:AlertController,public db: DbService,private formbuilder:FormBuilder,private route: ActivatedRoute,private modalCtrl: ModalController) { }
 
   ngOnInit() {
 
@@ -126,11 +127,15 @@ export class LeaveWithdrawalPage implements OnInit {
 
   addLeaveWithdrawal(event, item){
     event.stopPropagation();
-    console.log(item,'item')
+    // console.log(item,'item')
     item['isChecked'] =! item['isChecked']
 
     let selectedArray = this.leave_withdarawal_list.filter(res => {return res['isChecked'] == true});
     // console.log(selectedArray,'selectedArray')
+  }
+  addLeaveWithdrawalopen(event, item){
+    event.stopPropagation();
+    item['isChecked'] =! item['isChecked']
   }
 
   checkIfLeaveSelected(){
@@ -161,34 +166,71 @@ export class LeaveWithdrawalPage implements OnInit {
 
   sendLeaveWithdraw(){
     this.sendApproval = false;
-    let selectedArray = this.leave_preview.filter(res => {return res['isChecked'] == true});
+    let selectedArray = this.leave_preview.filter(res => {return res['isChecked'] == true && res['status'] == 'Approved'});
     selectedArray.map(resS => {
       if(resS.status != 'Open'){
         resS.oldStatus = resS.status
         resS.status = 'Pending'
       }
-      // else if(resS.status != 'Open'){}
     })
+    let selectedOpenArray = this.leave_preview.filter(res => {return res['isChecked'] == true && res['status'] == 'Open'});
+    
     this.leave_withdarawal_list = [...this.leave_withdarawal_list,...selectedArray];
+    this.leave_withdarawal_open_list = [...this.leave_withdarawal_open_list,...selectedOpenArray];
     this.leave_preview = this.leave_preview.filter(res => {return !res['isChecked']});
     this.leave_withdarawal_list.map(res => {
       res['isChecked'] = false
     })
-  }
-
-  sendLeavePreview(){
-    this.sendApproval = false;
-    let selectedArray = this.leave_withdarawal_list.filter(res => {return res['isChecked'] == true});
-    selectedArray.map(resS => {
-      if(resS.oldStatus){
-        resS.status = resS.oldStatus
-      }
-    })
-    this.leave_preview = [...this.leave_preview,...selectedArray];
-    this.leave_withdarawal_list = this.leave_withdarawal_list.filter(res => {return !res['isChecked']});
-    this.leave_preview.map(res => {
+    this.leave_withdarawal_open_list.map(res => {
       res['isChecked'] = false
     })
+  }
+
+  sendLeavePreview(type){
+    // this.sendApproval = false;
+    if(type == 'Approved'){
+      let selectedArray = this.leave_withdarawal_list.filter(res => {return res['isChecked'] == true});
+      selectedArray.map(resS => {
+        if(resS.oldStatus){
+          resS.status = resS.oldStatus
+        }
+      })
+      this.leave_preview = [...this.leave_preview,...selectedArray];
+      this.leave_withdarawal_list = this.leave_withdarawal_list.filter(res => {return !res['isChecked']});
+      this.leave_preview.map(res => {
+        res['isChecked'] = false
+      })
+    }
+    else if(type == 'Open'){
+      let selectedOpenArray = this.leave_withdarawal_open_list.filter(res => {return res['isChecked'] == true});
+      this.leave_preview = [...this.leave_preview,...selectedOpenArray];
+      this.leave_withdarawal_open_list = this.leave_withdarawal_open_list.filter(res => {return !res['isChecked']});
+      this.leave_preview.map(res => {
+        res['isChecked'] = false
+      })
+    }
+  }
+  
+  async submit(){
+    const alert = await this.alertController.create({
+      header: 'Approval',
+      message: 'Are you sure do you want to Send for Approval..?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            this.alertController.dismiss();
+          },
+        },
+        {
+          text: 'Ok',
+          handler: () => {
+            this.sure_submit();
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   sure_submit(){
@@ -209,6 +251,11 @@ export class LeaveWithdrawalPage implements OnInit {
     if(this.leave_withdarawal_list && this.leave_withdarawal_list.length != 0){
       datas['leave_withdraw_date'] = this.leave_withdarawal_list;
     }
+    
+    if(this.leave_withdarawal_open_list && this.leave_withdarawal_open_list.length != 0){
+      datas['leave_withdraw_open_application_list'] = this.leave_withdarawal_open_list;
+    }
+
 
     if(this.withdrawalDetail && this.withdrawalDetail.name){
       datas['name'] = this.withdrawalDetail.name
@@ -219,7 +266,7 @@ export class LeaveWithdrawalPage implements OnInit {
       if (res && res.message && res.message.status == 'Success') {
         this.db.sendSuccessMessage("Leave Withdrawal created successfully!")
         setTimeout(() => {
-          
+          this.nav.back();
         }, 500);
         this.sendApproval = true;
         this.withdrawalDetail = res.message.data;
@@ -264,6 +311,9 @@ export class LeaveWithdrawalPage implements OnInit {
         }
         if(res.message[1] && res.message[1].leave_withdraw_date && res.message[1].leave_withdraw_date.length != 0){
           this.leave_withdarawal_list = res.message[1].leave_withdraw_date
+        }
+        if(res.message[1] && res.message[1].leave_withdraw_open_application_list && res.message[1].leave_withdraw_open_application_list.length != 0){
+          this.leave_withdarawal_open_list = res.message[1].leave_withdraw_open_application_list
         }
         this.filterStartDate = res.message[1].filter_start_date
         this.filterEndDate = res.message[1].filter_end_date

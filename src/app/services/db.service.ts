@@ -20,7 +20,7 @@ import { YearPopupComponent } from '../components/year-popup/year-popup.componen
 import { DetailComponentComponent } from '../components/customer-details/detail-component/detail-component.component';
 import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import OneSignal from 'onesignal-cordova-plugin';
-import { Howl } from 'howler';
+// import { Howl } from 'howler';
 
 // import { File } from '@awesome-cordova-plugins/file/ngx';
 // import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
@@ -248,7 +248,7 @@ export class DbService {
   allocate_agent = false;
   text_width = false;
 
-
+  employee_info:any;
   constructor(
     private animationCtrl: AnimationController,
     private http: HttpClient,
@@ -468,6 +468,7 @@ export class DbService {
     this.doc_detail(data).subscribe(res => {
       this.profile_loader = false;
       if (res && res.message && res.message[0].status == 'Success') {
+        this.employee_info = res.message[1] 
         res.message[1]['user_image'] = res.message[1]['image'] ? res.message[1]['image'] : undefined;
         this.employee_img = res.message[1]
       } else {
@@ -2097,7 +2098,8 @@ export class DbService {
   }
 
   get_employee_first_checkin(data: any): Observable<any> {
-    let endpoint = this.go1_apps_apis_hrmls + "get_employee_first_checkin";
+    let endpoint = "td_shift_and_attendance.td_shift_and_attendance.utils.mobile_api.get_employee_first_attendance";
+    // let endpoint = this.go1_apps_apis_hrmls + "get_employee_first_checkin";
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 

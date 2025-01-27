@@ -52,8 +52,8 @@ export class MobileHeaderComponent implements OnInit {
   constructor(public db: DbService, public location: Location, public menuCtrl: MenuController, public navCtrl: NavController, public router: Router,public route : ActivatedRoute) { }
 
   ngOnInit() {
-    console.log(this.is_select)
-    console.log(this.selectall)
+    // console.log(this.is_select)
+    // console.log(this.selectall)
     if(this.title == 'todo'){
       this.title = 'Tasks'
     }

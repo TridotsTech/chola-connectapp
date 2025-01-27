@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { LeavePreviewWithdrawFormComponent } from '../leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 
@@ -15,7 +15,7 @@ export class RegularizationFormComponent  implements OnInit {
   show_btn:any;
   is_no_data:any = false;
   selectAll:any;
-  constructor(public db: DbService,public modalCtrl: ModalController) { }
+  constructor(public loadingCtrl:LoadingController, public db: DbService,public modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.get_missing_date()
@@ -26,7 +26,7 @@ export class RegularizationFormComponent  implements OnInit {
       employee:localStorage['employee_id']
   }
   this.db.get_missing_punched_days(data).subscribe(res_data => {
-    this.missing_days = res_data.message.missing_days
+    res_data && res_data.message && res_data.message.missing_days ? this.missing_days = res_data.message.missing_days : ''
     if(this.missing_days.length != 0){
       this.is_no_data = false;
       this.missing_days.map(res=>{
@@ -43,7 +43,7 @@ export class RegularizationFormComponent  implements OnInit {
   }, error => {
     this.is_no_data = true;
     // console.log(error.error)
-    if(error.error){
+    if(error.error && error.error._server_messages){
       let d = JSON.parse(error.error._server_messages)
       let f = JSON.parse(d[0])
       this.db.sendErrorMessage(f.message)
@@ -82,7 +82,7 @@ export class RegularizationFormComponent  implements OnInit {
     this.show_reg_btn()
   }
 
-  create_regularization(){
+  async create_regularization(){
     let datas:any=[];
     this.missing_days.map(res =>{
       if(res.isChecked == true && res.reg_reason){
@@ -97,14 +97,21 @@ export class RegularizationFormComponent  implements OnInit {
       workflow_state:'Awaiting Approval',
       dates:datas
     }
+    let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+    await loader.present();
+    setTimeout(() => {
+      loader.dismiss()
+    }, 5000);
     this.db.create_regularization_before_save(data).subscribe(res => {
+      setTimeout(() => {
+        loader.dismiss()
+      }, 500);
       if(res.message.status == 'failed')
         this.db.alert(res.message.message)
       else{
         this.db.alert('Regularization created successfully')
-        this.modalCtrl.dismiss()
+        this.modalCtrl.dismiss(res.message)
       }
-        
     })
   }
   else

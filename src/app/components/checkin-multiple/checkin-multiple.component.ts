@@ -14,7 +14,7 @@ import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RegularizationFormComponent } from '../leaves-module/regularization-form/regularization-form.component';
-
+let ip_address;
 @Component({
   selector: 'app-checkin-multiple',
   templateUrl: './checkin-multiple.component.html',
@@ -115,6 +115,9 @@ export class CheckinMultipleComponent  implements OnInit {
         }
       })
     }
+      this.http.get<{ ip: string }>('https://api.ipify.org?format=json').subscribe((data) => {
+        ip_address = data.ip;
+      });
   }
 
 
@@ -356,18 +359,16 @@ export class CheckinMultipleComponent  implements OnInit {
 
   async check_In(type){
     if(type == 'IN'){
+      
       let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
       await loader.present();
       setTimeout(() => {
         loader.dismiss()
       }, 12000);
-      let ip_address;
       // this.db.get_ip().subscribe(async res =>{
       //   ip_address = res.ip;
       // })
-        this.http.get<{ ip: string }>('https://jsonip.com').subscribe((data) => {
-          ip_address = data.ip;
-        });
+       
       this.geo
     .getCurrentPosition()
     .then((resp) => {
@@ -414,6 +415,11 @@ export class CheckinMultipleComponent  implements OnInit {
 
 
         }
+      }
+      else if(res._server_messages){
+        let d = JSON.parse(res._server_messages)
+        let f = JSON.parse(d[0])
+        this.db.sendErrorMessage(f.message)
       }
       else{
         let alert = (res.message && res.message.message) ? res.message.message : 'Something went wrong try again later'

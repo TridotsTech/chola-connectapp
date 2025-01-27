@@ -23,6 +23,7 @@ import { RegularizationDetailComponent } from 'src/app/components/regularization
 import { LetterRequestDetailComponent } from 'src/app/components/letter-request-detail/letter-request-detail.component';
 import { CreateLetterRequestComponent } from 'src/app/components/create-letter-request/create-letter-request.component';
 import { BuybackFormComponent } from 'src/app/components/customer-details/buyback-form/buyback-form.component';
+import { LeavePreviewWithdrawComponent } from 'src/app/components/leaves-module/leave-preview-withdraw/leave-preview-withdraw.component';
 // import { BugsheetQuickformComponent } from 'src/app/components/bug-sheets/bugsheet-quickform/bugsheet-quickform.component';
 
 @Component({
@@ -2367,7 +2368,8 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       // this.db.employee_role && this.db.ismobile && 
       this.router.navigateByUrl('/timesheet-detail/' + data.name);
     } else if (this.doc_type && this.doc_type == 'Leave Withdrawal') {
-      this.router.navigateByUrl('/leave-withdrawal/' + data.name);
+      this.openleavewithdraw(data)
+      // this.router.navigateByUrl('/leave-withdrawal/' + data.name);
     } else if (this.doc_type && this.doc_type == 'Probation Evaluation') {
       this.router.navigateByUrl('/performance-evaluation/' + data.name);
     } else if (this.doc_type && this.doc_type == 'Regularization') {
@@ -2375,6 +2377,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     }else if (this.doc_type && this.doc_type == 'Employee Letter Request') {
       this.openletterrequestDetail(data)
     }
+    // else if (this.doc_type && this.doc_type == 'Leave Withdrawal') {
+    //   this.openleavewithdraw(data)
+    // }
      else if (this.db.selected_list && this.db.selected_list.detail_route && this.salary_no_route) {
       if (this.db.selected_list.page == "Project" && this.db.ismobile) {
         if (this.db.hr_manager_role) {
@@ -2392,6 +2397,17 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     const modal = await this.modalCtrl.create({
       component: LetterRequestDetailComponent,
       cssClass: 'regularization-popup',
+      componentProps: {
+        letterrequestDetail: data,
+      },
+    });
+    await modal.present();
+    const val = await modal.onWillDismiss();
+  }
+
+  async openleavewithdraw(data) {
+    const modal = await this.modalCtrl.create({
+      component: LeavePreviewWithdrawComponent,
       componentProps: {
         letterrequestDetail: data,
       },
@@ -3374,8 +3390,8 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    // if(data)
-    //   this.get_tempate_and_datas(this.doc_type)
+    if(data)
+      this.get_tempate_and_datas(this.doc_type)
   }
 
   async openBuybackForm() {

@@ -33,8 +33,8 @@ export class LeaveApplicationPage implements OnInit {
       reason: new FormControl('', [Validators.required]),
       // reason: new FormControl('', [Validators.required]),
       total_leave_days: new FormControl('', [Validators.required]),
-      from_date: new FormControl('', [Validators.required]),
-      to_date: new FormControl('', [Validators.required]),
+      from_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
+      to_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
       // half_day: new FormControl(''),
       // half_day_date: new FormControl(''),
     });
@@ -244,7 +244,7 @@ export class LeaveApplicationPage implements OnInit {
   }
 
   async sure_submit() {
-    if(!this.save_only){
+    // if(!this.save_only){
       const alert = await this.alertController.create({
         header: 'Approval',
         message: 'Are you sure do you want to Send for Approval..?',
@@ -264,9 +264,9 @@ export class LeaveApplicationPage implements OnInit {
         ],
       });
       await alert.present();
-    }else{
-      this.submit();
-    }
+    // }else{
+    //   this.submit();
+    // }
   }
 
   submit() {
@@ -298,35 +298,36 @@ export class LeaveApplicationPage implements OnInit {
           datas['name'] = this.editFormValues.name;
         }
 
-        if(this.save_only){
           datas['docstatus'] = 0;
-          datas['workflow_state'] = 'Draft';
           this.res_name = undefined
-        }else{
-          datas['name'] = datas['name'] ? datas['name'] : this.res_name
           datas['workflow_state'] = 'Awaiting Approval';
-          // datas['docstatus'] = 1;
-        }
-        // console.log(datas)  
-        // this.leave_form.value
+        // if(this.save_only){
+        //   datas['docstatus'] = 0;
+        //   datas['workflow_state'] = 'Draft';
+        //   this.res_name = undefined
+        // }else{
+        //   datas['name'] = datas['name'] ? datas['name'] : this.res_name
+        //   datas['workflow_state'] = 'Awaiting Approval';
+        // }
+       
         this.db.inset_docs({ data: datas }).subscribe(res => {
 
           if (res && res.message && res.message.status == 'Success') {  
             if(res.message.data && res.message.data.name)
               datas['name'] = res.message.data.name
              this.res_name = res.message.data.name
-            if(datas['workflow_state'] == 'Awaiting Approval'){
+            // if(datas['workflow_state'] == 'Awaiting Approval'){
               this.db.sendSuccessMessage("Leave Request Send For Approval successfully!")
               setTimeout(() => {
                 this.model ? this.modalCtrl.dismiss(datas): this.nav.back();
                 // this.nav.back()
               }, 500);
               
-            }
-            else
-              this.db.sendSuccessMessage("Leave Request created successfully!")
+            // }
+            // else
+              // this.db.sendSuccessMessage("Leave Request created successfully!")
 
-            this.save_only = !this.save_only;
+            // this.save_only = !this.save_only;
           }else{
             if(res._server_messages){
               let d = JSON.parse(res._server_messages)
@@ -477,36 +478,25 @@ export class LeaveApplicationPage implements OnInit {
   datePicker(eve, each) {
     if ((each == 'from_date' || each == 'to_date')) {
       let data = this.leave_form.getRawValue();
-      // console.log(data)
       if (data && (data.from_date || data.to_date)) {
-
         if (data && data.from_date) {
           this.fromDate = data.from_date
         }
-
         if (data && data.to_date) {
           this.toDate = data.to_date
         }
-
         if(data && (this.fromDate == this.toDate)){
          this.half_day_hide = true;
         }
-
       }
 
       if(this.fromDate && this.toDate){
-
-        // const date1: any = new Date(this.fromDate);
-        // const date2: any = new Date(this.toDate);
-
-        // Calculate the difference in time (milliseconds)
-        // const timeDifference = date2 - date1;
-
-        // Convert the difference to days
-        // this.total_leave_days = timeDifference / (1000 * 60 * 60 * 24);
-
         this.calculateLeavePreview(this.fromDate,this.toDate,data.leave_type)
       }
+      // console.log(this.fromDate)
+      // console.log(this.toDate)
+      if(this.fromDate >= this.toDate)
+        this.fromDate == this.toDate ? '': this.db.sendErrorMessage('Please select the todate greater than from date')
     }
 
   }
@@ -556,6 +546,7 @@ export class LeaveApplicationPage implements OnInit {
           this.leave_form.get('total_leave_days').setValue(res.message.total_leave_days)
         }else{
           this.leave_preview = [];
+          this.leave_form.get('total_leave_days').setValue(res.message.total_leave_days)
         }
       })
     // }

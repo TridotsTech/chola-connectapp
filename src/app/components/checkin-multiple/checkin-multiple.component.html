@@ -15,9 +15,12 @@
 
   <div class="d__flex gap-10 header just-s employeeDetail" *ngIf="!attendance && !popup">
     <div class="d__flex employeeDetail">
-      <div class="avathar">{{db.cust_name[0]}}</div>
+      <div class="imageDiv">
+        <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+      </div>
+      <!-- <div class="avathar">{{db.cust_name[0]}}</div> -->
       <div>
-        <h6 class="title">{{db.cust_name}}</h6>
+        <h6 class="title capitalize">{{db.cust_name}}</h6>
         <h6 class="subtitle">{{db.employee_id}}</h6>
       </div>
     </div>
@@ -48,8 +51,8 @@
         </div>
       </div>
       <p class="check_in-d text-c" *ngIf="db.checkInOutDetail">{{db.checkInOutDetail}}</p>
-      <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c">Click here to {{checkin ? ' Check In' :' Check Out'}}</p>
-      <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c">Already Checked In</p>
+      <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c">Click to Punch In</p>
+      <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c">Already Punch In</p>
     </div>
 
     <!-- <div *ngIf="!showChekinout && false" class="d__flex just-ar time_btns">

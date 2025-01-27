@@ -74,8 +74,8 @@
                   </div>
     
                   <div class="d__flex just-s w-100">
-                    <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3>
-                    <h3 *ngIf="item.last_checkout && item.last_checkout != '00:00'" class="checkoutTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout && item.last_checkout != "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+                    <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{item.attendance_date | date}}</h3>
+                    <!-- <h3 *ngIf="item.last_checkout && item.last_checkout != '00:00'" class="checkoutTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout && item.last_checkout != "00:00") ? converTime(item.last_checkout) : ' - '}}</h3> -->
                   </div>
     
                 </div>

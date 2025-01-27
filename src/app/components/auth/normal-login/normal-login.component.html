@@ -11,7 +11,7 @@
       <label  class="input__title">Email Address</label>
       <div class="custom-input d__flex" [ngClass]="focus.foucs1?'focused':''">
         <ion-icon  name="mail-outline"></ion-icon>
-        <ion-input (ionFocus)="focus.foucs1 = true" (keyup.enter)="login()" (ionBlur)="focus.foucs1 = false"  type="text" placeholder="Username" name="email" formControlName="email"> </ion-input>
+        <ion-input (ionFocus)="focus.foucs1 = true" (keyup.enter)="login()" (ionBlur)="focus.foucs1 = false"  type="text" placeholder="Email Address" name="email" formControlName="email"> </ion-input>
       </div>
       <div *ngIf="submitted && !email?.valid"> 
         <p class="error" *ngIf="email.errors.required">Email-Id is required</p>
