@@ -91,4 +91,15 @@ export class JobReferralListPage implements OnInit {
     })
   }
 
+  load_more(event){
+    if(!this.no_jobs){
+      let value = event.target.offsetHeight + event.target.scrollTop + 1;
+      value = value.toFixed();
+      if(value >= event.target.scrollHeight){
+        this.page_no += 1;
+        this.get_job_referral_list();
+      }
+    }
+  }
+
 }

@@ -7,6 +7,15 @@
     }
 }
 
+.form_Height {
+    height: calc(100vh - 60px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 .title {
     margin: 0 0 5px 0;
     font-size: 14px;

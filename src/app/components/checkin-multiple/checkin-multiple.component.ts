@@ -362,9 +362,7 @@ export class CheckinMultipleComponent  implements OnInit {
       
       let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
       await loader.present();
-      setTimeout(() => {
-        loader.dismiss()
-      }, 12000);
+      
       // this.db.get_ip().subscribe(async res =>{
       //   ip_address = res.ip;
       // })
@@ -392,7 +390,7 @@ export class CheckinMultipleComponent  implements OnInit {
       this.db.attendance_checkin(data).subscribe(async res =>{
         setTimeout(() => {
           loader.dismiss()
-        }, 100);
+        }, 1000);
       if(res && res.message && res.message.status && res.message.status == 'success'){
           this.db.alert('Attendance created successfully');
           this.fromTime = undefined;
@@ -424,17 +422,6 @@ export class CheckinMultipleComponent  implements OnInit {
       else{
         let alert = (res.message && res.message.message) ? res.message.message : 'Something went wrong try again later'
         this.db.alert(alert);
-        // const modal = await this.modalCtrl.create({
-        //   component: RegularizationFormComponent,
-        //   // cssClass: 'yearPopup',
-        //   componentProps: {
-        //     title:'Attendance Adjustment Tool',
-        //     selectedYear: this.selectedYear
-        //   },
-        //   enterAnimation: this.db.enterAnimation,
-        //   leaveAnimation: this.db.leaveAnimation,
-        // });
-        // await modal.present();
       }
       })
     })
@@ -445,6 +432,9 @@ export class CheckinMultipleComponent  implements OnInit {
         this.enable_location(type)
       }, 1000)
     });
+    setTimeout(() => {
+      loader.dismiss()
+    }, 30000);
 
     }
     // this.db.location_info.latitude = ''

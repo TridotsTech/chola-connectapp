@@ -71,23 +71,6 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       if(val && val.data){
         this.editFormValues.leave_type = val.data.name
       }
-    // let val = {
-    //   type: 'Leave Type',
-    //   fieldname: 'leave_type',
-    //   fieldname_value: '',
-    //   selected_value: this.editFormValues.leave_type,
-    //   send_all_value: true,
-    // };
-
-    // let selected_value = {
-    //   doctype: 'Leave Type',
-    // };
-    // this.db.open_drop_down_options(
-    //   val.type,
-    //   val.fieldname,
-    //   val.fieldname_value,
-    //   selected_value
-    // );
   }
 
   datePickerChange(type, event) {
@@ -128,8 +111,7 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
     }
   }
 
-  save() {
-    
+  save() { 
     this.modalCntrl.dismiss(this.editFormValues);
   }
 
@@ -149,6 +131,12 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       else this.db.sendErrorMessage('Please enter the Rejected Reason');
     // else
       // this.editFormValues.status == 'Approved' || this.editFormValues.status == 'Rejected' ? this.modalCntrl.dismiss(this.editFormValues) : this.db.sendErrorMessage('Please enter the any status');
+  }
+
+  leave_withdraw_reason(){
+    if (this.editFormValues.rejected_reason)
+      this.modalCntrl.dismiss(this.editFormValues);
+    else this.db.sendErrorMessage('Please enter the Rejected Reason');
   }
 
   leave_req(){

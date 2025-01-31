@@ -23,22 +23,11 @@ export class LeaveDetailComponent  implements OnInit {
   constructor(public alertController:AlertController,public db:DbService, private modalCtrl: ModalController,public router: Router) { }
 
   ngOnInit() {
-
-    console.log(this.selectedTab)
+    // console.log(this.selectedTab)
    }
 
   async leave_confirms(event:MouseEvent,data,item,type){
-    // let check:any;
-    // let item:any;
-    // this.data.leave_preview.map(res =>{
-    //   if(res.isChecked == true){
-    //     check = true
-    //     item = res
-    //   }
-    // })
-    // if(check){
       if(type == 'Approve'){
-        // if(item.status = 'Approved'){
           const alert = await this.alertController.create({
             header: 'Approval',
             message: 'Are you sure do you want to Approval for leave..?',
@@ -46,21 +35,16 @@ export class LeaveDetailComponent  implements OnInit {
               {
                 text: 'Cancel',
                 handler: () => {
-                  // item.status = "Pending"
                   this.alertController.dismiss();
                 },
               },
               {
                 text: 'Ok',
                 handler: () => {
-                  // this.data.leave_preview.map(res =>{
-                  //   if(res.isChecked == true){
-                  //    item.status = 'Approved'
-                  //   }
-                  // })
                   item.status = 'Approved'
-                  this.show_btn = false
-                  this.show_reg_btn()
+                  this.approve_leave(data,item,type)
+                  // this.show_btn = false
+                  // this.show_reg_btn()
                   // event.stopPropagation()
                   // let val = {}
                   // val['data'] = data
@@ -92,10 +76,11 @@ export class LeaveDetailComponent  implements OnInit {
         await modal.present();
         const res  = await modal.onWillDismiss();
         if (res && res.data) {
-          console.log(data)
-          item.rejected_reason = res.data
-          this.show_btn = false
-          this.show_reg_btn()
+          item.rejected_reason = res.data.rejected_reason
+          console.log(item.rejected_reason)
+          this.approve_leave(data,item,type)
+          // this.show_btn = false
+          // this.show_reg_btn()
           // event.stopPropagation()
           // let val = {}
           // val['data'] = data
@@ -111,6 +96,43 @@ export class LeaveDetailComponent  implements OnInit {
     // else
     //   this.db.sendErrorMessage('Please select any one item')
     // 
+  }
+
+  approve_leave(data,item, type) {
+    let datas:any=[];
+    let doc_status = 0;
+  //   data.leave_preview.map(res =>{
+  //     if(res.isChecked == true){
+        datas.push({date:item.date, status:item.status, rejected_reason:item.rejected_reason})
+  //     }
+  // })
+    let check = this.data.leave_preview.filter(res => res.status == 'Approved' || res.status == 'Rejected' || res.count == 'Weekly Off' || res.count == 'Holiday' || res.count == 'Applied' || res.count == 'Attendance Marked')
+    if(check && check.length == this.data.leave_preview.length){
+      doc_status = 1
+    }
+    let res_data ={
+      employee:data.employee,
+      "from_date":data.from_date,
+      "to_date": data.to_date,
+      leave_preview:datas,
+      docstatus:doc_status
+    }
+    // console.log(res_data)
+    this.db.leave_approve_reject(res_data).subscribe(res => {
+        if(res.status == 'Success'){
+          this.db.sendSuccessMessage(res.message)
+        }
+        else if (res._server_messages) {
+          var d = JSON.parse(res._server_messages);
+          var d1 = JSON.parse(d);
+          this.db.alert(d1.message)
+        }
+        else{
+          this.db.alert(res.message)
+        }
+        if(doc_status)
+          this.modalCtrl.dismiss(res)
+      })
   }
 
   submit() {

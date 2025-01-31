@@ -20,7 +20,7 @@
 
     <div class="section_3">
       <form [formGroup]="leave_form">
-
+        <p class="error_msg" *ngIf="overlapp_msg" [innerHTML]="overlapp_msg"></p>
         <div class="pb-10">
           <label for="leave_type" class="pb-10">Leave Type <span class="impt-star"> *</span></label>
           <div class="custom-input">

@@ -2411,11 +2411,13 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       component: LeavePreviewWithdrawComponent,
       cssClass: 'withdraw-detail',
       componentProps: {
-        letterrequestDetail: data,
+        leave_withdraw: data,
       },
     });
     await modal.present();
     const val = await modal.onWillDismiss();
+    if(val && val.data)
+      this.get_tempate_and_datas(this.doc_type)
   }
 
   async openRegularizationDetail(data) {

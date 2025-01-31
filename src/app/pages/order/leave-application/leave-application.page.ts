@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { LeaveTypeComponent } from 'src/app/components/leaves-module/leave-type/leave-type.component';
 @Component({
   selector: 'app-leave-application',
@@ -27,7 +27,8 @@ export class LeaveApplicationPage implements OnInit {
   save_only = false;
   // total_leave_days: any = 0;
   res_name:any;
-  constructor(public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
+  overlapp_msg:any;
+  constructor(public loadingCtrl:LoadingController,public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
       leave_type: new FormControl('', [Validators.required]),
       reason: new FormControl('', [Validators.required]),
@@ -281,13 +282,15 @@ export class LeaveApplicationPage implements OnInit {
     // }
   }
 
-  submit() {
+  async submit() {
     // this.submitted = true;
     // console.log(this.leave_form, "form")
     // if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
       // let val = (this.leave_form.value['half_day_check'] && this.leave_form.value['half_day'] != '') || !this.leave_form.value['half_day_check']
       // 
       // if (val) {
+        let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+        await loader.present();
         let datas = {
           doctype: "Leave Request",
           employee: localStorage['employee_id'],
@@ -306,7 +309,7 @@ export class LeaveApplicationPage implements OnInit {
           datas['name'] = this.leave_detail.name;
         }
 
-        if(this.editFormValues && this.editFormValues.name){
+      if(this.editFormValues && this.editFormValues.name){
           datas['name'] = this.editFormValues.name;
         }
 
@@ -323,7 +326,9 @@ export class LeaveApplicationPage implements OnInit {
         // }
        
         this.db.inset_docs({ data: datas }).subscribe(res => {
-
+          setTimeout(() => {
+            loader.dismiss()
+          }, 1000);
           if (res && res.message && res.message.status == 'Success') {  
             if(res.message.data && res.message.data.name)
               datas['name'] = res.message.data.name
@@ -350,12 +355,18 @@ export class LeaveApplicationPage implements OnInit {
             }
           }
         }, error => {
+          setTimeout(() => {
+            loader.dismiss()
+          }, 1000);
           if(error.error){
             let d = JSON.parse(error.error._server_messages)
             let f = JSON.parse(d[0])
             this.db.sendErrorMessage(f.message)
           }
         })
+        setTimeout(() => {
+          loader.dismiss()
+        }, 10000);
       // }
     // }
   }
@@ -405,23 +416,6 @@ export class LeaveApplicationPage implements OnInit {
   if(val && val.data){
     this.leave_form.get('leave_type').setValue(val.data.name)
   }
-    // let val = {
-    //   type: 'Leave Type',
-    //   fieldname: 'leave_type',
-    //   fieldname_value: '',
-    //   selected_value: this.leave_type,
-    //   // select_options: this.select_options,
-    //   send_all_value: true
-    // }
-
-    // this.db.formStoreValues = {}
-
-    // this.db.formStoreValues['employee'] = localStorage['employee_id'];
-
-    // let selected_value = {
-    //   doctype: "Leave Type"
-    // }
-    // this.db.open_drop_down_options(val.type, val.fieldname, val.fieldname_value, selected_value)
   }
 
   approve_leaves(event) {
@@ -544,7 +538,6 @@ export class LeaveApplicationPage implements OnInit {
   }
 
   calculateLeavePreview(from_date,to_date,type){
-    // if(type != ''){
       let data = {
         "employee": localStorage['employee_id'],
         "from_date": from_date,
@@ -552,7 +545,6 @@ export class LeaveApplicationPage implements OnInit {
         leave_type:type
       }
       this.db.calculate_leave_preview(data).subscribe(res => {
-        // console.log(res);
         if(res && res.message && res.message.leave_preview && res.message.leave_preview.length != 0){
           this.leave_preview = res.message.leave_preview;
           this.leave_form.get('total_leave_days').setValue(res.message.total_leave_days)
@@ -561,9 +553,14 @@ export class LeaveApplicationPage implements OnInit {
           this.leave_form.get('total_leave_days').setValue(res.message.total_leave_days)
         }
       })
-    // }
-    // else
-    //   this.db.sendErrorMessage('Pls select leave type')
+
+      this.db.leaves_for_overlapping_team_members({ "employee": localStorage['employee_id'], "from_date": from_date, "to_date": to_date,}).subscribe(res => {
+        // console.log(res)
+        if(res && res.message)
+          this.overlapp_msg = res.message
+
+      })
+
   }
 
 }

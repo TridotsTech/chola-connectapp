@@ -70,7 +70,7 @@ export class MobileHeaderComponent implements OnInit {
   }
 
   openMenu() {
-    console.log('12345')
+    // console.log('12345')
     this.menuCtrl.open();
     // this.db.get_employee_detail()
     // this.db.get_permission_details();

@@ -1,7 +1,7 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
 
 <ion-content [fullscreen]="true">
-  <div class="p-10">
+  <div class="p-10 scroll_h">
     <form [formGroup]="buyback_form">
       <div class="pb-10">
         <p class="title">Asset Type</p>
@@ -23,10 +23,16 @@
         </div>
       </div>
 
-      <div *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="pb-10">
+      <div *ngIf="buyback_form.value.asset_type == 'Vehicle' && buyback_form.value.vehicle_registration_no" class="pb-10">
         <p class="title">Vehicle Registration No</p>
         <div class="custom-input">
-          <ion-input type="text" placeholder="Vehicle Registration No" formControlName="vehicle_registration_no" name="vehicle_registration_no"></ion-input>
+          <ion-input type="text" [disabled]="true" placeholder="Vehicle Registration No" formControlName="vehicle_registration_no" name="vehicle_registration_no"></ion-input>
+        </div>
+      </div>
+      <div *ngIf="buyback_form.value.asset_type == 'Mobile'" class="pb-10">
+        <p class="title">Baz Ticket No</p>
+        <div class="custom-input">
+          <ion-input type="text" placeholder="Baz Ticket No" formControlName="baz_ticket_no" name="baz_ticket_no"></ion-input>
         </div>
       </div>
 
@@ -34,7 +40,7 @@
 
         <div class="pb-10">
           <p class="title">Date Of Purchase</p>
-          <app-custom-calendar format="Date" [selectedDate]="buyback_form.value.date_of_purchase" (onChange)="datePickerChange('date_of_purchase',$event)"></app-custom-calendar>
+          <app-custom-calendar format="Date" [selectedDate]="buyback_form.value.date_of_purchase" (onChange)="datePickerChange('date_of_purchase',$event)" [read_only]="true"></app-custom-calendar>
         </div>
   
         <div class="pb-10">
@@ -45,24 +51,24 @@
       </div>
 
       
-      <div class="pb-10">
+      <div *ngIf="buyback_form.value.ex_showroom_cost" class="pb-10">
         <p class="title">Ex Showroom Cost</p>
         <div class="custom-input">
-          <ion-input type="text" placeholder="Ex Showroom Cost" formControlName="ex_showroom_cost" name="ex_showroom_cost"></ion-input>
+          <ion-input type="text" [disabled]="true" placeholder="Ex Showroom Cost" formControlName="ex_showroom_cost" name="ex_showroom_cost"></ion-input>
         </div>
       </div>
 
-      <div class="pb-10">
+      <div *ngIf="buyback_form.value.road_tax_and_registration_charges" class="pb-10">
         <p class="title">Road Tax and Registration Charges</p>
         <div class="custom-input">
-          <ion-input type="text" placeholder="Road Tax and Registration Charges" formControlName="road_tax_and_registration_charges" name="road_tax_and_registration_charges"></ion-input>
+          <ion-input type="text" [disabled]="true" placeholder="Road Tax and Registration Charges" formControlName="road_tax_and_registration_charges" name="road_tax_and_registration_charges"></ion-input>
         </div>
       </div>
 
-      <div class="pb-10">
+      <div *ngIf="buyback_form.value.total_capitalized_value" class="pb-10">
         <p class="title">Total Capitalized Value</p>
         <div class="custom-input">
-          <ion-input type="text" placeholder="Total Capitalized Value" formControlName="total_capitalized_value" name="total_capitalized_value"></ion-input>
+          <ion-input type="text" [disabled]="true" placeholder="Total Capitalized Value" formControlName="total_capitalized_value" name="total_capitalized_value"></ion-input>
         </div>
       </div>
       <div class="pb-10" *ngIf="buyback_form.value.life_of_the_car">
@@ -75,17 +81,17 @@
 
       <div class="section2">
 
-        <div class="pb-10">
+        <div *ngIf="buyback_form.value.buyback_amount" class="pb-10">
           <p class="title">Buyback Amount</p>
           <div class="custom-input">
-            <ion-input type="text" placeholder="Buyback Amount" formControlName="buyback_amount" name="buyback_amount"></ion-input>
+            <ion-input type="text" [disabled]="true" placeholder="Buyback Amount" formControlName="buyback_amount" name="buyback_amount"></ion-input>
           </div>
         </div>
 
-        <div class="pb-10">
+        <div *ngIf="buyback_form.value.perk_amount" class="pb-10">
           <p class="title">Perk Amount</p>
           <div class="custom-input">
-            <ion-input type="text" placeholder="Perk Amount" formControlName="perk_amount" name="perk_amount"></ion-input>
+            <ion-input type="text" [disabled]="true" placeholder="Perk Amount" formControlName="perk_amount" name="perk_amount"></ion-input>
           </div>
         </div>
 
@@ -93,33 +99,46 @@
 
       <div class="section2">
 
-        <div class="pb-10">
+        <div *ngIf="buyback_form.value.gst_amount" class="pb-10">
           <p class="title">GST Amount</p>
           <div class="custom-input">
-            <ion-input type="text" placeholder="GST Amount" formControlName="gst_amount" name="gst_amount"></ion-input>
+            <ion-input type="text" [disabled]="true" placeholder="GST Amount" formControlName="gst_amount" name="gst_amount"></ion-input>
           </div>
         </div>
 
-        <div class="pb-10">
+        <div *ngIf="buyback_form.value.tax_on_perk_amount" class="pb-10">
           <p class="title">Tax On Perk Amount</p>
           <div class="custom-input">
-            <ion-input type="text" placeholder="Tax On Perk Amount" formControlName="tax_on_perk_amount" name="tax_on_perk_amount"></ion-input>
+            <ion-input type="text" [disabled]="true" placeholder="Tax On Perk Amount" formControlName="tax_on_perk_amount" name="tax_on_perk_amount"></ion-input>
           </div>
         </div>
 
       </div>
       
-      <div class="pb-10">
+      <div *ngIf="buyback_form.value.amount_payable_to_company" class="pb-10">
         <p class="title">Amount Payable To Company</p>
         <div class="custom-input">
-          <ion-input type="text" placeholder="Amount Payable To Company" formControlName="amount_payable_to_company" name="amount_payable_to_company"></ion-input>
+          <ion-input type="text" [disabled]="true" placeholder="Amount Payable To Company" formControlName="amount_payable_to_company" name="amount_payable_to_company" readonly></ion-input>
         </div>
       </div>
 
+      <!-- <h5 class="fnt-15 fnt_w500 mb-10 m-0">Payment Detail</h5>
+      <div class="pb-10">
+        <p class="title">Bank</p>
+        <div class="custom-input">
+          <ion-input type="text" placeholder="Bank" formControlName="bank" name="bank"></ion-input>
+        </div>
+      </div>
+      <div class="pb-10">
+        <p class="title">Account No</p>
+        <div class="custom-input">
+          <ion-input type="text" placeholder="Account No" formControlName="account_no" name="account_no"></ion-input>
+        </div>
+      </div> -->
     </form>
 
   </div>
-  <!-- <div class="submit-btn">
+  <div class="submit-btn">
     <ion-button (click)="submit()" fill="clear">Save</ion-button>
-  </div> -->
+  </div>
 </ion-content>

@@ -1,7 +1,7 @@
 <app-header title="Performance Evaluation" [model]="false"></app-header>
 
 <ion-content [fullscreen]="true">
-  <div class="p-10 formHeight">
+  <div class="p-10" [ngClass]="workflow_list.length == 0 ? 'form_Height':'formHeight'">
     <form [formGroup]="evaluation_form">
 
       <div class="pb-10">

@@ -40,11 +40,11 @@ export class DbService {
 
 
 
-  seapi_apis_hrms = 'seapi.seapi.apis.hrms.';
-  seapi_apis_projects = 'seapi.seapi.apis.project.';
+  // seapi_apis_hrms = 'seapi.seapi.apis.hrms.';
+  // seapi_apis_projects = 'seapi.seapi.apis.project.';
   go1_apps_apis_hrmls = 'go1_apps.go1_apps.apis.hrms.'
   go1_apps_apis_projects = 'go1_apps.go1_apps.apis.project.'
-  seapi_api = 'seapi.seapi.api.';
+  // seapi_api = 'seapi.seapi.api.';
   go1_apps_api = 'go1_apps.go1_apps.api.'
   go1_apps_custom_api = 'go1_apps.go1_apps.custom_api.'
   
@@ -760,7 +760,7 @@ export class DbService {
 
             this.hr_manager_role = undefined
             this.employee_role = undefined;
-
+            this.app_name = 'Go1 HR';
             localStorage.clear();
             this.clearData();
             this.router.navigateByUrl('/register');
@@ -1499,7 +1499,7 @@ export class DbService {
               res.route = this.hr_manager_role ? '/leave-application-detail' : '/leave-application-detail/' + localStorage['employee_id']
             }
           })
-          // this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+          this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
           // this.hr_manager_role ? this.side_tab_dashboard.splice(0, 0, push_employee_att) : null;
           this.hr_manager_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
@@ -1609,7 +1609,7 @@ export class DbService {
           ]
 
           // this.project_role ? this.dashboard_values.splice(0, 0, pushProjectMeeting) : null;
-          // this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+          this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
           // this.project_role ? this.dashboard_values = [...this.dashboard_values, ...pushProjectMeeting] : null;
           this.hr_manager_role ? this.dashboard_values = [...this.dashboard_values,...approval_screen] : null;
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, approval_screen) : null;
@@ -2166,6 +2166,21 @@ export class DbService {
 
   leave_approve_reject(data): Observable<any> {
     let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leave_approve_reject_api';
+    return this.postmethod(this.baseMethod + endpoint, data)
+  }
+
+  leave_withdraw_approve_reject(data): Observable<any> {
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leave_withdraw_approve_reject_api';
+    return this.postmethod(this.baseMethod + endpoint, data)
+  }
+
+  auto_submit_leave_withdrawal(data): Observable<any> {
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.auto_submit_leave_withdrawal';
+    return this.postmethod(this.baseMethod + endpoint, data)
+  }
+
+  leaves_for_overlapping_team_members(data): Observable<any> {
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leaves_for_overlapping_team_members';
     return this.postmethod(this.baseMethod + endpoint, data)
   }
 

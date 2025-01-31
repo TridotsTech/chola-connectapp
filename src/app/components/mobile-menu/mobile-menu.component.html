@@ -7,7 +7,7 @@
       </ion-avatar>
       <div class="user-title">
         <p class="webkit-text" [style.--line]="1">{{db.cust_name}}</p>
-        <p *ngIf="db.cust_designation">{{db.cust_designation !='null' ? db.cust_designation : '' }}</p>
+        <p *ngIf="db.cust_designation != 'null'">{{db.cust_designation !='null' ? db.cust_designation : '' }}</p>
         <!-- <p *ngIf="db.cust_name || db.guest_cust_name" class="m-0">{{db.cust_name || db.guest_cust_name}}</p> -->
       </div>
     </div>
@@ -187,7 +187,7 @@
 
         <!-- <ion-icon [class.rotate]="db.selfView" class="fnt-13" name="chevron-down-outline"></ion-icon> -->
       </div>
-      <p class="m-0 fnt-12 d__flex gray_clr gap-5">{{(db.cust_designation && db.cust_designation != null) ? db.cust_designation : db.cust_role}}</p>
+      <p *ngIf="db.cust_designation && db.cust_designation != 'null'" class="m-0 fnt-12 d__flex gray_clr gap-5">{{(db.cust_designation && db.cust_designation != null) ? db.cust_designation : db.cust_role}}</p>
    
       <!-- <div [class.activeSelf]="db.selfView" [class.active]="showRole && db.show_selfView"  *ngIf="showRole && db.show_selfView" (click)="db.selfViewFn()" class="viewSec d__flex">
         <label class="label-1">Self</label>

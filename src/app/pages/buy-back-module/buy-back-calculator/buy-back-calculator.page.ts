@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 export class BuyBackCalculatorPage implements OnInit {
   buyback_form: any = FormGroup;
   assetsType:any=[];
+  rates:any=[];
   assets_list:any=[]; 
   yearCalculator:any=[]; 
   constructor(public db: DbService,private formBuilder: FormBuilder) { }
@@ -21,6 +22,7 @@ export class BuyBackCalculatorPage implements OnInit {
       asset_type: new FormControl(''),
       asset: new FormControl(''),
       vehicle_registration_no: new FormControl(''),
+      baz_ticket_no: new FormControl(''),
       date_of_purchase: new FormControl(''),
       buyback_date: new FormControl(''),
       ex_showroom_cost: new FormControl(''),
@@ -71,6 +73,10 @@ export class BuyBackCalculatorPage implements OnInit {
 
   get vehicle_registration_no(){
     return this.buyback_form.get('vehicle_registration_no');
+  }
+
+  get baz_ticket_no(){
+    return this.buyback_form.get('baz_ticket_no');
   }
 
   get date_of_purchase(){
@@ -206,21 +212,37 @@ export class BuyBackCalculatorPage implements OnInit {
         this.db.sendErrorMessage(res.message.message)
       }
     })
-    let year_data ={
+     let year_data ={
       "asset_type":eve.detail.value
     }
     this.db.fetch_buyback_years(year_data).subscribe(res => {
-      if(res && res.message && res.message.message == 'Success'){
-        this.buyback_form.get('year0').setValue(res.message.buyback_data.year_0)
-        this.buyback_form.get('year1').setValue(res.message.buyback_data.year_1)
-        this.buyback_form.get('year2').setValue(res.message.buyback_data.year_2)
-        this.buyback_form.get('year3').setValue(res.message.buyback_data.year_3)
-        res.message.buyback_data.year_4 ? this.buyback_form.get('year4').setValue(res.message.buyback_data.year_4) : ''
-        this.buyback_form.get('perk_tax').setValue(res.message.buyback_data.perk_tax)
+      if(res && res.message){
+        // && res.message.message == 'Success'
+        this.buyback_form.get('perk_tax').setValue(res.message.perk_tax)
+        this.rates = res.message.rates
+        // this.buyback_form.get('year0').setValue(res.message.buyback_data.year_0)
+        // this.buyback_form.get('year1').setValue(res.message.buyback_data.year_1)
+        // this.buyback_form.get('year2').setValue(res.message.buyback_data.year_2)
+        // this.buyback_form.get('year3').setValue(res.message.buyback_data.year_3)
+        // res.message.buyback_data.year_4 ? this.buyback_form.get('year4').setValue(res.message.buyback_data.year_4) : ''
+       
       }else{
         this.db.sendErrorMessage(res.message.message)
       }
     })
+   
+    // this.db.fetch_buyback_years(year_data).subscribe(res => {
+    //   if(res && res.message && res.message.message == 'Success'){
+    //     this.buyback_form.get('year0').setValue(res.message.buyback_data.year_0)
+    //     this.buyback_form.get('year1').setValue(res.message.buyback_data.year_1)
+    //     this.buyback_form.get('year2').setValue(res.message.buyback_data.year_2)
+    //     this.buyback_form.get('year3').setValue(res.message.buyback_data.year_3)
+    //     res.message.buyback_data.year_4 ? this.buyback_form.get('year4').setValue(res.message.buyback_data.year_4) : ''
+    //     this.buyback_form.get('perk_tax').setValue(res.message.buyback_data.perk_tax)
+    //   }else{
+    //     this.db.sendErrorMessage(res.message.message)
+    //   }
+    // })
   }
 
   onassetChange(eve,asset){

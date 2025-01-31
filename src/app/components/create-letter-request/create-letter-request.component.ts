@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { LeavePreviewWithdrawFormComponent } from '../leaves-module/leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 
@@ -13,7 +13,7 @@ export class CreateLetterRequestComponent  implements OnInit {
   letterType:any=[];
   save_only:any = false;
   @Input() letterRequestDetail:any;
-  constructor(private nav: NavController,public modalCtrl: ModalController, public db: DbService) { }
+  constructor(public loadingCtrl:LoadingController, private nav: NavController,public modalCtrl: ModalController, public db: DbService) { }
 
   ngOnInit() {
     this.get_reference_name()
@@ -61,7 +61,9 @@ export class CreateLetterRequestComponent  implements OnInit {
     }
   }
 
-  insert_letter_request(item){
+  async insert_letter_request(item){
+    let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+    await loader.present();
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -82,18 +84,15 @@ export class CreateLetterRequestComponent  implements OnInit {
       this.save_only ? data.workflow_state = 'Awaiting Approval' : data.workflow_state = 'Draft'
 
       this.db.inset_docs({data: data}).subscribe(res => {
+        setTimeout(() => {
+          loader.dismiss()
+        }, 1000);
         if (res && res.message && res.message.status == 'Success') {
-        //   if(data.workflow_state == 'Awaiting Approval'){
-        //   this.db.sendSuccessMessage("Letter Request Send For Approval successfully!")
-          this.modalCtrl.dismiss(res.message.data);
-          // setTimeout(() => {
-          //   this.nav.back()
-          // }, 500);
-        // }
-        // else
           this.db.sendSuccessMessage("Letter Request created successfully!")
           this.letterRequestDetail = res.message.data;
-          // this.save_only = !this.save_only;
+          this.db.inset_docs({data: {name:res.message.data.name,workflow_state:'Pending',doctype:'Employee Letter Request'}}).subscribe(r => {
+            this.modalCtrl.dismiss(res.message.data);
+          })
         }else{
           if(res._server_messages){
             let d = JSON.parse(res._server_messages)

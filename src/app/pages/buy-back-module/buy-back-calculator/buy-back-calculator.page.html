@@ -29,6 +29,12 @@
           <ion-input type="text" placeholder="Vehicle Registration No" formControlName="vehicle_registration_no" name="vehicle_registration_no"></ion-input>
         </div>
       </div>
+      <div *ngIf="buyback_form.value.asset_type == 'Mobile'" class="pb-10">
+        <p class="title">Baz Ticket No</p>
+        <div class="custom-input">
+          <ion-input type="text" placeholder="Baz Ticket No" formControlName="baz_ticket_no" name="baz_ticket_no"></ion-input>
+        </div>
+      </div>
 
       <div class="section2">
 
@@ -73,6 +79,15 @@
       </div>
 
       <h5 class="fnt-15 fnt_w500 mb-10 m-0">Buyback Rate</h5>
+      <div *ngIf="rates && rates.length != 0" class="year_calculator mb-10">
+        <div *ngFor="let item of rates" class="boxes__">
+          <div class="d__flex just-s">
+            <p *ngIf="item.year" class="m-0 fnt-14"><span class="gray_clr fnt-12">Year : </span>{{item.year}}</p>
+            <p *ngIf="item.month" class="m-0 fnt-14"><span class="gray_clr fnt-12">Month : </span>{{item.month}}</p>
+            <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Ratio: </span>{{item.ratio}}</p>
+          </div>
+        </div>
+      </div>
       <div class="section2">
         <div *ngIf="buyback_form.value.year0" class="pb-10">
           <p class="title">Year0</p>

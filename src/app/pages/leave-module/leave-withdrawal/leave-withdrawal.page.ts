@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { LeavePreviewWithdrawFormComponent } from '../../../components/leaves-module/leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 
 @Component({
@@ -20,10 +20,10 @@ export class LeaveWithdrawalPage implements OnInit {
   leave_withdarawal_open_list: any = [];
   from_date: any;
   to_date: any;
-  sendApproval = false;
+  // sendApproval = false;
   withdrawalDetail: any;
   newForm = false;
-  constructor(private nav:NavController,public alertController:AlertController,public db: DbService,private formbuilder:FormBuilder,private route: ActivatedRoute,private modalCtrl: ModalController) { }
+  constructor(public loadingCtrl:LoadingController,private nav:NavController,public alertController:AlertController,public db: DbService,private formbuilder:FormBuilder,private route: ActivatedRoute,private modalCtrl: ModalController) { }
 
   ngOnInit() {
 
@@ -97,7 +97,7 @@ export class LeaveWithdrawalPage implements OnInit {
       this.filterEndDate = eve.value
     }
 
-    this.sendApproval = false;
+    // this.sendApproval = false;
     // console.log(eve)
   }
 
@@ -165,16 +165,19 @@ export class LeaveWithdrawalPage implements OnInit {
   }
 
   sendLeaveWithdraw(){
-    this.sendApproval = false;
+    // this.sendApproval = false;
     let selectedArray = this.leave_preview.filter(res => {return res['isChecked'] == true && res['status'] == 'Approved'});
     selectedArray.map(resS => {
+      resS.duration = resS.custom_half_day_selection == "" ? 'Full Day':resS.custom_half_day_selection
       if(resS.status != 'Open'){
         resS.oldStatus = resS.status
         resS.status = 'Pending'
       }
     })
     let selectedOpenArray = this.leave_preview.filter(res => {return res['isChecked'] == true && res['status'] == 'Open'});
-    
+    selectedOpenArray.map(resS => {
+      resS.duration = resS.custom_half_day_selection == "" ? 'Full Day':resS.custom_half_day_selection
+    })
     this.leave_withdarawal_list = [...this.leave_withdarawal_list,...selectedArray];
     this.leave_withdarawal_open_list = [...this.leave_withdarawal_open_list,...selectedOpenArray];
     this.leave_preview = this.leave_preview.filter(res => {return !res['isChecked']});
@@ -225,7 +228,11 @@ export class LeaveWithdrawalPage implements OnInit {
         {
           text: 'Ok',
           handler: () => {
-            this.sure_submit();
+            if((this.leave_withdarawal_list && this.leave_withdarawal_list.length != 0) || (this.leave_withdarawal_open_list && this.leave_withdarawal_open_list.length != 0)){
+              this.sure_submit();
+            }
+            else
+              this.db.sendErrorMessage('Pls select any one withdraw approve or open list')
           },
         },
       ],
@@ -233,7 +240,9 @@ export class LeaveWithdrawalPage implements OnInit {
     await alert.present();
   }
 
-  sure_submit(){
+  async sure_submit(){
+    let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+    await loader.present();
     let datas: any = {
       doctype: 'Leave Withdrawal',
       employee: localStorage['employee_id'],
@@ -251,25 +260,42 @@ export class LeaveWithdrawalPage implements OnInit {
     if(this.leave_withdarawal_list && this.leave_withdarawal_list.length != 0){
       datas['leave_withdraw_date'] = this.leave_withdarawal_list;
     }
+    else{
+      datas['leave_withdraw_date'] = []
+    }
     
     if(this.leave_withdarawal_open_list && this.leave_withdarawal_open_list.length != 0){
+      this.leave_withdarawal_open_list.map(res => {
+          res.status = 'Approved'
+      })
       datas['leave_withdraw_open_application_list'] = this.leave_withdarawal_open_list;
     }
 
-
+    // if(this.leave_withdarawal_list && this.leave_withdarawal_list.length == 0){
+    //   datas['docstatus'] = 1
+    //   datas['all_approved'] = 1
+    //   // datas['workflow_state'] = 'Awaiting Approval'
+    // }
     if(this.withdrawalDetail && this.withdrawalDetail.name){
       datas['name'] = this.withdrawalDetail.name
     }
 
     this.db.inset_docs({ data: datas }).subscribe(res => {
+      setTimeout(() => {
+        loader.dismiss()
+      }, 1000);
       // console.log(res)
       if (res && res.message && res.message.status == 'Success') {
         this.db.sendSuccessMessage("Leave Withdrawal created successfully!")
-        setTimeout(() => {
-          this.nav.back();
-        }, 500);
-        this.sendApproval = true;
         this.withdrawalDetail = res.message.data;
+        if(this.leave_withdarawal_list && this.leave_withdarawal_list.length == 0){
+          this.db.auto_submit_leave_withdrawal({ name: res.message.data.name }).subscribe(r => {
+            
+          })
+       }
+       setTimeout(() => {
+        this.nav.back();
+      }, 500);
       }else{
         if(res._server_messages){
           let d = JSON.parse(res._server_messages)
@@ -318,18 +344,18 @@ export class LeaveWithdrawalPage implements OnInit {
         this.filterStartDate = res.message[1].filter_start_date
         this.filterEndDate = res.message[1].filter_end_date
 
-        if(this.withdrawalDetail && this.withdrawalDetail.docstatus == 0){
-          this.sendApproval = true;
-        }else{
-          this.sendApproval = false;
-        }
+        // if(this.withdrawalDetail && this.withdrawalDetail.docstatus == 0){
+        //   this.sendApproval = true;
+        // }else{
+        //   this.sendApproval = false;
+        // }
       }
     })
   }
 
   changeStatus(event,item){
     item['status'] = event.detail.value
-    this.sendApproval = false;
+    // this.sendApproval = false;
   }
 
   async editLeaveLeavePreview(list,type, data,index){

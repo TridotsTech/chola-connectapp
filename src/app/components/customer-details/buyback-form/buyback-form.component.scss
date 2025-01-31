@@ -73,3 +73,8 @@
         border-bottom: unset !important;
     }
 }
+
+.scroll_h{
+    height: calc(100vh - 100px);
+    overflow: auto;
+}

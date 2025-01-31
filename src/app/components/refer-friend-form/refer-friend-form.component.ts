@@ -178,9 +178,16 @@ multiple_array: any = {};
       this.db.create_referral_entry(data).subscribe(res => {
         console.log(res)
         if(res && res.message && res.message.status == 'success'){
+          this.modalCntrl.dismiss();
           this.db.sendSuccessMessage('Referral Sent Successfully')
         }else{
           this.db.alert('Something went wrong try again later')
+        }
+      },error => {
+        if(error && error.error && error.error._server_messages){
+          let b = JSON.parse(error.error._server_messages);
+          let e = JSON.parse(b)
+          this.db.alert(e.message)
         }
       })
     }

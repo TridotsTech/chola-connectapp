@@ -17,7 +17,7 @@ export class PerformanceEvaluationPage implements OnInit {
   performanceDetails: any;
   performanceId: any;
   save_only = false;
-
+  workflow_list:any=[];
   constructor(public db: DbService,private formBuilder: FormBuilder,private nav: NavController,private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -75,8 +75,8 @@ export class PerformanceEvaluationPage implements OnInit {
     }
     this.db.get_workflow_states(data).subscribe(res => {
       console.log(res)
-      if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
-       
+      if(res && res.message && res.message.length != 0){
+        this.workflow_list = res.message;
       }
     })
   }

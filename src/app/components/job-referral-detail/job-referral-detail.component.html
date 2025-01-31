@@ -10,7 +10,7 @@
         <ion-icon class="flex-auto fnt-18" (click)="modalCntrl.dismiss()" name="close-outline"></ion-icon>
       </div>
       <div class="d__flex gap-10">
-        <p class="m-0 fnt-13 fnt_w400" *ngIf="jobReferralDetail.job_title">{{jobReferralDetail.job_title ? jobReferralDetail.job_title.replace('-', '') : ''}}</p>
+        <p class="m-0 fnt-13 fnt_w400 webkit-text" [style.--line]="2" *ngIf="jobReferralDetail.job_title">{{jobReferralDetail.job_title ? jobReferralDetail.job_title.replace('-', '') : ''}}</p>
         <div class="beforedays flex-auto">
           <div class="dots"></div>
           <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{jobReferralDetail.posted_on ? getBeforeDays(jobReferralDetail.posted_on) : ''}}</p>

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-buyback-form',
@@ -11,10 +12,10 @@ export class BuybackFormComponent  implements OnInit {
 
   buyback_form: any = FormGroup;
   assetsType:any=[];
+  rates:any=[];
   assets_list:any=[]; 
-  @Input() title;
-  // yearCalculator:any=[]; 
-  constructor(public db: DbService,private formBuilder: FormBuilder) { }
+  @Input() title; 
+  constructor(public modalCtrl:ModalController,public db: DbService,private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.buyback_form = this.formBuilder.group({
@@ -23,6 +24,7 @@ export class BuybackFormComponent  implements OnInit {
       asset_type: new FormControl(''),
       asset: new FormControl(''),
       vehicle_registration_no: new FormControl(''),
+      baz_ticket_no: new FormControl(''),
       date_of_purchase: new FormControl(''),
       buyback_date: new FormControl(''),
       ex_showroom_cost: new FormControl(''),
@@ -35,6 +37,10 @@ export class BuybackFormComponent  implements OnInit {
       amount_payable_to_company: new FormControl(''),
       perk_amount: new FormControl(''),
       tax_on_perk_amount: new FormControl(''),
+      // bank: new FormControl(''),
+      paid_amount: new FormControl(''),
+      // account_no: new FormControl(''),
+      utr_no: new FormControl(''),
     });
 
     let data ={
@@ -47,7 +53,6 @@ export class BuybackFormComponent  implements OnInit {
             this.assetsType.push({name:res})
           }) 
         }
-        console.log(this.assetsType)
       }else{
         this.db.sendErrorMessage(res.message.message)
       }
@@ -62,7 +67,6 @@ export class BuybackFormComponent  implements OnInit {
       }
       this.db.buyback_calculator_asset(data).subscribe(res => {
         if(res && res.message && res.message.status == 'success'){
-          console.log(res.message.data)
           this.buyback_form.get('total_capitalized_value').setValue(this.formatCurrencyString(res.message.data.amount))
           this.buyback_form.get('life_of_the_car').setValue(res.message.data.car_life)
           this.buyback_form.get('amount_payable_to_company').setValue(this.formatCurrencyString(res.message.data.amount_payable_to_company))
@@ -70,11 +74,11 @@ export class BuybackFormComponent  implements OnInit {
           this.buyback_form.get('perk_amount').setValue(this.formatCurrencyString(res.message.data.perk_amount))
           this.buyback_form.get('tax_on_perk_amount').setValue(this.formatCurrencyString(res.message.data.tax_on_perk_amount))
           this.buyback_form.get('buyback_amount').setValue(this.formatCurrencyString(res.message.data.amount))
-          // this.yearCalculator = res.message.data.table
         }else{
           this.db.sendErrorMessage(res.message.message)
         }
       })
+      this.buyback_form.get('buyback_date').setValue(event.value)
     }
     this.buyback_form.value[fieldname] = event.value;
   }
@@ -87,6 +91,19 @@ export class BuybackFormComponent  implements OnInit {
       }).format(parseFloat(value));
     }
     return '0.00';
+  }
+
+  convertCurrencyToNumber(currency: string): number {
+    // Remove the ₹ symbol and commas
+    if (typeof currency === 'number') {
+      return currency;
+    }
+    else if(typeof currency === 'string'){
+      const numericValue = currency.replace(/[^\d.]/g, '');
+      return parseFloat(numericValue);
+    }
+    else
+      return 0
   }
 
   onassettypeChange(eve){
@@ -112,13 +129,9 @@ export class BuybackFormComponent  implements OnInit {
       "asset_type":eve.detail.value
     }
     this.db.fetch_buyback_years(year_data).subscribe(res => {
-      if(res && res.message && res.message.message == 'Success'){
-        this.buyback_form.get('year0').setValue(res.message.buyback_data.year_0)
-        this.buyback_form.get('year1').setValue(res.message.buyback_data.year_1)
-        this.buyback_form.get('year2').setValue(res.message.buyback_data.year_2)
-        this.buyback_form.get('year3').setValue(res.message.buyback_data.year_3)
-        res.message.buyback_data.year_4 ? this.buyback_form.get('year4').setValue(res.message.buyback_data.year_4) : ''
-        this.buyback_form.get('perk_tax').setValue(res.message.buyback_data.perk_tax)
+      if(res && res.message){
+        this.buyback_form.get('perk_tax').setValue(res.message.perk_tax)
+        this.rates = res.message.rates
       }else{
         this.db.sendErrorMessage(res.message.message)
       }
@@ -134,11 +147,49 @@ export class BuybackFormComponent  implements OnInit {
         if(res.message.data){
           this.buyback_form.get('date_of_purchase').setValue(res.message.data.asset_capitalization_date)
           this.buyback_form.get('vehicle_registration_no').setValue(res.message.data.registration_no)
+          this.buyback_form.get('baz_ticket_no').setValue(res.message.data.baz_ticket_no)
           this.buyback_form.get('ex_showroom_cost').setValue(this.formatCurrencyString(res.message.data.showroom_cost))
           this.buyback_form.get('road_tax_and_registration_charges').setValue(this.formatCurrencyString(res.message.data.road_tax_registration_charges))
         }
       }else{
         this.db.sendErrorMessage(res.message.message)
+      }
+    })
+  }
+
+  submit(){
+    this.buyback_form.value.amount_payable_to_company =  this.convertCurrencyToNumber(this.buyback_form.value.amount_payable_to_company)
+    this.buyback_form.value.buyback_amount =  this.convertCurrencyToNumber(this.buyback_form.value.buyback_amount)
+    this.buyback_form.value.ex_showroom_cost =  this.convertCurrencyToNumber(this.buyback_form.value.ex_showroom_cost)
+    this.buyback_form.value.gst_amount =  this.convertCurrencyToNumber(this.buyback_form.value.gst_amount)
+    this.buyback_form.value.road_tax_and_registration_charges =  this.convertCurrencyToNumber(this.buyback_form.value.road_tax_and_registration_charges)
+    this.buyback_form.value.total_capitalized_value =  this.convertCurrencyToNumber(this.buyback_form.value.total_capitalized_value)
+    this.buyback_form.value.tax_on_perk_amount =  this.convertCurrencyToNumber(this.buyback_form.value.tax_on_perk_amount)
+    this.buyback_form.value.perk_amount =  this.convertCurrencyToNumber(this.buyback_form.value.perk_amount)
+    let data:any={};
+    data = this.buyback_form.value
+    data.doctype = 'Buyback'
+    this.db.inset_docs({ data: data }).subscribe(res => {
+      if (res && res.message && res.message.status == 'Success') {  
+        if(res.message.data && res.message.data.name)
+          this.db.sendSuccessMessage("Buyback created successfully!")
+          setTimeout(() => {
+            this.modalCtrl.dismiss(res)
+          }, 500);
+      }else{
+        if(res._server_messages){
+          let d = JSON.parse(res._server_messages)
+          let f = JSON.parse(d[0])
+          this.db.sendErrorMessage(f.message)
+        }else{
+          this.db.sendErrorMessage(res.message.message)
+        }
+      }
+    }, error => {
+      if(error.error){
+        let d = JSON.parse(error.error._server_messages)
+        let f = JSON.parse(d[0])
+        this.db.sendErrorMessage(f.message)
       }
     })
   }

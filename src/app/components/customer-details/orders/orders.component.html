@@ -258,11 +258,14 @@
             <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
           </div>
         </div>
-
-        <div class="d__flex just-s mb-5">
+        <div *ngIf="db.hr_manager_role" class="d__flex just-s mb-5">
+          <h2 class="m-0 fnt-12 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[2]]"><span class="fnt-11"></span> {{item[db.get_saleslist.keys[2]]}}</h2>
+          <!-- <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[6]]"><span class="fnt-11">To : </span> {{item[db.get_saleslist.keys[6]]}}</h2> -->
+        </div>
+        <!-- <div class="d__flex just-s mb-5">
           <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[5]]"><span class="fnt-11">From : </span> {{item[db.get_saleslist.keys[5]]}}</h2>
           <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[6]]"><span class="fnt-11">To : </span> {{item[db.get_saleslist.keys[6]]}}</h2>
-        </div>
+        </div> -->
 
         <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 fnt-11"><span
             class="gray_clr">{{item[db.get_saleslist.keys[4]]

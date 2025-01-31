@@ -1,13 +1,18 @@
 .referral_list {
+    height: calc(100vh - 70px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     .boxes_ {
         background: #f5f5f5;
         border-radius: 15px;
         padding: 10px;
         margin-bottom: 10px;
 
-        .sec1 {
-
-        }
+        .sec1 {}
 
         .sec2 {
             padding-top: 10px;

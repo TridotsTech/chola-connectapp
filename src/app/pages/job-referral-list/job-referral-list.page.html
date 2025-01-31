@@ -2,7 +2,7 @@
 
 <ion-content [fullscreen]="true">
   <div class="p-10">
-    <div *ngIf="jobReferralList && jobReferralList.length != 0" class="referral_list">
+    <div *ngIf="jobReferralList && jobReferralList.length != 0" class="referral_list" (scroll)="load_more($event)">
       <div *ngFor="let item of jobReferralList" class="boxes_" (click)="getReferralDetail(item)">
         <div class="sec1">
           <div class="d__flex just-s mb-10">
