@@ -40,7 +40,7 @@
 
         <div class="pb-10">
           <p class="title">Date Of Purchase</p>
-          <app-custom-calendar format="Date" [selectedDate]="buyback_form.value.date_of_purchase" (onChange)="datePickerChange('date_of_purchase',$event)"></app-custom-calendar>
+          <app-custom-calendar format="Date" [read_only]="true"  [selectedDate]="buyback_form.value.date_of_purchase" (onChange)="datePickerChange('date_of_purchase',$event)"></app-custom-calendar>
         </div>
   
         <div class="pb-10">
@@ -68,7 +68,7 @@
       <div class="pb-10">
         <p class="title">Total Capitalized Value</p>
         <div class="custom-input">
-          <ion-input type="text" placeholder="Total Capitalized Value" formControlName="total_capitalized_value" name="total_capitalized_value"></ion-input>
+          <ion-input type="text" placeholder="Total Capitalized Value" formControlName="total_capitalized_value" name="total_capitalized_value" [disabled]="true" readonly></ion-input>
         </div>
       </div>
       <div class="pb-10" *ngIf="buyback_form.value.life_of_the_car">
@@ -182,7 +182,12 @@
         </div>
 
       </div>
-      
+      <div class="pb-10">
+        <p class="title">Insurance Amount</p>
+        <div class="custom-input">
+          <ion-input type="text" placeholder="Insurance Amount" formControlName="insurance_amount" name="insurance_amount"></ion-input>
+        </div>
+      </div>
       <div class="pb-10">
         <p class="title">Amount Payable To Company</p>
         <div class="custom-input">

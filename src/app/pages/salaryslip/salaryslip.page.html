@@ -1,0 +1,29 @@
+<app-header title="Salary Slip" [showYear]="false" [model]="false"></app-header>
+
+<ion-content [fullscreen]="true">
+  <div class="p-10">
+    <div class="headerFrame">
+      <img width="100%" src="/assets/salary/header-frame.svg" alt="">
+    </div>
+
+    <div class="monthYearSelect">
+
+      <div class="select">
+        <p class="mb-5 fnt-15 gray_clr">Month</p>
+        <ion-select aria-label="Months" interface="popover" [value]="selectedMonth" placeholder="Select Month">
+          <ion-icon class="fnt-24" slot="start" src="/assets/salary/chart.svg"></ion-icon>
+          <ion-select-option *ngFor="let item of db.monthLists" [value]="item.name">{{item.label}}</ion-select-option>
+        </ion-select>
+      </div>
+
+      <div class="select">
+        <p class="mb-5 fnt-15 gray_clr">Year</p>
+        <ion-select aria-label="Months" interface="popover" [value]="selectedYear" placeholder="Select Year">
+          <ion-icon class="fnt-24" slot="start" src="/assets/salary/chart.svg"></ion-icon>
+          <ion-select-option *ngFor="let item of yearLists" [value]="item.name">{{item.name}}</ion-select-option>
+        </ion-select>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

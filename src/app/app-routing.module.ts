@@ -300,9 +300,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/job-referral-list/job-referral-list.module').then( m => m.JobReferralListPageModule)
   },
   {
+    path: 'salaryslip',
+    loadChildren: () => import('./pages/salaryslip/salaryslip.module').then( m => m.SalaryslipPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+  
+
 
 
 ];

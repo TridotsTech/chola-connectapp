@@ -61,7 +61,7 @@
           <div style="width: 50%;">
             <label for="to_date" class="pb-10">To date <span class="impt-star"> *</span></label>
             <div class="custom-input">
-              <ion-input type="date" name="to_date" [min]="leave_form.value.from_date ? leave_form.value.from_date : db.employee_info.date_of_joining" (ionChange)="datePicker($event,'to_date')" formControlName="to_date"
+              <ion-input type="date" name="to_date" [readonly]="is_maternity" [min]="leave_form.value.from_date ? leave_form.value.from_date : db.employee_info.date_of_joining" (ionChange)="datePicker($event,'to_date')" formControlName="to_date"
                 class="form-input"></ion-input>
             </div>
             <p class="impt-star pt-5" *ngIf="submitted && !to_date.valid && to_date.errors.required">To date is
@@ -75,7 +75,19 @@
             <ion-input aria-disabled="true" type="text" placeholder="Total Leave Days" name="total_leave_days" formControlName="total_leave_days" class="form-input" readonly></ion-input>
           </div>
         </div>
-
+        <div *ngIf="is_maternity" class="image-div_">
+          <label for="total_leave_days" class="pb-10">Attach <span class="impt-star"> *</span></label>
+          <input #file_upload class="image-d" (change)="changeListener($event)" type="file" [formControlName]="image" class="form-input">
+          <div [class.attached]="file_url" class="browser d__flex">
+            <div (click)="file_upload.click()" class="mouse d__flex name">
+              <img src="/assets/icon/file_upload.svg">
+            </div>
+            <div class="d__flex value_div" (click)="file_upload.click()">
+              <a class="m-0 mouse value_ webkit-text" [style.--line]="1">{{file_url ? file_url: 'Upload a file'}}</a>
+            </div>
+          </div> 
+        </div>
+        
         <div class="pb-10 leavePreview" *ngIf="leave_preview && leave_preview.length != 0">
           <label for="reason" class="pb-10">Leave Preview</label>
           <div *ngFor="let item of leave_preview" class="boxes_">

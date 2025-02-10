@@ -84,13 +84,14 @@
 }
 
 .filter_sec {
-    padding: 0 10px 0 0;
-    border-bottom: 1px solid var(--border-col);
-    border-top: 1px solid var(--border-col);
+    // padding: 0 10px 0 0;
+    // border-bottom: 1px solid var(--border-col);
+    // border-top: 1px solid var(--border-col);
     display: flex;
     align-items: center;
     margin-bottom: 10px;
     justify-content: space-between;
+    background:var(--primary-color);
 }
 
 .rounded-5 {

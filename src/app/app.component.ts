@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
 
     this.platform.ready().then(res => {
       if ((this.db.ismobile || res == 'ios' || res == 'ipad' || res == 'iphone' || res == 'mobile' || res == 'tablet') && res != 'dom') {
-        StatusBar.setBackgroundColor({color:'#003F88'});
+        StatusBar.setBackgroundColor({color:'#005BC3'});
       }
       this.db.get_onesignal().subscribe(res => {
         if (res && res.is_key) {

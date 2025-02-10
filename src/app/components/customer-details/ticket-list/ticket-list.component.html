@@ -1,4 +1,8 @@
 <!-- New List UI -->
+<div class="filter_sec">
+  <app-tabs-button [employee_detail_tab]="true" [border_none]="true" [no_mb]="true" [overflow]="overflow"
+    (menu_name)="menu_name.emit($event)" [tabs_array]="tabs"></app-tabs-button>
+</div>
 <div class="d__flex gap-10 h45" *ngIf="!db.ismobile">
   <ion-icon class="fnt-20 ml-10 headerIcon" slot="start" src="/assets/dashboard/HDTicket-active.svg"></ion-icon>
   <p class="m-0 fnt-16 fnt_w500 border-right-txt">Tickets Summary</p>
@@ -6,13 +10,12 @@
 <div class="bg_white page_border">
   <!-- <h1 class="m-0 bold_name-15 pt-10 mx-20">Tickets Summary</h1> -->
   <!-- *ngIf="data && data.number_card && data.number_card.length > 0" -->
-  <div class="summary_sec gap-10" *ngIf="data && data.number_card && data.number_card.length != 0">
+  <!-- <div class="summary_sec gap-10" *ngIf="data && data.number_card && data.number_card.length != 0">
     <div [ngClass]="db.ismobile ? 'box_':''" class="border-r p-20" *ngFor="let item of data.number_card; index as i">
       <div class="d__flex gap-10 just-s">
         <div class="ticket_ico">
           <ion-icon [src]="item.status == 'Open' ? '/assets/tickets/red-ticket.svg' : item.status == 'Replied' ? '/assets/tickets/ticket-replied.svg' : item.status == 'Resolved' ? '/assets/tickets/ticket-resolved.svg' : '/assets/tickets/ticket-closed.svg'"></ion-icon>
         </div>
-        <!-- <ion-icon src="/assets/tickets/CaretRight.svg"></ion-icon> -->
       </div>
 
       <div class="d__flex just-s gap-10">
@@ -20,12 +23,25 @@
         <b>{{ item.count }}</b>
       </div>
     </div>
-  </div>
+  </div> -->
+  <img src="assets/Frame/ticket.svg" alt="">
+  <!-- <div [ngClass]="db.ismobile ? 'box_':''" class="border-r p-20" *ngFor="let item of data.number_card; index as i">
+    <div class="d__flex gap-10 just-s">
+      <div class="ticket_ico">
+        <ion-icon [src]="item.status == 'Open' ? '/assets/tickets/red-ticket.svg' : item.status == 'Replied' ? '/assets/tickets/ticket-replied.svg' : item.status == 'Resolved' ? '/assets/tickets/ticket-resolved.svg' : '/assets/tickets/ticket-closed.svg'"></ion-icon>
+      </div>
+    </div>
+    <div class="d__flex just-s gap-10">
+      <h6 class="gray_txt">{{ item.status }}</h6>
+      <b>{{ item.count }}</b>
+    </div>
+  </div> -->
 
-  <div class="filter_sec">
+
+  <!-- <div class="filter_sec">
     <app-tabs-button [employee_detail_tab]="true" [border_none]="true" [no_mb]="true" [overflow]="overflow"
       (menu_name)="menu_name.emit($event)" [tabs_array]="tabs"></app-tabs-button>
-  </div>
+  </div> -->
 
   <div #tabList (scroll)="load_data.emit($event)" class="list_common_height" *ngIf="!db.ismobile && !skeleton && data && data.data && data.data.length != 0;else no_product">
     <div class="border p-10 rounded-5 mb-10 mouse animated fadeInUp" *ngFor="let item of data.data; let i = index"

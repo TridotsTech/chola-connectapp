@@ -38,6 +38,7 @@ export class BuyBackCalculatorPage implements OnInit {
       buyback_amount: new FormControl(''),
       gst_amount: new FormControl(''),
       amount_payable_to_company: new FormControl(''),
+      insurance_amount: new FormControl(''),
       perk_amount: new FormControl(''),
       tax_on_perk_amount: new FormControl(''),
     });
@@ -131,6 +132,10 @@ export class BuyBackCalculatorPage implements OnInit {
     return this.buyback_form.get('amount_payable_to_company');
   }
 
+  get insurance_amount(){
+    return this.buyback_form.get('insurance_amount');
+  }
+
   get perk_amount(){
     return this.buyback_form.get('perk_amount');
   }
@@ -151,6 +156,7 @@ export class BuyBackCalculatorPage implements OnInit {
           this.buyback_form.get('total_capitalized_value').setValue(this.formatCurrencyString(res.message.data.amount))
           this.buyback_form.get('life_of_the_car').setValue(res.message.data.car_life)
           this.buyback_form.get('amount_payable_to_company').setValue(this.formatCurrencyString(res.message.data.amount_payable_to_company))
+          this.buyback_form.get('insurance_amount').setValue(this.formatCurrencyString(res.message.data.insurance_amount))
           this.buyback_form.get('gst_amount').setValue(this.formatCurrencyString(res.message.data.gst_amount))
           this.buyback_form.get('perk_amount').setValue(this.formatCurrencyString(res.message.data.perk_amount))
           this.buyback_form.get('tax_on_perk_amount').setValue(this.formatCurrencyString(res.message.data.tax_on_perk_amount))

@@ -13,9 +13,10 @@
         <ion-icon class="icon menu"  src="/assets/icon/menu-white.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
-
+    <!-- <img src="assets/chola/vector.svg" alt=""> -->
     <div [class.d__flex]="title && title != 'home'" *ngIf="title != 'OnSite Dashboard'">
-      <ion-title *ngIf="title && title != 'home'" class="w-80 fnt-16 fnt_w500">{{title}}</ion-title>
+      <img *ngIf="title == 'Dashboard'" src="/assets/chola/chola-white-logo.svg" alt="" class="logo_">
+      <ion-title *ngIf="title && (title != 'home' && title != 'Dashboard')" class="w-80 fnt-16 fnt_w500">{{title}}</ion-title>
       
       <div *ngIf="title == 'My Profile'" class="filter" >
         <ion-icon (click)="db.logout()"  class="white fnt-15" name="log-out-outline"></ion-icon>

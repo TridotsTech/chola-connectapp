@@ -30,7 +30,7 @@
 
   <div class="body_sec">
     <h5 *ngIf="attendance && !db.ismobile" class="card-title">Check In/Out</h5>
-    <div *ngIf="!showChekinout" class="text-c time">
+    <div *ngIf="!showChekinout && false" class="text-c time">
       <!-- <div class="d__flex gap-5 s-1-d" *ngIf="show_timer">
         <ion-icon class="text-c" src="/assets/home-genie/Timericon.svg"></ion-icon>
         <h4>{{ formatElapsedTime() }}</h4>
@@ -40,6 +40,7 @@
     </div>
 
     <div *ngIf="!showChekinout">
+      <img class="check_in_btn_img" src="/assets/home-genie/punch.svg" alt="">
       <div class="d__flex just-c m-20-0" [class.opacity]="!show_timer">
         <div (click)="check_In(!is_Attendance ? 'IN' :'OUT')" class="icon-container mouse">
           <ion-icon class="wave_icon zoom-icon"
@@ -51,8 +52,8 @@
         </div>
       </div>
       <p class="check_in-d text-c" *ngIf="db.checkInOutDetail">{{db.checkInOutDetail}}</p>
-      <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c">Click to Punch In</p>
-      <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c">Already Punch In</p>
+      <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c check_btn">Click to Punch In</p>
+      <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c check_btn">Already Punch In</p>
     </div>
 
     <!-- <div *ngIf="!showChekinout && false" class="d__flex just-ar time_btns">

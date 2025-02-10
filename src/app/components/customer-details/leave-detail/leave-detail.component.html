@@ -74,6 +74,10 @@
       </div>
         
     </div>
+    <div *ngIf="data.reason" class="p-10">
+      <h6 class="m-0 text_2_h">Reason</h6>
+      <p class="m-0 fnt-13 gray_clr capitalize reason_">{{data.reason}}</p>
+    </div>
     <div class="p-10">
       <!-- (click)="item.status == 'Rejected' ? editLeaveLeavePreview(item,i):''" -->
         <div  *ngFor="let item of data.leave_preview; let i = index" class="boxes_" >
@@ -101,17 +105,14 @@
         </div>
         
     </div>
-    <!-- <div class="p-10">
-      <h6 class="m-0 text_2_h">Reason</h6>
-      <p class="m-0 fnt-13 gray_clr capitalize reason_">{{data.description}}</p>
-    </div> -->
+    
     
   </div>
 
-  <!-- <div class="d__flex gap-10 p-1015 btnSec p-10" [class.wi-100]="data.docstatus == 1" *ngIf="db.hr_manager_role && selectedTab == 'Awaiting Approval'">
-    <div class="btn1 d__flex mouse" *ngIf="data.docstatus != 1" (click)="leave_confirms($event,data,'Reject')"><ion-icon name="close-outline" alt=""></ion-icon><span class="fnt-12 m-0">Reject</span></div>
-    <div class="btn2 d__flex mouse" *ngIf="data.docstatus != 1" (click)="leave_confirms($event,data,'Approve')"><ion-icon name="checkmark-outline" alt=""></ion-icon><span class="fnt-12 m-0">Approve</span></div>
-  </div> -->
+  <div class="d__flex gap-10 p-1015 btnSec p-10" [class.wi-100]="data.docstatus == 1" *ngIf="db.hr_manager_role && data.is_maternity && selectedTab == 'Awaiting Approval'">
+    <div class="btn1 d__flex mouse" *ngIf="data.docstatus != 1" (click)="leave_approve($event,data,'Reject')"><ion-icon name="close-outline" alt=""></ion-icon><span class="fnt-12 m-0">Reject</span></div>
+    <div class="btn2 d__flex mouse" *ngIf="data.docstatus != 1" (click)="leave_approve($event,data,'Approve')"><ion-icon name="checkmark-outline" alt=""></ion-icon><span class="fnt-12 m-0">Approve</span></div>
+  </div>
   <!-- <div class="d__flex gap-10 p-1015 btnSec" *ngIf="show_btn">
     <div class="btnWithdraw d__flex mouse" (click)="submit()"><ion-icon name="refresh-outline"></ion-icon><span class="fnt-12 m-0">Submit</span></div>
   </div>  -->

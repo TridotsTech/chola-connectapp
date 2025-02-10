@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { LeaveTypeComponent } from 'src/app/components/leaves-module/leave-type/leave-type.component';
+
 @Component({
   selector: 'app-leave-application',
   templateUrl: './leave-application.page.html',
@@ -23,21 +24,18 @@ export class LeaveApplicationPage implements OnInit {
   submitted = false;
   sub: any
   leave_preview: any = [];
-  // search_data:any;
   save_only = false;
-  // total_leave_days: any = 0;
   res_name:any;
   overlapp_msg:any;
+  is_maternity = 0;
+  image:any;
   constructor(public loadingCtrl:LoadingController,public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
       leave_type: new FormControl('', [Validators.required]),
       reason: new FormControl('', [Validators.required]),
-      // reason: new FormControl('', [Validators.required]),
       total_leave_days: new FormControl('', [Validators.required]),
       from_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
       to_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
-      // half_day: new FormControl(''),
-      // half_day_date: new FormControl(''),
     });
   }
 
@@ -56,7 +54,6 @@ export class LeaveApplicationPage implements OnInit {
       if(!this.inputEmployeeDetails){
         if(res && res['id'] && res['name']){
           this.leave_id = res['id']+'/'+res['name'];
-          // console.log(res['id']+'/'+res['name']);
           this.leave_details(res['id']+'/'+res['name'])
         }else if (res && res['id']) {
           this.leave_id = res['id'];
@@ -68,7 +65,6 @@ export class LeaveApplicationPage implements OnInit {
             this.get_leave_approver()
           }
         }
-        // this.get_employee_details(res['id'])
       }
     })
 
@@ -76,15 +72,7 @@ export class LeaveApplicationPage implements OnInit {
       this.db.drop_down_value['leave_type'] = res.name ? res.name : res.label
       this.db.drop_down_value['leave_type_label'] = res.label
       this.leave_form['leave_type'].setValue(res.name)
-
-
-      // this.dropdownSelection(res);
-      // this.ref.detectChanges()
     });
-
-    // if(!this.leave_id){
-    //   this.get_employee_details()
-    // }
 
     if(this.inputEmployeeDetails){
       this.leave_details(this.inputEmployeeDetails.name)
@@ -92,7 +80,6 @@ export class LeaveApplicationPage implements OnInit {
       this.get_employee_details(this.inputEmployeeDetails.employee)
     }
 
-    // console.log(this.editFormValues,'editFormValues')
     if(this.editFormValues){
       this.save_only = false;
       this.db.drop_down_value['leave_type'] = this.editFormValues.leave_type ? this.editFormValues.leave_type : ''
@@ -108,7 +95,6 @@ export class LeaveApplicationPage implements OnInit {
   ]
 
   changeDuration(item,event){
-    // console.log(event)
     item['duration'] = event.detail.value
     item['count'] = event.detail.value == 'Full Day' ? '1d' : '0.5d'
     let total_leave_days = 0;
@@ -117,7 +103,6 @@ export class LeaveApplicationPage implements OnInit {
         total_leave_days+= res.duration == 'Full Day' ? 1 : 0.5;
     })
     this.leave_form.get('total_leave_days').setValue(total_leave_days)
-    // console.log(total_leave_days)
   }
 
   leave_details(id) {
@@ -125,13 +110,10 @@ export class LeaveApplicationPage implements OnInit {
       doctype: this.selectedTabSec == 'Pending' || this.selectedTabSec == 'Awaiting Approval' ? "Leave Request" : "Leave Application",
       name: id
     }
-
     this.db.doc_detail(data).subscribe(res => {
       this.skeleton = false;
       if (res && res.message && res.message.length != 0 && res.message[0].status == "Success") {
-        // console.log(res.message.data,"res.message.data")
         this.leave_detail = res.message[1];
-
         for (let key in this.leave_detail) {
           let array = ['leave_type', 'reason', 'from_date', 'to_date', 'half_day', 'half_day_date'];
           let find = array.find(res=>{ return res == key})
@@ -146,12 +128,10 @@ export class LeaveApplicationPage implements OnInit {
             }
           }
         }
-
         this.get_employee_details(this.leave_detail.employee)
         this.leave_dash_board(this.leave_detail.employee)
       } else {
         this.leave_detail = undefined;
-        // this.no_employee_details = true
       }
     })
   }
@@ -161,7 +141,6 @@ export class LeaveApplicationPage implements OnInit {
       doctype: "Employee",
       name: name
     }
-
     this.db.doc_detail(data).subscribe(res => {
       this.skeleton = false;
       if (res && res.message && res.message.length != 0 && res.message[0].status == "Success") {
@@ -200,7 +179,6 @@ export class LeaveApplicationPage implements OnInit {
       }
     })
   }
-
 
   get leave_type() {
     return this.leave_form.get('leave_type');
@@ -246,17 +224,7 @@ export class LeaveApplicationPage implements OnInit {
 
   async sure_submit() {
     this.submitted = true;
-    // console.log(this.leave_form, "form")
     if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
-      // if(this.leave_preview && this.leave_preview.length != 0){
-      //   this.leave_preview.map(res =>{
-      //     if(res.count != 'Applied'){
-
-      //     }
-      //   })
-      //   // *ngIf="item.count != 'Weekly Off' && item.count != 'Holiday' && item.count != 'Applied'"
-      // }
-    // if(!this.save_only){
       const alert = await this.alertController.create({
         header: 'Approval',
         message: 'Are you sure do you want to Send for Approval..?',
@@ -275,27 +243,21 @@ export class LeaveApplicationPage implements OnInit {
           },
         ],
       });
-      await alert.present();
+      if(this.is_maternity){
+        this.file_url ? await alert.present() : this.db.sendErrorMessage('Pls select the image');  
+      }
+      else    
+        await alert.present();
     }
-    // }else{
-    //   this.submit();
-    // }
   }
 
   async submit() {
-    // this.submitted = true;
-    // console.log(this.leave_form, "form")
-    // if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
-      // let val = (this.leave_form.value['half_day_check'] && this.leave_form.value['half_day'] != '') || !this.leave_form.value['half_day_check']
-      // 
-      // if (val) {
         let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
         await loader.present();
         let datas = {
           doctype: "Leave Request",
           employee: localStorage['employee_id'],
           posting_date: this.db.current_event_date,
-          // total_leave_days: this.total_leave_days ? this.total_leave_days : 0
         }
 
         if(this.leave_preview && this.leave_preview.length != 0){
@@ -303,27 +265,21 @@ export class LeaveApplicationPage implements OnInit {
         }
 
         datas = {...datas, ...this.leave_form.value}
-        // datas['half_day'] = datas['half_day'] ? 1 : 0;
 
         if(this.leave_detail && this.leave_detail.name){
           datas['name'] = this.leave_detail.name;
         }
 
-      if(this.editFormValues && this.editFormValues.name){
+        if(this.editFormValues && this.editFormValues.name){
           datas['name'] = this.editFormValues.name;
         }
 
-          datas['docstatus'] = 0;
-          this.res_name = undefined
-          datas['workflow_state'] = 'Awaiting Approval';
-        // if(this.save_only){
-        //   datas['docstatus'] = 0;
-        //   datas['workflow_state'] = 'Draft';
-        //   this.res_name = undefined
-        // }else{
-        //   datas['name'] = datas['name'] ? datas['name'] : this.res_name
-        //   datas['workflow_state'] = 'Awaiting Approval';
-        // }
+        this.is_maternity ? datas['is_maternity'] = this.is_maternity : ''
+        this.file_url ? datas['attach_file'] = this.file_url : ''
+
+        datas['docstatus'] = 0;
+        this.res_name = undefined
+        datas['workflow_state'] = 'Awaiting Approval';
        
         this.db.inset_docs({ data: datas }).subscribe(res => {
           setTimeout(() => {
@@ -333,18 +289,11 @@ export class LeaveApplicationPage implements OnInit {
             if(res.message.data && res.message.data.name)
               datas['name'] = res.message.data.name
              this.res_name = res.message.data.name
-            // if(datas['workflow_state'] == 'Awaiting Approval'){
               this.db.sendSuccessMessage("Leave Request Send For Approval successfully!")
               setTimeout(() => {
                 this.model ? this.modalCtrl.dismiss(datas): this.nav.back();
-                // this.nav.back()
               }, 500);
-              
-            // }
-            // else
-              // this.db.sendSuccessMessage("Leave Request created successfully!")
-
-            // this.save_only = !this.save_only;
+          
           }else{
             if(res._server_messages){
               let d = JSON.parse(res._server_messages)
@@ -415,7 +364,74 @@ export class LeaveApplicationPage implements OnInit {
   console.log(val)
   if(val && val.data){
     this.leave_form.get('leave_type').setValue(val.data.name)
+    this.is_maternity = val.data.is_maternity ? val.data.is_maternity : 0;
+
   }
+  }
+
+  changeListener($event: any): void {
+    this.readThis($event.target);
+  }
+  categoryfile:any;
+  categoryimagedata:any;
+  file_url:any;
+
+  async readThis(inputValue: any): Promise<void> {
+    let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+    await loader.present();
+    if (inputValue.files.length > 0) {
+      var file: File = inputValue.files[0];
+      var file_size = inputValue.files[0].size;
+      this.categoryfile = file.name;
+      var myReader: FileReader = new FileReader();
+
+      myReader.onloadend = (e) => {
+        this.categoryimagedata = myReader.result;
+        // Push file name
+
+        let img_data = {
+          file_name: this.categoryfile,
+          content: this.categoryimagedata,
+          decode: 'True',
+        };
+
+        if (file_size <= 10000000) {
+          //10Mb in BYtes
+
+          this.db.upload_image(img_data).subscribe(
+            (res: any) => {
+              let checks_rep = res ? true : false;
+              let unique_name = res.data.name;
+              if (checks_rep == true) {
+                this.db.upload_image_url(unique_name).subscribe(
+                  (url) => {
+                    let file_url = url.data.file_url;
+                    if (url) {
+                      loader.dismiss();
+                      this.file_url = file_url;
+                    }
+                  },
+                  (error) => {
+                    loader.dismiss();
+                  }
+                );
+              }
+            },
+            (error: any) => {
+              loader.dismiss();
+            }
+          );
+        } else if (file_size > 10000000) {
+          loader.dismiss();
+          this.db.filSizeAlert();
+        } else if (file_size == 0) {
+          loader.dismiss();
+        }
+      };
+      myReader.readAsDataURL(file);
+    }
+    else 
+      loader.dismiss();
   }
 
   approve_leaves(event) {
@@ -482,7 +498,7 @@ export class LeaveApplicationPage implements OnInit {
   toDate: any;
 
   datePicker(eve, each) {
-    if ((each == 'from_date' || each == 'to_date')) {
+    if ((each == 'from_date' || each == 'to_date') && !this.is_maternity) {
       let data = this.leave_form.getRawValue();
       if (data && (data.from_date || data.to_date)) {
         if (data && data.from_date) {
@@ -504,6 +520,18 @@ export class LeaveApplicationPage implements OnInit {
       if(this.fromDate >= this.toDate)
         this.fromDate == this.toDate ? '': this.db.sendErrorMessage('Please select the todate greater than from date')
     }
+    else if(each == 'from_date' && this.is_maternity){
+      let data1 = this.leave_form.getRawValue();
+      const currentDate = new Date(data1.from_date);
+      // Add 180 days to the current date
+      currentDate.setDate(currentDate.getDate() + 179);
+      // Format the date as YYYY-MM-DD
+      const formattedDate = currentDate.toISOString().split('T')[0];
+      this.leave_form.get('to_date').setValue(formattedDate)
+      this.leave_form.get('total_leave_days').setValue(180)
+      // data.from_date 
+    }
+
 
   }
 

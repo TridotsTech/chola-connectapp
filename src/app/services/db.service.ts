@@ -847,12 +847,20 @@ export class DbService {
       // tab: 'messages',
       enable: 1,
     },
+    // {
+    //   title: 'Salary Slip',
+    //   route: '/tabs/list/salary-slip',
+    //   icon: '/assets/icon/Nav_tabs/SalarySlip.svg',
+    //   active_icon: '/assets/icon/Nav_tabs/SalarySlip-active.svg',
+    //   tab: 'list/salary-slip',
+    //   enable: 1
+    // },
     {
-      title: 'Salary Slip',
-      route: '/tabs/list/salary-slip',
-      icon: '/assets/icon/Nav_tabs/SalarySlip.svg',
-      active_icon: '/assets/icon/Nav_tabs/SalarySlip-active.svg',
-      tab: 'list/salary-slip',
+      title: 'Leaves',
+      route: '/tabs/leave-application-detail',
+      icon: '/assets/icon/Nav_tabs/LeaveApplication.svg',
+      active_icon: '/assets/icon/Nav_tabs/LeaveApplication-active.svg',
+      tab: 'leave-application-detail',
       enable: 1
     },
     {
@@ -2176,6 +2184,11 @@ export class DbService {
 
   auto_submit_leave_withdrawal(data): Observable<any> {
     let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.auto_submit_leave_withdrawal';
+    return this.postmethod(this.baseMethod + endpoint, data)
+  }
+
+  auto_submit_leave_request(data): Observable<any> {
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.auto_submit_leave_request';
     return this.postmethod(this.baseMethod + endpoint, data)
   }
 

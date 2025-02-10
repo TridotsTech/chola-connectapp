@@ -280,7 +280,7 @@
       }
 
       .h-6 {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 500;
         margin: 8px 0 0 0;
         text-align: center;
@@ -962,15 +962,16 @@ g[opacity="0.4"] {
 
     .employeeDetails {
       margin: 0 10px;
-      // background: #fff;
-      background: linear-gradient(183deg, #DDE0FF 5.56%, rgb(255 255 255) 70.75%);
+      background: #005BC317;
+      // background: linear-gradient(183deg, #DDE0FF 5.56%, rgb(255 255 255) 70.75%);
       // background: linear-gradient(183deg, #ffffff85 5.56%, rgb(255 255 255) 70.75%)
       border-radius: 12px;
       position: absolute;
       bottom: -100px;
       z-index: 9999;
-      width: 95%;
+      width: 93%;
       border: 1px solid #f9f9f9;
+      padding: 0px 10px 10px 10px;
       .imageDiv {
         flex: 0 0 20%;
         height: 65px;
@@ -995,9 +996,10 @@ g[opacity="0.4"] {
         width: 100%;
         height: 40px;
         position: relative;
-        --background:#003f88;
+        --background:var(--primary-color);
+        // --background:#003f88;
         // --background: linear-gradient(42deg, #7da0c6 30.56%, #254281 88.75%);
-        border-radius: 0 0 12px 12px;
+        // border-radius: 0 0 12px 12px;
       }
 
       .checkout_btn {
@@ -1012,10 +1014,14 @@ g[opacity="0.4"] {
 
       .checkInHand {
         position: absolute;
-        left: 0px;
-        font-size: 55px;
-        bottom: 0;
+        // left: 0px;
+        // font-size: 55px;
+        // bottom: 0;
         z-index: 999;
+        left: 10px;
+        font-size: 48px;
+        bottom: 0;
+        top: 80px;
 
       }
     }
@@ -1025,18 +1031,18 @@ g[opacity="0.4"] {
     margin-bottom: 20px;
 
     .buttonsSection {
-      gap: 10px;
+      gap: 5px;
       align-items: unset !important;
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
 
       .buttons_ {
         // gap: 4px;
         // flex: 0 0 calc(33.333% - 10px);
         flex-direction: column;
         height: 110px;
-        border: 1px solid var(--border-col);
+        // border: 1px solid var(--border-col);
         justify-content: center;
         border-radius: 12px;
 
@@ -1090,18 +1096,18 @@ g[opacity="0.4"] {
     margin-top: 30%;
 
     .buttonsSection {
-      gap: 10px;
+      gap: 5px;
       align-items: unset !important;
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
 
       .buttons_ {
         // gap: 4px;
         // flex: 0 0 calc(33.333% - 10px);
         flex-direction: column;
         height: 110px;
-        border: 1px solid var(--border-col);
+        // border: 1px solid var(--border-col);
         justify-content: center;
         border-radius: 12px;
 
@@ -1111,7 +1117,7 @@ g[opacity="0.4"] {
         }
 
         .h-6 {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 500;
           margin: 8px 0 8px 0;
           text-align: center;
@@ -1643,4 +1649,23 @@ g[opacity="0.4"] {
 
 .isSelectedChart {
   border-bottom: 3px solid var(--secondary-color);
+}
+
+.emp_link_icon{
+  position: absolute;
+  top: 0px;
+  right: 15px;
+}
+
+.bottom_segment{
+  position: relative;
+    top: -19px;
+    background: #fff;
+    z-index: 9999;
+    padding: 15px 10px;
+    border-radius: 10px;
+}
+
+.profile_emp{
+  position: unset !important;
 }

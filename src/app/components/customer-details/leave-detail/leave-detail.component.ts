@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { WebsiteFormsComponent } from '../../forms/website-forms/website-forms.component';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ export class LeaveDetailComponent  implements OnInit {
   @Output() leave_confirm = new EventEmitter()
   show_btn = false;
   
-  constructor(public alertController:AlertController,public db:DbService, private modalCtrl: ModalController,public router: Router) { }
+  constructor(public loadingCtrl:LoadingController,public alertController:AlertController,public db:DbService, private modalCtrl: ModalController,public router: Router) { }
 
   ngOnInit() {
     // console.log(this.selectedTab)
@@ -96,6 +96,84 @@ export class LeaveDetailComponent  implements OnInit {
     // else
     //   this.db.sendErrorMessage('Please select any one item')
     // 
+  }
+
+  async leave_approve(eve,data,type){
+    if(type == 'Approve'){
+      const alert = await this.alertController.create({
+        header: 'Approval',
+        message: 'Are you sure do you want to Approval for leave..?',
+        buttons: [
+          {
+            text: 'Cancel',
+            handler: () => {
+              this.alertController.dismiss();
+            },
+          },
+          {
+            text: 'Ok',
+            handler: () => {
+              let res_data ={
+                leave_status:'Approve',
+                name:data.name
+              }
+              this.update_doc(res_data)
+            },
+          },
+        ],
+      });
+      await alert.present();
+  }
+  else{
+    const modal = await this.modalCtrl.create({
+      component: LeavePreviewWithdrawFormComponent,
+      cssClass: 'job-detail-popup',
+      componentProps: {
+        title:'Leave Approval Tool',
+        type:'leave request tool',
+        editFormValues: data
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const res  = await modal.onWillDismiss();
+    console.log(res)
+    if (res && res.data) {
+      let res_data ={
+        leave_status:'Reject',
+        leave_rejected_reason:res.data.rejected_reason,
+        name:data.name
+      }
+      this.update_doc(res_data)
+    }
+  }
+  }
+
+  async update_doc(res_data){
+    let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+    await loader.present();
+    setTimeout(() => {
+      loader.dismiss()
+    }, 20000);
+    this.db.auto_submit_leave_request(res_data).subscribe(res => {
+      setTimeout(() => {
+        loader.dismiss()
+      }, 1000);
+      if(res && res.message && res.message.status == 'Success'){
+        this.db.sendSuccessMessage(res.message.message)
+        this.modalCtrl.dismiss(res)
+      }
+      else{
+        if(res._server_messages){
+          let d = JSON.parse(res._server_messages)
+          let f = JSON.parse(d[0])
+          this.db.sendErrorMessage(f.message)
+        }else{
+          this.db.sendErrorMessage(res.message.message)
+        }
+      }
+    })
   }
 
   approve_leave(data,item, type) {

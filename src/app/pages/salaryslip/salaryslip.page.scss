@@ -1,0 +1,20 @@
+.headerFrame {
+    img {}
+}
+
+.monthYearSelect {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    .select {
+        width: 50%;
+
+        ion-select {
+            border: 1px solid var(--border-col);
+            border-radius: 8px;
+            padding: 0 10px;
+            font-size: 14px;
+        }
+    }
+}

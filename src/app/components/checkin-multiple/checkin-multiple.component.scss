@@ -34,6 +34,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  top:-120px;
 }
 
 .wave_icon {
@@ -370,4 +371,15 @@
   object-fit: cover;
   border-radius: 50px;
   background: #ACA6DC;
+}
+
+.check_in_btn_img{    
+  width: 100%;
+}
+
+.check_btn{
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: -120px;
 }
