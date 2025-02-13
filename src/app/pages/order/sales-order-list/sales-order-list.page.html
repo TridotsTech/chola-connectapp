@@ -174,6 +174,18 @@
     </div>
   </div>
 
+  <div class="applyTicketFrame" *ngIf="doc_type == 'Regularization' && showRegularizationBanner">
+    <img class="d__flex w-100" src="/assets/Frame/regularization.svg" alt="">
+    <ion-button (click)="createNewRegularize()">📃 Apply Regularization</ion-button>
+    <ion-icon class="fnt-18" (click)="showRegularizationBanner = false;" name="close-outline"></ion-icon>
+  </div>
+
+  <div class="applyTicketFrame" *ngIf="doc_type == 'Leave Withdrawal' && showWithdrawalBanner">
+    <img class="d__flex w-100" src="/assets/Frame/regularization.svg" alt="">
+    <ion-button (click)="createNewWithdrawal()">📃 Apply Withdrawal</ion-button>
+    <ion-icon class="fnt-18" (click)="showWithdrawalBanner = false;" name="close-outline"></ion-icon>
+  </div>
+
   <div *ngIf="db.ismobile && (db.sales_manager_role || getSearchScreens()) && !kanban && (!skeleton || db.bodySkeleton || search_text) ">
     <app-common-search [search_filter]="search_filter" placeholder="Search for {{page_title}}" [noFilter]="(search_filter && search_filter.length == 0) ? true : false" (call_clear_txt)="clear_txt('')" (search_txt_value)="load_search($event)" (open_filter)="supplier_filter('')"></app-common-search>
   </div>
@@ -830,9 +842,9 @@
     [image]="'assets/icon/empty.svg'"></app-no-record-found> -->
 
     <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
-    *ngIf="!db.tab_filter && (segment_value == 'show_list' && (doc_type && doc_type != 'Attendance' && doc_type != 'Compensatory Leave Request' && doc_type != 'Employee Grievance' && doc_type != 'Job Applicant'  && doc_type != 'Timesheet' && doc_type != 'Expense Claim' && doc_type != 'Employee' && doc_type != 'Salary Slip' && doc_type != 'Project' && doc_type != 'Test Case' && doc_type != 'Event' && doc_type != 'Task' && doc_type != 'Bug Sheet' && (event_data && event_data.length == 0) && (task_data && task_data.length == 0)) && (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.enable_detail) || (!db.ismobile && doc_type == 'Task' && db.viewListType == 'Table' && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)"
+    *ngIf="!db.tab_filter && (segment_value == 'show_list' && (doc_type && doc_type != 'Attendance' && doc_type != 'Compensatory Leave Request' && doc_type != 'Employee Grievance' && doc_type != 'Job Applicant'  && doc_type != 'Timesheet' && doc_type != 'Expense Claim' && doc_type != 'Employee' && doc_type != 'Salary Slip' && doc_type != 'Project' && doc_type != 'Test Case' && doc_type != 'Event' && doc_type != 'Task' && doc_type != 'Bug Sheet' && doc_type != 'HD Ticket' && (event_data && event_data.length == 0) && (task_data && task_data.length == 0)) && (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.enable_detail) || (!db.ismobile && doc_type == 'Task' && db.viewListType == 'Table' && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)"
     [column]="true" height="calc(100vh - 170px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>  
+    [image]="db.getNotFoundImage(doc_type)"></app-no-record-found>  
 
   <!-- <ion-list *ngIf="skeleton && db.ismobile && (this.db.selected_list && this.db.selected_list.page != 'Timesheet' && this.db.selected_list.page != 'Expense Claim')">
     <ion-item lines="none" *ngFor="let val of [1,2,3,4,5,6]">

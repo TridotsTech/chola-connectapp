@@ -82,8 +82,9 @@ export class MobileHeaderComponent implements OnInit {
     } else if (this.model) {
       this.db.close_modal();
     }  else {
-      // this.location.back()
-      window.history.back()
+      // this.navCtrl.pop();
+      this.location.back()
+      // window.history.back()
     }
     // this.db.get_dashboard();
     // this.db.checkin_var_load = true;

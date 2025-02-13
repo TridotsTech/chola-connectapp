@@ -4,45 +4,45 @@
     border-radius: 50%;
 }
 
-.lead {
-    p {
-        color: #069855;
-    }
+// .lead {
+//     p {
+//         color: #069855;
+//     }
 
-    div {
-        background: #069855;
-    }
-}
+//     div {
+//         background: #069855;
+//     }
+// }
 
-.opportunity {
-    p {
-        color: #12CDD9;
-    }
+// .opportunity {
+//     p {
+//         color: #12CDD9;
+//     }
 
-    div {
-        background: #12CDD9;
-    }
-}
+//     div {
+//         background: #12CDD9;
+//     }
+// }
 
-.converted {
-    p {
-        color: #069855;
-    }
+// .converted {
+//     p {
+//         color: #069855;
+//     }
 
-    div {
-        background: #069855;
-    }
-}
+//     div {
+//         background: #069855;
+//     }
+// }
 
-.quotation {
-    p {
-        color: #57AEFF;
-    }
+// .quotation {
+//     p {
+//         color: #57AEFF;
+//     }
 
-    div {
-        background: #57AEFF;
-    }
-}
+//     div {
+//         background: #57AEFF;
+//     }
+// }
 
 .active {
     p {
@@ -61,6 +61,16 @@
 
     div {
         background: #FFb949;
+    }
+}
+
+.awaiting {
+    p {
+        color: #E99000;
+    }
+
+    div {
+        background: #E99000;
     }
 }
 
@@ -447,104 +457,104 @@
 
 
 // Go1 Projects
-.proj_open {
-    p {
-        color: #007EE5;
-    }
+// .proj_open {
+//     p {
+//         color: #007EE5;
+//     }
 
-    div {
-        background: #007EE5;
-    }
-}
+//     div {
+//         background: #007EE5;
+//     }
+// }
 
-.proj_task_open {
-    p {
-        color: #007EE5;
-    }
+// .proj_task_open {
+//     p {
+//         color: #007EE5;
+//     }
 
-    div {
-        background: #007EE5;
-    }
-}
-
-
-.proj_working {
-    p {
-        color: #FF8725;
-    }
-
-    div {
-        background: #FF8725;
-    }
-}
-
-.proj_task_working {
-    p {
-        color: #FF8725;
-    }
-
-    div {
-        background: #FF8725;
-    }
-}
+//     div {
+//         background: #007EE5;
+//     }
+// }
 
 
-.proj_pending_review {
-    p {
-        color: #077E8C;
-    }
+// .proj_working {
+//     p {
+//         color: #FF8725;
+//     }
 
-    div {
-        background: #077E8C;
-    }
-}
+//     div {
+//         background: #FF8725;
+//     }
+// }
 
-.proj_task_pending_review {
-    p {
-        color: #077E8C;
-    }
+// .proj_task_working {
+//     p {
+//         color: #FF8725;
+//     }
 
-    div {
-        background: #077E8C;
-    }
-}
+//     div {
+//         background: #FF8725;
+//     }
+// }
 
-.proj_overdue {
-    p {
-        color: #0392C3;
-    }
 
-    div {
-        background: #0392C3;
-    }
-}
+// .proj_pending_review {
+//     p {
+//         color: #077E8C;
+//     }
 
-.proj_task_overdue {
-    p {
-        color: #0392C3;
-    }
+//     div {
+//         background: #077E8C;
+//     }
+// }
 
-    div {
-        background: #0392C3;
-    }
-}
+// .proj_task_pending_review {
+//     p {
+//         color: #077E8C;
+//     }
 
-.proj_completed {
-    p {
-        color: #33D446;
-    }
+//     div {
+//         background: #077E8C;
+//     }
+// }
 
-    div {
-        background: #33D446;
-    }
-}
+// .proj_overdue {
+//     p {
+//         color: #0392C3;
+//     }
 
-.proj_task_completed {
-    p {
-        color: #33D446;
-    }
+//     div {
+//         background: #0392C3;
+//     }
+// }
 
-    div {
-        background: #33D446;
-    }
-}
+// .proj_task_overdue {
+//     p {
+//         color: #0392C3;
+//     }
+
+//     div {
+//         background: #0392C3;
+//     }
+// }
+
+// .proj_completed {
+//     p {
+//         color: #33D446;
+//     }
+
+//     div {
+//         background: #33D446;
+//     }
+// }
+
+// .proj_task_completed {
+//     p {
+//         color: #33D446;
+//     }
+
+//     div {
+//         background: #33D446;
+//     }
+// }

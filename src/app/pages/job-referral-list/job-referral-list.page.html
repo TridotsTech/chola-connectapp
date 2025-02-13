@@ -1,7 +1,20 @@
 <app-header title="Job Referral" [back_route]="'/tabs/dashboard'" [model]="false"></app-header>
 
-<ion-content [fullscreen]="true">
-  <div class="p-10">
+<ion-content [fullscreen]="true" style="--overflow: hidden;">
+  
+  <div *ngIf="!skeleton" class="d__flex search_sec">
+    <div class="text_srch">
+      <app-common-search [placeholder]="'Search'" (call_clear_txt)="clear_txt($event)" (search_txt_value)="searchPro($event)"></app-common-search>
+    </div>
+    <div class="funnel_srch" (click)="openSearchFilter()">
+      <div class="search_">
+        <ion-icon name="funnel-outline"></ion-icon>
+      </div>
+      <p class="filterCount m-0" *ngIf="totalFilterCount">{{totalFilterCount}}</p>
+    </div>
+  </div>
+
+  <div class="p-0-10">
     <div *ngIf="jobReferralList && jobReferralList.length != 0" class="referral_list" (scroll)="load_more($event)">
       <div *ngFor="let item of jobReferralList" class="boxes_" (click)="getReferralDetail(item)">
         <div class="sec1">

@@ -1,9 +1,18 @@
 .detailView {
+    border: 1px solid var(--border-col);
     flex-wrap: wrap;
     gap: 10px;
     align-items: unset;
     height: 340px;
     overflow: auto;
+    margin: 0 10px 10px 10px;
+    border-radius: 10px;
+    background: #fff;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     .Icon {
         height: 15px;
         width: 16px;
@@ -28,6 +37,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        justify-content: end;
     }
 }
 
@@ -61,4 +71,14 @@
     .save_btn {
         width: 55%;
     }
+}
+
+.mainSection {
+    background: url('/assets/img/BackgroundPattern.png') no-repeat;
+    background-size: cover;
+    min-height: 100%;
+}
+
+.height_reduce {
+    height: 305px !important;
 }

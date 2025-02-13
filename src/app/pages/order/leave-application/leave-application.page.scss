@@ -11,7 +11,7 @@
     }
 
     .box_1 {
-        border: 1px solid var(--border-col);
+        // border: 1px solid var(--border-col);
         padding: 0 10px 5px 10px;
         // padding: 5px 5px 5px;
         border-radius: 8px;
@@ -171,7 +171,7 @@ label {
         border-radius: 7px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 7px;
     }
 
     ion-select {
@@ -186,4 +186,8 @@ label {
     padding: 5px;
     color: #941f1f;
     background: #fff0f0;
+}
+
+.pl10{
+    padding-left: 10px !important;
 }

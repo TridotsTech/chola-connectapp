@@ -248,6 +248,8 @@ export class DbService {
   allocate_agent = false;
   text_width = false;
 
+  leave_skeleton = false;
+
   employee_info:any;
   constructor(
     private animationCtrl: AnimationController,
@@ -799,8 +801,8 @@ export class DbService {
     {
       title: 'Home',
       route: '/tabs/dashboard',
-      icon: '/assets/icon/Nav_tabs/Home Icon-01.svg',
-      active_icon: '/assets/icon/Nav_tabs/Home Icon-active.svg',
+      icon: '/assets/icon/Nav_tabs/homeicon.svg',
+      active_icon: '/assets/icon/Nav_tabs/homeicon-active.svg',
       tab: 'dashboard',
       enable: 1,
     },
@@ -815,7 +817,7 @@ export class DbService {
     {
       title: 'Attendance',
       route: '/tabs/list/attendance',
-      icon: '/assets/icon/Nav_tabs/Attendance-01.svg',
+      icon: '/assets/icon/Nav_tabs/Attendance.svg',
       active_icon: '/assets/icon/Nav_tabs/Attendance-active.svg',
       tab: 'list/attendance',
       enable: 1,
@@ -823,8 +825,8 @@ export class DbService {
     {
       title: 'Account',
       route: '/tabs/my-profile',
-      icon: '/assets/icon/Nav_tabs/Tridots icon-01.svg',
-      active_icon: '/assets/icon/Nav_tabs/Tridots icon-active.svg',
+      icon: '/assets/icon/Nav_tabs/profile.svg',
+      active_icon: '/assets/icon/Nav_tabs/profile-active.svg',
       tab: 'my-profile',
       enable: 1,
     },
@@ -834,15 +836,15 @@ export class DbService {
     {
       title: 'Home',
       route: '/tabs/dashboard',
-      icon: '/assets/icon/Nav_tabs/Home Icon-01.svg',
-      active_icon: '/assets/icon/Nav_tabs/Home Icon-active.svg',
+      icon: '/assets/icon/Nav_tabs/homeicon.svg',
+      active_icon: '/assets/icon/Nav_tabs/homeicon-active.svg',
       tab: 'dashboard',
       enable: 1,
     },
     {
       title: 'Attendance',
       route: '/tabs/list/attendance',
-      icon: '/assets/icon/Nav_tabs/Attendance-01.svg',
+      icon: '/assets/icon/Nav_tabs/Attendance.svg',
       active_icon: '/assets/icon/Nav_tabs/Attendance-active.svg',
       // tab: 'messages',
       enable: 1,
@@ -866,8 +868,8 @@ export class DbService {
     {
       title: 'Account',
       route: '/tabs/my-profile',
-      icon: '/assets/icon/Nav_tabs/Tridots icon-01.svg',
-      active_icon: '/assets/icon/Nav_tabs/Tridots icon-active.svg',
+      icon: '/assets/icon/Nav_tabs/profile.svg',
+      active_icon: '/assets/icon/Nav_tabs/profile-active.svg',
       tab: 'my-profile',
       enable: 1,
     },
@@ -1612,7 +1614,7 @@ export class DbService {
             {
               page: 'Approvals',
               page_name: 'Approvals',
-              route: '/approval-list',
+              route: '/approvals',
             }
           ]
 
@@ -2637,7 +2639,7 @@ export class DbService {
     const { data } = await modal.onWillDismiss();
     if (data && data.name) {
       let month = this.monthLists.findIndex((res) => { return res.name == data.name })
-      // console.log(month)
+      console.log(month)
       this.selectedMonth = Number(month) + 1;
       this.selected_year = true;
       this.selectedYearSubject.next(this.selectedMonth);
@@ -2930,6 +2932,11 @@ export class DbService {
         }
       }
     }
+  }
+
+
+  getNotFoundImage(doctype){
+    return `assets/not-found/${doctype}.svg`
   }
 
 }

@@ -127,6 +127,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   selectedJobOpening: any;
   finalDataKeys: any = [];
 
+  showRegularizationBanner = true;
+  showWithdrawalBanner = true;
+
   constructor(
     private loadingCtrl: LoadingController,
     public db: DbService,
@@ -394,7 +397,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         }
 
         // res == 'getYear' && 
-        if (res && this.db.selected_year && (this.db.path.includes('/list/salary-slip') || this.db.path == '/list/employee-advance' || this.db.path == '/list/expense-claim')) {
+        if (res && this.db.selected_year && ((this.db.path.includes('/list/salary-slip') && !this.db.modal) || this.db.path == '/list/employee-advance' || this.db.path == '/list/expense-claim')) {
           this.db.skeletonLoader = true;
           this.db.bodySkeleton = false;
           this.page_no = 1
@@ -2437,6 +2440,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
 
   async open_salary_slip(data) {
+    this.db.modal = true;
     const modal = await this.modalCtrl.create({
       component: PayrollDetailComponent,
       cssClass: 'salary-slip-popup',
@@ -2447,6 +2451,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     });
     await modal.present();
     const val = await modal.onWillDismiss();
+    this.db.modal = false;
   }
 
   segment(eve) {
@@ -3165,6 +3170,22 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  createNewRegularize(){
+    let data = {
+      name: "Regularization",
+      route: "/forms/regularization"
+    }
+    this.createNew(data);
+  }
+
+  createNewWithdrawal(){
+    let data = {
+      name: "Leave Withdrawal",
+      route: "/forms/leave-withdrawal"
+    }
+    this.createNew(data);
+  }
+
   submit_draft() {
     this.order_detail.docstatus = 1;
     this.order_detail.payment_schedule = [];
@@ -3360,7 +3381,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     // this.db.employee_role && 
     if (data && data.name && data.name == 'Timesheet') {
       this.router.navigateByUrl('/timesheet-detail');
-    }else if (data && data.name && data.name == 'Leave Withdrawal') {
+    }else if (data && data.name && data.name == 'Withdrawal') {
       this.router.navigateByUrl('/leave-withdrawal/New');
     }else if (data && data.name && data.name == 'Probation Evaluation') {
       this.router.navigateByUrl('/performance-evaluation');

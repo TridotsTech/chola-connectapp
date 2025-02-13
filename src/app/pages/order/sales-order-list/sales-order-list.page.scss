@@ -1445,3 +1445,23 @@ ion-backdrop {
 .selectedViewList {
     background-color: #fff;
 }
+
+.applyTicketFrame {
+    position: relative;
+    padding: 10px 10px 0 10px;
+ 
+    ion-button {
+       position: absolute;
+       bottom: 10px;
+       font-size: 12px;
+       left: 20px;
+       --padding-start: 10px;
+       --padding-end: 10px;
+    }
+ 
+    ion-icon {
+       position: absolute;
+       top: 20px;
+       right: 20px;
+    }
+ }

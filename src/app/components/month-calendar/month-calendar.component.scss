@@ -15,7 +15,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
+    // padding-bottom: 10px;
+    gap: 10px;
 }
 
 .nav-button {
@@ -166,4 +167,11 @@
 
 .bg-change{
     transition: transform 0.5s ease-in-out;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.mainCalSec{
+    border: 1px solid var(--border-col);
+    border-radius: 10px;
 }

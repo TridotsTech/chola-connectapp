@@ -10,10 +10,11 @@
   <div *ngIf="viewType == 'overview'">
     <!-- New UI -->
     <div *ngIf="attendance_dashboard && attendance_dashboard.length != 0" class="attendance_dashboard">
-      <div *ngFor="let item of attendance_dashboard;let i = index" class="over_flow">
+      <div *ngFor="let item of attendance_dashboard;let i = index"  [ngStyle]="{'background': getCircleColor(item.label)}" class="over_flow">
         <div class="w-100 d__flex just-s first_sec mb-5">
           <ion-icon [src]="attendance_dashboard_icon[i].icon" class="fnt-30"></ion-icon>
-          <p class="m-0 fnt-16 fnt_w500" [ngStyle]="{'color': get_count_color(item.label)}">{{item.count}}</p>
+          <p class="m-0 fnt-16 fnt_w600" >{{item.count}}</p>
+          <!-- [ngStyle]="{'color': get_count_color(item.label)}" -->
         </div>
         <p class="m-0 fnt-12 fnt_w500 label">{{item.label}}</p>
       </div>
@@ -85,7 +86,7 @@
     <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
       *ngIf="list_data && list_data.data && list_data.data.length == 0" [column]="true"
       [height]="db.ismobile ? 'calc(100vh - 300px)' : 'calc(100vh - 600px)'" [heading]="'No record found'"
-      [image]="'assets/icon/empty.svg'"></app-no-record-found>
+      [image]="db.getNotFoundImage('Attendance')"></app-no-record-found>
   </div>
 
 </div>

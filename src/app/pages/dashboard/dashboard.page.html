@@ -48,8 +48,8 @@
     </div>
   
     <div class="businessSummary b-t-5">
-      <div class="d__flex just-s w-100 mb-20">
-        <h5 class="m-0 fnt-16">Quick Links</h5>
+      <div class="d__flex just-s w-100 mb-10">
+        <h5 class="m-0 fnt-15">Quick Links</h5>
         <ion-icon class="fnt-20" (click)="editQuick()" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="buttonsSection">
@@ -96,19 +96,20 @@
     </div>
   
     <div class="leaveBalance b-t-5" *ngIf="ess_dashboard_data && ess_dashboard_data.leave_balance && ess_dashboard_data.leave_balance.length != 0" >
-      <div class="d__flex just-s w-100 mb-20">
-        <h5 class="m-0 fnt-16">Leave Balance</h5>
+      <div class="d__flex just-s w-100 mb-10">
+        <h5 class="m-0 fnt-15">Leave Balance</h5>
         <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="attendance_dashboard">
-        <div *ngFor="let item of ess_dashboard_data.leave_balance;let i = index" class="over_flow">
-          <div class="bigDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div>
-          <div class="smallDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div>
+        <div *ngFor="let item of ess_dashboard_data.leave_balance;let i = index" class="over_flow" [ngStyle]="{'background': getCircleColor(item.label)}">
+          <!-- <div class="bigDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div>
+          <div class="smallDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div> -->
           <div class="w-100 d__flex just-s first_sec mb-5" [routerLink]="'/leave-application-detail/' + db.employee_id">
             <ion-icon [src]="get_leaves_icon(item.label)" class="fnt-30"></ion-icon>
-            <p [ngStyle]="{'color':get_leaves_color(item.label)}" class="m-0 fnt-14 fnt_w500">{{item.count}}</p>
+            <!-- [ngStyle]="{'color':get_leaves_color(item.label)}" -->
+            <p  class="m-0 fnt-14 fnt_w600">{{item.count}}</p>
           </div>
-          <p class="m-0 fnt-12 fnt_w500 label">{{item.label.replaceAll('Leaves', ' ')}}</p>
+          <p class="m-0 fnt-12 fnt_w500 label black_color">{{item.label.replaceAll('Leaves', ' ')}}</p>
         </div>
       </div>
     </div>
@@ -146,8 +147,8 @@
     </div>
   
     <div class="attendanceSummary b-t-5">
-      <div class="d__flex just-s w-100 mb-20">
-        <h5 class="m-0 fnt-16">Attendance</h5>
+      <div class="d__flex just-s w-100 mb-10">
+        <h5 class="m-0 fnt-15">Attendance</h5>
         <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="calendar_att">
@@ -191,7 +192,7 @@
 
     <div class="hr_sec">
 
-      <div class="d__flex gap-5 mb-10">
+      <div class="d__flex gap-5 mb-10 p-10-10-0-10">
         <img src="/assets/home-genie/hi.svg" alt="">
         <p class="m-0 fnt-12 fnt_w500">Welcome Back To Work!</p>
       </div>
@@ -210,7 +211,7 @@
         <p>View Attendance</p>
       </div>
 
-      <div class="hrOverview">
+      <div class="hrOverview p-0-10">
         <!-- <div class="d__flex just-s w-100 mb-20">
           <h5 class="m-0">Overview</h5>
           <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
@@ -223,13 +224,13 @@
                 <p class="m-0 fnt-18 fnt_w500">{{item.count}}</p>
                 <ion-icon class="fnt-50" [src]="attendanceEntry[i]"></ion-icon>
               </div>
-              <div class="d__flex via gap-5">
+              <!-- <div class="d__flex via gap-5">
                 <div [class.green]="item.new_count > item.old_count" class="d__flex red gap-5">
                   <ion-icon class="fnt-12" [name]="item.new_count > item.old_count ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
                   <span class="fnt-10">{{item.new_count}}%</span>
                 </div>
                 <span class="fnt-10 gray_clr">vs Yesterday</span>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -251,12 +252,12 @@
         </div>
       </div> -->
 
-      <div class="businessSummaryHr">
-        <div class="d__flex just-s w-100 mb-20">
-          <h5 class="m-0">Quick Links</h5>
+      <div class="businessSummaryHr b-t-5">
+        <div class="d__flex just-s w-100 p-0-10 m-10-0 ">
+          <h5 class="m-0 fnt-15">Quick Links</h5>
           <ion-icon class="fnt-20" (click)="editQuick()" src="/assets/Employee-Home/more.svg"></ion-icon>
         </div>
-        <div class="buttonsSection">
+        <div class="buttonsSection p-0-10">
           <div class="d__flex buttons_ mouse" *ngFor="let data of db.dashboard_values" (click)="db.doctype_select(data.page)" [routerLink]="data.route ? data.route : null">
             <ion-icon [src]="db.get_home_icon(data.page)"></ion-icon>
             <!-- <img [src]="db.get_home_icon(data.page)"> -->
@@ -265,9 +266,9 @@
         </div>
       </div>
 
-      <div class="attendanceComparisonChart">
-        <div class="d__flex just-s w-100 mb-20">
-          <h5 class="m-0">Attendance Trends</h5>
+      <div class="attendanceComparisonChart b-t-5">
+        <div class="d__flex just-s w-100 m-10-0">
+          <h5 class="m-0 fnt-15">Attendance Trends</h5>
           <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
         </div>
         <div class="apexChart" *ngIf="chartObject">

@@ -1,5 +1,5 @@
 .referral_list {
-    height: calc(100vh - 70px);
+    height: calc(100vh - 120px);
     overflow: auto;
 
     &::-webkit-scrollbar {
@@ -40,4 +40,42 @@
             align-items: end;
         }
     }
+}
+
+.search_sec {
+    width: 100%;
+
+    .text_srch {
+        width: 90%;
+    }
+
+    .funnel_srch {
+        width: 10%;
+        margin-right: 10px;
+        position: relative;
+
+        .search_ {
+            width: 40px;
+            height: 40px;
+            background: #e3e3e3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+    }
+}
+
+.filterCount {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 12px;
+    background: var(--primary-color);
+    width: 17px;
+    height: 17px;
+    color: #fff;
+    padding: 0px;
+    border-radius: 50px;
+    text-align: center;
 }

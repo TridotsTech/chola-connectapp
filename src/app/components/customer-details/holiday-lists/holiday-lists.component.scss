@@ -1,44 +1,68 @@
 @media only screen and (max-width: 768px) {
-    .app-calendar{
-      margin: unset !important;
-      border-top: unset !important;
-      flex-direction: column;
-        .w-50{
-          width: 100%;
-          padding:10px 10px 0 10px;
-        }
+  .app-calendar {
+    margin: unset !important;
+    border-top: unset !important;
+    flex-direction: column;
 
-        .main-img{
-          height:115px !important;
-        }
+    .w-50 {
+      width: 100%;
+      padding: 10px 10px 0 10px;
     }
 
-    .p10{
-      padding:0 !important;
+    .main-img {
+      height: 115px !important;
     }
+  }
 
-    .holiday_list{
-      .border-b{
-        border-bottom: 1px solid var(--border-col);
-        border-radius: 0 !important;
-        // border: unset;
-        .flex-10{
-          padding: 0 10px 0 0;
-          flex: 0 0 calc(15% - 10px) !important;
-        }
-        .flex-90{
-          flex: 0 0 calc(85% - 10px) !important;
-        }
+  .p10 {
+    padding: 0 !important;
+  }
+
+  .holiday_list {
+    .border-b {
+      border-bottom: 1px solid var(--border-col);
+      border-radius: 0 !important;
+
+      // border: unset;
+      .flex-10 {
+        padding: 0 10px 0 0;
+        flex: 0 0 calc(15% - 10px) !important;
+      }
+
+      .flex-90 {
+        flex: 0 0 calc(85% - 10px) !important;
       }
     }
+  }
 
-    .holiday_list::-webkit-scrollbar{
-      display: none;
-    }
+  .holiday_list::-webkit-scrollbar {
+    display: none;
+  }
 
-    .holiday_list{
-      // height:calc(100vh - 343px) !important;
+  .holiday_list {
+    // height:calc(100vh - 343px) !important;
+  }
+
+  .holidayTabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    margin: 10px 10px 0 10px;
+    background: rgba(227, 240, 255, 1);
+    border-radius: 7px;
+
+    .box_item {
+      h5 {
+        font-size: 14px;
+        padding: 5px;
+        color: #666666B2;
+      }
     }
+  }
+
+  .stciky_cal{
+    // padding: 10px !important;
+  }
 
 }
 
@@ -46,13 +70,13 @@
   padding: 10px 20px 20px 20px !important;
 }
 
-.border_right_none{
+.border_right_none {
   border-right: 0px !important;
 }
 
 
 @media screen and (min-width: 768px) {
-  .stciky_cal{
+  .stciky_cal {
     position: sticky;
     top: 45px;
     height: 100%;
@@ -60,31 +84,31 @@
     background: #fff;
   }
 
-  .no_scroll{
+  .no_scroll {
     overflow: unset !important;
   }
 
-  .app-calendar{
+  .app-calendar {
     border-top: none !important;
     margin: 0 !important;
   }
 
-  .p10{
+  .p10 {
     padding: 0 20px !important;
   }
 
-  .px-20{
+  .px-20 {
     padding: 0 20px !important;
   }
 
-  .d___flex{
+  .d___flex {
     display: flex;
   }
 
   .calendar-cell-content {
     padding: 8px;
   }
-  
+
   .event-detail {
     font-size: 14px;
     margin: 4px;
@@ -93,8 +117,55 @@
     padding: 2px 4px;
   }
 
-  .filtersHoliday{
+  .filtersHoliday {
     border-bottom: 1px solid var(--border-col);
     border-top: 1px solid var(--border-col);
+  }
+}
+
+.selected_item {
+  background: #005BC3;
+
+  h5 {
+    color: #fff !important;
+  }
+}
+
+.border-r-l {
+  border-radius: 10px 0 0 10px;
+}
+
+.border-r-r {
+  border-radius: 0 10px 10px 0;
+}
+
+.holiday_dashboard {
+  padding: 10px;
+  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  .over_flow {
+    border-radius: 10px;
+    padding: 10px;
+    // border: 1px solid var(--border-col);
+  }
+}
+
+.holidayListView{
+  border: 1px solid var(--border-col);
+  border-radius: 10px;
+}
+
+.monthHeadList{
+  background: #F6FAFF;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-col);
+  border-radius: 10px 10px 0 0;
+}
+
+.holiday_list{
+  .holiday_box:last-child{
+    border-bottom: unset !important;
   }
 }

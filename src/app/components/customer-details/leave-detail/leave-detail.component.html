@@ -95,7 +95,7 @@
             </div>
           </div>
           <div class="d__flex just-s">
-            <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.count}} </p>
+            <p class="m-0 fnt-14 d__flex gap-5">Days: {{item.count}} </p>
             <p class="m-0 fnt-14 d__flex gap-5">{{item.status}}</p>
           </div>
           <div class="d__flex gap-10 p-1015 btnSec" [class.wi-100]="data.docstatus == 1" *ngIf="db.hr_manager_role && selectedTab == 'Awaiting Approval' && item.status == 'Pending'">

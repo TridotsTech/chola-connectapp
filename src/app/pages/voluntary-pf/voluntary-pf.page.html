@@ -1,0 +1,45 @@
+<app-header [title]="'Voluntary Pf'" [showYear]="false" [model]="false"></app-header>
+
+<ion-content [fullscreen]="true">
+  <div class="voluntary-mainSection">
+    
+    <div class="voluntary-profileSection">
+      
+      <div class="sec-1">
+        <ion-icon class="profile-icon" src="/assets/Voluntary-Pf/Voluntary-Profile.svg"></ion-icon>
+        <h5 class="m-0">{{db.cust_name}}</h5>
+        <h6 class="m-0">{{db.cust_designation}}</h6>
+        <p class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> {{db.employee_img ? db.employee_img.grade : 'CFF 1-NMS'}}</p>
+      </div>
+
+      <div class="sec-2-main">
+
+        <div class="sec-2" *ngIf="voluntaryList">
+          <div class="d__flex just-s mb-10 mt-10">
+            <h4 class="m-0 fnt-13 gray_clr">Contribution</h4>
+            <h4 class="m-0 fnt-13 d__flex gap-10"> <ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Tick.svg"></ion-icon> Fixed Amount</h4>
+          </div>
+          <div class="d__flex just-s mb-10">
+            <h4 class="m-0 fnt-13 gray_clr">Effective From</h4>
+            <h4 class="m-0 fnt-13">{{voluntaryList.effective_from | date: 'd MMM , y'}}</h4>
+          </div>
+          <div class="d__flex just-s mb-10">
+            <h4 class="m-0 fnt-13 gray_clr">Amount</h4>
+            <h4 class="m-0 fnt-13 d__flex gap-10"> <ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Wallet.svg"></ion-icon> {{voluntaryList.amount ? voluntaryList.amount : '0'}}</h4>
+          </div>
+        </div>
+
+        <div class="sec-2 no_List" *ngIf="!voluntaryList">
+          <p class="m-0 fnt-18 fnt_w500">No Data Found!</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="button-section">
+      <ion-button fill="clear" routerLink="/forms/voluntary-pf">Add Voluntary PF</ion-button>
+    </div>
+
+  </div>
+</ion-content>

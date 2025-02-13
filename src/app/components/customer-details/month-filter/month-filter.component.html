@@ -1,4 +1,4 @@
-<div *ngIf="selectedDate" class="p-10 d__flex gap-10 just-s">
+<div *ngIf="selectedDate" class="p-10 d__flex gap-10 just-s" [class.padding_none]="padding_none">
   <div *ngIf="!dateCal && !hideDate; else emptyDiv">
     <app-month-year-picker [selectDate]="selectedDate" (dateChange)="onDateChange($event)"></app-month-year-picker>
   </div>

@@ -67,14 +67,14 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       });
       await modal.present();
       const val = await modal.onWillDismiss();
-      console.log(val)
+      // console.log(val)
       if(val && val.data){
         this.editFormValues.leave_type = val.data.name
       }
   }
 
   datePickerChange(type, event) {
-    console.log(event.value)
+    // console.log(event.value)
     if (type == 'from_date') {
       this.editFormValues.from_date = event.value;
     } 
@@ -107,7 +107,7 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       // Remove the non-English characters
       event.target.value = value.replace(/[^a-zA-Z0-9\s.,!?]/g, '');
       const text = event.target.value; // Update the model
-      console.log(text);
+      // console.log(text);
     }
   }
 
@@ -138,6 +138,12 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       this.modalCntrl.dismiss(this.editFormValues);
     else this.db.sendErrorMessage('Please enter the Rejected Reason');
   }
+
+  // regulariztion_reason(){
+  //   if (this.editFormValues.reason)
+  //     this.modalCntrl.dismiss(this.editFormValues);
+  //   else this.db.sendErrorMessage('Please enter the Reason');
+  // }
 
   leave_req(){
     // console.log(this.leave_preview, 'this.editFormValues');

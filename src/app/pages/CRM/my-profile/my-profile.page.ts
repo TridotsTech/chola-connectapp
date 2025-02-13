@@ -109,8 +109,8 @@ export class MyProfilePage implements OnInit {
       is_private: 0,
       // folder: "Home/Attachments",
       doctype: 'File',
-      attached_to_doctype: "User",
-      attached_to_name: localStorage['customerRefId'],
+      attached_to_doctype: "Employee",
+      attached_to_name: localStorage['employee_id'],
       decode: true,
     };
     this.db.inset_docs({ data: data }).subscribe((res) => {
@@ -129,9 +129,10 @@ export class MyProfilePage implements OnInit {
 
   insert_user_image(image){
     let data = {
-      user_image: image ? image.data.file_url : '',
-      name: localStorage['customerRefId'],
-      doctype: 'User'
+      // user_image: image ? image.data.file_url : '',
+      image: image ? image.data.file_url : '',
+      name: localStorage['employee_id'],
+      doctype: 'Employee'
     }
     this.db.inset_docs({data: data}).subscribe(res => {
       // console.log(res)

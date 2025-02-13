@@ -1,0 +1,44 @@
+.title {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.custom-input {
+
+    ion-input,
+    ion-select {
+        border: 1px solid var(--border-col);
+        border-radius: 7px;
+        height: 40px;
+        min-height: 40px !important;
+        padding: 0 10px !important;
+        font-size: 13px;
+    }
+
+    ion-textarea {
+        border: 1px solid var(--border-col);
+        border-radius: 7px;
+        font-size: 13px;
+    }
+}
+
+.buttons__ {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    box-shadow: 0 0 5px #ddd;
+    width: 100%;
+    background: #fff;
+    z-index: 9999;
+
+    ion-button {
+        width: 50%;
+        height: 45px;
+    }
+
+    .clearBtm {
+        --background: #fff;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+}

@@ -1,0 +1,33 @@
+.active_star {
+    color: #ffbf00;
+}
+
+.ratings {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.descriptionSec {
+    ion-textarea {
+        resize: none;
+        border: 1px solid var(--border-col);
+        border-radius: 5px;
+        max-height: 150px;
+        min-height: 150px;
+        font-size: 14px;
+    }
+}
+
+.submit-btn {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    width: 100%;
+    box-shadow: 0 0 5px #ddd;
+
+    ion-button {
+        width: 100%;
+    }
+}

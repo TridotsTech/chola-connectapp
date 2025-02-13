@@ -167,6 +167,7 @@ ion-item:hover {
 
     .cust-list {
         padding-bottom: 0 !important;
+
         ion-item {
             position: relative;
             justify-content: space-between;
@@ -381,7 +382,7 @@ ion-item {
             }
 
             ion-icon {
-                font-size: 14px;
+                font-size: 18px;
                 color: #000;
             }
         }
@@ -473,89 +474,182 @@ ion-backdrop {
     }
 }
 
-.employeeDetail{
+.employeeDetail {
     padding: 8px;
     border: 1px solid #ddd;
-    border-radius:5px;
-    margin:10px;
-    position:relative;
+    border-radius: 5px;
+    margin: 10px;
+    position: relative;
 
-    .workIcon1{
-        height:18px;
-        width:18px;
+    .workIcon1 {
+        height: 18px;
+        width: 18px;
         margin: 2px 0 0 0;
-     }
+    }
 }
 
-.employeeDetails{
-     margin: 0 0 10px 0;
-    .details{
-       gap:8px;
-     .title{
-       .name{
-         width:65%;
-       }
-       .label{
-         background:#f1f1f1;
-         padding:4px 10px;
-         border-radius:5px;
-         font-size:13px;
-         font-weight:500;
-       }
-     }
-     .id{
-       margin: 5px 0;
-     }
+.employeeDetails {
+    margin: 0 0 10px 0;
 
-     .role{
-       .workIcon{
-          height:16px;
-          width:16px;
-       }  
-     }
+    .details {
+        gap: 8px;
 
-     .camera{
-        position: absolute;
-        right: 0;
-        bottom: -7px;
-        background: #fff;
-        border-radius: 50%;
-        padding: 2px 2px 0px 3px;
-     }
+        .title {
+            .name {
+                width: 65%;
+            }
 
-     .imageDiv{
-         height: 60px;
-         width: 90px;
-         border-radius: 5px;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         position: relative;
-         //  background: #f1f1f1;
-          img{
-           height: 60px;
-           width: 60px;
-           border-radius: 5px;
-           object-fit: cover;
-          }  
-       }
-   }
- }
+            .label {
+                background: #f1f1f1;
+                padding: 4px 10px;
+                border-radius: 5px;
+                font-size: 13px;
+                font-weight: 500;
+            }
+        }
 
- .user_detail{
-//    height: calc(100vh - 222px);
- }
+        .id {
+            margin: 5px 0;
+        }
 
- .logout_ {
+        .role {
+            .workIcon {
+                height: 16px;
+                width: 16px;
+            }
+        }
+
+        .camera {
+            position: absolute;
+            right: 0;
+            bottom: -7px;
+            background: #fff;
+            border-radius: 50%;
+            padding: 2px 2px 0px 3px;
+        }
+
+        .imageDiv {
+            height: 60px;
+            width: 90px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            //  background: #f1f1f1;
+            img {
+                height: 60px;
+                width: 60px;
+                border-radius: 5px;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.imageDiv {
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #ffff;
+
+    //  background: #f1f1f1;
+    img {
+        height: 60px;
+        width: 60px;
+        border-radius: 5px;
+        object-fit: cover;
+    }
+}
+
+.camera {
+    position: absolute;
+    right: 0;
+    bottom: 0px;
+    background: #fff;
+    border-radius: 50%;
+    padding: 2px 2px 0px 3px;
+}
+
+.user_detail {
+    //    height: calc(100vh - 222px);
+}
+
+.logout_ {
     border-bottom: unset !important;
     margin-bottom: 10px !important;
     --background: #f6f7f9;
     // position: absolute;
     // width: 100%;
     // bottom: 0px;
-    
+
     .menu-icon {
         font-size: 23px !important;
         margin-right: 7px;
+    }
+}
+
+
+
+.voluntary-profileSection {
+    border: 1px solid var(--border-col);
+    border-radius: 15px;
+    margin: 10px;
+    position: relative;
+    height: calc(100vh - 125px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .sec-1 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 10px 10px 40px 10px;
+        border-radius: 15px 15px 0 0;
+        background: #E3F0FF;
+
+        .profile-icon {
+            height: 60px;
+            width: 60px;
+            margin-bottom: 10px;
+        }
+
+        h6 {
+            font-size: 13px;
+        }
+
+        p {
+            font-size: 12px;
+        }
+    }
+
+    .main_user_detail {
+        padding: 10px;
+        position: absolute;
+        width: 100%;
+        top: 160px;
+
+        .user_detail {
+            border: 1px solid var(--border-col);
+            padding: 10px;
+            border-radius: 8px;
+            background: #ffff;
+        }
+    }
+}
+
+.tabs:last-child {
+    ion-item {
+        border-radius: 0 0 15px 15px;
     }
 }

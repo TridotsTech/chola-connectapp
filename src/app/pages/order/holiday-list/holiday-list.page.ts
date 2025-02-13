@@ -82,7 +82,7 @@ export class HolidayListPage implements OnInit {
 
     };
 
-    if (this.db.ismobile && false) {
+    if (this.db.ismobile && this.holiday_type == 'Calendar') {
       const now = new Date(data['date'])
       const year = now.getFullYear();
       const month = (now.getMonth() + 1).toString().padStart(2, '0');
@@ -102,6 +102,7 @@ export class HolidayListPage implements OnInit {
       this.db.listSkeleton = false;
       if (res && res.message && res.message.name) {
         this.list_data = res.message;
+        this.list_data['all_list'] = res.message['data'];
         this.list_data['data'] = res.message['list_details'];
       }else if(res && res.message && res.message.status && res.message.status == 'Failed'){
         let alert = res.message.message ? res.message.message : 'Something went wrong try again later';
@@ -197,6 +198,10 @@ export class HolidayListPage implements OnInit {
 
   menu_name(eve) {
     // console.log(eve, "eve")
+    const currentDate = new Date();
+    this.currentYear = currentDate.getFullYear();
+    this.currentMonth = currentDate.getMonth() + 1;
+    
     this.db.bodySkeleton = true
     this.list_data['data'] = [];
     this.holiday_type = eve.name

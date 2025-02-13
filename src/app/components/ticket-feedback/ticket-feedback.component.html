@@ -1,0 +1,29 @@
+<app-header *ngIf="db.ismobile" [title]="type == 'Resolved' ? 'Feedback' : 'Provide Reopen Reason'" [showYear]="false" [model]="true"></app-header>
+
+<div class="feedbackSec p-10" *ngIf="type == 'Resolved'">
+
+  <div class="mb-10">
+    <p class="m-0 mb-5 fnt-15 fnt_w500">Rating</p>
+    <div class="ratings">
+      <ion-icon (click)="get_rating(item)" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i = index" [class.active_star]="item <= rating_value" [name]="item <= rating_value ? 'star' : 'star-outline'"></ion-icon>
+    </div>
+  </div>
+
+  <div class="descriptionSec" *ngIf="showFeedback">
+    <p class="m-0 mb-5 fnt-15 fnt_w500">Feedback</p>
+    <ion-textarea [(ngModel)]="customer_feedback" placeholder="Enter your feedback here..."></ion-textarea>
+  </div>
+</div>
+
+<div class="feedbackSec p-10" *ngIf="type == 'Closed'">
+
+  <div class="descriptionSec">
+    <p class="m-0 mb-5 fnt-15 fnt_w500">Provide Reopen Reason</p>
+    <ion-textarea [(ngModel)]="customer_feedback" placeholder="Reason for Reopen..."></ion-textarea>
+  </div>
+
+</div>
+
+<div class="submit-btn">
+  <ion-button (click)="submitFeedback()" fill="clear">Submit</ion-button>
+</div>

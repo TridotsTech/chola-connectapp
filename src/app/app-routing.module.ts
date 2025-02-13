@@ -304,13 +304,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/salaryslip/salaryslip.module').then( m => m.SalaryslipPageModule)
   },
   {
+    path: 'voluntary-pf',
+    loadChildren: () => import('./pages/voluntary-pf/voluntary-pf.module').then( m => m.VoluntaryPfPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
-  
-
-
-
 ];
 
 @NgModule({

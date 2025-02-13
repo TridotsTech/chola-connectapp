@@ -1,0 +1,49 @@
+.bg_high {
+    border-radius: 25px;
+    padding: 0px 8px;
+
+    ion-icon {
+        font-size: 11px;
+    }
+
+    p {
+        font-weight: 500;
+        font-size: 12px;
+    }
+}
+
+.low_bg {
+    background: #5606c61a;
+    border: 1px solid #5506c41a;
+
+    ion-icon,
+    p {
+        color: #5506C4;
+    }
+}
+
+.medium_bg {
+    background: #f999001a;
+    border: 1px solid #f999001a;
+
+    ion-icon,
+    p {
+        color: #F99900;
+    }
+}
+
+.high_bg {
+    background: #fa02041a;
+    border: 1px solid #fa02041a;
+
+    ion-icon,
+    p {
+        color: #FA0204;
+    }
+}
+
+.dotPriority {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
 import {
   AlertController,
   MenuController,
@@ -63,7 +63,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   skeleton_value_mobile = { doc_type: "Leave Application", tabs: true, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: true, dash_len: [0, 1], dashboard_count: false, filter_len: [0, 1, 2, 3, 4], search: false, month_filter: true, list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4], list_len_count: 10 }
 
   selectedTabSec = 'Pending'
-  constructor(public db: DbService, private route: ActivatedRoute, public modalCtrl: ModalController, public router: Router, public alertController: AlertController) { }
+  constructor(public db: DbService, private route: ActivatedRoute, public modalCtrl: ModalController, public router: Router, public alertController: AlertController,private cdr: ChangeDetectorRef,private ngZone: NgZone) { }
 
   ngOnInit() {
 
@@ -103,7 +103,7 @@ export class LeaveApplicationDetailPage implements OnInit {
       const currentDate = new Date();
       this.currentYear = currentDate.getFullYear();
 
-      this.skeleton = true
+      this.db.leave_skeleton = true
       this.employee_id = res['id'];
       // this.getLeaveRequestList();
       // if(this.selectedTabSec != 'Pending')
@@ -237,7 +237,11 @@ export class LeaveApplicationDetailPage implements OnInit {
 
     this.db.leave_details(data).subscribe(res => {
       this.detail_loader = false;
-      this.skeleton = false
+      this.ngZone.run(() => {
+        this.db.leave_skeleton = false;
+      })
+      // this.cdr.detectChanges();
+      console.log(this.db.leave_skeleton,'this.db.leave_skeleton')
       if (res && res.message) {
         if (res.message.dashboard && res.message.dashboard.length > 0) {
           if (this.db.employee_role || this.employee)
@@ -352,10 +356,9 @@ export class LeaveApplicationDetailPage implements OnInit {
     // console.log(item)
 
     if(item.name == 'Leave Withdrawal'){
-      this.router.navigateByUrl('/leave-withdrawal/New')
-    }else{
-      this.router.navigateByUrl('/leave-application')
-    }
+      this.router.navigate(['/leave-withdrawal/New'])
+    }else
+      this.router.navigate(['/leave-application'])
   }
 
   menu_name(eve) {
@@ -389,34 +392,64 @@ export class LeaveApplicationDetailPage implements OnInit {
   //   this.currentYear = eve.label;
   // }
 
-  checkImages(data, type) {
-    switch (data) {
-      case "Total Leaves":
-        return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-        break;
-      case "All Applications":
-        return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-        break;
-      case "Used Leaves":
-        return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-        break;
-      case "Open Applications":
-        return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-        break;
-      case "Available Leaves":
-        return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-        break;
-      case "Approved Applications":
-        return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-        break;
-      case "Expired Leaves":
-        return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-        break;
-      case "Rejected Applications":
-        return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-        break;
-      default:
-        return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  // checkImages(data, type) {
+  //   switch (data) {
+  //     case "Total Leaves":
+  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
+  //       break;
+  //     case "All Applications":
+  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
+  //       break;
+  //     case "Used Leaves":
+  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
+  //       break;
+  //     case "Open Applications":
+  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
+  //       break;
+  //     case "Available Leaves":
+  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  //       break;
+  //     case "Approved Applications":
+  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  //       break;
+  //     case "Expired Leaves":
+  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
+  //       break;
+  //     case "Rejected Applications":
+  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
+  //       break;
+  //     default:
+  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  //   }
+  // }
+
+  getCircleColor(data){
+    if(data == 'Total Leaves'){
+      return '#6A12D71A'
+    }else if(data == 'Used Leaves'){
+      return '#e7f8ed'
+    }else if(data == 'Available Leaves'){
+      return '#008CFF0D'
+    }else if(data == 'Pending Leaves' || data == 'Open Leaves'){
+      return '#FCAC2B1A'
+    }else{
+      return '#fff4f4'
+    }
+  }
+
+  get_leaves_icon(data){
+    if(data == 'Total Leaves'){
+      return '/assets/Employee-Home/Total-Leaves.svg'
+    }else if(data == 'Used Leaves'){
+      return '/assets/Employee-Home/Used-Leaves.svg'
+    }else if(data == 'Available Leaves'){
+      return '/assets/Employee-Home/Available-leaves.svg'
+    }else if(data == 'Expired Leaves'){
+      return '/assets/Employee-Home/Expired-Leaves.svg'
+    }else if(data == 'Pending Leaves' || data == 'Open Leaves'){
+      return '/assets/Employee-Home/PendingLeaves.svg'
+    }else{
+      return '/assets/Employee-Home/Total-Leaves.svg'
     }
   }
 
@@ -606,7 +639,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   }
 
   get_tempate_and_datas(doctype) {
-    // this.skeleton = true
+    // this.db.leave_skeleton = true
     if (this.search_data && typeof this.search_data != 'object') {
       let parseJson = JSON.parse(this.search_data);
       let keys = Object.keys(parseJson)
@@ -641,7 +674,7 @@ export class LeaveApplicationDetailPage implements OnInit {
 
     this.db.get_tempate_and_datas(data).subscribe((res) => {
       // if(this.doc_type != "Holiday List")
-      this.skeleton = false;
+      this.db.leave_skeleton = false;
       this.detail_loader = false
       if (res && res.message && res.message.data && res.message.data.length > 0) {
         if (this.page_no == 1) {
@@ -752,7 +785,7 @@ export class LeaveApplicationDetailPage implements OnInit {
       // this.filter = true;
       let doctypes = ['Project', 'Employee', 'Salary Slip', 'Leave Application']
       let checkDoc = doctypes.find((res, i) => { return this.doc_type == res })
-      checkDoc ? null : this.skeleton = true;
+      checkDoc ? null : this.db.leave_skeleton = true;
       // this.checkStatus(data)
       // this.get_tempate_and_datas(this.doc_type);
       if(this.leave_type == "Leaves"){

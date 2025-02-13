@@ -42,13 +42,11 @@ export class RegularizationFormComponent  implements OnInit {
       this.is_no_data = true;
   }, error => {
     this.is_no_data = true;
-    // console.log(error.error)
     if(error.error && error.error._server_messages){
       let d = JSON.parse(error.error._server_messages)
       let f = JSON.parse(d[0])
       this.db.sendErrorMessage(f.message)
     }
-    // this.alert('Soemthing went wrong try again later');
   }) 
   }
 
@@ -114,8 +112,34 @@ export class RegularizationFormComponent  implements OnInit {
       }
     })
   }
-  else
-    this.db.sendErrorMessage('Pls create the any one reason')
+  else{
+    const modal = await this.modalCtrl.create({
+      component: LeavePreviewWithdrawFormComponent,
+      cssClass: 'job-detail-popup',
+      componentProps: {
+        title:'Regulariztion Tool',
+        type:'regulariztion tool',
+        editFormValues: this.missing_days[0]
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data && data && data.reg_reason) {
+      this.missing_days.map(res =>{
+        console.log(res)
+        if(res.isChecked == true){
+          res.reg_reason = data.reg_reason
+          res.description = data.description ? data.description : ''
+        }
+        // console.log(this.missing_days)
+    })
+    this.create_regularization()
+    // console.log(this.missing_days)
+    }
+  }
+    // this.db.sendErrorMessage('Pls create the any one reason')
   }
 
   async leave_request(item){

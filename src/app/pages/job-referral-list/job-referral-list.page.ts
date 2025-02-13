@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { JobReferalFiltersComponent } from 'src/app/components/job-referal-filters/job-referal-filters.component';
 import { JobReferralDetailComponent } from 'src/app/components/job-referral-detail/job-referral-detail.component';
 import { DbService } from 'src/app/services/db.service';
 
@@ -13,6 +14,9 @@ export class JobReferralListPage implements OnInit {
   skeleton = true;
   page_no: any = 1;
   no_jobs = false;
+  searchTxt: any;
+  selectFilters: any = {};
+  totalFilterCount: any = 0;
   constructor(public db: DbService,public modalCntrl: ModalController) { }
 
   ngOnInit() {
@@ -70,10 +74,10 @@ export class JobReferralListPage implements OnInit {
     let data = {
       page_no: this.page_no,
       "filters": {
-        "location": "",
-        "postion": "",
-        "name": "",
-        "job_type": ""
+        "location": this.selectFilters.location ? this.selectFilters.location : '',
+        "postion": this.searchTxt ? this.searchTxt : '',
+        "name": this.selectFilters.name ? this.selectFilters.name : '',
+        "job_type": this.selectFilters.job_type ? this.selectFilters.job_type : ''
       }
     }
     this.db.get_jobs(data).subscribe(res => {
@@ -100,6 +104,50 @@ export class JobReferralListPage implements OnInit {
         this.get_job_referral_list();
       }
     }
+  }
+
+  async openSearchFilter(){
+    const modal = await this.modalCntrl.create({
+      component: JobReferalFiltersComponent,
+      cssClass: 'job-referral-filters',
+      componentProps: {
+        selectFilters: this.selectFilters
+      }
+    })
+    await modal.present();
+    let data = await modal.onWillDismiss();
+    let total_count: any = 0;
+    if(data && data.data){
+      console.log(data,'data')
+      if(data.data && Object.keys(data.data).length != 0){
+        total_count = 0;
+        Object.keys(data.data).map((res: any) => {
+          this.selectFilters[res] = data.data[res];
+          if(data.data[res]){
+            total_count += 1;
+          }
+        })
+        this.totalFilterCount = total_count;
+      }else{
+        this.totalFilterCount = 0;
+        this.selectFilters = {};
+      }
+      this.get_job_referral_list();
+    }
+  }
+
+  searchPro(event){
+    console.log(event.target.value);
+    this.searchTxt = event.target.value;
+    this.page_no = 1;
+    this.get_job_referral_list();
+  }
+
+  clear_txt(event){
+    console.log(event)
+    this.searchTxt = '';
+    this.page_no = 1;
+    this.get_job_referral_list();
   }
 
 }

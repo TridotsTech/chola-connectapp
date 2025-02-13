@@ -70,6 +70,7 @@ export class PayrollDetailComponent implements OnInit {
       if (res && res == 'getYear' && this.db.selected_year) {
         this.db.selected_year = false
         this.currentYearValue = this.db.selectedYear
+        this.tabs = true;
         this.get_doc_details();
       }
     })
@@ -220,13 +221,21 @@ export class PayrollDetailComponent implements OnInit {
   }
 
   async downloadAndOpenPDF(info) {
+    // if (info.start_date) {
+      const date = new Date(info.start_date);
+      const monthIndex = date.getMonth();
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const monthName = monthNames[monthIndex];
+      let dateSplit = info.start_date.split('-')
+      const Year = dateSplit[0]
+    // }
+    let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
+    await loader.present();
     try {
-      let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
-      await loader.present();
       setTimeout(() => {
         loader.dismiss();
       }, 10000);
-      this.db.get_salary_slip_content({filters:{'salary_slip_select_year': '2024-2025', 'salary_slip_select_month': 'November', 'employee': info.employee, 'doctype': 'Salary Slip'}}).subscribe(async res => {
+      this.db.get_salary_slip_content({filters:{'salary_slip_select_year': parseInt(Year), 'salary_slip_select_month': monthName, 'employee': info.employee, 'doctype': 'Salary Slip'}}).subscribe(async res => {
         if (res && res.status && res.status == 'Success') {
         const fileContent = res.message.fcontent;
         const fileName = res.message.fname
@@ -254,8 +263,10 @@ export class PayrollDetailComponent implements OnInit {
 
     }, error => {
       console.error(error)
+      loader.dismiss();
     })
     } catch (error) {
+      loader.dismiss();
       console.error('Error downloading or opening PDF file', error);
     }
   }

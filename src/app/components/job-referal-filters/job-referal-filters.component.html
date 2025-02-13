@@ -1,0 +1,33 @@
+<app-header [title]="'Filters'" [showYear]="false" [model]="true"></app-header>
+
+<div class="p-10">
+  <div class="pb-10">
+    <p class="title">Location</p>
+    <div class="custom-input">
+      <ion-input type="text" placeholder="Location" [(ngModel)]="searchFilters.location"></ion-input>
+    </div>
+  </div>
+
+  <div class="pb-10">
+    <p class="title">Name</p>
+    <div class="custom-input">
+      <ion-input type="text" placeholder="Name" [(ngModel)]="searchFilters.name"></ion-input>
+    </div>
+  </div>
+
+  <div class="pb-10">
+    <p class="title">Job Type</p>
+    <div class="custom-input d__flex">
+      <ion-select class="w-100" interface="popover" placeholder="Job Type" [(ngModel)]="searchFilters.job_type">
+        <ion-icon class="fnt-22" src="/assets/leaves/type.svg" slot="start"></ion-icon>
+        <ion-select-option *ngFor="let item of jobType" [value]="item.name">{{item.name}}</ion-select-option>
+      </ion-select>
+    </div>
+  </div>
+
+</div>
+
+<div class="buttons__ d__flex gap-10">
+  <ion-button class="clearBtm" (click)="clearFilter()" fill="clear">Clear</ion-button>
+  <ion-button class="applyBtn" (click)="sendFilter()" fill="clear">Apply</ion-button>
+</div>

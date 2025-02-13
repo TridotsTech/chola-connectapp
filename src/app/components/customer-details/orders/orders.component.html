@@ -59,7 +59,7 @@
   <app-no-record-found
     *ngIf="!db.bodySkeleton && !db.listSkeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 </div>
 
 
@@ -70,7 +70,7 @@
   <app-no-record-found
     *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
   <!-- job_applicant_table1 -->
   <app-common-grid-table [rightDetail]="true" *ngIf="!db.ismobile && !db.enable_detail"
     (load_popup)="load_popup($event)" [detailPage]="false" [detailPopup]="true" (go_to_detail)="go_to_detail($event,-1)"
@@ -198,17 +198,40 @@
   <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
     [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
     [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)">
+    
+    <div class="applyTicketFrame" *ngIf="showLetterRequestBanner">
+      <img class="d__flex w-100" src="assets/Frame/letter-request.svg" alt="">
+      <ion-button (click)="createNewLetterReq()">📃 Apply Letter Request</ion-button>
+      <ion-icon class="fnt-18" (click)="showLetterRequestBanner = false;" name="close-outline"></ion-icon>
+    </div>
+
     <div id="click_item" [class.selected_item]="db.selectedId == item.name"
       (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
       [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
-      class="d__flex sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
-      <div class="s-1 w-50">
-        <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}
+      class="sec letter_sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      <div class="s-1">
+        <div class="d__flex just-s d1">
+          <div class="f1">
+            <img src="assets/Employee-Home/Letter-list.svg" alt="">
+          </div>
+          <div class="f2">
+            <h2 *ngIf="item[db.get_saleslist.keys[3]]" class="m-0 fnt-12 fnt_w600 pb-5">{{item[db.get_saleslist.keys[3]]
+              }}
+              </h2>
+              <p class="m-0 fnt-12 pb-5">{{item[db.get_saleslist.keys[4]]}}</p>
+          </div>
+          <div class="f3">
+            <div *ngIf="item.workflow_state" class="sec__2d">
+              <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
+            </div>
+          </div>
+        </div>
+        <div class="d__flex just-e d3">
+          <p class="m-0 fnt-12 v_btn" [ngClass]="item.workflow_state == 'Approved' ? 'pr20':''">View <img class="pl5" src="assets/Employee-Home/view.svg" alt=""></p>
+          <p *ngIf="item.workflow_state == 'Approved'" class="m-0 fnt-12 d_btn">Download <img class="pl5" src="assets/Employee-Home/download.svg" alt=""></p>
+        </div>
+        <!-- <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}
         </h3>
-        
-        <!-- <p class="m-0 fnt-13 status_box webkit-text text-c" [ngClass]="db.get_style(item.workflow_state)">
-          {{item.workflow_state}}</p> -->
-        <!-- <div><span class="order_status" [ngClass]="db.get_style(item.status)">{{item.workflow_state}}</span> -->
         <h2 class="m-0 fnt-11 Invoice webkit-text" [style.--line]="2">{{get_values(db.get_saleslist.keys[6])}} <span
             class="gray_clr">{{item[db.get_saleslist.keys[6]]}}</span></h2>
         <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 fnt-11"><span
@@ -216,12 +239,9 @@
             }}</span></h2>
         <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-11"><span
             class="gray_clr">{{item[db.get_saleslist.keys[5]]
-            }}</span></h2>
+            }}</span></h2> -->
       </div>
-      <div class="flex40">
-        <!-- <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
-          <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
-        </div> -->
+      <!-- <div class="flex40">
         <div *ngIf="item.workflow_state" class="sec__2d">
           <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
         </div>
@@ -229,8 +249,7 @@
           class="gray_clr">{{item[db.get_saleslist.keys[3]]
           }}</span>
           <ion-icon name="chevron-forward-outline"></ion-icon></h2>
-        
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -249,27 +268,29 @@
     <div id="click_item" [class.selected_item]="db.selectedId == item.name"
       (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
       [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
-      class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      class="sec withdrawal_sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
       <div class="s-1">
 
-        <div class="d__flex just-s mb-5">
-          <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3>
+        <div class="d__flex just-s d1">
+          <h3 class="m-0 fnt-13 webkit-text capitalize d__flex" [style.--line]="2"> <img src="/assets/leaves/leaveicon.svg" alt="" > <span class="fnt_w500 pl5">{{item[db.get_saleslist.keys[0]]}}</span></h3>
           <div *ngIf="item[db.get_saleslist.keys[3]]" class="sec__2d">
-            <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]]"></app-status>
+            <app-status [reverse]="true" [status]="item[db.get_saleslist.keys[3]] == 'Submitted'?'Approved': item[db.get_saleslist.keys[3]]"></app-status>
           </div>
         </div>
-        <div *ngIf="db.hr_manager_role" class="d__flex just-s mb-5">
-          <h2 class="m-0 fnt-12 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[2]]"><span class="fnt-11"></span> {{item[db.get_saleslist.keys[2]]}}</h2>
-          <!-- <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[6]]"><span class="fnt-11">To : </span> {{item[db.get_saleslist.keys[6]]}}</h2> -->
-        </div>
+        
         <!-- <div class="d__flex just-s mb-5">
           <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[5]]"><span class="fnt-11">From : </span> {{item[db.get_saleslist.keys[5]]}}</h2>
           <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[6]]"><span class="fnt-11">To : </span> {{item[db.get_saleslist.keys[6]]}}</h2>
         </div> -->
 
-        <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 fnt-11"><span
+        <h2 *ngIf="item[db.get_saleslist.keys[4]]" class="m-0 fnt-11 d2"><span
             class="gray_clr">{{item[db.get_saleslist.keys[4]]
             }}</span></h2>
+            
+            <div *ngIf="db.hr_manager_role" class="d__flex just-s d3">
+              <h2 class="m-0 fnt-12 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[2]]"><span class="fnt-11"></span> {{item[db.get_saleslist.keys[2]]}}</h2>
+              <!-- <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[6]]"><span class="fnt-11">To : </span> {{item[db.get_saleslist.keys[6]]}}</h2> -->
+            </div>
       </div>
     </div>
   </div>
@@ -349,24 +370,37 @@
 <div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Performance Evaluation' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
   <div *ngIf="(db.enable_material || db.ismobile)">
     <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
-      [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
+      [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height probation-main"
       [class.tab_active_heigth]="db.path.includes('/tabs')">
       <div id="click_item" [class.selected_item]="db.selectedId == item.name"
         (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
         [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
-        class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
-        <div class="s-1">
+        class="sec-prob" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+        <div class="p-10">
   
-          <div class="d__flex just-s mb-5">
-            <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3>
+          <div class="d__flex just-s mb-10">
+            <div class="d__flex gap-10">
+              <ion-icon class="fnt-22" src="/assets/probation/probation-profile.svg"></ion-icon>
+              <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3>
+            </div>
+            <!-- <h2 class="m-0 fnt-12 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[3]]"><span class="fnt-12">Extended : </span> {{item[db.get_saleslist.keys[3]]}}</h2> -->
+             <div class="d__flex">
+              <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
+             </div>
+          </div>
+  
+          <div class="d__flex just-s">
+            <h2 class="m-0 fnt-12 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[2]]">{{item[db.get_saleslist.keys[2]] | date: 'MMM d y'}}</h2>
             <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[1]]}}</h3>
           </div>
   
-          <div class="d__flex just-s mb-5">
-            <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[2]]"><span class="fnt-12"><ion-icon name="calendar-outline"></ion-icon> </span> {{item[db.get_saleslist.keys[2]]}}</h2>
-            <h2 class="m-0 fnt-11 gray_clr d__flex gap-5" *ngIf="item[db.get_saleslist.keys[3]]"><span class="fnt-12">Extended : </span> {{item[db.get_saleslist.keys[3]]}}</h2>
+        </div>
+        <div class="sec-prob-2 d__flex just-s">
+          <p class="m-0 fnt-13">{{item[db.get_saleslist.keys[5]] ? item[db.get_saleslist.keys[5]] : '-'}}</p>
+          <div class="flex-auto d__flex gap-10">
+            <ion-icon src="/assets/probation/messages.svg"></ion-icon>
+            <p class="m-0 fnt-13">2</p>
           </div>
-  
         </div>
       </div>
     </div>
@@ -424,23 +458,24 @@
     <div id="click_item" [class.selected_item]="db.selectedId == item.name"
       (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
       [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
-      class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      class="reg_sec sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
       <div class="s-1">
 
-        <div class="d__flex just-s mb-5">
-          <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}</h3>
+        <div class="d__flex just-s d1">
+          <h3 class="m-0 fnt-13 webkit-text capitalize d__flex" [style.--line]="2"><img src="assets/Employee-Home/regulaztion.svg" alt=""> <span class="pl5 fnt_w600">{{item[db.get_saleslist.keys[0]]}}</span></h3>
           <div *ngIf="item.workflow_state" class="sec__2d">
             <app-status [reverse]="true" [status]="item.status? item.status :item.workflow_state"></app-status>
           </div>
         </div>
 
-        <div class="d__flex just-s mb-5">
-          <h3 class="m-0 fnt-12 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3>
+        <div class="d__flex just-s mb-5 d2">
+          <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2>
+          <!-- <h3 class="m-0 fnt-12 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3> -->
           <h3 class="m-0 fnt-12 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[3]] ? item[db.get_saleslist.keys[6]] : 'Full Day'}}</h3>
         </div>
 
-        <div class="d__flex just-s mb-5">
-          <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2>
+        <div class="d__flex just-s d3">
+          <!-- <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2> -->
           <h2 *ngIf="item[db.get_saleslist.keys[7]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[7]]}}</span></h2>
         </div>
       </div>
@@ -553,7 +588,7 @@
   <app-no-record-found
     *ngIf="db.ismobile && (!db.bodySkeleton && !db.listSkeleton) && db.get_saleslist.data && db.get_saleslist.data.length == 0"
     [column]="true" height="calc(100vh - 180px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 </div>
 
 
@@ -778,7 +813,7 @@
 
   <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
     *ngIf="false && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0" [column]="true"
-    height="calc(100vh - 600px)" [heading]="'No record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    height="calc(100vh - 600px)" [heading]="'No record found'" [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 </div>
 
 
@@ -859,12 +894,14 @@
   <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
     *ngIf="!db.bodySkeleton && ((!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 </div>
 
 
 <!-- Salary Slip Mobile -->
 <div *ngIf="(db.enable_material || db.ismobile) && db.get_saleslist  && db.selected_list.page == 'Salary Slip'">
+  <img class="p-0-10 pt-10 w-100" src="/assets/Frame/salary frame.svg" alt="">
+
   <div class="dash_sections"
     *ngIf="!db.employee_role && db.get_saleslist.dashboard && db.get_saleslist.dashboard.length > 0">
     <div *ngFor="let item of db.get_saleslist.dashboard" class="border p-10 rounded-10 pad_010">
@@ -877,56 +914,58 @@
     </div>
   </div>
 
-  <div class=" ">
+  <!-- <div class=" ">
     <app-common-search (call_clear_txt)="clear_txt.emit($event)" [search_filter]="search_filter"
       (open_filter)="supplier_filter.emit($event)" placeholder="Search for {{page_title}}"
       (search_txt_value)="load_search.emit($event)"></app-common-search>
-  </div>
-
+  </div> -->
 
   <div #tabList [class.height_scroll]="!db.ismobile && !height_val" [class.height_val]="!db.ismobile && height_val"
     [class.height_scroll_search]="db.enable_detail" *ngIf="db.get_saleslist.data && db.get_saleslist.data.length > 0"
     (scroll)="load_data($event)" class="mouse list_common_height">
 
-    <div class="list-container" (click)="!db.ismobile ? active_item(item,i) : null" [id]="i + 1 + 'scroll'"
+    <div class="salary-list-container" (click)="!db.ismobile ? active_item(item,i) : null" [id]="i + 1 + 'scroll'"
       (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null" (click)="do_to_details.emit(item)"
       (click)="!db.ismobile ? send_data(item) : null" *ngFor="let item of db.get_saleslist.data;index as i">
-      <div class="d__flex gap-10 just-s pb-5">
-        <div class="d__flex gap-5" *ngIf="db.employee_role"><span class="fnt-13 m-0">{{item.start_date | date: "MMMM"}}</span>
-          <div class="dot dot-2"></div>
-          <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.start_date}}</h6>
+      <div class="d__flex gap-10 just-s pb-5 d1">
+        <div class="d__flex gap-5" >
+          <img src="/assets/Employee-Home/salary-slip.svg" alt="">
+          <span class="fnt-13 fnt_w600 m-0">{{item.start_date | date: "MMMM"}}</span>
+          <!-- <div class="dot dot-2"></div> -->
+          <!-- <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.start_date}}</h6> -->
         </div>
-        <div *ngIf="!db.employee_role">
+        <!-- <div *ngIf="!db.employee_role">*ngIf="db.employee_role"
           <p class="m-0 fnt-13 webkit-text" [style.--line]="2">{{item.employee_name}}</p>
-        </div>
+        </div> -->
         <div class="flex-auto">
           <app-status [status]="item.status"></app-status>
         </div>
       </div>
 
-      <div class="d__flex gap-10 just-s pb-5">
+      <div class="d__flex gap-10 just-s mb-5 d2">
         <p class="m-0 d__flex gap-5">
           <!-- <ion-icon src="/assets/expense-claim/name.svg"></ion-icon> -->
-          <span class="m-0 text_2 fnt-13">{{item.name}}</span>
+          <span class="m-0 text_2 fnt-12">{{item.name}}</span>
         </p>
-        <p class="m-0 flex-auto bold_name-13 inter_">{{ item.net_pay ? ( item.net_pay |
-          currency:db.website_settings.currency) : 0 }}</p>
+        <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.start_date | date:'MMM dd yyyy'}}
+        </h6>
       </div>
 
-      <div class="d__flex gap-10 just-s pb-5">
+      <div class="d__flex gap-10 just-s pb-5 d3">
         <!-- <p class="m-0 d__flex gap-5"> -->
         <!-- <ion-icon src="/assets/expense-claim/company.svg"></ion-icon> -->
         <!-- item.company -->
         <!-- <span
             class="m-0 text_2 fnt-13">{{' - '}}</span></p> -->
         <div class="d__flex w-100 just-s">
-          <p class="m-0 fnt-12 fnt_w500 gray_clr mt-5 inter_"><span style="color: #E21B22;">-
-            </span>{{item.total_deduction ? (item.total_deduction | currency:db.website_settings.currency) : '' }}</p>
-
-          <div class="d__flex gap-5" *ngIf="!db.employee_role"><span class="fnt-13 m-0">{{item.start_date | date: "MMMM"}}</span>
+          <p class="m-0 fnt-12 fnt_w500 gray_clr mt-5 inter_"><span style="color: #E21B22;">- {{item.total_deduction ? (item.total_deduction | currency:db.website_settings.currency) : '' }}
+            </span></p>
+            <p class="m-0 flex-auto bold_name-13 inter_">{{ item.net_pay ? ( item.net_pay |
+              currency:db.website_settings.currency) : 0 }}</p>
+          <!-- <div class="d__flex gap-5" *ngIf="!db.employee_role"><span class="fnt-13 m-0">{{item.start_date | date: "MMMM"}}</span>
             <div class="dot dot-2"></div>
             <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.start_date}}</h6>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -935,7 +974,7 @@
   <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
     *ngIf="!db.bodySkeleton && ((!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0)) && db.ismobile"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 </div>
 
 
@@ -1014,7 +1053,7 @@
   <app-no-record-found
     *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 </div>
 
 
@@ -1025,7 +1064,7 @@
   <app-no-record-found
     *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
   <!-- leave_request_table1 -->
   <app-common-grid-table [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)" [rightDetail]="true"
     (load_popup)="load_popup($event)" [list_data]="db.get_saleslist" [headerData]="db.get_saleslist['table']"
@@ -1040,7 +1079,7 @@
   <app-no-record-found
     *ngIf="!db.bodySkeleton && !db.listSkeleton && !db.ismobile && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
   <!-- employee_advance_table1 -->
   <app-common-grid-table height="calc(100vh - 180px)" [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)"
     [rightDetail]="true" (load_popup)="load_popup($event)" [list_data]="db.get_saleslist"
@@ -1203,7 +1242,7 @@
   <app-no-record-found
     *ngIf="(!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.ismobile"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 
 </div>
 
@@ -1225,7 +1264,7 @@
   <app-no-record-found
     *ngIf="(!skeleton && !db.get_saleslist) || (!skeleton && db.get_saleslist && db.get_saleslist.data && db.get_saleslist.data.length == 0) && !db.bodySkeleton && !db.ismobile"
     [column]="true" height="calc(100vh - 270px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
 
   <app-common-grid-table [detailPopup]="true" (go_to_detail)="go_to_detail($event, -1)" [rightDetail]="true"
     (load_popup)="load_popup($event)" [list_data]="db.get_saleslist" [headerData]="salary_slip_table1"

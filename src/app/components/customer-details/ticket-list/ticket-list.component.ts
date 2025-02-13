@@ -16,6 +16,7 @@ export class TicketListComponent implements OnInit {
   @Input() bg_white: any;
   @Input() doc_type: any;
   skeleton = true;
+  showBanner = true;
   constructor(public db: DbService) { }
 
   ngOnInit() {
@@ -62,6 +63,40 @@ export class TicketListComponent implements OnInit {
     }
   ]
 
+  checkBackground(data){
+    if(data == 'Open'){
+      return '#E9F7FB';
+    }else if(data == 'Resolved'){
+      return '#E7F8ED';
+    }else if(data == 'Replied'){
+      return '#F7F7F7';
+    }else{
+      return '#FFF4F4';
+    }
+  }
+
+  getDotColor(data){
+    if(data == 'High'){
+      return '#FA0204';
+    }else if(data = 'Medium'){
+      return '#F99900';
+    }else if(data == 'Low'){
+      return '#5506C4';
+    }
+  }
+
+  setTicketIcon(data){
+    if(data == 'Open'){
+      return '/assets/tickets/OpenTicket.svg';
+    }else if(data == 'Resolved'){
+      return '/assets/tickets/ResolvedTicket.svg';
+    }else if(data == 'Replied'){
+      return '/assets/tickets/RepliedTicket.svg';
+    }else{
+      return '/assets/tickets/ClosedTicket.svg';
+    }
+  }
+
   check_priority = (status) => {
     if (status == 'Low') {
       return 'arrow-down-outline'
@@ -70,5 +105,30 @@ export class TicketListComponent implements OnInit {
     }
   }
 
+  getDateFromCalendars(event){
+    console.log(event)
+  }
+
+  getFilters(event){
+    console.log(event)
+  }
+
+  transformDateToDays(dateString: string): string {
+    const givenDate = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - givenDate.getTime()); // Difference in milliseconds
+    const daysDiff = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Convert to days
+    return `${daysDiff} Days`;
+  }  
+
+  stripHtmlTags(htmlString: string): string {
+    const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+    return doc.body.textContent || '';
+  }
+
+  menu_name_1(event){
+    this.db.skeletonLoader = true;
+    this.menu_name.emit(event);
+  }
 
 }

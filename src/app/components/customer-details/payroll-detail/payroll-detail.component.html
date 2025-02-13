@@ -21,21 +21,25 @@
         <img *ngIf="earning_details.image" [src]="db.product_img(earning_details.image)" />
         <h4 *ngIf="!earning_details.image" class="m-0 fnt-15 fnt_w500">{{earning_details?.employee_name[0]}}</h4>
       </div>
+     
       <div class="contextDiv w-100">
         <div class="d__flex title just-s">
           <h4 class="fnt-14 fnt_w500 m-0 name webkit-text" [style.--line]="2">{{earning_details?.employee_name}}</h4>
         </div>
-        <h4 *ngIf="earning_details.employee" class="fnt-13 fnt_w500 m-0 id gray_clr"># {{earning_details?.employee}}
+        <h4 *ngIf="earning_details.designation" class="fnt-13 fnt_w500 m-0 id gray_clr">{{earning_details?.designation}}
         </h4>
-        <h4 *ngIf="earning_details.department" class="d__flex gap-5 role m-0">
+        <!-- <h4 *ngIf="earning_details.department" class="d__flex gap-5 role m-0">
           <img class="workIcon" src="/assets/timesheet/work.svg" />
           <span class="fnt-12 fnt_w400 m-0 gray_clr">{{earning_details?.department}}</span>
-        </h4>
+        </h4> -->
+      </div>
+      <div class="border p-810 rounded-10 mouse d__flex" (click)="downloadAndOpenPDF(earning_details)">
+        <ion-icon src="/assets/printer.svg" class="fnt-20"></ion-icon>
       </div>
     </div>
   </div>
 
-  <div class="d__flex just-e gap-20 m-10">
+  <div *ngIf="false" class="d__flex just-e gap-20 m-10">
     <div *ngIf="false" class="d__flex gap-10 just-se border-r">
       <div class="next_prev mouse rounded-10" (click)="goToPreviousDay()">
         <ion-icon class="gray_clr" name="chevron-back-outline"></ion-icon>
@@ -63,7 +67,7 @@
     <div class="headersec border-b section-p">
       <div class="d__flex just-s">
         <h4 class="m-0 fnt-14 fnt_w400 primary_clr">{{earning_details?.name}}</h4>
-        <h4 class="m-0 fnt-14 fnt_w400">{{earning_details?.creation | date: 'MM-dd-yyyy'}}</h4>
+        <h4 class="m-0 fnt-14 fnt_w400">{{earning_details?.creation | date:'MMM dd yyyy'}}</h4>
       </div>
 
       <h4 class="m-0 fnt-14 fnt_w400 gray_clr grossPay">Gross Pay <span class="_span">{{earning_details?.gross_pay |
@@ -72,25 +76,38 @@
 
     <div class="detailSec">
       <div class="section-p">
-        <h4 class="values m-0">Employee Name</h4>
-        <h4 class="values m-0">{{earning_details.employee_name ? earning_details.employee_name : '-'}}</h4>
+        <!-- <h4 class="values m-0">Employee Name</h4>
+        <h4 class="values m-0">{{earning_details.employee_name ? earning_details.employee_name : '-'}}</h4> -->
         <h4 class="values m-0">Company</h4>
-        <h4 class="values m-0">{{earning_details.company ? earning_details.company : '-'}}</h4>
+        <h4 class="values m-0 mb-5">{{earning_details.company ? earning_details.company : '-'}}</h4>
         <h4 class="values m-0">Bank Name</h4>
         <h4 class="values m-0">{{earning_details.bank_name ? earning_details.bank_name : '-'}}</h4>
         <h4 class="values m-0">Bank Account No</h4>
         <h4 class="values m-0">{{earning_details.bank_account_no ? earning_details.bank_account_no : '-'}}</h4>
-        <h4 class="values m-0">Payroll Frequency</h4>
-        <h4 class="values m-0">{{earning_details.payroll_frequency ? earning_details.payroll_frequency : '-'}}</h4>
+        
+        <h4 class="values m-0">Salary Structure</h4>
+        <h4 class="values m-0 mb-5">{{earning_details.salary_structure ? earning_details.salary_structure : '-'}}</h4>
+        <div  class="d__flex just-s mb-5">
+          <div class="flex-65">
+            <h4 class="values m-0">Payroll Frequency</h4>
+          <h4 class="values m-0">{{earning_details.payroll_frequency ? earning_details.payroll_frequency : '-'}}</h4>
+        </div>
+        <div class="flex-35">
         <h4 class="values m-0">Status</h4>
         <h4 class="values m-0">{{earning_details.status ? earning_details.status : '-'}}</h4>
-        <h4 class="values m-0">Salary Structure</h4>
-        <h4 class="values m-0">{{earning_details.salary_structure ? earning_details.salary_structure : '-'}}</h4>
-        <h4 class="values m-0">Start Date</h4>
-        <h4 class="values m-0">{{earning_details.start_date ? (earning_details.start_date | date: 'MM-dd-yyyy') : '-'}}
-        </h4>
-        <h4 class="values m-0">End Date</h4>
-        <h4 class="values m-0">{{earning_details.end_date ? (earning_details.end_date | date: 'MM-dd-yyyy') : '-'}}</h4>
+      </div>
+        </div>
+        <div class="d__flex just-s mb-5">
+          <div class="flex-65">
+          <h4 class="values m-0">Start Date</h4>
+          <h4 class="values m-0">{{earning_details.start_date ? (earning_details.start_date | date: 'MM-dd-yyyy') : '-'}}
+          </h4>
+        </div>
+        <div class="flex-35">
+          <h4 class="values m-0">End Date</h4>
+          <h4 class="values m-0">{{earning_details.end_date ? (earning_details.end_date | date: 'MM-dd-yyyy') : '-'}}</h4>
+        </div>
+      </div>
       </div>
 
       <div class="grid_sec">

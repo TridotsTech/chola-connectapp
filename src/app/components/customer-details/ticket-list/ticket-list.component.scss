@@ -28,7 +28,7 @@
 
 .bg_high {
     border-radius: 25px;
-    padding: 5px 8px;
+    padding: 0px 8px;
 
     ion-icon {
         font-size: 11px;
@@ -38,6 +38,12 @@
         font-weight: 500;
         font-size: 13px;
     }
+}
+
+.dotPriority {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
 }
 
 .border_sec {
@@ -68,13 +74,13 @@
 }
 
 .ticket_ico {
-    background: #F2F2F2;
-    padding: 5px 10px;
-    display: grid;
-    border-radius: 5px;
+    // background: #F2F2F2;
+    // padding: 5px 10px;
+    // display: grid;
+    // border-radius: 5px;
 
     ion-icon {
-        font-size: 25px;
+        font-size: 28px;
     }
 }
 
@@ -84,35 +90,37 @@
 }
 
 .filter_sec {
-    // padding: 0 10px 0 0;
-    // border-bottom: 1px solid var(--border-col);
-    // border-top: 1px solid var(--border-col);
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
     justify-content: space-between;
-    background:var(--primary-color);
+    background: var(--primary-color);
+    position: sticky;
+    z-index: 9999;
 }
 
 .rounded-5 {
     border-radius: 5px;
 }
 
+.rounded-10 {
+    border-radius: 10px;
+}
+
 .border-r {
     border-right: 1px solid var(--border-color);
 }
 
-.page_border{
-    border-top: 1px solid var(--border-col);
-    // border-bottom: 1px solid var(--border-col);
-    // border-radius: 7px 7px 0 0;
+.page_border {
+    // border-top: 1px solid var(--border-col);
+    padding: 10px;
 }
 
 .list_common_height {
     height: calc(100vh - 315px);
     // height: calc(100vh - 180px);
     overflow: auto;
-    padding: 0 10px;
+    // padding: 0 10px;
 }
 
 .pr-10 {
@@ -124,32 +132,32 @@
 }
 
 .low_bg {
-    background: #EAB60026;
-    border: 1px solid #EAB60026;
+    background: #5606c61a;
+    border: 1px solid #5506c41a;
 
     ion-icon,
     p {
-        color: #EAB600;
+        color: #5506C4;
     }
 }
 
 .medium_bg {
-    background: #DF7D0A26;
-    border: 1px solid #DF7D0A26;
+    background: #f999001a;
+    border: 1px solid #f999001a;
 
     ion-icon,
     p {
-        color: #DF7D0A;
+        color: #F99900;
     }
 }
 
 .high_bg {
-    background: #F5E6E6;
-    border: 1px solid #F5E6E6;
+    background: #fa02041a;
+    border: 1px solid #fa02041a;
 
     ion-icon,
     p {
-        color: #DF0A0A;
+        color: #FA0204;
     }
 }
 
@@ -161,28 +169,82 @@
     border-radius: 50%;
 }
 
-.headerIcon{
+.headerIcon {
     padding: 5px;
     background: #d9edff;
     border-radius: 5px;
 }
 
-.h45{
+.h45 {
     height: 45px;
 }
 
 @media screen and (max-width: 768px) {
-    .summary_sec{
+    .summary_sec {
         overflow: scroll;
     }
 
-    .box_{
-        padding: 10px !important;
-        width: 120px;
+    // .box_{
+    //     padding: 10px !important;
+    //     width: 120px;
+    // }
+
+    .list_common_height {
+        height: calc(100vh - 210px);
+        overflow: auto;
+    }
+}
+
+.ticketDashboard {
+    display: flex;
+    align-items: center;
+    overflow: auto;
+    width: 100%;
+    margin: 10px 0;
+    gap: 10px;
+
+    &::-webkit-scrollbar {
+        display: none;
     }
 
-    .list_common_height{
-        height:calc(100vh - 210px);
-        overflow:auto;
+    .box_ {
+        padding: 10px !important;
+        flex: 0 0 35%;
+        // border: 1px solid var(--border-col);
+        border-radius: 10px;
+    }
+}
+
+.messageContent {
+    background: #F6FAFF;
+    padding: 5px 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+.box_sec {
+    height: calc(100vh - 385px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.applyTicketFrame {
+    position: relative;
+
+    ion-button {
+        position: absolute;
+        bottom: 10px;
+        font-size: 12px;
+        left: 10px;
+        --padding-start: 10px;
+        --padding-end: 10px;
+    }
+
+    ion-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
     }
 }

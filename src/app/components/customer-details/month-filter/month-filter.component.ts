@@ -21,6 +21,7 @@ export class MonthFilterComponent implements OnInit, OnChanges {
   @Input() titleName: any;
   @Input() search: any;
   @Input() dateCal: any;
+  @Input() padding_none: any;
   search_value: any;
 
   @Output() getDateFromCalendar = new EventEmitter();

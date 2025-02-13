@@ -147,12 +147,13 @@ export class DashboardPage implements OnInit {
       this.get_hr_dashboard();
       this.get_ess_dashboard();
       this.getChartHr()
+      this.checkIn();
     }  
 
-    if(this.db.employee_role){
-      this.get_ess_dashboard();
-      this.checkIn();
-    }
+    // if(this.db.employee_role){
+      // this.get_ess_dashboard();
+      
+    // }
 
     this.db.side_menu_show = true;
     if (!this.db.ismobile) {
@@ -407,6 +408,8 @@ export class DashboardPage implements OnInit {
       return '/assets/Employee-Home/Available-leaves.svg'
     }else if(data == 'Expired Leaves'){
       return '/assets/Employee-Home/Expired-Leaves.svg'
+    }else if(data == 'Pending Leaves'){
+      return '/assets/Employee-Home/PendingLeaves.svg'
     }else{
       return '/assets/Employee-Home/Total-Leaves.svg'
     }
@@ -845,15 +848,15 @@ export class DashboardPage implements OnInit {
 
   getCircleColor(data){
     if(data == 'Total Leaves'){
-      return '#DDDFFF'
+      return '#6A12D71A'
     }else if(data == 'Used Leaves'){
-      return '#F9E7CC'
+      return '#e7f8ed'
     }else if(data == 'Available Leaves'){
-      return '#DAE9DE'
+      return '#e9f7fb'
     }else if(data == 'Pending Leaves'){
-      return '#DDDFFF'
+      return '#FCAC2B1A'
     }else{
-      return '#F2D0D0'
+      return '#fff4f4'
     }
   }
 

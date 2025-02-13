@@ -7,7 +7,7 @@
 <!-- {{page_title | json}} -->
 <app-website-form-header *ngIf="(page_title == 'New Event' || page_title == 'New Task')" [close_btn]="true" [Title]="page_title"></app-website-form-header>
 
-<app-header *ngIf="db.ismobile && (page_title != 'New Event' && page_title != 'New Task')" [title]="page_title" [model]="(page_title == 'New Event'|| page_title == 'New Task' || page_title == 'Set as Lost') ? true : false" [no_filter]="page_route == 'Customer' ? true : false" ></app-header>
+<app-header *ngIf="db.ismobile && (page_title != 'New Event' && page_title != 'New Task')" [title]="page_title == ('hd ticket' || 'HD Ticket') ? 'Raise Ticket' : page_title" [model]="(page_title == 'New Event'|| page_title == 'New Task' || page_title == 'Set as Lost') ? true : false" [no_filter]="page_route == 'Customer' ? true : false" ></app-header>
 
 <ion-content>
     <div *ngIf="page_route && !edit_form" >

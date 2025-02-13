@@ -41,6 +41,7 @@
     }
 
     .imageDiv {
+      flex: 0 0 22%;
       height: 75px;
       width: 110px;
       border-radius: 5px;
@@ -55,6 +56,10 @@
         border-radius: 5px;
         object-fit: cover;
       }
+    }
+
+    .contextDiv{
+      flex: 0 0 67%;
     }
   }
 }
@@ -215,7 +220,7 @@ th {
 }
 
 .headig-p {
-  padding: 20px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
 }
 
 .next_prev {

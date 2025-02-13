@@ -153,71 +153,6 @@
 }
 
 
-.timesheetlist-s {
-
-  .Heading {
-    padding: 13px 10px;
-    margin: 0;
-    background: #f6f6f6;
-    font-size: 15px;
-    font-weight: 500;
-  }
-
-  .row_ {
-    flex-direction: row-reverse;
-  }
-
-  .timesheetList {
-    //   flex-direction: column-reverse;
-    flex-wrap: wrap;
-    gap: 1px;
-    background: #f1f1f1;
-    flex-direction: row-reverse;
-
-    .t-box {
-      flex: 0 0 calc(50% - 1px);
-      /* border-bottom: 1px solid #ddd; */
-      /* border-radius: 5px; */
-      padding: 10px;
-      background: #ffff;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .titleName {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--gray-color);
-      padding: 0 0 5px 0;
-      // padding: 8px 14px;
-      // background: rgba(255, 0, 0, 0.1294117647);
-      // color: #b81111;
-      width: max-content;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-
-      div {
-        height: 10px;
-        width: 10px;
-        border-radius: 50%;
-        background: #b81111;
-      }
-    }
-
-    .success {
-
-      // background: #41ff0045 !important;
-      // color: #1e6903 !important;
-      div {
-        background: #1e6903 !important;
-      }
-    }
-
-  }
-}
-
 .time {
   display: flex;
   align-items: center;
@@ -317,24 +252,24 @@
   border-radius: 5px;
 }
 
-.timeSection{
-  height: calc(100vh - 202px);
-  overflow: auto;
-   .Heading{
-    position: sticky;
-    top: 0;
-    z-index: 99;
-   }
+// .timeSection{
+//   height: calc(100vh - 202px);
+//   overflow: auto;
+//    .Heading{
+//     position: sticky;
+//     top: 0;
+//     z-index: 99;
+//    }
 
-   .check_list {
-    padding: 15px 5px;
-    height: unset !important;
-   }
-}
+//    .check_list {
+//     padding: 15px 5px;
+//     height: unset !important;
+//    }
+// }
 
-.timeSection::-webkit-scrollbar{
-  display: none;
-}
+// .timeSection::-webkit-scrollbar{
+//   display: none;
+// }
 
 .yearD{
   gap: 6px;
@@ -383,3 +318,20 @@
   position: relative;
   top: -120px;
 }
+
+.list-container {
+  border: 1px solid #ddd;
+  margin: 7px;
+  border-radius: 10px;
+  margin-top: -115px;
+    .bottom-color{
+      padding: 5px 10px;
+    background: #F6FAFF;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    }
+
+    .p-tb5-lr10{
+      padding: 5px 10px;
+  }
+  }

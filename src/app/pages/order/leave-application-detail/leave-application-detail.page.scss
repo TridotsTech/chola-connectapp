@@ -131,7 +131,7 @@
     }
 
     .box_1 {
-        border: 1px solid var(--border-col);
+        // border: 1px solid var(--border-col);
         padding: 0 10px 5px 10px;
         // padding: 5px 5px 5px;
         border-radius: 8px;
@@ -338,8 +338,21 @@ ion-backdrop {
 
 
 .list-container {
-    border-bottom: 1px solid #ddd;
-    padding: 5px 10px;
+    border: 1px solid #005bc317;
+    // padding: 5px 10px;
+    margin: 7px;
+    border-radius: 10px;
+
+    .p-tb5-lr10{
+        padding: 5px 10px;
+    }
+
+    .bottom-color{
+        padding: 5px 10px;
+        background: #F6FAFF;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
 }
 
 .text_2 {

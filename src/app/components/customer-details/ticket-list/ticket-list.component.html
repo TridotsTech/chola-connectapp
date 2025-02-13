@@ -1,7 +1,7 @@
 <!-- New List UI -->
 <div class="filter_sec">
-  <app-tabs-button [employee_detail_tab]="true" [border_none]="true" [no_mb]="true" [overflow]="overflow"
-    (menu_name)="menu_name.emit($event)" [tabs_array]="tabs"></app-tabs-button>
+  <app-tabs-button [border_none]="true" [no_mb]="true" [overflow]="overflow" [bg_white]="db.ismobile ? false : true"
+    (menu_name)="menu_name_1($event)" [tabs_array]="tabs"></app-tabs-button>
 </div>
 <div class="d__flex gap-10 h45" *ngIf="!db.ismobile">
   <ion-icon class="fnt-20 ml-10 headerIcon" slot="start" src="/assets/dashboard/HDTicket-active.svg"></ion-icon>
@@ -24,18 +24,32 @@
       </div>
     </div>
   </div> -->
-  <img src="assets/Frame/ticket.svg" alt="">
-  <!-- <div [ngClass]="db.ismobile ? 'box_':''" class="border-r p-20" *ngFor="let item of data.number_card; index as i">
-    <div class="d__flex gap-10 just-s">
-      <div class="ticket_ico">
-        <ion-icon [src]="item.status == 'Open' ? '/assets/tickets/red-ticket.svg' : item.status == 'Replied' ? '/assets/tickets/ticket-replied.svg' : item.status == 'Resolved' ? '/assets/tickets/ticket-resolved.svg' : '/assets/tickets/ticket-closed.svg'"></ion-icon>
+
+  <div class="applyTicketFrame" *ngIf="showBanner">
+    <img class="d__flex w-100" src="assets/Frame/ticket.svg" alt="">
+    <ion-button routerLink="/forms/hd-ticket" fill="clear">📃 Apply Ticket</ion-button>
+    <ion-icon class="fnt-18" (click)="showBanner = false;" name="close-outline"></ion-icon>
+  </div>
+  
+  <div class="ticketDashboard">
+    <div *ngFor="let item of data.number_card; index as i" class="box_ p-20" [ngStyle]="{'background': checkBackground(item.status)}">
+      <div class="mb-5">
+        <div class="ticket_ico d__flex just-s">
+          <ion-icon [src]="setTicketIcon(item.status)"></ion-icon>
+          <b>{{ item.count }}</b>
+        </div>
+      </div>
+      <div class="d__flex just-s gap-10">
+        <h6 class="fnt-14 fnt_w400 m-0">{{ item.status }}</h6>
       </div>
     </div>
-    <div class="d__flex just-s gap-10">
-      <h6 class="gray_txt">{{ item.status }}</h6>
-      <b>{{ item.count }}</b>
-    </div>
+  </div>
+
+  <!-- <div class="ticket_month_filter">
+    <app-month-filter [padding_none]="true" [selectedDate]="db.current_event_date"
+          (getDateFromCalendar)="getDateFromCalendars($event)" (getFilters)="getFilters($event)"></app-month-filter>
   </div> -->
+
 
 
   <!-- <div class="filter_sec">
@@ -43,7 +57,7 @@
       (menu_name)="menu_name.emit($event)" [tabs_array]="tabs"></app-tabs-button>
   </div> -->
 
-  <div #tabList (scroll)="load_data.emit($event)" class="list_common_height" *ngIf="!db.ismobile && !skeleton && data && data.data && data.data.length != 0;else no_product">
+  <div #tabList (scroll)="load_data.emit($event)" class="list_common_height" *ngIf="!db.ismobile && !skeleton && data && data.data && data.data.length != 0">
     <div class="border p-10 rounded-5 mb-10 mouse animated fadeInUp" *ngFor="let item of data.data; let i = index"
       (click)="click_data.emit({ item: item, i: i })" [id]="i + 1 + 'scroll'">
       <div class="d__flex gap-10 just-s mb-10">
@@ -102,57 +116,52 @@
     </div>
   </div>
 
-  <div #tabList (scroll)="load_data.emit($event)" class="list_common_height mobileTicketList" *ngIf="db.ismobile && !skeleton && data && data.data && data.data.length != 0;else no_product">
-    <div class="border p-10 rounded-5 mb-10 mouse animated fadeInUp" *ngFor="let item of data.data; let i = index"
+  <div #tabList (scroll)="load_data.emit($event)" class="list_common_height mobileTicketList" *ngIf="db.ismobile && !skeleton && data && data.data && data.data.length != 0">
+    <div class="border rounded-10 mb-10 mouse animated fadeInUp" *ngFor="let item of data.data; let i = index"
       (click)="click_data.emit({ item: item, i: i })" [id]="i + 1 + 'scroll'">
-      <div class="d__flex gap-10 just-s">
-        <div class="d__flex gap-20">
-          <div class="d__flex">
-            <h6 class="m-0 bold_name-13 capitalize">{{ item.subject }}</h6>
+      
+      <div class="p-5-10">
+        <div class="d__flex gap-10 just-s mb-5">
+          <div class="d__flex gap-20">
+            <div class="d__flex gap-10">
+              <ion-icon class="fnt-22" src="/assets/tickets/TicketList.svg"></ion-icon>
+              <h6 class="m-0 bold_name-13 capitalize">{{ item.subject }}</h6>
+            </div>
           </div>
+  
+          <app-common-priority [priority]="item.priority"></app-common-priority>
         </div>
-
-        <div class="d__flex gap-5 bg_high" [ngClass]="item.priority == 'Low' ? 'low_bg' : item.priority == 'Medium' ? 'medium_bg' : 'high_bg'">
-          <ion-icon [name]="check_priority(item.priority)"></ion-icon>
-          <p class="m-0">{{ item.priority }}</p>
-        </div>
-      </div>
-
-      <div class="">
-        <div class="d__flex gap-5">
-          <ion-icon src="/assets/tickets/user-tag.svg"></ion-icon>
-          <p class="m-0 gray_txt">{{ item.owner_name }}</p>
-        </div>
+  
         <div class="d__flex just-s">
           <div class="d__flex gap-5">
-            <ion-icon src="/assets/tickets/user.svg"></ion-icon>
-            <p class="m-0 gray_txt">{{ item.owner }}</p>
+            <p class="m-0 gray_txt">{{ item.owner_name }}</p>
+            <p class="m-0 gray_txt">{{ transformDateToDays(item.creation) }}</p>
           </div>
           <div>
             <app-status [doc_type]="doc_type" [status]="item.status" [reverse]="true"></app-status>
           </div>
         </div>
-        <div class="d__flex gap-5">
-          <ion-icon src="/assets/tickets/company.svg"></ion-icon>
-          <p class="m-0 gray_txt">{{ item.ticket_type }}</p>
+      </div>
+
+      <div class="d__flex just-s messageContent">
+        <div>
+          <p class="m-0 gray_txt webkit-text" [style.--line]="1">{{stripHtmlTags(item.description)}}</p>
         </div>
         <div class="d__flex gap-5">
-          <ion-icon src="/assets/tickets/message-text.svg"></ion-icon>
+          <ion-icon src="/assets/tickets/messages.svg"></ion-icon>
           <p class="m-0 gray_txt">{{ item.message_count }}</p>
         </div>
       </div>
+
     </div>
   </div>
 </div>
 
-<ng-template #no_product>
-  <!-- *ngIf="(!skeleton && !list_data) || (!skeleton && list_data && list_data.data && list_data.data.length == 0) && !db.ismobile" -->
-  <app-no-record-found *ngIf="(!data && !skeleton) || (!skeleton && data && data.data && data.data.length == 0 && !db.ismobile)" [column]="true" height="calc(100vh - 117px)" [heading]="'No record found'"
-    [image]="'assets/icon/empty.svg'"></app-no-record-found>
-</ng-template>
+<app-no-record-found *ngIf="(!data && !skeleton && !db.skeletonLoader) || (!skeleton && !db.skeletonLoader && data && data.data && data.data.length == 0 && db.ismobile)" [column]="true" height="calc(100vh - 360px)" [heading]="'No record found'"
+  [image]="db.getNotFoundImage('HD Ticket')"></app-no-record-found>
 
 <!--Skeleton-->
-<div class="pl10" *ngIf="skeleton && data && data.data == 0">
+<!-- <div class="pl10" *ngIf="skeleton && data && data.data == 0">
   <ion-item *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]">
     <ion-label>
       <h3 class="d__flex just-s">
@@ -166,4 +175,21 @@
       </h3>
     </ion-label>
   </ion-item>
+</div> -->
+
+<div *ngIf="skeleton || db.skeletonLoader && data && data.data == 0" class="box_sec">
+  <div *ngFor="let item of [1,2,3,4,5,7,8,9,10,1,1,1,1,1,1]" style="padding: 10px;border-bottom: 1px solid var(--border-col);">
+    <div style="display: flex;align-items: center;justify-content: space-between;">
+      <ion-skeleton-text style="width: 190px;height: 15px;border-radius: 5px;" [animated]="true" ></ion-skeleton-text>
+      <ion-skeleton-text style="width: 80px;height: 15px;border-radius: 5px;" [animated]="true" ></ion-skeleton-text>
+    </div>
+    <div style="display: flex;align-items: center;justify-content: space-between;">
+      <ion-skeleton-text style="width: 170px;height: 15px;border-radius: 5px;" [animated]="true" ></ion-skeleton-text>
+      <ion-skeleton-text style="width: 100px;height: 15px;border-radius: 5px;" [animated]="true" ></ion-skeleton-text>
+    </div>
+    <div style="display: flex;align-items: center;justify-content: space-between;">
+      <ion-skeleton-text style="width: 160px;height: 15px;border-radius: 5px;" [animated]="true" ></ion-skeleton-text>
+      <ion-skeleton-text style="width: 70px;height: 15px;border-radius: 5px;" [animated]="true" ></ion-skeleton-text>
+    </div>
+  </div>
 </div>

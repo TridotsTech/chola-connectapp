@@ -4,6 +4,7 @@ import { WebsiteFormsComponent } from '../forms/website-forms/website-forms.comp
 import { ModalController, LoadingController } from '@ionic/angular';
 import { ShowTicketDetailComponent } from '../show-ticket-detail/show-ticket-detail.component';
 import { Router } from '@angular/router';
+import { TicketFeedbackComponent } from '../ticket-feedback/ticket-feedback.component';
 @Component({
   selector: 'app-ticket-details',
   templateUrl: './ticket-details.component.html',
@@ -36,6 +37,8 @@ export class TicketDetailsComponent implements OnInit {
   ticket_status_value: any = '';
 
   allocate_agent: any = '';
+
+  selectedTabs: any = 'Messages';
 
   modules = {
     formula: false,
@@ -99,7 +102,39 @@ export class TicketDetailsComponent implements OnInit {
         // console.log(resDetails,'resDetails')
       }
     })
+    this.db.skeleton_detail = true;
+    this.db.get_all_conversation(this.db.mail_send_to.name ? this.db.mail_send_to.name : this.db.mail_send_to);
   }
+
+  ticketTabs = [
+    {
+      "name": "Messages",
+      "route": "Messages"
+    },
+    {
+      "name": "Info",
+      "route": "Info"
+    },
+  ]
+
+  menu_name(event){
+    this.selectedTabs = event.name;
+
+    if(this.selectedTabs == 'Messages'){
+      this.db.skeleton_detail = true;
+      this.db.get_all_conversation(this.db.mail_send_to.name ? this.db.mail_send_to.name : this.db.mail_send_to);
+    }
+  }
+
+  changeSelectTabs(event){
+    this.selectedTabs = event.detail.value
+
+    if(this.selectedTabs == 'Messages'){
+      this.db.skeleton_detail = true;
+      this.db.get_all_conversation(this.db.mail_send_to.name ? this.db.mail_send_to.name : this.db.mail_send_to);
+    }
+  }
+
   getName_url(url) {
     this.attach_file_name = url.split('/').pop().split('#')[0];
     this.db.attach_filter(this.attach_file_name, '');
@@ -144,6 +179,12 @@ export class TicketDetailsComponent implements OnInit {
   // }
 
   onsubmit() {
+    this.send('');
+  }
+
+  submitCommonText(event){
+    console.log(event)
+    this.message_data = event
     this.send('');
   }
 
@@ -505,6 +546,54 @@ export class TicketDetailsComponent implements OnInit {
       }
     });
     this.db.allocate_agent = false;
+  }
+
+  transformDateToDays(dateString: string): string {
+    const givenDate = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - givenDate.getTime()); // Difference in milliseconds
+    const daysDiff = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Convert to days
+    return `${daysDiff} Days`;
+  }
+
+  check_priority = (status) => {
+    if (status == 'Low') {
+      return 'arrow-down-outline'
+    } else {
+      return 'arrow-up-outline'
+    }
+  }
+
+  async openFeedback(type){
+    const modal = await this.modalCtrl.create({
+      component: TicketFeedbackComponent,
+      cssClass: 'ticket-feedback',
+      componentProps: {
+        ticket_send_details: this.ticket_send_details,
+        type: type
+      }
+    })
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data,'data');
+    if(data){
+      this.db.inset_docs({ data: data }).subscribe((res) => {
+        // console.log(res)
+        if ((res && res.message && res.message.status && res.message.status == 'Success') || (res.status && res.status == 'Success')) {
+          this.get_doc_detail();
+          this.db.sendSuccessMessage('Ticket Updated');
+        } else {
+          var d = JSON.parse(res._server_messages);
+          var d1 = JSON.parse(d);
+          this.db.sendErrorMessage(this.stripHtmlTags(d1.message));
+        }
+      });
+    }
+  }
+
+  stripHtmlTags(htmlString: string): string {
+    const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+    return doc.body.textContent || '';
   }
 
   // scrollto() {

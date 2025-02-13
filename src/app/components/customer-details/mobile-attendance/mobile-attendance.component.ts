@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, SimpleChanges, Input, EventEmitte
 import { ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { CheckinMultipleComponent } from '../../checkin-multiple/checkin-multiple.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-mobile-attendance',
@@ -37,12 +38,15 @@ export class MobileAttendanceComponent implements OnInit {
     }
   }
 
-  constructor(private ngZone: NgZone,public db:DbService, public cdr:ChangeDetectorRef, private modalCtrl:ModalController, private renderer: Renderer2, private elementRef: ElementRef) { }
+  constructor(private datePipe: DatePipe,private ngZone: NgZone,public db:DbService, public cdr:ChangeDetectorRef, private modalCtrl:ModalController, private renderer: Renderer2, private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.db.tab_buttons(this.options, this.options[0].route, 'route');
     this.viewType = this.options[0].route
-
+    // this.attendance_dashboard = this.attendance_dashboard.filter(item => item.label != 'Check In' && item.label != 'Check Out');
+    // this.attendance_dashboard.push({label:'Check In',count:''})
+    // console.log(this.showCalendar)
+    // console.log(this.db.current_event_date)
     this.db.tab_buttons(this.options1, this.options1[0].route, 'route');
     this.view = this.options1[0].route
   }
@@ -55,6 +59,13 @@ export class MobileAttendanceComponent implements OnInit {
     } else {
       return '#E02323'
     }
+  }
+
+  getCircleColor(data){
+    if(data == 'Total Working Days'){
+      return '#6A12D71A'
+    }else
+      return '#e9f7fb'
   }
 
   transform_att_date(value: any) {
@@ -80,28 +91,28 @@ export class MobileAttendanceComponent implements OnInit {
     return `${hours}:${minutes ? minutes : '00'} Hr`;
   }
 
-  converTime(data) {
-    // Split the input string by ':'
-    data = String(data)
-    let [hours, minutes] = data.split(':');
+  // converTime(data) {
+  //   // Split the input string by ':'
+  //   data = String(data)
+  //   let [hours, minutes] = data.split(':');
 
-    // Convert hours to a number
-    hours = parseInt(hours);
+  //   // Convert hours to a number
+  //   hours = parseInt(hours);
 
-    // Determine AM or PM suffix
-    let suffix = hours >= 12 ? 'PM' : 'AM';
+  //   // Determine AM or PM suffix
+  //   let suffix = hours >= 12 ? 'PM' : 'AM';
 
-    // Adjust hours for 12-hour format
-    hours = (hours % 12) || 12;
+  //   // Adjust hours for 12-hour format
+  //   hours = (hours % 12) || 12;
 
-    // Add leading zero to minutes if necessary
-    if (minutes && minutes.length < 2) {
-      minutes = '0' + String(minutes);
-    }
+  //   // Add leading zero to minutes if necessary
+  //   if (minutes && minutes.length < 2) {
+  //     minutes = '0' + String(minutes);
+  //   }
 
-    // Construct the new time format
-    return `${hours}:${minutes ? minutes : '00'} ${suffix}`
-  }
+  //   // Construct the new time format
+  //   return `${hours}:${minutes ? minutes : '00'} ${suffix}`
+  // }
 
   menu_name(eve: any) {
     this.viewType = eve.route
@@ -110,9 +121,14 @@ export class MobileAttendanceComponent implements OnInit {
   }
 
   menu_name1(eve: any) {
+    const currentDate = new Date();
+    const formattedDate = this.datePipe.transform(currentDate, 'yyyy-M');
     this.view = eve.route;
+    let event:any={};
+    event.detail ={}
     this.ngZone.run(() => {
-      // this.getCalendarDate.emit(eve);
+      event.detail.value = formattedDate
+      this.view == 'calendar' ? this.getCalendarDate.emit(event): '';
       // this.highlightedDates = this.highlightedDates; // Ensure view updates on change
     });
   }

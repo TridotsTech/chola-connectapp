@@ -39,15 +39,15 @@ export class TabsPage implements OnInit {
   employeePopUp:any = [
     // {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
     // {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
-    {label:'Leave Withdrawal', doctype:'Leave Withdrawal', icon:'/assets/Employee-Home/LeaveApplication.svg', route:'/leave-withdrawal/New'},
-    {label:'Leave Request', doctype:'Leave Request', icon:'/assets/Employee-Home/CompensatoryLeaveRequest.svg', route:'/leave-application'},
+    {label:'Leave Withdrawal', doctype:'Leave Withdrawal', icon:'/assets/Employee-Home/leave withdrawal.svg', route:'/leave-withdrawal/New'},
+    {label:'Leave Request', doctype:'Leave Request', icon:'/assets/Employee-Home/leaverequest.svg', route:'/leave-application'},
   ];
 
   hrEmployeePopUp:any = [
     // {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
     // {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
-    {label:'Leave Withdrawal', doctype:'Leave Withdrawal', icon:'/assets/Employee-Home/LeaveApplication.svg', route:'/leave-withdrawal/New'},
-    {label:'Leave Request', doctype:'Compensatory Leave Request', icon:'/assets/Employee-Home/CompensatoryLeaveRequest.svg', route:'/leave-application'},
+    {label:'Leave Withdrawal', doctype:'Leave Withdrawal', icon:'/assets/Employee-Home/leave withdrawal.svg', route:'/leave-withdrawal/New'},
+    {label:'Leave Request', doctype:'Compensatory Leave Request', icon:'/assets/Employee-Home/leaverequest.svg', route:'/leave-application'},
     // {label:'Salary Slip', icon:'/assets/Employee-Home/SalarySlip.svg', route:'/forms/leave-application'},
   ];
 

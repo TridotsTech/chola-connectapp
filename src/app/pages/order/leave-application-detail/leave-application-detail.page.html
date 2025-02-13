@@ -20,7 +20,7 @@
     </ion-fab-list>
   </ion-fab>
 
-  <div *ngIf="false && !db.ismobile && detail_loader" class="align_center">
+  <!-- <div *ngIf="false && !db.ismobile && detail_loader" class="align_center">
 
     <div class="b-1 d__flex">
       <ion-skeleton-text [animated]="true"
@@ -56,14 +56,13 @@
       </div>
     </div>
 
-    <!-- <ion-spinner name="crescent"></ion-spinner> -->
-  </div>
+  </div> -->
 
   <div *ngIf="db.ismobile" class="fullD">
 
 
     <!-- Mobile Skeleton -->
-    <div *ngIf="skeleton && (!leave_list || (leave_list && leave_list.length == 0)) && skeleton_value_mobile">
+    <div *ngIf="db.leave_skeleton && (!leave_list || (leave_list && leave_list.length == 0)) && skeleton_value_mobile">
 
       <!-- Tabs -->
       <div [class.tab_skeleton]="skeleton_value_mobile.tabs" *ngIf="skeleton_value_mobile.tabs">
@@ -113,8 +112,8 @@
         <p class="m-0 fnt-15 fnt_w500 white">{{employee_details.designation}}</p>
       </div>
     </div>
-
-    <div class="bg_header" *ngIf="!skeleton">
+    
+    <div class="bg_header" *ngIf="!db.leave_skeleton">
       <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
         [bg_white]="db.ismobile ? false : true" [tabs_array]="options" [Lead_seg]="false"></app-tabs-button>
     </div>
@@ -122,17 +121,15 @@
     <!-- <app-calendar (getMonth)="getMonth($event)" [yearList]="true"></app-calendar> -->
 
     <!-- !no_employee_details && -->
-    <div *ngIf="!skeleton && leave_dashboard" class="leave_list">
+    <div *ngIf="!db.leave_skeleton && leave_dashboard" class="leave_list">
 
       <div *ngIf="leave_dashboard && leave_dashboard.length > 0" class="d__flex w-100 section">
-        <div class="box_1" *ngFor="let item of leave_dashboard">
+        <div class="box_1" [ngStyle]="{'background': getCircleColor(item.label)}" *ngFor="let item of leave_dashboard">
           <div class="m-7 d__flex just-s">
-            <ion-icon class="fnt-16 icon " [ngClass]="item.label ? checkImages(item.label,'class') : ''"
-              [src]="checkImages(item.label,'')"></ion-icon>
-            <p class="m-0 fnt_w500 " [style.color]="checkImages(item.label,'color')">{{item.count}}</p>
-            <!-- <ion-icon class="fnt-16" src="/assets/icon/allocated-Leave-01.svg"></ion-icon> -->
+            <ion-icon class="fnt-30" [src]="get_leaves_icon(item.label)"></ion-icon>
+            <p class="m-0 fnt_w600 " >{{item.count}}</p>
           </div>
-          <p class="fnt-12 m-0 ">{{item.label}}</p>
+          <p class="fnt-12 m-0 ">{{item.label.replaceAll('Leaves', ' ')}}</p>
         </div>
 
         <!-- <div class="box_1">
@@ -230,13 +227,13 @@
       <div [ngClass]="(db.employee_role || employee) ? 'list_height-1' : 'list_height'" (scroll)="load_more($event)"
         #tabList *ngIf="leave_list && leave_list.length > 0">
         <div class="list-container" (click)="openQuickForm(item)" *ngFor="let item of leave_list;index as i">
-          <div class="d__flex gap-10 just-s pb-5">
-            <h6 class="m-0 fnt-13 webkit-text" [style.--line]=2>{{item.leave_type}}</h6>
+          <div class="d__flex gap-10 just-s p-tb5-lr10">
+            <h6 class="m-0 fnt-13 webkit-text d__flex" [style.--line]=2> <img src="/assets/leaves/leaveicon.svg" alt="" > <span class="fw-600 pl5">{{item.leave_type}}</span> </h6>
             <div><app-status [status]="item.status ? item.status : item.workflow_state"></app-status></div>
             <!-- <p class="m-0 text_2 fnt-13 flex-auto">{{db.getTimecal(item[data.keys[8]])}}</p> -->
           </div>
 
-          <div class="d__flex gap-10 just-s pb-5">
+          <div class="d__flex gap-10 just-s p-tb5-lr10">
            
             <div  *ngIf="(db.employee_role || db.selfView);else showselfView" class="d__flex gap-5">
               <ion-icon src="/assets/leaves/calendar.svg" class="fnt-14"></ion-icon>
@@ -250,7 +247,7 @@
             <p *ngIf="item.total_leave_days" class="m-0 flex-auto  bold_name-13">{{item.total_leave_days + (item.total_leave_days > 1 ? " days" : " day")}}</p>
           </div>
 
-          <div class="d__flex gap-10 just-s pb-5">
+          <div class="d__flex gap-10 just-s bottom-color">
             <p class="m-0 d__flex gap-5">
               <!-- <ion-icon class="fnt-13" src="/assets/expense-claim/name.svg"></ion-icon> -->
               <span class="m-0 text_2 fnt-13">{{item.name}}</span></p>
@@ -271,13 +268,13 @@
         </div>
       </div>
 
-      <app-no-record-found *ngIf="leave_list && leave_list.length == 0" [column]="true" height="calc(100vh - 400px)"
-        [heading]="'No Detail found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+      <app-no-record-found *ngIf="false && leave_list && leave_list.length == 0" [column]="true" height="calc(100vh - 400px)"
+        [heading]="'No Record found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
 
     </div>
 
     <app-no-record-found *ngIf="leave_list && leave_list.length == 0" [column]="true" height="calc(100vh - 251px)"
-      [heading]="'No Detail found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+      [heading]="'No Record found'" [image]="'assets/not-found/Leaves.svg'"></app-no-record-found>
 
   </div>
 
@@ -306,7 +303,7 @@
             <ion-icon class="mouse" [class.selectedViewList]="item['isSelected']" *ngFor="let item of viewList;let i = index" (click)="sendViewType(item,i)" [name]="item.icon"></ion-icon>
           </div>
 
-          <ion-button *ngIf="!db.ismobile && !skeleton " (click)="createNew()" fill="clear" class="addNew mouse">
+          <ion-button *ngIf="!db.ismobile && !db.leave_skeleton " (click)="createNew()" fill="clear" class="addNew mouse">
             <ion-icon slot="start" name="add-outline"></ion-icon>Add
           </ion-button>
         </div>
@@ -316,7 +313,7 @@
       <!-- <p> leave web view</p> -->
       <!-- (tab_filter)="tab_filter($event)" [data]="list_data" (load_data)="load_data($event)" -->
       <!-- (filterList)="filterList.emit($event)" [json_filter]="json_filter" -->
-      <div *ngIf="!skeleton">
+      <div *ngIf="!db.leave_skeleton">
         <div class="big_box" *ngIf="db.viewListType == 'Grid'">
           <!-- <app-leave-application-list [doctype]="doc_type" (leaveConfirm)="leaveConfirm($event)" [data]="list_data"
             [leave_application_table]="db.current_leave_segment == 'Leave Requests' ? leave_request_table : leave_application_table"
@@ -335,7 +332,7 @@
           <app-employee-leave-grid></app-employee-leave-grid>
         </div>
 
-        <div *ngIf="!db.ismobile && !skeleton && list_data && list_data.data && list_data.data.length != 0"
+        <div *ngIf="!db.ismobile && !db.leave_skeleton && list_data && list_data.data && list_data.data.length != 0"
           class="d__flex w-100 just-s pagination_sec">
           <div class="d__flex border">
             <p *ngFor="let item of pagination_count;let i = index" [class.select_pagination]="item.selected"
@@ -345,7 +342,7 @@
         </div>
       </div>
 
-      <div class="summary_skeleton" *ngIf="(skeleton) && skeleton_value">
+      <div class="summary_skeleton" *ngIf="(db.leave_skeleton) && skeleton_value">
         <div [class.summary_sec]="skeleton_value.enable_dashboard" *ngIf=" skeleton_value.enable_dashboard">
           <div *ngFor="let item of skeleton_value.dash_len;index as i">
             <app-skeleton-loader [index]="i == skeleton_value.dash_len.length - 1 ? -1 : i"

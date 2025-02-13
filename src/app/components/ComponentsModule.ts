@@ -100,6 +100,9 @@ import { TicketListComponent } from './customer-details/ticket-list/ticket-list.
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 import { ShowTicketDetailComponent } from './show-ticket-detail/show-ticket-detail.component';
 import { LeavePreviewWithdrawComponent } from './leaves-module/leave-preview-withdraw/leave-preview-withdraw.component';
+import { CommonPriorityComponent } from './common-priority/common-priority.component';
+import { TicketFeedbackComponent } from './ticket-feedback/ticket-feedback.component';
+import { JobReferalFiltersComponent } from './job-referal-filters/job-referal-filters.component';
 
 @NgModule({
   declarations: [
@@ -193,7 +196,10 @@ import { LeavePreviewWithdrawComponent } from './leaves-module/leave-preview-wit
     TicketListComponent,
     TicketDetailsComponent,
     ShowTicketDetailComponent,
-    LeavePreviewWithdrawComponent
+    LeavePreviewWithdrawComponent,
+    CommonPriorityComponent,
+    TicketFeedbackComponent,
+    JobReferalFiltersComponent
   ],
   imports: [
     CommonModule,
@@ -299,7 +305,10 @@ import { LeavePreviewWithdrawComponent } from './leaves-module/leave-preview-wit
     TicketListComponent,
     TicketDetailsComponent,
     ShowTicketDetailComponent,
-    LeavePreviewWithdrawComponent
+    LeavePreviewWithdrawComponent,
+    CommonPriorityComponent,
+    TicketFeedbackComponent,
+    JobReferalFiltersComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

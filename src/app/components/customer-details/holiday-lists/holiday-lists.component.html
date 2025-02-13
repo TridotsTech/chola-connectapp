@@ -1,9 +1,16 @@
 <!-- Old Code -->
 <div class="" *ngIf="db.ismobile">
-  <div *ngIf="db.ismobile" class="bg_primary">
+  
+  <!-- <div *ngIf="db.ismobile" class="bg_primary">
     <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name.emit($event)"
       [bg_white]="db.ismobile ? false : true" [tabs_array]="options"
       [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+  </div> -->
+
+  <div *ngIf="options && options.length != 0" class="holidayTabs">
+    <div *ngFor="let item of options;let i = index" [class.border-r-l]="holiday_type == options[0].name" [class.border-r-r]="holiday_type == options[2].name" (click)="menu_name.emit(item)" class="box_item" [class.selected_item]="holiday_type == item.name">
+      <h5 class="m-0">{{item.name}}</h5>
+    </div>
   </div>
 
   <div class="parent-h bg_white no_scroll">
@@ -24,10 +31,8 @@
 
     <div class="app-calendar">
       <!-- <div class="d__flex"> -->
-      <div [class.px-20]="!db.ismobile" class="w-50 stciky_cal border-r p-10">
-        <img src="/assets/leaves/main.svg" class="main-img" alt="calendar image" />
-
-        <br>
+      <div [class.px-20]="!db.ismobile" class="w-50 stciky_cal" *ngIf="holiday_type == 'Calendar'">
+        <img src="/assets/Holiday-Page/HolidayBanner.svg" alt="calendar image" />
 
         <div *ngIf="!db.ismobile" [ngSwitch]="view">
           <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate"
@@ -48,21 +53,18 @@
         </ng-template>
       </div>
 
-
-      <div *ngIf="db.ismobile && list_data.cards && list_data.cards.length != 0" class="attendance_dashboard">
-        <div *ngFor="let item of list_data.cards;let i = index" class="over_flow">
-          <div class="w-100 d__flex just-s first_sec mb-5">
-            <ion-icon
-              [src]="(db.employeeList[i] && db.beachValue[i].icon) ? db.beachValue[i].icon : db.beachValue[i % (db.beachValue.length)].icon"
-              class="fnt-30"></ion-icon>
-            <p [ngStyle]="{'color':(db.employeeList[i] && db.beachValue[i].color) ? db.beachValue[i].color : db.beachValue[i % (db.beachValue.length)].color}"
-              class="m-0 fnt-14 fnt_w500">{{item.count}}</p>
+      <!-- No Delete this class="attendance_dashboard" -->
+      <div *ngIf="db.ismobile && list_data.cards && list_data.cards.length != 0" class="holiday_dashboard">
+        <div *ngFor="let item of list_data.cards.slice(0, 2);let i = index" class="over_flow" [ngStyle]="{'background': getBoxColor(item)}">
+          <div class="w-100 d__flex just-s first_sec mb-10">
+            <ion-icon [src]="getHolidayIcon(item)" class="fnt-30"></ion-icon>
+            <p class="m-0 fnt-14 fnt_w600">{{item.count}}</p>
           </div>
-          <p class="m-0 fnt-12 fnt_w500 label">{{item.label}}</p>
+          <p class="m-0 fnt-14 fnt_w500 label">{{item.label}}</p>
         </div>
       </div>
 
-      <div *ngIf="db.ismobile && holiday_type == 'Calendar'" class="d__flex just-s py-10">
+      <div *ngIf="db.ismobile && holiday_type == 'Calendar' && false" class="d__flex just-s py-10">
 
         <div class="d__flex gap-10 ">
           <div mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
@@ -79,128 +81,138 @@
 
       </div>
 
-      <div *ngIf="db.ismobile && holiday_type == 'Calendar'" [ngSwitch]="view" class="mb-10">
-        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [activeDayIsOpen]="activeDayIsOpen"
+      <div *ngIf="db.ismobile && holiday_type == 'Calendar'" [ngSwitch]="view" class="p-10">
+        <!-- <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [activeDayIsOpen]="activeDayIsOpen"
           (dayClicked)="dayClicked($event.day)" [events]="leaveIndicators"
           [mwlCalendarMonthCellTemplate]="customEventTemplate">
-        </mwl-calendar-month-view>
+        </mwl-calendar-month-view> -->
+        <h5 class="m-0 mb-10 fnt_w600 fnt-15">Calendar View</h5>
+        <app-month-calendar [highlightedDates]="highlightedDates" (onChange)="changeMonthCal($event)"></app-month-calendar>
       </div>
 
 
       <app-common-search *ngIf="db.ismobile && holiday_type != 'Calendar'" [noFilter]="true" placeholder="Search" 
         (call_clear_txt)="clear_txt.emit('')" (search_txt_value)="searchTxtValue.emit($event)"></app-common-search>
 
-      <div class="w-50 " *ngIf="holiday_type != 'Calendar'">
-        <div *ngIf="!db.ismobile" class="d__flex gap-10 just-s px-20">
-          <div class="">
-            <h1 class="m-0 fnt-18">Main Holidays</h1>
-          </div>
-
-          <div class="d__flex gap-10">
-            <app-common-search [noFilter]="true" placeholder="Search" (call_clear_txt)="clear_txt.emit('')"
-              (search_txt_value)="searchTxtValue.emit($event)"></app-common-search>
-            
-          </div>
-        </div>
-
-        <div class="" *ngIf="!db.ismobile">
-          <app-tabs-button [overflow]="true" [bg_custom]="true" [border_none]="true" (menu_name)="menu_name.emit($event)"
-            [bg_white]="db.ismobile ? false : true" [tabs_array]="options"
-            [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
-        </div>
-
-        <!-- List -->
-        <!-- #tabList (scroll)="load_data.emit($event)" -->
-        <div class="holiday_list" [ngClass]="db.ismobile ? '':'p-10'"
-          *ngIf="!db.holiday_list_loader && !db.listSkeleton && list_data && list_data.data && list_data.data.length != 0">
-          <div [class.border]="!db.ismobile" [class.border-b]="db.ismobile"
-            *ngFor="let item of list_data.data;let i =index" class="d__flex rounded-5 gap-10 p-10 mb-10">
-            <div class="border-r flex-10 text-c">
-              <h5 class="m-0 fnt-20">{{item.date | date: "d"}}</h5>
-              <p class="m-0 fnt-15 gray_clr">{{item.date | date: "MMM"}}</p>
+        <div class="p-10">
+          <!-- *ngIf="holiday_type != 'Calendar'" -->
+          <div class="w-50 holidayListView p-0">
+            <div *ngIf="!db.ismobile" class="d__flex gap-10 just-s px-20">
+              <div class="">
+                <h1 class="m-0 fnt-18">Main Holidays</h1>
+              </div>
+    
+              <div class="d__flex gap-10">
+                <app-common-search [noFilter]="true" placeholder="Search" (call_clear_txt)="clear_txt.emit('')"
+                  (search_txt_value)="searchTxtValue.emit($event)"></app-common-search>
+                
+              </div>
+            </div>
+    
+            <div class="" *ngIf="!db.ismobile">
+              <app-tabs-button [overflow]="true" [bg_custom]="true" [border_none]="true" (menu_name)="menu_name.emit($event)"
+                [bg_white]="db.ismobile ? false : true" [tabs_array]="options"
+                [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
             </div>
 
-            <div class="flex-90">
-              <div class="d__flex just-s pb-5">
-                <h6 class="m-0 fnt-15 holiday" [innerHTML]="item.description"></h6>
-                <!-- <ion-icon name="heart-outline"></ion-icon> -->
+            <div class="d__flex just-s monthHeadList">
+              <p class="m-0 fnt-14" *ngIf="holiday_type == 'Calendar'">{{db.monthLists[currentMonth - 1].label}} {{currentYear}}</p>
+              <p class="m-0 fnt-14" *ngIf="holiday_type == 'Holiday'">Holidays</p>
+              <p class="m-0 fnt-14" *ngIf="holiday_type == 'Week off'">Week off</p>
+              <p class="m-0 fnt-14 fnt_w600" *ngIf="list_data && list_data.data && list_data.data.length != 0">{{list_data.data.length}} days</p>
+            </div>
+    
+            <div class="holiday_list" [ngClass]="db.ismobile ? '':'p-10'"
+              *ngIf="!db.holiday_list_loader && !db.listSkeleton && list_data && list_data.data && list_data.data.length != 0">
+              <div [class.border]="!db.ismobile" [class.border-b]="db.ismobile"
+                *ngFor="let item of list_data.data;let i =index" class="d__flex rounded-5 gap-10 p-10 holiday_box">
+                <div class="border-r flex-10 text-c">
+                  <h5 class="m-0 fnt-20">{{item.date | date: "d"}}</h5>
+                  <p class="m-0 fnt-15 gray_clr">{{item.date | date: "MMM"}}</p>
+                </div>
+    
+                <div class="flex-90">
+                  <div class="d__flex just-s pb-5">
+                    <h6 class="m-0 fnt-15 holiday" [innerHTML]="item.description"></h6>
+                    <!-- <ion-icon name="heart-outline"></ion-icon> -->
+                  </div>
+    
+                  <div class="d__flex just-s">
+                    <div class="d__flex gap-10">
+                      <p class="m-0 fnt-13 gray_clr">{{checkDateFormat(item.date,'date')}}</p>
+                      <div class="d__flex gap-10">
+                        <div class="dot dot-1"></div>
+                        <p class="m-0 fnt-13 gray_clr">{{checkDateFormat(item.date,'')}}</p>
+                      </div>
+                    </div>
+    
+                  </div>
+    
+                </div>
               </div>
-
-              <div class="d__flex just-s">
-                <div class="d__flex gap-10">
-                  <p class="m-0 fnt-13 gray_clr">{{checkDateFormat(item.date,'date')}}</p>
-                  <div class="d__flex gap-10">
-                    <div class="dot dot-1"></div>
-                    <p class="m-0 fnt-13 gray_clr">{{checkDateFormat(item.date,'')}}</p>
+            </div>
+    
+            <app-skeleton-loader type="holiday_list" *ngIf="db.bodySkeleton && db.ismobile" [list_len]="[0,1,2,3,4,5]"
+              [list_len_count]="6"></app-skeleton-loader>
+    
+            <!-- <app-skeleton-loader type="Holiday List"  [list_len]="[0,1,2,3,4,5]" [list_len_count]="6"></app-skeleton-loader> -->
+            <!-- px-20 -->
+            <div class="p-10 mb-10" *ngIf="db.holiday_list_loader && !db.ismobile">
+              <div *ngFor="let item of [0,1,2,3,4,5,6,7,8,9]"
+                style="display: flex;gap: 15px;align-items:center; border: 1px solid #ddd;padding: 5px 10px;border-radius: 5px; margin-bottom: 10px;">
+                <!-- style="width: calc(4% - 10px);border-right: 1px solid #ddd;" -->
+                <div>
+                  <ion-skeleton-text animated style="width: 40px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 40px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                </div>
+    
+                <div style="border-left: 1px solid #ddd; padding: 0 10px;width: 100%;">
+                  <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                  <div style="display: flex;gap: 15px;align-items:center;justify-content:space-between;">
+                    <div style="display: flex;gap: 15px;align-items:center;">
+                      <ion-skeleton-text animated style="width: 70px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                      <ion-skeleton-text animated style="width: 90px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                    </div>
+    
+                    <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
                   </div>
                 </div>
-
+    
               </div>
-
             </div>
-          </div>
-        </div>
-
-        <app-skeleton-loader type="holiday_list" *ngIf="db.bodySkeleton && db.ismobile" [list_len]="[0,1,2,3,4,5]"
-          [list_len_count]="6"></app-skeleton-loader>
-
-        <!-- <app-skeleton-loader type="Holiday List"  [list_len]="[0,1,2,3,4,5]" [list_len_count]="6"></app-skeleton-loader> -->
-        <!-- px-20 -->
-        <div class="p-10 mb-10" *ngIf="db.holiday_list_loader && !db.ismobile">
-          <div *ngFor="let item of [0,1,2,3,4,5,6,7,8,9]"
-            style="display: flex;gap: 15px;align-items:center; border: 1px solid #ddd;padding: 5px 10px;border-radius: 5px; margin-bottom: 10px;">
-            <!-- style="width: calc(4% - 10px);border-right: 1px solid #ddd;" -->
-            <div>
-              <ion-skeleton-text animated style="width: 40px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
-              <ion-skeleton-text animated style="width: 40px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
-            </div>
-
-            <div style="border-left: 1px solid #ddd; padding: 0 10px;width: 100%;">
-              <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
-              <div style="display: flex;gap: 15px;align-items:center;justify-content:space-between;">
-                <div style="display: flex;gap: 15px;align-items:center;">
-                  <ion-skeleton-text animated style="width: 70px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
-                  <ion-skeleton-text animated style="width: 90px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+    
+            <div *ngIf="db.listSkeleton" class="">
+              <div *ngFor="let item of [0,1,2,3,4,5,6,7,8,9]" style="display: flex;gap: 15px;align-items:center; border: 1px solid #ddd;padding: 5px 10px;
+            border-radius: 5px; margin-bottom: 10px;">
+                <!-- style="width: calc(4% - 10px);border-right: 1px solid #ddd;" -->
+                <div>
+                  <ion-skeleton-text animated style="width: 40px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 40px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
                 </div>
-
-                <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div *ngIf="db.listSkeleton" class="">
-          <div *ngFor="let item of [0,1,2,3,4,5,6,7,8,9]" style="display: flex;gap: 15px;align-items:center; border: 1px solid #ddd;padding: 5px 10px;
-        border-radius: 5px; margin-bottom: 10px;">
-            <!-- style="width: calc(4% - 10px);border-right: 1px solid #ddd;" -->
-            <div>
-              <ion-skeleton-text animated style="width: 40px; height: 25px;border-radius: 5px;"></ion-skeleton-text>
-              <ion-skeleton-text animated style="width: 40px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
-            </div>
-
-            <div style="border-left: 1px solid #ddd; padding: 0 10px;width: 100%;">
-              <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
-              <div style="display: flex;gap: 15px;align-items:center;justify-content:space-between;">
-                <div style="display: flex;gap: 15px;align-items:center;">
-                  <ion-skeleton-text animated style="width: 70px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
-                  <ion-skeleton-text animated style="width: 90px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+    
+                <div style="border-left: 1px solid #ddd; padding: 0 10px;width: 100%;">
+                  <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                  <div style="display: flex;gap: 15px;align-items:center;justify-content:space-between;">
+                    <div style="display: flex;gap: 15px;align-items:center;">
+                      <ion-skeleton-text animated style="width: 70px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                      <ion-skeleton-text animated style="width: 90px; height: 15px;border-radius: 5px;"></ion-skeleton-text>
+                    </div>
+    
+                    <!-- <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text> -->
+                  </div>
                 </div>
-
-                <!-- <ion-skeleton-text animated style="width: 100px; height: 15px;border-radius: 5px;"></ion-skeleton-text> -->
+    
               </div>
             </div>
-
+    
+    
+            <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
+              *ngIf="!db.bodySkeleton && ((!db.listSkeleton && !list_data) || (!db.listSkeleton && list_data && list_data.data && list_data.data.length == 0))"
+              [column]="true" height="calc(100vh - 384px)" [heading]="'No record found'"
+              [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    
           </div>
         </div>
-
-
-        <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
-          *ngIf="!db.bodySkeleton && ((!db.listSkeleton && !list_data) || (!db.listSkeleton && list_data && list_data.data && list_data.data.length == 0))"
-          [column]="true" height="calc(100vh - 384px)" [heading]="'No record found'"
-          [image]="'assets/icon/empty.svg'"></app-no-record-found>
-
-      </div>
       <!-- </div> -->
     </div>
   </div>

@@ -63,6 +63,8 @@ export class OrdersComponent implements OnInit, OnChanges {
   sub1: any;
   show_attendance = true;
 
+  showLetterRequestBanner = true;
+
   constructor(private router: Router, public db: DbService, private cdr: ChangeDetectorRef, private zone: NgZone, public alertController: AlertController, private modal: ModalController) { }
 
   ngOnChanges(changes:SimpleChanges) {
@@ -508,6 +510,14 @@ export class OrdersComponent implements OnInit, OnChanges {
 
   goDetailPage(item){
     this.router.navigateByUrl('/leave-request/' + item.name);
+  }
+
+  createNewLetterReq(){
+    let data = {
+      name: "Letter Request",
+      route: "/forms/letter-request"
+    }
+    this.createNew.emit(data);
   }
 
 }

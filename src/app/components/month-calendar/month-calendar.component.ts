@@ -39,6 +39,9 @@ export class MonthCalendarComponent implements OnInit, OnDestroy {
         this.generateDays()
       }
   })
+
+  // console.log(this.highlightedDates,'this.highlightedDates');
+  // console.log(this.db.highlightedDates,'this.db.highlightedDates')
   }
 
   dateFormat1(date) {

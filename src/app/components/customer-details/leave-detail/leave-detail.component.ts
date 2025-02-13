@@ -160,8 +160,8 @@ export class LeaveDetailComponent  implements OnInit {
       setTimeout(() => {
         loader.dismiss()
       }, 1000);
-      if(res && res.message && res.message.status == 'Success'){
-        this.db.sendSuccessMessage(res.message.message)
+      if(res && res.status == 'Success'){
+        this.db.sendSuccessMessage(res.message)
         this.modalCtrl.dismiss(res)
       }
       else{
@@ -170,7 +170,7 @@ export class LeaveDetailComponent  implements OnInit {
           let f = JSON.parse(d[0])
           this.db.sendErrorMessage(f.message)
         }else{
-          this.db.sendErrorMessage(res.message.message)
+          this.db.sendErrorMessage(res.message)
         }
       }
     })

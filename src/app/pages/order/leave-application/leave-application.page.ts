@@ -320,34 +320,64 @@ export class LeaveApplicationPage implements OnInit {
     // }
   }
 
-  checkImages(data, type) {
-    switch (data) {
-      case "Total Leaves":
-        return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-        break;
-      case "All Applications":
-        return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-        break;
-      case "Used Leaves":
-        return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-        break;
-      case "Open Applications":
-        return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-        break;
-      case "Available Leaves":
-        return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-        break;
-      case "Approved Applications":
-        return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-        break;
-      case "Expired Leaves":
-        return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-        break;
-      case "Rejected Applications":
-        return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-        break;
-      default:
-        return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  // checkImages(data, type) {
+  //   switch (data) {
+  //     case "Total Leaves":
+  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
+  //       break;
+  //     case "All Applications":
+  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
+  //       break;
+  //     case "Used Leaves":
+  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
+  //       break;
+  //     case "Open Applications":
+  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
+  //       break;
+  //     case "Available Leaves":
+  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  //       break;
+  //     case "Approved Applications":
+  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  //       break;
+  //     case "Expired Leaves":
+  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
+  //       break;
+  //     case "Rejected Applications":
+  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
+  //       break;
+  //     default:
+  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
+  //   }
+  // }
+
+  getCircleColor(data){
+    if(data == 'Total Leaves'){
+      return '#6A12D71A'
+    }else if(data == 'Used Leaves'){
+      return '#e7f8ed'
+    }else if(data == 'Available Leaves'){
+      return '#008CFF0D'
+    }else if(data == 'Pending Leaves'){
+      return '#FCAC2B1A'
+    }else{
+      return '#fff4f4'
+    }
+  }
+
+  get_leaves_icon(data){
+    if(data == 'Total Leaves'){
+      return '/assets/Employee-Home/Total-Leaves.svg'
+    }else if(data == 'Used Leaves'){
+      return '/assets/Employee-Home/Used-Leaves.svg'
+    }else if(data == 'Available Leaves'){
+      return '/assets/Employee-Home/Available-leaves.svg'
+    }else if(data == 'Expired Leaves'){
+      return '/assets/Employee-Home/Expired-Leaves.svg'
+    }else if(data == 'Pending Leaves'){
+      return '/assets/Employee-Home/PendingLeaves.svg'
+    }else{
+      return '/assets/Employee-Home/Total-Leaves.svg'
     }
   }
 

@@ -16,6 +16,7 @@ import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-s
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RegularizationFormComponent } from '../leaves-module/regularization-form/regularization-form.component';
 let ip_address;
+
 @Component({
   selector: 'app-checkin-multiple',
   templateUrl: './checkin-multiple.component.html',
@@ -48,13 +49,14 @@ export class CheckinMultipleComponent  implements OnInit {
   latitude:any;
   longitude:any;
   locationError:any;
-  chartDay:any = [
-    // {name: 'Monthly', selected: false, route: 'Monthly'}
-    // {name: 'Daily', selected: false, route: 'Daily'},
-  ]
+  // chartDay:any = [
+  //   // {name: 'Monthly', selected: false, route: 'Monthly'}
+  //   // {name: 'Daily', selected: false, route: 'Daily'},
+  // ]
   employee_id:any;
   is_Attendance:any = false;
   coordinates:any;
+  attendance_info:any;
   constructor(private http: HttpClient,private locationAccuracy: LocationAccuracy,private loadingCtrl:LoadingController,private platform: Platform,public db:DbService, public datePipe:DatePipe, public alertCtrl:AlertController, public modalCtrl: ModalController) { }
 
   ngOnInit() {
@@ -84,15 +86,11 @@ export class CheckinMultipleComponent  implements OnInit {
       }else{
         this.show_timer = false
       }
-
-
       this.page_title = `Attendance - ( ${this.detail.attendance_date} )`
-
       let dateString = this.detail.attendance_date
       const [year , monthNumber, day] = dateString.split('-');
       this.selectedYear = year;
       this.selectedMonth = Number(monthNumber)
-     
       ChangedFormat = (this.detail && this.detail.attendance_date) ? this.detail.attendance_date : pipe.transform(this.today, 'YYYY-MM-dd');
       this.current_date = this.detail.attendance_date
     }else{
@@ -104,7 +102,6 @@ export class CheckinMultipleComponent  implements OnInit {
     this.get_employee_checkin(employee_id)
 
     if(this.popup){
-      // console.log(month,'month')
       this.months.map((res, index) => {
         if(index+1 == Number(month)){
           res['isActive'] = true;
@@ -127,13 +124,11 @@ export class CheckinMultipleComponent  implements OnInit {
       const hours = Math.floor(this.elapsedTime.asHours());
       const minutes = this.elapsedTime.minutes();
       const seconds = this.elapsedTime.seconds();
-      // this.time_duration = hours;
       return `${hours < 10 ? ('0' + hours) : hours} : ${minutes < 10 ? ('0' + minutes) : minutes} : ${seconds < 10 ? ('0' + seconds) : seconds}`;
     } else {
       return '00:00:00';
     }
   }
-
 
   updateElapsedTime() {
     if (this.fromTime) {
@@ -144,7 +139,6 @@ export class CheckinMultipleComponent  implements OnInit {
       }
     }
   }
-
 
   getTimeFromTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -165,29 +159,33 @@ export class CheckinMultipleComponent  implements OnInit {
     this.db.checkIn(datas).subscribe(res => {
       this.loadNext = false;
       if(res && res.message && res.message.status == "success"){
+        this.attendance_info = res.message.message;
         this.is_Attendance = true;
+        const date = this.attendance_info.date+' '+this.attendance_info.in_time;
+        const timeAgo = moment(date).fromNow();
+        this.attendance_info.timeAgo = timeAgo;
       }else if(res && res.message && res.status == "Employee Not Found"){
         this.db.alert(res.message)
       }
     })
   }
 
-  calculateTotalDuration(): string {
-    let totalSeconds = 0;
+  // calculateTotalDuration(): string {
+  //   let totalSeconds = 0;
 
-    // Calculate total seconds
-    this.employee_checkin_list.forEach(res_duration => {
-      const [hours, minutes, seconds] = res_duration.duration.split(':').map(Number);
-      totalSeconds += hours * 3600 + minutes * 60 + seconds;
-    });
+  //   // Calculate total seconds
+  //   this.employee_checkin_list.forEach(res_duration => {
+  //     const [hours, minutes, seconds] = res_duration.duration.split(':').map(Number);
+  //     totalSeconds += hours * 3600 + minutes * 60 + seconds;
+  //   });
 
-    // Convert total seconds back to hours, minutes, and seconds
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+  //   // Convert total seconds back to hours, minutes, and seconds
+  //   const hours = Math.floor(totalSeconds / 3600);
+  //   const minutes = Math.floor((totalSeconds % 3600) / 60);
+  //   const seconds = totalSeconds % 60;
 
-    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
-  }
+  //   return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+  // }
 
   // Helper function to pad single digit numbers with leading zeros
   pad(num: number): string {
@@ -255,14 +253,13 @@ export class CheckinMultipleComponent  implements OnInit {
         this.db.alert(alert);
       }
       })
-  } catch (error) {
-    console.error('Error getting location:', error);
-    this.enable_location(type)
-    setTimeout(() => {
-      this.loadingCtrl.dismiss()
-    },100)
-     // You can pass options if necessary
-  }
+    } catch (error) {
+      console.error('Error getting location:', error);
+      this.enable_location(type)
+      setTimeout(() => {
+        this.loadingCtrl.dismiss()
+      },100)
+    }
 
     }
   }
@@ -291,19 +288,7 @@ export class CheckinMultipleComponent  implements OnInit {
       }]
     });
     await alert.present();
-    // this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-    //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-    //     () => {
-    //       this.check_In(type);
-    //     },
-    //     error => {
-    //       setTimeout(() => {
-    //         this.check_In(type);
-    //       }, 1500)
-    //       console.log('Error requesting location permissions', error)
-    //     }
-    //   )
-    // }), error => console.log('Error requesting location permissions', error);
+    
   }
 
 

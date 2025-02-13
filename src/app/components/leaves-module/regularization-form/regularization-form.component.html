@@ -1,36 +1,74 @@
-<app-header [title]="title" [showYear]="false" [selectall]="selectAll" [is_select]="true" (select_all)="select_all1($event)"  [model]="true"></app-header>
-<div *ngIf="missing_days && missing_days.length != 0  && missing_days.length != 1" class="d__flex gap-10 select_all">
-  <p class="fnt-14 d__flex gap-5" (click)="select_all1(2)">{{selectAll ? 'Unselect All' :'SelectAll' }}
+<app-header [title]="title" [showYear]="false" [selectall]="selectAll" [is_select]="true"
+  (select_all)="select_all1($event)" [model]="true"></app-header>
+<!-- <div *ngIf="missing_days && missing_days.length != 0 && missing_days.length != 1" class="d__flex gap-10 select_all">
+  <p class="fnt-14 d__flex gap-5" (click)="select_all1(2)">
+    {{ selectAll ? "Unselect All" : "SelectAll" }}
   </p>
+</div> -->
+<div *ngIf="missing_days && missing_days.length != 0" class="d__flex just-s select_all">
+  <p class="m-0 fnt-11">Attendance Missed Outs</p>
+  <div (click)="select_all1(2)" *ngIf="missing_days && missing_days.length != 0 && missing_days.length != 1" class="d__flex">
+    <img src="/assets/Employee-Home/selectall.svg" alt="" />
+    <span class="s_txt">{{ selectAll ? "Unselect All" : "SelectAll" }}</span>
+  </div>
 </div>
 <div *ngIf="missing_days && missing_days.length != 0" class="p-10 overflow_auto">
-  <!-- <div *ngIf="missing_days && missing_days.length != 0"> -->
-    <div *ngFor="let item of missing_days; let i = index" class="boxes_" >
+  <div *ngFor="let item of missing_days; let i = index" class="boxes_">
+    <div (click)="eventPropagation($event)" class="checkBox f5">
+      <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+    </div>
+    <div class="f95 pr-10">
       <div class="d__flex just-s">
         <div class="d__flex gap-5">
-          <div (click)="eventPropagation($event)" class="checkBox">
-            <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
-          </div>
-
-          <p (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)" class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.date | date: 'MMM d, y'}} </p>
+          <p (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i) " class="m-0 fnt-14 d__flex gap-5">
+            
+            {{ item.date | date : "MMM d, y" }}
+          </p>
         </div>
-        <div class="d__flex" (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)">
-          <p class="m-0 fnt-14 d__flex gap-5">{{item.duration}}</p>
+        <div class="d__flex" (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i)">
+          <p class="m-0 fnt-14 d__flex gap-5">{{ item.duration }}</p>
         </div>
       </div>
-      <div class="d__flex just-s" (click)="editLeaveLeavePreview(missing_days,'Leave Preview',item,i)">
-        <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.in_time | date: 'h:mm a'}} </p>
-        <p class="m-0 fnt-14 d__flex gap-5">{{item.reg_reason}}</p>
+      <div class="d__flex just-s" (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i)">
+        <p class="m-0 fnt-14 d__flex gap-5">
+          
+          {{ item.in_time | date : "h:mm a" }}
+        </p>
+        <p class="m-0 fnt-14 d__flex gap-5">{{ item.reg_reason }}</p>
+      </div>
+  </div>
+  </div>
+</div>
+<!-- <div *ngIf="missing_days && missing_days.length != 0" class="p-10 overflow_auto">
+  <div *ngFor="let item of missing_days; let i = index" class="boxes_">
+    <div class="d__flex just-s">
+      <div class="d__flex gap-5">
+        <div (click)="eventPropagation($event)" class="checkBox">
+          <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+        </div>
+        <p (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i) " class="m-0 fnt-14 d__flex gap-5">
+          <ion-icon class="gray_clr" name="calendar-outline"></ion-icon>
+          {{ item.date | date : "MMM d, y" }}
+        </p>
+      </div>
+      <div class="d__flex" (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i)">
+        <p class="m-0 fnt-14 d__flex gap-5">{{ item.duration }}</p>
       </div>
     </div>
-  <!-- </div> -->
-</div>
+    <div class="d__flex just-s" (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i)">
+      <p class="m-0 fnt-14 d__flex gap-5">
+        <ion-icon class="gray_clr" name="calendar-outline"></ion-icon>
+        {{ item.in_time | date : "h:mm a" }}
+      </p>
+      <p class="m-0 fnt-14 d__flex gap-5">{{ item.reg_reason }}</p>
+    </div>
+  </div>
+</div> -->
 <div *ngIf="show_btn" class="save_">
   <ion-button class="clear_btn" (click)="leave_request(missing_days)">Leave Request</ion-button>
   <ion-button class="save_btn" (click)="create_regularization()">Regulariztion</ion-button>
 </div>
 
-<app-no-record-found
-          *ngIf="missing_days && missing_days.length == 0 && is_no_data"
-          [column]="true" height="calc(100vh - 10px)" [heading]="'No Regulariztion found'"
-          [image]="'assets/icon/empty.svg'"></app-no-record-found>
+<app-no-record-found *ngIf="missing_days && missing_days.length == 0 && is_no_data" [column]="true"
+  height="calc(100vh - 10px)" [heading]="'No Regulariztion found'"
+  [image]="'assets/icon/empty.svg'"></app-no-record-found>

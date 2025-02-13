@@ -1,149 +1,183 @@
-<div *ngIf="!loadNext" class="updateTimesheet" [class.summary_web]="attendance && !db.ismobile">
-
-  <!-- <app-header *ngIf="popup" [back_route]="null" [model]="true" [title]="page_title" [doc_type]="doc_type"></app-header> -->
-
+<div
+  *ngIf="!loadNext"
+  class="updateTimesheet"
+  [class.summary_web]="attendance && !db.ismobile"
+>
   <div *ngIf="popup" class="d__flex gap-10 popUpheadercss">
-    <ion-icon class="mouse" (click)="db.close_modal()" name="chevron-back-outline"></ion-icon>
-    <div *ngIf="detail.attendance_date " class="d__flex just-s w-90">
+    <ion-icon
+      class="mouse"
+      (click)="db.close_modal()"
+      name="chevron-back-outline"
+    ></ion-icon>
+    <div *ngIf="detail.attendance_date" class="d__flex just-s w-90">
       <p class="fnt_w500 fnt-14 white">Attendance</p>
-      <div *ngIf="selectedYear" (click)="yearPopUp(selectedYear)" class="yearD d__flex ">
-        <h5 class="title">{{selectedYear}}</h5>
+      <div
+        *ngIf="selectedYear"
+        (click)="yearPopUp(selectedYear)"
+        class="yearD d__flex"
+      >
+        <h5 class="title">{{ selectedYear }}</h5>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </div>
     </div>
   </div>
 
-  <div class="d__flex gap-10 header just-s employeeDetail" *ngIf="!attendance && !popup">
+  <div
+    class="d__flex gap-10 header just-s employeeDetail"
+    *ngIf="!attendance && !popup"
+  >
     <div class="d__flex employeeDetail">
       <div class="imageDiv">
-        <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+        <img
+          class="profile_user_img"
+          [src]="
+            db.employee_img && db.employee_img.user_image
+              ? db.product_img(db.employee_img.user_image)
+              : '/assets/icon/profile-owner.svg'
+          "
+        />
       </div>
-      <!-- <div class="avathar">{{db.cust_name[0]}}</div> -->
       <div>
-        <h6 class="title capitalize">{{db.cust_name}}</h6>
-        <h6 class="subtitle">{{db.employee_id}}</h6>
+        <h6 class="title capitalize">{{ db.cust_name }}</h6>
+        <h6 class="subtitle">{{ db.employee_id }}</h6>
       </div>
     </div>
-
   </div>
-
 
   <div class="body_sec">
     <h5 *ngIf="attendance && !db.ismobile" class="card-title">Check In/Out</h5>
     <div *ngIf="!showChekinout && false" class="text-c time">
-      <!-- <div class="d__flex gap-5 s-1-d" *ngIf="show_timer">
-        <ion-icon class="text-c" src="/assets/home-genie/Timericon.svg"></ion-icon>
-        <h4>{{ formatElapsedTime() }}</h4>
-      </div> -->
-
-      <p class="current_day fnt-15">{{today | date:'MMM d, y'}}</p>
+      <p class="current_day fnt-15">{{ today | date : "MMM d, y" }}</p>
     </div>
 
     <div *ngIf="!showChekinout">
-      <img class="check_in_btn_img" src="/assets/home-genie/punch.svg" alt="">
+      <img class="check_in_btn_img" src="/assets/home-genie/punch.svg" alt="" />
       <div class="d__flex just-c m-20-0" [class.opacity]="!show_timer">
-        <div (click)="check_In(!is_Attendance ? 'IN' :'OUT')" class="icon-container mouse">
-          <ion-icon class="wave_icon zoom-icon"
-            [src]="!is_Attendance ? '/assets/home-genie/wave.svg' : '/assets/home-genie/red-wave.svg'"></ion-icon>
-          <div class="check_in_btn ">
-            <ion-icon class="p-10"
-              [src]="!is_Attendance ? '/assets/home-genie/wave-checkin.svg' : '/assets/home-genie/red-wave-checkout.svg'"></ion-icon>
+        <div
+          (click)="check_In(!is_Attendance ? 'IN' : 'OUT')"
+          class="icon-container mouse"
+        >
+          <ion-icon
+            class="wave_icon zoom-icon"
+            [src]="
+              !is_Attendance
+                ? '/assets/home-genie/wave.svg'
+                : '/assets/home-genie/red-wave.svg'
+            "
+          ></ion-icon>
+          <div class="check_in_btn">
+            <ion-icon
+              class="p-10"
+              [src]="
+                !is_Attendance
+                  ? '/assets/home-genie/wave-checkin.svg'
+                  : '/assets/home-genie/red-wave-checkout.svg'
+              "
+            ></ion-icon>
           </div>
         </div>
       </div>
-      <p class="check_in-d text-c" *ngIf="db.checkInOutDetail">{{db.checkInOutDetail}}</p>
-      <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c check_btn">Click to Punch In</p>
-      <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c check_btn">Already Punch In</p>
+      <p class="check_in-d text-c" *ngIf="db.checkInOutDetail">
+        {{ db.checkInOutDetail }}
+      </p>
+      <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c check_btn">
+        Click to Punch In
+      </p>
+      <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c check_btn">
+        Already Punch In
+      </p>
     </div>
 
-    <!-- <div *ngIf="!showChekinout && false" class="d__flex just-ar time_btns">
-      <div class="b-1">
-        <p *ngIf="fromTime" class="fnt-12 fnt_w600 text-c  m-0">{{fromTime | date:'hh:mm a'}}</p>
-        <p *ngIf="!fromTime" class="fnt-12 fnt_w600 text-c  m-0">--:--</p>
-        <div class="d__flex gap-5 just-c pt-5">
-          <ion-icon class="text-c" src="/assets/home-genie/start-clock.svg"></ion-icon>
-          <p class="fnt-12 text-c primary_clr m-0">From</p>
-        </div>
+    <div class="list-container" *ngIf="attendance_info">
+      <div class="bottom-color">
+        <p class="m-0">Punch In Captured</p>
       </div>
-      <div class="b-2">
-        <p *ngIf="toTime" class="fnt-12 fnt_w600 text-c m-0">{{toTime | date:'hh:mm a'}}</p>
-        <p *ngIf="!toTime" class="fnt-12 fnt_w600 text-c m-0">--:--</p>
-        <div class="d__flex gap-5 just-c pt-5">
-          <ion-icon class="text-c" src="/assets/home-genie/end-clock.svg"></ion-icon>
-          <p class="fnt-12 text-c red m-0">To</p>
-        </div>
-      </div>
-      <div class="b-1">
-        <p *ngIf="calculateTotalDuration()" class="fnt-12 fnt_w600 text-c  m-0">{{calculateTotalDuration()}}</p>
-        <p *ngIf="!calculateTotalDuration()" class="fnt-12 fnt_w600 text-c  m-0">--:--</p>
-        <div class="d__flex gap-5 just-c pt-5">
-          <ion-icon class="text-c" src="/assets/icon/total-hours.svg"></ion-icon>
-          <p class="fnt-12 text-c primary_clr m-0">Working Hrs</p>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <h4 class="headerS m-0">Summary</h4> -->
-
-    <div class="timesheetlist-s" *ngIf="this.list && this.list.length != 0 && false">
-
-      <h5 class="Heading">Check In / Out</h5>
-      <!-- [class.row_]="list.length % 2 === 0"  -->
-      <div class="timesheetList d__flex">
-        <div class="d__flex t-box" *ngFor="let item of this.list;let i =index">
-          <h3 [class.success]="item['log_type'] == 'IN'" class="titleName m-0">
-            <!-- <div></div> -->
-            {{item['log_type'] == "IN" ? 'Check In' : 'Check Out'}}
-          </h3>
-          <div class="b-1 d__flex gap-5">
-            <ion-icon class="text-c"
-              [src]="item['log_type'] == 'IN' ? '/assets/home-genie/Checkinicon.svg' : '/assets/home-genie/Checkouticon.svg'"></ion-icon>
-            <p *ngIf="item['time']" class="fnt-12 fnt_w600 text-c m-0">{{item['time'] | date:'hh:mm a'}}</p>
-            <p *ngIf="!item['time']" class="fnt-12 fnt_w600 text-c m-0">--:--</p>
-          </div>
+      <div class="d__flex gap-10 just-s p-tb5-lr10">
+        <h6 class="m-0 fnt-13 webkit-text d__flex" [style.--line]="2">
+          <img src="/assets/leaves/leaveicon.svg" alt="" />
+          <span class="fw-600 pl5">{{ employee_id }}</span>
+        </h6>
+        <div *ngIf="attendance_info.status">
+          <app-status
+            [status]="attendance_info.status ? attendance_info.status : ''"
+          ></app-status>
         </div>
       </div>
 
+      <div class="d__flex gap-10 just-s p-tb5-lr10">
+        <div class="d__flex gap-5">
+          <ion-icon src="/assets/leaves/calendar.svg" class="fnt-14"></ion-icon>
+          <p class="m-0 mt-5px fnt-13 text_2">
+            <span class="fnt-13 text_2">{{
+              attendance_info.date | date : "MMM dd YYYY"
+            }}</span>
+          </p>
+        </div>
+        <p class="m-0 fnt-12">{{ attendance_info.timeAgo }}</p>
+      </div>
     </div>
 
     <div
-      *ngIf="(employee_checkin_list && employee_checkin_list.length != 0) && (!attendance || (attendance && db.ismobile))"
-      class="employee_checkin_list">
-
+      *ngIf="
+        employee_checkin_list &&
+        employee_checkin_list.length != 0 &&
+        (!attendance || (attendance && db.ismobile))
+      "
+      class="employee_checkin_list"
+    >
       <div *ngIf="popup" class="bg_primary__">
-        <app-tabs-button [no_initial_active]="true" [border_none]="true" [overflow]="true"
-          (menu_name)="menu_name($event)" [bg_white]="true" bg_color="#fff" [tabs_array]="months"
-          [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
+        <app-tabs-button
+          [no_initial_active]="true"
+          [border_none]="true"
+          [overflow]="true"
+          (menu_name)="menu_name($event)"
+          [bg_white]="true"
+          bg_color="#fff"
+          [tabs_array]="months"
+          [Lead_seg]="db.sales_manager_role ? true : false"
+        ></app-tabs-button>
       </div>
 
       <!-- <h5 class="Heading">Check In / Out</h5> -->
-      <div class="timeSection" *ngIf="!routeValue && false">
+      <!-- <div class="timeSection" *ngIf="!routeValue && false">
         <div class="d__flex just-s Heading">
           <p class="m-0">Check In</p>
           <p class="m-0">Check Out</p>
           <p class="m-0">Duration</p>
         </div>
-        <div *ngFor="let item of employee_checkin_list" class="d__flex just-s check_list">
+        <div
+          *ngFor="let item of employee_checkin_list"
+          class="d__flex just-s check_list"
+        >
           <div class="box_">
-            <!-- <p class="m-0 fnt-15 gray_clr">Check In</p> -->
-            <p class="m-0 fnt-14 just-c d__flex gap-5"><ion-icon class="fnt-18"
-                src="/assets/home-genie/Checkinicon.svg"></ion-icon> {{item.in_time ? (item.in_time | date : 'hh:mm a')
-              :
-              '--:--'}}</p>
+            <p class="m-0 fnt-14 just-c d__flex gap-5">
+              <ion-icon
+                class="fnt-18"
+                src="/assets/home-genie/Checkinicon.svg"
+              ></ion-icon>
+              {{ item.in_time ? (item.in_time | date : "hh:mm a") : "--:--" }}
+            </p>
           </div>
           <div class="box_">
-            <!-- <p class="m-0 fnt-15 gray_clr">Check Out</p> -->
-            <p class="m-0 fnt-14 just-c d__flex gap-5"><ion-icon class="fnt-18"
-                src="/assets/home-genie/Checkouticon.svg"></ion-icon> {{item.out_time ? (item.out_time | date : 'hh:mma')
-              : '--:--'}}</p>
+            <p class="m-0 fnt-14 just-c d__flex gap-5">
+              <ion-icon
+                class="fnt-18"
+                src="/assets/home-genie/Checkouticon.svg"
+              ></ion-icon>
+              {{ item.out_time ? (item.out_time | date : "hh:mma") : "--:--" }}
+            </p>
           </div>
           <div class="box_">
-            <!-- <p class="m-0 fnt-15 gray_clr">Duration</p> -->
-            <p class="m-0 fnt-14 just-c d__flex gap-5 fnt_w500"><ion-icon class="fnt-18"
-                src="/assets/home-genie/totalhrsicon.svg"></ion-icon> {{item.duration ? item.duration : '--:--'}}</p>
+            <p class="m-0 fnt-14 just-c d__flex gap-5 fnt_w500">
+              <ion-icon
+                class="fnt-18"
+                src="/assets/home-genie/totalhrsicon.svg"
+              ></ion-icon>
+              {{ item.duration ? item.duration : "--:--" }}
+            </p>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="timeSection" *ngIf="routeValue">
         <div class="d__flex just-s Heading">
@@ -151,139 +185,262 @@
           <p class="m-0">Check In / Out</p>
           <p class="m-0">Duration</p>
         </div>
-        <ng-container *ngIf="monthwise_checkins && monthwise_checkins.length != 0">
-          <div *ngFor="let item of monthwise_checkins" class="d__flex just-s check_list">
+        <ng-container
+          *ngIf="monthwise_checkins && monthwise_checkins.length != 0"
+        >
+          <div
+            *ngFor="let item of monthwise_checkins"
+            class="d__flex just-s check_list"
+          >
             <div class="box_">
-              <p class="m-0 fnt-12 just-c d__flex gap-5"><ion-icon class="fnt-18"
-                  src="/assets/leaves/calendar.svg"></ion-icon> {{item.date ? (item.date | date:'MMM d, y') : '--:--'}}
+              <p class="m-0 fnt-12 just-c d__flex gap-5">
+                <ion-icon
+                  class="fnt-18"
+                  src="/assets/leaves/calendar.svg"
+                ></ion-icon>
+                {{ item.date ? (item.date | date : "MMM d, y") : "--:--" }}
               </p>
             </div>
             <div class="box_">
-              <p class="m-0 fnt-12 gray_clr just-c d__flex gap-5"><ion-icon class="fnt-18"
-                  src="/assets/home-genie/Checkinicon.svg"></ion-icon>{{item.first_log_in ?
-                getFormattedTime(item.first_log_in) : '--:--'}}</p>
-              <p class="m-0 fnt-12 gray_clr just-c d__flex gap-5"><ion-icon class="fnt-18"
-                  src="/assets/home-genie/Checkouticon.svg"></ion-icon>{{item.last_log_out ?
-                getFormattedTime(item.last_log_out) : '--:--'}}</p>
+              <p class="m-0 fnt-12 gray_clr just-c d__flex gap-5">
+                <ion-icon
+                  class="fnt-18"
+                  src="/assets/home-genie/Checkinicon.svg"
+                ></ion-icon
+                >{{
+                  item.first_log_in
+                    ? getFormattedTime(item.first_log_in)
+                    : "--:--"
+                }}
+              </p>
+              <p class="m-0 fnt-12 gray_clr just-c d__flex gap-5">
+                <ion-icon
+                  class="fnt-18"
+                  src="/assets/home-genie/Checkouticon.svg"
+                ></ion-icon
+                >{{
+                  item.last_log_out
+                    ? getFormattedTime(item.last_log_out)
+                    : "--:--"
+                }}
+              </p>
             </div>
             <div class="box_">
-              <p class="m-0 fnt-12 just-c d__flex gap-5 fnt_w500"><ion-icon class="fnt-18"
-                  src="/assets/home-genie/totalhrsicon.svg"></ion-icon> {{item.total_hours ? item.total_hours :
-                '--:--'}} Hrs</p>
+              <p class="m-0 fnt-12 just-c d__flex gap-5 fnt_w500">
+                <ion-icon
+                  class="fnt-18"
+                  src="/assets/home-genie/totalhrsicon.svg"
+                ></ion-icon>
+                {{ item.total_hours ? item.total_hours : "--:--" }} Hrs
+              </p>
             </div>
           </div>
         </ng-container>
 
         <ng-container *ngIf="monthWiseSkeleton && routeValue">
-          <div *ngFor="let i of [1,2,3,4,5,6,7,8,9]" style="padding: 15px 5px;border-bottom: 1px solid #f1f1f1;"
-            class="d__flex just-s">
-            <ion-skeleton-text animated style="width:32%; height: 30px; border-radius:5px"></ion-skeleton-text>
-            <ion-skeleton-text animated style="width:32%; height: 30px; border-radius:5px;"></ion-skeleton-text>
-            <ion-skeleton-text animated style="width:32%; height: 30px; border-radius:5px"></ion-skeleton-text>
+          <div
+            *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]"
+            style="padding: 15px 5px; border-bottom: 1px solid #f1f1f1"
+            class="d__flex just-s"
+          >
+            <ion-skeleton-text
+              animated
+              style="width: 32%; height: 30px; border-radius: 5px"
+            ></ion-skeleton-text>
+            <ion-skeleton-text
+              animated
+              style="width: 32%; height: 30px; border-radius: 5px"
+            ></ion-skeleton-text>
+            <ion-skeleton-text
+              animated
+              style="width: 32%; height: 30px; border-radius: 5px"
+            ></ion-skeleton-text>
           </div>
         </ng-container>
 
         <app-no-record-found
-          *ngIf="routeValue && !monthWiseSkeleton && monthwise_checkins && monthwise_checkins.length == 0"
-          [column]="true" height="calc(100vh - 280px)" [heading]="'No Check In/Out found'"
-          [image]="'assets/icon/empty.svg'"></app-no-record-found>
-
+          *ngIf="
+            routeValue &&
+            !monthWiseSkeleton &&
+            monthwise_checkins &&
+            monthwise_checkins.length == 0
+          "
+          [column]="true"
+          height="calc(100vh - 280px)"
+          [heading]="'No Check In/Out found'"
+          [image]="'assets/icon/empty.svg'"
+        ></app-no-record-found>
       </div>
-
-
     </div>
 
     <app-no-record-found
-      *ngIf="employee_checkin_list && employee_checkin_list.length == 0 && (!attendance || (attendance && db.ismobile)) && false"
-      [column]="true" height="calc(100vh - 480px)" [heading]="'No Check In/Out found'"
-      [image]="'assets/icon/empty.svg'"></app-no-record-found>
-
+      *ngIf="
+        employee_checkin_list &&
+        employee_checkin_list.length == 0 &&
+        (!attendance || (attendance && db.ismobile)) &&
+        false
+      "
+      [column]="true"
+      height="calc(100vh - 480px)"
+      [heading]="'No Check In/Out found'"
+      [image]="'assets/icon/empty.svg'"
+    ></app-no-record-found>
   </div>
 
   <div class="attendanceSec" *ngIf="attendance && !db.ismobile">
     <h5 class="card-title">Check In/Out</h5>
-    <div *ngIf="(employee_checkin_list && employee_checkin_list.length != 0)" class="employee_checkin_list">
-
+    <div
+      *ngIf="employee_checkin_list && employee_checkin_list.length != 0"
+      class="employee_checkin_list"
+    >
       <!-- <h5 class="Heading">Check In / Out</h5> -->
       <div class="d__flex just-s Heading">
         <p class="m-0">Check In</p>
         <p class="m-0">Check Out</p>
         <p class="m-0">Duration</p>
       </div>
-      <div *ngFor="let item of employee_checkin_list" class="d__flex just-s check_list">
+      <div
+        *ngFor="let item of employee_checkin_list"
+        class="d__flex just-s check_list"
+      >
         <div class="box_">
           <!-- <p class="m-0 fnt-15 gray_clr">Check In</p> -->
-          <p class="m-0 fnt-14 just-c d__flex gap-5"><ion-icon class="fnt-18"
-              src="/assets/home-genie/Checkinicon.svg"></ion-icon> {{item.in_time ? (item.in_time | date : 'hh:mm a') :
-            '--:--'}}</p>
+          <p class="m-0 fnt-14 just-c d__flex gap-5">
+            <ion-icon
+              class="fnt-18"
+              src="/assets/home-genie/Checkinicon.svg"
+            ></ion-icon>
+            {{ item.in_time ? (item.in_time | date : "hh:mm a") : "--:--" }}
+          </p>
         </div>
         <div class="box_">
           <!-- <p class="m-0 fnt-15 gray_clr">Check Out</p> -->
-          <p class="m-0 fnt-14 just-c d__flex gap-5"><ion-icon class="fnt-18"
-              src="/assets/home-genie/Checkouticon.svg"></ion-icon> {{item.out_time ? (item.out_time | date : 'hh:mm a')
-            : '--:--'}}</p>
+          <p class="m-0 fnt-14 just-c d__flex gap-5">
+            <ion-icon
+              class="fnt-18"
+              src="/assets/home-genie/Checkouticon.svg"
+            ></ion-icon>
+            {{ item.out_time ? (item.out_time | date : "hh:mm a") : "--:--" }}
+          </p>
         </div>
         <div class="box_">
           <!-- <p class="m-0 fnt-15 gray_clr">Duration</p> -->
-          <p class="m-0 fnt-14 just-c d__flex gap-5 fnt_w500"><ion-icon class="fnt-18"
-              src="/assets/home-genie/totalhrsicon.svg"></ion-icon> {{item.duration ? item.duration : '--:--'}}</p>
+          <p class="m-0 fnt-14 just-c d__flex gap-5 fnt_w500">
+            <ion-icon
+              class="fnt-18"
+              src="/assets/home-genie/totalhrsicon.svg"
+            ></ion-icon>
+            {{ item.duration ? item.duration : "--:--" }}
+          </p>
         </div>
       </div>
-      <div class="p-10-22 d__flex just-s" *ngIf="false">
+      <!-- <div class="p-10-22 d__flex just-s" *ngIf="false">
         <p class="m-0 fnt-15 gray_clr fnt_w500">Total Hours</p>
-        <p class="fnt_w500 fnt-15 m-0 d__flex gap-5 total_hours"><ion-icon name="time-outline"></ion-icon>
-          {{calculateTotalDuration()}}</p>
-      </div>
+        <p class="fnt_w500 fnt-15 m-0 d__flex gap-5 total_hours">
+          <ion-icon name="time-outline"></ion-icon>
+          {{ calculateTotalDuration() }}
+        </p>
+      </div> -->
     </div>
 
-    <app-no-record-found *ngIf="employee_checkin_list && employee_checkin_list.length == 0 && false" [column]="true"
-      height="showChekinout ? calc(100vh - 180px) : calc(100vh - 480px)" [heading]="'No Check In/Out found'"
-      [image]="'assets/icon/empty.svg'"></app-no-record-found>
+    <app-no-record-found
+      *ngIf="
+        employee_checkin_list && employee_checkin_list.length == 0 && false
+      "
+      [column]="true"
+      height="showChekinout ? calc(100vh - 180px) : calc(100vh - 480px)"
+      [heading]="'No Check In/Out found'"
+      [image]="'assets/icon/empty.svg'"
+    ></app-no-record-found>
   </div>
-
-
 </div>
 
 <div *ngIf="loadNext" class="skeleton">
   <div class="d__flex header_t" *ngIf="!showChekinout && !attendance && !popup">
-    <ion-skeleton-text animated style="width:44px; height: 38px; border-radius:50% "></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="width: 44px; height: 38px; border-radius: 50%"
+    ></ion-skeleton-text>
     <div class="w-100">
-      <ion-skeleton-text animated
-        style="width:50%; height: 18px; margin-bottom:5px; border-radius:5px"></ion-skeleton-text>
-      <ion-skeleton-text animated style="width:80%; height: 15px; border-radius:5px"></ion-skeleton-text>
+      <ion-skeleton-text
+        animated
+        style="width: 50%; height: 18px; margin-bottom: 5px; border-radius: 5px"
+      ></ion-skeleton-text>
+      <ion-skeleton-text
+        animated
+        style="width: 80%; height: 15px; border-radius: 5px"
+      ></ion-skeleton-text>
     </div>
   </div>
 
-  <ion-skeleton-text *ngIf="!showChekinout" animated
-    style="width:80%; height: 35px; margin:15px auto; border-radius:5px"></ion-skeleton-text>
+  <ion-skeleton-text
+    *ngIf="!showChekinout"
+    animated
+    style="width: 80%; height: 35px; margin: 15px auto; border-radius: 5px"
+  ></ion-skeleton-text>
 
   <div *ngIf="!showChekinout" class="d__flex just-c">
-    <ion-skeleton-text animated
-      style="width:120px; height: 120px; margin:15px 0; border-radius:50% "></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="width: 120px; height: 120px; margin: 15px 0; border-radius: 50%"
+    ></ion-skeleton-text>
   </div>
 
-  <ion-skeleton-text animated
-    style="width:95%; height: 30px; margin:10px 10px 15px 10px; border-radius:5px"></ion-skeleton-text>
+  <ion-skeleton-text
+    animated
+    style="
+      width: 95%;
+      height: 30px;
+      margin: 10px 10px 15px 10px;
+      border-radius: 5px;
+    "
+  ></ion-skeleton-text>
 
   <div class="w-100 box-s box-s-1">
-    <ion-skeleton-text animated
-      style="width:50%; height: 30px; margin: 0px 10px 5px 10px; border-radius:5px"></ion-skeleton-text>
-    <ion-skeleton-text animated
-      style="width:80%; height: 20px; border-radius:5px; margin: 8px 0 0 10px;"></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="
+        width: 50%;
+        height: 30px;
+        margin: 0px 10px 5px 10px;
+        border-radius: 5px;
+      "
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="width: 80%; height: 20px; border-radius: 5px; margin: 8px 0 0 10px"
+    ></ion-skeleton-text>
   </div>
 
   <div class="w-100 box-s">
-    <ion-skeleton-text animated
-      style="width:50%; height: 30px; margin: 0px 10px 5px 10px; border-radius:5px"></ion-skeleton-text>
-    <ion-skeleton-text animated
-      style="width:80%; height: 20px; border-radius:5px; margin: 8px 0 0 10px;"></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="
+        width: 50%;
+        height: 30px;
+        margin: 0px 10px 5px 10px;
+        border-radius: 5px;
+      "
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="width: 80%; height: 20px; border-radius: 5px; margin: 8px 0 0 10px"
+    ></ion-skeleton-text>
   </div>
 
   <div class="w-100 box-s">
-    <ion-skeleton-text animated
-      style="width:50%; height: 30px; margin: 0px 10px 5px 10px; border-radius:5px"></ion-skeleton-text>
-    <ion-skeleton-text animated
-      style="width:80%; height: 20px; border-radius:5px; margin: 8px 0 0 10px;"></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="
+        width: 50%;
+        height: 30px;
+        margin: 0px 10px 5px 10px;
+        border-radius: 5px;
+      "
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="width: 80%; height: 20px; border-radius: 5px; margin: 8px 0 0 10px"
+    ></ion-skeleton-text>
   </div>
-
 </div>

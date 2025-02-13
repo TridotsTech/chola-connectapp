@@ -1,0 +1,75 @@
+.voluntary-mainSection {
+    padding: 10px;
+
+    .voluntary-profileSection {
+        position: relative;
+        border: 1px solid var(--border-col);
+        border-radius: 15px;
+        height: 310px;
+        margin-bottom: 10px;
+
+        .sec-1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 10px 10px 40px 10px;
+            border-radius: 15px 15px 0 0;
+            background: #E3F0FF;
+
+            .profile-icon {
+                height: 60px;
+                width: 60px;
+                margin-bottom: 10px;
+            }
+
+            h6 {
+                font-size: 13px;
+            }
+
+            p {
+                font-size: 12px;
+            }
+        }
+
+        .sec-2-main {
+            position: absolute;
+            width: 100%;
+            padding: 10px;
+            bottom: 5px;
+            z-index: 9999;
+
+            .sec-2 {
+                padding: 10px;
+                border: 1px solid var(--border-col);
+                border-radius: 8px;
+                box-shadow: 0px -2px 13px 0px #ddd;
+                background: #fff;
+            }
+        }
+    }
+
+    .button-section {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-button {
+            height: 40px;
+            font-size: 12px;
+            --padding-start: 20px;
+            --padding-end: 20px;
+            border-radius: 10px;
+        }
+    }
+
+}
+
+.no_List {
+    height: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

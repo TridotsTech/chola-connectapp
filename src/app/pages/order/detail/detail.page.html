@@ -1,4 +1,4 @@
-<ion-header *ngIf="!loader_ && db.ismobile">
+<ion-header *ngIf="!loader_ && db.ismobile && doctype != 'HD Ticket'">
 
   <div [ngStyle]="{'min-height':(this.detail_doc && this.detail_doc['name'] && !db.scroll_event.detail_head) ? '50px' : '50px'}"
     class="secondary-head">

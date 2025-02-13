@@ -1,8 +1,10 @@
 <div class="ticket_detail_info" *ngIf="ticket_send_details">
-  <div class="detail_header">
+  
+  <!-- <div class="detail_header">
     <h5 class="m-0">Details</h5>
     <ion-icon (click)="modalCtrl.dismiss()" name="close-outline"></ion-icon>
-  </div>
+  </div> -->
+
   <div class="p-10 border-s" *ngIf="ticket_send_details">
     <div class="mb-20">
       <p class="m-0 label">ID</p>
@@ -31,8 +33,10 @@
       <p class="m-0 label_value" [innerHtml]="ticket_send_details.description"></p>
     </div>
   </div>
-  <div class="divider"></div>
-  <div class="ticket_detail_sec p-10">
+
+  <!-- <div class="divider"></div> -->
+
+  <!-- <div class="ticket_detail_sec p-10">
     <div class="mb-20 w-100">
       <p class="m-0 label">Ticket type</p>
       <select [disabled]="(ticket_send_details.status == 'Closed') ? true : false" class="search_box_select" [(ngModel)]="ticket_type_value" (change)="set_value('ticket_type')">
@@ -51,5 +55,6 @@
         <option *ngFor="let item of agent_team" value="{{item.name}}">{{item.name}}</option>
       </select>
     </div>
-  </div>
+  </div> -->
+
 </div>

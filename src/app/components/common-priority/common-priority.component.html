@@ -1,0 +1,5 @@
+<div class="d__flex gap-5 bg_high" [ngClass]="priority == 'Low' ? 'low_bg' : priority == 'Medium' ? 'medium_bg' : 'high_bg'">
+  <ion-icon *ngIf="showIcon" [name]="check_priority(priority)"></ion-icon>
+  <div *ngIf="!showIcon" class="dotPriority" [style.background]="getDotColor(priority)"></div>
+  <p class="m-0">{{ priority }}</p>
+</div>
