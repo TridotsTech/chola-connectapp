@@ -19,7 +19,7 @@ export class VoluntaryPfPage implements OnInit {
 
   getVoluntaryPfList(){
     let data = {
-      "doctype_name": "Voluntary PF",
+      "doctype_name": "Employee VPF",
       "search_data": "",
       "docname": "",
       "fetch_child": true,

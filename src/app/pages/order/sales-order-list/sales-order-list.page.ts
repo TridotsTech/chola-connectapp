@@ -1499,6 +1499,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         "month": this.db.selectedMonth ? this.db.selectedMonth : this.currentMonth,
         "year": this.db.selectedYear
       },
+      data_type:'Attendance'
     }
     // this.get_attendance_dashboard_counts()
 

@@ -37,10 +37,12 @@ export class MobileMenuComponent implements OnInit {
   multiple_array: any = [];
 
   @Input() menu;
+  isIos: boolean = false;
   // @ViewChild('yourAccordion') accordion: IonAccordion | any;
   constructor(public db: DbService, private ngZone: NgZone, private router: Router, private modalCtrl: ModalController, public menuCtrl: MenuController, public loadingCtrl: LoadingController) { }
 
   ngOnInit() {
+    this.isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !/Windows/.test(navigator.userAgent);
     // console.log(this.db.permission_details)
     // this.db.get_permission_details()
     // this.ngZone.run(() => {

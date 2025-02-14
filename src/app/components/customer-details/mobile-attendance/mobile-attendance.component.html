@@ -53,19 +53,20 @@
         [id]="i + 1 + 'scroll'" class="d__flex expense_sec" (click)="do_to_details(item)">
         <div class="d__flex w-100 gap-10">
           <div class="w-100 employee_att">
-            <div class="s-1 mb-5">
-              <h3 class="m-0 fnt-15 fnt_w500">{{transform_att_date(item.attendance_date)}}</h3>
-              <!-- <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours)
-                : ' - '}}</h2> -->
-            </div>
+           
 
             <div class="s-1 mb-5">
               
-              <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5">{{item.name ? item.name : ' -'}}</h3>
+              <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5"> <img src="/assets/leaves/leaveicon.svg" alt=""> <span class="pl5 fnt_w600">{{item.name ? item.name : ' -'}}</span></h3>
 
               <h3 *ngIf="!db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5 webkit-text"
                 [style.--line]="1">{{item.employee_name ? item.employee_name : ' - '}}</h3>
               <app-status [status]="item.status"></app-status>
+            </div>
+            <div class="s-1 mb-5">
+              <h3 class="m-0 fnt-15  d__flex"> <ion-icon src="/assets/leaves/calendar.svg"></ion-icon> <span class="pl5 fnt_w500">{{item.attendance_date | date: 'MMM d, y'}}</span> </h3>
+              <!-- <h2 class="m-0 fnt-14 capitalize gray_clr mt-5">{{item.status == 'Present' ? converHours(item.total_hours)
+                : ' - '}}</h2> -->
             </div>
 
             <!-- <div class="s-1 mb-5">

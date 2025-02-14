@@ -50,7 +50,7 @@
       <ng-container *ngIf="listData && listData.length != 0">
     
         <div class="d__flex just-s header-cs">
-          <h4 class="m-0 fnt-14 fnt_w500">Check In Details</h4>
+          <h4 class="m-0 fnt-14 fnt_w500">Punch In Details</h4>
           <h4 *ngIf="listData.length > 10" (click)="go_list()" class="m-0 d__flex gap-5 fnt-12 fnt_w400">
             <span class="fnt-12 fnt_w400">View All</span>
             <ion-icon class="fnt-13" name="chevron-forward-outline"></ion-icon>
@@ -60,13 +60,22 @@
         <div class="min-h">
           <div class="box-sec">
             <div class="list_data mouse" (click)="do_to_details(item)" *ngFor="let item of listData.slice(0,10);let i = index" >
-              <div class="d__flex gap-10 employee_">
-                <div [class.image_div]="item.image" class="absolute_">
+              <div class="gap-10 employee_">
+                <div class="s-1 mb-5">
+                  <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5"> <img src="/assets/leaves/leaveicon.svg" alt=""> <span class="pl5 fnt_w600">{{item.name ? item.name : ' -'}}</span></h3>    
+                  <h3 *ngIf="!db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5 webkit-text"
+                    [style.--line]="1"><img src="/assets/leaves/leaveicon.svg" alt=""> <span class="pl5 fnt_w600">{{item.employee_name ? item.employee_name : ' - '}}</span></h3>
+                  <app-status [status]="item.status"></app-status>
+                </div>
+                <div class="s-1 mb-5">
+                  <h3 class="m-0 fnt-15  d__flex"> <ion-icon src="/assets/leaves/calendar.svg"></ion-icon> <span class="pl5 fnt_w500">{{item.attendance_date | date: 'MMM d, y'}}</span> </h3>
+                </div>
+                <div *ngIf="false" [class.image_div]="item.image" class="absolute_">
                   <!-- <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div> -->
                   <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
                   <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
                 </div>
-                <div class="w-100">
+                <div class="w-100" *ngIf="false">
                   <p class="m-0 mb-5 fnt-13 fnt_w500 webkit-text" [style.--line]="2">{{item.employee_name}}</p>
                   <div class="d__flex just-s w-100">
                     <p class="m-0 mb-5 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>

@@ -227,8 +227,8 @@
           </div>
         </div>
         <div class="d__flex just-e d3">
-          <p class="m-0 fnt-12 v_btn" [ngClass]="item.workflow_state == 'Approved' ? 'pr20':''">View <img class="pl5" src="assets/Employee-Home/view.svg" alt=""></p>
-          <p *ngIf="item.workflow_state == 'Approved'" class="m-0 fnt-12 d_btn">Download <img class="pl5" src="assets/Employee-Home/download.svg" alt=""></p>
+          <p class="m-0 fnt-12 v_btn" [ngClass]="item.workflow_state == 'Approved' ? '':''">View <img class="pl5" src="assets/Employee-Home/view.svg" alt=""></p>
+          <!-- <p *ngIf="item.workflow_state == 'Approved'" class="m-0 fnt-12 d_btn">Download <img class="pl5" src="assets/Employee-Home/download.svg" alt=""></p> -->
         </div>
         <!-- <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}
         </h3>

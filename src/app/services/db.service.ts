@@ -1982,6 +1982,11 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  get_vpf_details(Info): Observable<any> {
+    let endpoint = 'td_payroll.apis.payroll_api.get_vpf_details';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   get_workflow_states(Info): Observable<any> {
     let endpoint = 'td_dashboard_data.td_dashboard_data.api.get_workflow_states';
     // let endpoint = 'td_payroll.tdpayroll.doctype.my_slips.my_slips.get_salary_slip_content';

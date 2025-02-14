@@ -86,8 +86,10 @@
 
     <div class="pb-10">
       <label class="pb-10">Leave Type <span class="red">*</span></label>
-      <div class="custom-input">
-        <ion-input type="text" (click)="open_dropdown()" [(ngModel)]="editFormValues.leave_type" placeholder="Leave Type" class="form-input"></ion-input>
+      <div class="custom-input d__flex">
+        <img src="/assets/leaves/type.svg" alt="">
+        <ion-input type="text" (click)="open_dropdown()" [(ngModel)]="editFormValues.leave_type" placeholder="Leave Type" class="form-input ml-10"></ion-input>
+        <img src="/assets/leaves/arrow-down.svg" alt="">
       </div>
     </div>
     <div class="pb-10">

@@ -1,19 +1,19 @@
-<div class="main-Sec" *ngIf="jobReferralDetail">
+<div class="main-Sec" *ngIf="referralDetail">
   
   <div class="p-10 d__flex gap-10 headerSec">
     <div class="avatar_name">
-      <p class="m-0" *ngIf="jobReferralDetail.designation">{{jobReferralDetail.designation[0]}}</p>
+      <p class="m-0" *ngIf="referralDetail.designation">{{referralDetail.designation[0]}}</p>
     </div>
     <div class="w-100">
       <div class="d__flex just-s">
-        <p class="m-0 fnt-14 fnt_w600 mb-5" *ngIf="jobReferralDetail.designation">{{jobReferralDetail.designation.replace('-', '')}}</p>
+        <p class="m-0 fnt-14 fnt_w600 mb-5" *ngIf="referralDetail.designation">{{referralDetail.designation.replace('-', '')}}</p>
         <ion-icon class="flex-auto fnt-18" (click)="modalCntrl.dismiss()" name="close-outline"></ion-icon>
       </div>
       <div class="d__flex gap-10">
-        <p class="m-0 fnt-13 fnt_w400 webkit-text" [style.--line]="2" *ngIf="jobReferralDetail.job_title">{{jobReferralDetail.job_title ? jobReferralDetail.job_title.replace('-', '') : ''}}</p>
+        <p class="m-0 fnt-13 fnt_w400 webkit-text" [style.--line]="2" *ngIf="referralDetail.job_title">{{referralDetail.job_title ? referralDetail.job_title.replace('-', '') : ''}}</p>
         <div class="beforedays flex-auto">
           <div class="dots"></div>
-          <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{jobReferralDetail.posted_on ? getBeforeDays(jobReferralDetail.posted_on) : ''}}</p>
+          <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{referralDetail.posted_on ? getBeforeDays(referralDetail.posted_on) : ''}}</p>
         </div>
       </div>
     </div>
@@ -22,10 +22,10 @@
   <div class="scrollSection p-10">
     <div class="jobDescrition">
       <h5 class="fnt-14 fnt_w600 m-0 mb-10">Job Description</h5>
-      <p class="m-0 fnt-13 fnt_w400 gray_clr mt-5" [innerHtml]="jobReferralDetail.description"></p>
+      <p class="m-0 fnt-13 fnt_w400 gray_clr mt-5" [innerHtml]="referralDetail.description"></p>
     </div>
   
-    <div class="addressSection" *ngIf="jobReferralDetail.job_requisition && jobReferralDetail.job_requisition.length != 0">
+    <div class="addressSection" *ngIf="referralDetail.job_requisition && referralDetail.job_requisition.length != 0">
       <h5 class="fnt-14 fnt_w600 m-0 mb-10">Address</h5>
       
       <div class="couponsss_">
@@ -33,21 +33,21 @@
         <h6 class="m-0 fnt-14 flex-50">{{''}}</h6>
   
         <h6 class="m-0 fnt-14 gray_clr fnt_w500 flex-50">Country</h6>
-        <h6 class="m-0 fnt-14 flex-50">{{jobReferralDetail.job_requisition[0].custom_country}}</h6>
+        <h6 class="m-0 fnt-14 flex-50">{{referralDetail.job_requisition[0].custom_country}}</h6>
   
         <h6 class="m-0 fnt-14 gray_clr fnt_w500 flex-50">State / region</h6>
-        <h6 class="m-0 fnt-14 flex-50">{{jobReferralDetail.job_requisition[0].custom_state}}</h6>
+        <h6 class="m-0 fnt-14 flex-50">{{referralDetail.job_requisition[0].custom_state}}</h6>
   
         <h6 class="m-0 fnt-14 gray_clr fnt_w500 flex-50">City</h6>
-        <h6 class="m-0 fnt-14 flex-50">{{jobReferralDetail.job_requisition[0].custom_location}}</h6>
+        <h6 class="m-0 fnt-14 flex-50">{{referralDetail.job_requisition[0].custom_location}}</h6>
   
         <h6 class="m-0 fnt-14 gray_clr fnt_w500 flex-50">ZIP Code</h6>
-        <h6 class="m-0 fnt-14 flex-50 currency-gap">{{jobReferralDetail.job_requisition[0].custom_location_code}}</h6>
+        <h6 class="m-0 fnt-14 flex-50 currency-gap">{{referralDetail.job_requisition[0].custom_location_code}}</h6>
       </div>
   
     </div>
   
-    <div class="employementSection" *ngIf="jobReferralDetail.job_requisition && jobReferralDetail.job_requisition.length != 0">
+    <div class="employementSection" *ngIf="referralDetail.job_requisition && referralDetail.job_requisition.length != 0">
       <h5 class="fnt-14 fnt_w600 m-0 mb-10">Employement type</h5>
       
       <div class="couponsss_">

@@ -10,6 +10,7 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class JobReferralDetailComponent  implements OnInit {
 @Input() jobReferralDetail: any;
+referralDetail: any = {};
   constructor(public modalCntrl: ModalController,public db: DbService) { }
 
   ngOnInit() {
@@ -52,12 +53,12 @@ export class JobReferralDetailComponent  implements OnInit {
   ]
 
   async referFriendForm(){
-    this.modalCntrl.dismiss();
+    // this.modalCntrl.dismiss();
     const modal = await this.modalCntrl.create({
       component: ReferFriendFormComponent,
       cssClass: 'friend-referral-form',
       componentProps: {
-        jobReferralDetail: this.jobReferralDetail
+        jobReferralDetail: this.referralDetail
       }
     })
     await modal.present();
@@ -70,6 +71,11 @@ export class JobReferralDetailComponent  implements OnInit {
     }
     this.db.doc_detail(data).subscribe(res => {
       console.log(res)
+      if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
+        this.referralDetail = res.message[1]
+      }else{
+        this.referralDetail = {}
+      }
     })
   }
 

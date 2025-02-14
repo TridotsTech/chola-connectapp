@@ -1,6 +1,6 @@
 <ion-header class="mobile-header ion-no-border" [ngClass]="!no_home?'no-shadow':''" [class.ion_header_crm]="db.sales_manager_role" [ngStyle]= "!db.sales_manager_role ? db.set_primary_color(db.sales_dashboard) : null">
   <!-- && title != 'Task' -->
-  <div class="background-img" *ngIf="!home"></div>
+  <!-- <div class="background-img" *ngIf="!home"></div> -->
   <ion-toolbar *ngIf="!no_home"
     [ngStyle]="{'border-radius': (tab_array && tab_array.length == 0) ?  '0 0 20px 20px' : null }">
 

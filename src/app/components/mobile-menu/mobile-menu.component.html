@@ -174,7 +174,7 @@
     <ion-icon slot="start" src="/assets/mobile-menu/close-menu.svg" (click)="close_menu()"></ion-icon>
   </div> -->
 
-  <div class="employeeDetails">
+  <div [ngClass]="{ 'mt-55': isIos }" class="employeeDetails">
     <div class="imageDiv">
       <img class="profile_user_img"
         [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">

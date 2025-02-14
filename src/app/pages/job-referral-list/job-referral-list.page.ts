@@ -23,7 +23,6 @@ export class JobReferralListPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    // this.getJobReferralList();
     this.get_job_referral_list();
   }
 
@@ -118,7 +117,6 @@ export class JobReferralListPage implements OnInit {
     let data = await modal.onWillDismiss();
     let total_count: any = 0;
     if(data && data.data){
-      console.log(data,'data')
       if(data.data && Object.keys(data.data).length != 0){
         total_count = 0;
         Object.keys(data.data).map((res: any) => {
@@ -137,14 +135,12 @@ export class JobReferralListPage implements OnInit {
   }
 
   searchPro(event){
-    console.log(event.target.value);
     this.searchTxt = event.target.value;
     this.page_no = 1;
     this.get_job_referral_list();
   }
 
   clear_txt(event){
-    console.log(event)
     this.searchTxt = '';
     this.page_no = 1;
     this.get_job_referral_list();

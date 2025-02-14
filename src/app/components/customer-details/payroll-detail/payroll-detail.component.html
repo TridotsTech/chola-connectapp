@@ -66,11 +66,11 @@
 
     <div class="headersec border-b section-p">
       <div class="d__flex just-s">
-        <h4 class="m-0 fnt-14 fnt_w400 primary_clr">{{earning_details?.name}}</h4>
-        <h4 class="m-0 fnt-14 fnt_w400">{{earning_details?.creation | date:'MMM dd yyyy'}}</h4>
+        <h4 class="m-0 fnt-13 fnt_w400 primary_clr">{{earning_details?.name}}</h4>
+        <h4 class="m-0 fnt-13 fnt_w400">{{earning_details?.creation | date:'MMM dd yyyy'}}</h4>
       </div>
 
-      <h4 class="m-0 fnt-14 fnt_w400 gray_clr grossPay">Gross Pay <span class="_span">{{earning_details?.gross_pay |
+      <h4 class="m-0 fnt-13 fnt_w400 gray_clr grossPay">Gross Pay <span class="_span">{{earning_details?.gross_pay |
           currency:db.website_settings.currency}}</span></h4>
     </div>
 
@@ -79,14 +79,14 @@
         <!-- <h4 class="values m-0">Employee Name</h4>
         <h4 class="values m-0">{{earning_details.employee_name ? earning_details.employee_name : '-'}}</h4> -->
         <h4 class="values m-0">Company</h4>
-        <h4 class="values m-0 mb-5">{{earning_details.company ? earning_details.company : '-'}}</h4>
+        <h4 class="values m-0  mb-5">{{earning_details.company ? earning_details.company : '-'}}</h4>
         <h4 class="values m-0">Bank Name</h4>
-        <h4 class="values m-0">{{earning_details.bank_name ? earning_details.bank_name : '-'}}</h4>
+        <h4 class="values m-0 ">{{earning_details.bank_name ? earning_details.bank_name : '-'}}</h4>
         <h4 class="values m-0">Bank Account No</h4>
-        <h4 class="values m-0">{{earning_details.bank_account_no ? earning_details.bank_account_no : '-'}}</h4>
+        <h4 class="values m-0 ">{{earning_details.bank_account_no ? earning_details.bank_account_no : '-'}}</h4>
         
         <h4 class="values m-0">Salary Structure</h4>
-        <h4 class="values m-0 mb-5">{{earning_details.salary_structure ? earning_details.salary_structure : '-'}}</h4>
+        <h4 class="values m-0  mb-5">{{earning_details.salary_structure ? earning_details.salary_structure : '-'}}</h4>
         <div  class="d__flex just-s mb-5">
           <div class="flex-65">
             <h4 class="values m-0">Payroll Frequency</h4>
