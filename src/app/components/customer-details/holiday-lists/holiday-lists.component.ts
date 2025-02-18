@@ -55,8 +55,8 @@ export class HolidayListsComponent  implements OnInit {
     // this.currentMonthValue = currentMonth.toString().padStart(2, '0');
     // console.log('sd',this.db.monthLists[this.currentMonth].label);
 
-    console.log(this.currentYear,'currentYear');
-    console.log(this.currentMonth,'currentMonth');
+    // console.log(this.currentYear,'currentYear');
+    // console.log(this.currentMonth,'currentMonth');
 
     if(this.db.ismobile){
       this.selectedSegment = 'List View'
@@ -83,8 +83,7 @@ export class HolidayListsComponent  implements OnInit {
   ngOnChanges(changes: any){
     if(changes && changes['holiday_type'] && changes['holiday_type'].currentValue){
       this.holiday_type = changes['holiday_type'].currentValue
-      console.log(this.holiday_type,'this.holiday_type')
-
+      // console.log(this.holiday_type,'this.holiday_type')
       if(this.holiday_type == 'Calendar'){
         this.generateHighlightedDates();
       }
@@ -92,18 +91,18 @@ export class HolidayListsComponent  implements OnInit {
 
     if(changes && changes['list_data'] && changes['list_data'].currentValue){
       this.list_data = changes['list_data'].currentValue
-      console.log(this.list_data,'this.list_data')
+      // console.log(this.list_data,'this.list_data')
       this.generateHighlightedDates();
     }
 
     if(changes && changes['currentYear'] && changes['currentYear'].currentValue){
       this.currentYear = changes['currentYear'].currentValue
-      console.log(this.currentYear,'this.currentYear')
+      // console.log(this.currentYear,'this.currentYear')
     }
 
     if(changes && changes['currentMonth'] && changes['currentMonth'].currentValue){
       this.currentMonth = changes['currentMonth'].currentValue
-      console.log(this.currentMonth,'this.currentMonth')
+      // console.log(this.currentMonth,'this.currentMonth')
     }
   }
 
@@ -200,7 +199,7 @@ export class HolidayListsComponent  implements OnInit {
 
   changeCalendarMonth(viewDate){
     this.activeDayIsOpen = false;
-    console.log('viewDate',viewDate)
+    // console.log('viewDate',viewDate)
   }
 
   getHolidayIcon(item){
@@ -270,7 +269,7 @@ export class HolidayListsComponent  implements OnInit {
   }
 
   changeMonthCal(event){
-    console.log(event,'event')
+    // console.log(event,'event')
     let month = event.detail.value.split('-')[1]
     this.db.selectedMonth = Number(month);
     this.db.selected_year = true;

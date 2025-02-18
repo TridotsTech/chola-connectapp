@@ -20,46 +20,7 @@
     </ion-fab-list>
   </ion-fab>
 
-  <!-- <div *ngIf="false && !db.ismobile && detail_loader" class="align_center">
-
-    <div class="b-1 d__flex">
-      <ion-skeleton-text [animated]="true"
-        style="width:62px;height:52px;border-radius:50%;margin:0 8px 0 0"></ion-skeleton-text>
-      <div class="b-2">
-        <ion-skeleton-text [animated]="true" style="width:75%;height:20px;margin:0 0 8px 0"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true" style="width:60%;height:17px"></ion-skeleton-text>
-      </div>
-    </div>
-
-    <div class="b-3">
-      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
-      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
-      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
-      <ion-skeleton-text class="boxes" [animated]="true"></ion-skeleton-text>
-    </div>
-
-    <div class="tab_skeleton">
-      <div *ngFor="let val of [1,2,3,4,5,6]">
-        <ion-skeleton-text [animated]="true"
-          style="width:60px;height:20px;margin:0px;border-radius:5px"></ion-skeleton-text>
-      </div>
-    </div>
-
-
-    <div class="d__flex  box_" *ngFor="let val of [1,2,3,4,5,6]">
-      <ion-skeleton-text [animated]="true" style="width:60px;height:50px;border-radius:5px"></ion-skeleton-text>
-      <div class="w-full">
-        <ion-skeleton-text [animated]="true" style="width:55%;height:17px;border-radius:5px"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true"
-          style="width:45%;height:15px;border-radius:5px;margin:3px 0"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true" style="width:35%;height:12px;border-radius:5px"></ion-skeleton-text>
-      </div>
-    </div>
-
-  </div> -->
-
   <div *ngIf="db.ismobile" class="fullD">
-
 
     <!-- Mobile Skeleton -->
     <div *ngIf="db.leave_skeleton && (!leave_list || (leave_list && leave_list.length == 0)) && skeleton_value_mobile">
@@ -132,50 +93,7 @@
           <p class="fnt-12 m-0 ">{{item.label.replaceAll('Leaves', ' ')}}</p>
         </div>
 
-        <!-- <div class="box_1">
-          <div class="m-7 d__flex just-s">
-            <ion-icon class="fnt-16 icon color_1" src="/assets/leaves/calendar-purple.svg"></ion-icon>
-            <p class="m-0 fnt_w500 " style="color: #5461FF;">{{leave_dashboard.total_allocated_leaves ?
-              leave_dashboard.total_allocated_leaves : 0}}</p>
-           
-          </div>
-          <p class="fnt-12 m-0 ">Allocated</p>
-        </div> -->
-
-        <!-- <div class="box_1">
-          <p class="fnt-12 m-0 ">Leave Without Pay</p>
-          <div class="m-7 d__flex just-s">
-            <p class="m-0 fnt_w500">{{leave_dashboard.leave_without_pay ? leave_dashboard.leave_without_pay : 0}}</p>
-            <ion-icon class="fnt-16" src="/assets/icon/taken-leave-01.svg"></ion-icon>
-          </div>
-        </div> -->
-
-        <!-- <div class="box_1">
-          <div class="m-7 d__flex just-s">
-            <ion-icon class="fnt-16 icon color_2" src="/assets/leaves/calendar-yellow.svg"></ion-icon>
-            <p class="m-0 fnt_w500" style="color: #E08700;">{{leave_dashboard.used_leaves ? leave_dashboard.used_leaves
-              : 0}}</p>
-          </div>
-          <p class="fnt-12 m-0 ">Used Leaves</p>
-        </div> -->
-
-        <!-- <div class="box_1">
-          <div class="m-7 d__flex just-s">
-            <ion-icon class="fnt-16 icon color_3" src="/assets/leaves/calendar-green.svg"></ion-icon>
-            <p class="m-0 fnt_w500 " style="color: #458F5A;">{{leave_dashboard.available_leaves ?
-              leave_dashboard.available_leaves : 0}}</p>
-          </div>
-          <p class="fnt-12 m-0 ">Available</p>
-        </div>
-
-        <div class="box_1">
-          <div class="m-7 d__flex just-s">
-            <ion-icon class="fnt-16 icon color_4" src="/assets/leaves/calendar-red.svg"></ion-icon>
-            <p class="m-0 fnt_w500 " style="color: #C01212;">{{leave_dashboard.expired_leaves ?
-              leave_dashboard.expired_leaves : 0}}</p>
-          </div>
-          <p class="fnt-12 m-0 ">Expired Leaves</p>
-        </div> -->
+        
 
       </div>
 

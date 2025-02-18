@@ -1,0 +1,117 @@
+<app-header [title]="'Employee VPF'" [showYear]="false" [model]="true"></app-header>
+
+<div class="p-10 height_sec">
+  <div *ngIf="db.employee_img" class="employee_det">
+    <div class="sec-1">
+      <p class="m-0 fnt-14">{{db.employee_img.name}}</p>
+      <div class="d__flex gap-10" *ngIf="db.employee_img">
+        <ion-icon class="fnt-22" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon>
+        <p class="m-0 fnt-13">{{db.employee_img.grade}}</p>
+      </div>
+    </div>
+    <div class="sec-2">
+      <div class="d__flex gap-10 flex-70">
+        <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+        <div>
+          <p class="fnt-14 m-0 mb-5 fnt_w500 webkit-text" [style.--line]="1">{{db.employee_img.employee_name}}</p>
+          <p class="fnt-13 m-0 gray_clr">{{db.employee_img.name}}</p>
+        </div>
+      </div>
+      <div class="flex-auto d__flex">
+        <app-status [reverse]="true" [status]="db.employee_img.status"></app-status>
+      </div>
+    </div>
+  </div>
+
+  <div class="detailView" *ngIf="pfDetails">
+    
+    <div class="d__flex just-s">
+      <p class="m-0 fnt-14 fnt_w500 gray_clr">Payroll Period</p>
+      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.payroll_period ? pfDetails.payroll_period : '-'}}</p>
+    </div>
+
+    <div class="d__flex just-s">
+      <p class="m-0 fnt-14 fnt_w500 gray_clr">Basic</p>
+      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.basic ? (pfDetails.basic | currency:db.website_settings.currency) : '-'}}</p>
+    </div>
+
+    <div class="d__flex just-s">
+      <p class="m-0 fnt-14 fnt_w500 gray_clr">VPF Limit (% of Basic)</p>
+      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.vpf_limit_percent ? pfDetails.vpf_limit_percent : '-'}}</p>
+    </div>
+
+    <div class="d__flex just-s">
+      <p class="m-0 fnt-14 fnt_w500 gray_clr">VPF Limit</p>
+      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.vpf_limit ? (pfDetails.vpf_limit | currency:db.website_settings.currency) : '-'}}</p>
+    </div>
+
+    <div class="d__flex just-s" *ngIf="false">
+      <p class="m-0 fnt-14 fnt_w500 gray_clr">Status</p>
+      <div class="d__flex">
+        <app-status [reverse]="true" [status]="pfDetails.status"></app-status>
+      </div>
+    </div>
+
+  </div>
+
+  <div>
+
+    <!-- <div class="pb-10" *ngIf="pfDetails">
+      <p class="title">Effective From</p>
+      <div class="custom-input d__flex">
+        <ion-select class="w-100" interface="popover" placeholder="Effective From" [(ngModel)]="pfDetails.effective_month">
+          <ion-icon class="fnt-22" src="/assets/leaves/type.svg" slot="start"></ion-icon>
+          <ion-select-option *ngFor="let item of pfDetails.payroll_months" [value]="item">{{item}}</ion-select-option>
+        </ion-select>
+      </div>
+    </div> -->
+
+    <div class="pb-10" *ngIf="pfDetails">
+      <p class="title">Effective From</p>
+      <div class="custom-input d__flex">
+        <img src="/assets/leaves/type.svg" alt="">
+        <ion-input type="text" placeholder="Effective From" (click)="open_dropdown('Effective From')" [(ngModel)]="pfDetails.effective_month" class="form-input pl10"></ion-input>
+        <img src="/assets/leaves/arrow-down.svg" alt="">
+      </div>
+    </div>
+
+    <!-- <div class="pb-10">
+      <p class="title">Contribution Type</p>
+      <div class="custom-input d__flex">
+        <ion-select class="w-100" interface="popover" (ionChange)="changeAmountType($event)" placeholder="Contribution Type" [(ngModel)]="pfDetails.contribution_type">
+          <ion-icon class="fnt-22" src="/assets/leaves/type.svg" slot="start"></ion-icon>
+          <ion-select-option *ngFor="let item of contributionType" [value]="item.name">{{item.name}}</ion-select-option>
+        </ion-select>
+      </div>
+    </div> -->
+
+    <div class="pb-10">
+      <p class="title">Contribution Type</p>
+      <div class="custom-input d__flex">
+        <img src="/assets/leaves/type.svg" alt="">
+        <ion-input type="text" placeholder="Contribution Type" (click)="open_dropdown('Contribution Type')" [(ngModel)]="pfDetails.contribution_type" class="form-input pl10"></ion-input>
+        <img src="/assets/leaves/arrow-down.svg" alt="">
+      </div>
+    </div>
+
+    <div class="pb-10" *ngIf="pfDetails && pfDetails.contribution_type == 'Percentage Salary'">
+      <p class="title">Percentage (%)</p>
+      <div class="custom-input">
+        <ion-input type="text" (ionInput)="changeAmount($event)" [(ngModel)]="pfDetails.percentage" placeholder="Percentage (%)"></ion-input>
+      </div>
+    </div>
+
+    <div class="pb-10">
+      <p class="title">Amount</p>
+      <div class="custom-input">
+        <ion-input type="text" [readonly]="pfDetails && pfDetails.contribution_type == 'Percentage Salary'" [(ngModel)]="pfDetails.amount" placeholder="Amount"></ion-input>
+      </div>
+    </div>
+  
+  </div>
+  
+</div>
+
+<div class="submit-btn">
+  <ion-button fill="clear" (click)="checkSubmit()">Save</ion-button>
+</div>

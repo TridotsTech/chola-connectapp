@@ -3,27 +3,33 @@
 <ion-content [fullscreen]="true">
   <div class="p-10">
     <form [formGroup]="buyback_form">
-      <div class="pb-10">
-        <p class="title">Asset Type</p>
-        <div class="custom-input">
-          <ion-select interface="popover" placeholder="Asset Type" formControlName="asset_type" name="asset_type" (ionChange)="onassettypeChange($event)">
-            <ion-select-option *ngFor="let assets of assetsType" [value]="assets.name">{{assets.name}}</ion-select-option>
-          </ion-select>
+      <div class="section2">
+        <div class="pb-10">
+          <p class="title">Asset Type</p>
+          <div class="custom-input">
+            <ion-select interface="popover" placeholder="Asset Type" formControlName="asset_type" name="asset_type"
+              (ionChange)="onassettypeChange($event)">
+              <ion-select-option *ngFor="let assets of assetsType"
+                [value]="assets.name">{{assets.name}}</ion-select-option>
+            </ion-select>
+          </div>
+        </div>
+        <div class="pb-10">
+          <p class="title">Asset</p>
+          <div class="custom-input">
+            <ion-select interface="popover" placeholder="Asset" formControlName="asset" name="asset"
+              (ionChange)="onassetChange($event,'')">
+              <ion-select-option *ngFor="let ass of assets_list" [value]="ass.name">{{ass.name}}</ion-select-option>
+            </ion-select>
+          </div>
         </div>
       </div>
-      <div class="pb-10">
-        <p class="title">Asset</p>
-        <div class="custom-input">
-          <ion-select interface="popover" placeholder="Asset" formControlName="asset" name="asset" (ionChange)="onassetChange($event,'')">
-            <ion-select-option *ngFor="let ass of assets_list" [value]="ass.name">{{ass.name}}</ion-select-option>
-          </ion-select>
-          <!-- <ion-input type="text"
-            placeholder="Asset" (click)="open_dropdown1()" name="asset" formControlName="asset"
-            class="form-input"></ion-input> -->
-        </div>
+      <div *ngIf="buyback_form.value.asset_type" class="pb-10">
+        <p class="title">Buyback Date</p>
+        <app-custom-calendar format="Date" [selectedDate]="buyback_form.value.buyback_date" [minValue]="current_date"
+          (onChange)="datePickerChange('buyback_date',$event)"></app-custom-calendar>
       </div>
-
-      <div *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="pb-10">
+      <!-- <div *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="pb-10">
         <p class="title">Vehicle Registration No</p>
         <div class="custom-input">
           <ion-input type="text" placeholder="Vehicle Registration No" formControlName="vehicle_registration_no" name="vehicle_registration_no"></ion-input>
@@ -43,10 +49,7 @@
           <app-custom-calendar format="Date" [read_only]="true"  [selectedDate]="buyback_form.value.date_of_purchase" (onChange)="datePickerChange('date_of_purchase',$event)"></app-custom-calendar>
         </div>
   
-        <div class="pb-10">
-          <p class="title">Buyback Date</p>
-          <app-custom-calendar format="Date" [selectedDate]="buyback_form.value.buyback_date" (onChange)="datePickerChange('buyback_date',$event)"></app-custom-calendar>
-        </div>
+       
 
       </div>
 
@@ -76,68 +79,129 @@
         <div class="custom-input">
           <ion-input type="text" [disabled]="true" placeholder="Life Of The Asset" formControlName="life_of_the_car" name="life_of_the_car"></ion-input>
         </div>
-      </div>
+      </div> -->
+      <div *ngIf="buyback_form.value.asset_type" class="body_sec">
+        <div class="detailSec">
+          <div class="section-p">
+             <div  class="d__flex just-s mb-5">
+              <div class="flex-65">
+            <h4 class="values m-0">Date Of Purchase</h4>
+            <h4 class="values m-0  mb-5">{{buyback_form.value.date_of_purchase ? buyback_form.value.date_of_purchase
+              :'-'}}</h4>
+              </div>
+              <div class="flex-35">
+                <h4 *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="values m-0">Registration No</h4>
+                <h4 *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="values m-0  mb-5">
+                  {{buyback_form.value.vehicle_registration_no}}</h4>
+                <h4 *ngIf="buyback_form.value.asset_type == 'Mobile'" class="values m-0">Baz Ticket No</h4>
+                <h4 *ngIf="buyback_form.value.asset_type == 'Mobile'" class="values m-0  mb-5">
+                  {{buyback_form.value.baz_ticket_no}}</h4>
+              </div>
+              </div>
+            <h4 class="values m-0">Ex Showroom Cost</h4>
+            <h4 class="values m-0  mb-5">{{buyback_form.value.ex_showroom_cost}}</h4>
+            <h4 class="values m-0">Road Tax and Registration Charges</h4>
+            <h4 class="values m-0  mb-5">{{buyback_form.value.road_tax_and_registration_charges}}</h4>
+            <!-- <div  class="d__flex just-s mb-5">
+              <div class="flex-65"> -->
+            <h4 *ngIf="buyback_form.value.total_capitalized_value" class="values m-0">Total Capitalized Value</h4>
+            <h4 *ngIf="buyback_form.value.total_capitalized_value" class="values m-0 mb-5">{{buyback_form.value.total_capitalized_value}}</h4>
+            <!-- </div>
+            <div *ngIf="buyback_form.value.life_of_the_car" class="flex-35"> -->
+            <h4 *ngIf="buyback_form.value.life_of_the_car" class="values m-0">Life Of The Asset</h4>
+            <h4 *ngIf="buyback_form.value.life_of_the_car" class="values m-0">{{buyback_form.value.life_of_the_car}}</h4>
+            <!-- </div>
+            </div> -->
+          </div>
+        </div>
+        <div *ngIf="rates && rates.length != 0" class="">
+          <h4 class="m-0 fnt-14 fnt_w500 headig-p mtb">Buyback Rate</h4>
+          <div class="table">
+            <table class="margin-last">
+              <tr>
+                <th>{{buyback_form.value.asset_type == 'Vehicle' ? 'Year':'Month'}}</th>
+                <th>Ratio</th>
+              </tr>
+              <tr *ngFor="let item of rates;let i = index">
+                <td>{{item.year ? item.year : item.month}}</td>
+                <td>{{item.ratio}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <!-- <div *ngIf="rates && rates.length != 0" class="year_calculator mb-10">
+          <div *ngFor="let item of rates" class="boxes__">
+            <div class="d__flex just-s">
+              <p *ngIf="item.year" class="m-0 fnt-14"><span class="gray_clr fnt-12">Year : </span>{{item.year}}</p>
+              <p *ngIf="item.month" class="m-0 fnt-14"><span class="gray_clr fnt-12">Month : </span>{{item.month}}</p>
+              <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Ratio: </span>{{item.ratio}}</p>
+            </div>
+          </div>
+        </div> -->
+        <div class="detailSec">
+          <div class="section-p mtb">
+            <h4 class="values m-0">Perk Tax</h4>
+            <h4 class="values m-0">{{buyback_form.value.perk_tax}}</h4>
+          </div>
+        </div>
+        <div *ngIf="yearCalculator && yearCalculator.length != 0" class="">
+          <h4 class="m-0 fnt-14 fnt_w500 headig-p mtb">Year Calculator</h4>
+          <div class="table">
+            <table class="margin-last">
+              <tr>
+                <th>Year</th>
+                <th>Value of the Car</th>
+                <th>Depreciation</th>
+                <th>WDV</th>
+              </tr>
+              <tr *ngFor="let item of yearCalculator;let i = index">
+                <td>{{ item.index}}</td>
+                <td>₹{{item.value}}</td>
+                <td>₹{{item.depreciation}}</td>
+                <td>₹{{item.wdv}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="buyback_form.value.buyback_amount" class="mtb detailSec section-p mobile_summary">
+          <div>
+            <p class="m-0 values">Buyback Amount</p>
+            <h6 class="m-0 values inter_">{{buyback_form.value.buyback_amount | currency:db.website_settings.currency}}
+            </h6>
+          </div>
+          <div>
+            <p class="m-0 values">Perk Amount</p>
+            <h6 class="m-0 values inter_">{{buyback_form.value.perk_amount}}</h6>
+          </div>
+          <div>
+            <p class="m-0 values">GST Amount</p>
+            <h6 class="m-0 values inter_">{{buyback_form.value.gst_amount}}
+            </h6>
+          </div>
+          <div>
+            <p class="m-0 values">Tax On Perk Amount</p>
+            <h6 class="m-0 values inter_">{{buyback_form.value.tax_on_perk_amount}}</h6>
+          </div>
+          <!-- <div>
+            <p class="m-0 values">Year to date</p>
+            <h6 class="m-0 values inter_">{{buyback_form.value.total_capitalized_value}}</h6>
+          </div> -->
+        </div>
+        <div class="detailSec section-p">
+          <div *ngIf="buyback_form.value.insurance_amount">
+            <p class="m-0 values">Insurance Amount</p>
+            <h6 class="m-0 values inter_ mb-5">{{buyback_form.value.insurance_amount}}</h6>
+          </div>
+          <div *ngIf="buyback_form.value.amount_payable_to_company">
+            <p class="m-0 values">Amount Payable To Company</p>
+            <h6 class="m-0 values inter_">{{buyback_form.value.amount_payable_to_company}}</h6>
+          </div>
+        </div>
 
-      <h5 class="fnt-15 fnt_w500 mb-10 m-0">Buyback Rate</h5>
-      <div *ngIf="rates && rates.length != 0" class="year_calculator mb-10">
-        <div *ngFor="let item of rates" class="boxes__">
-          <div class="d__flex just-s">
-            <p *ngIf="item.year" class="m-0 fnt-14"><span class="gray_clr fnt-12">Year : </span>{{item.year}}</p>
-            <p *ngIf="item.month" class="m-0 fnt-14"><span class="gray_clr fnt-12">Month : </span>{{item.month}}</p>
-            <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Ratio: </span>{{item.ratio}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="section2">
-        <div *ngIf="buyback_form.value.year0" class="pb-10">
-          <p class="title">Year0</p>
-          <div class="custom-input">
-            <ion-input type="number" [disabled]="true" placeholder="Year0" formControlName="year0" name="year0"></ion-input>
-          </div>
-        </div>
-        <div *ngIf="buyback_form.value.year1" class="pb-10">
-          <p class="title">Year1</p>
-          <div class="custom-input">
-            <ion-input type="number" [disabled]="true" placeholder="Year1" formControlName="year1" name="year1"></ion-input>
-          </div>
-        </div>
-  
-        <div *ngIf="buyback_form.value.year2" class="pb-10">
-          <p class="title">Year2</p>
-          <div class="custom-input">
-            <ion-input type="number" [disabled]="true" placeholder="Year2" formControlName="year2" name="year2"></ion-input>
-          </div>
-        </div>
-  
-        <div *ngIf="buyback_form.value.year3" class="pb-10">
-          <p class="title">Year3</p>
-          <div class="custom-input">
-            <ion-input type="number" [disabled]="true" placeholder="Year3" formControlName="year3" name="year3"></ion-input>
-          </div>
-        </div>
-  
-        <div *ngIf="buyback_form.value.year4" class="pb-10">
-          <p class="title">Year4</p>
-          <div class="custom-input">
-            <ion-input type="number" [disabled]="true" placeholder="Year4" formControlName="year4" name="year4"></ion-input>
-          </div>
-        </div>
-        <div *ngIf="buyback_form.value.perk_tax" class="pb-10">
-          <p class="title">Perk Tax</p>
-          <div class="custom-input">
-            <ion-input type="number" [disabled]="true" placeholder="Perk Tax" formControlName="perk_tax" name="perk_tax"></ion-input>
-          </div>
-        </div>
-
-      </div>
-
-      
-
-      <div *ngIf="yearCalculator && yearCalculator.length != 0" class="year_calculator mb-10">
+        <!-- <div *ngIf="yearCalculator && yearCalculator.length != 0" class="year_calculator mb-10">
         <div *ngFor="let item of yearCalculator" class="boxes__">
           <div class="d__flex just-s">
             <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Year : </span>{{item.index}}</p>
-            <!-- | currency: (db.default_values && db.default_values.default_currency) ? db.default_values.default_currency : 'INR' -->
             <p class="m-0 fnt-14"><span class="gray_clr fnt-12">Value of the Car: </span>₹ {{item.value}}</p>
           </div>
           <div >
@@ -145,9 +209,10 @@
             <p class="m-0 fnt-14"><span class="gray_clr fnt-12">WDV : </span>₹ {{item.wdv}}</p>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="section2">
+
+        <!-- <div class="section2">
 
         <div class="pb-10">
           <p class="title">Buyback Amount</p>
@@ -187,16 +252,60 @@
         <div class="custom-input">
           <ion-input type="text" placeholder="Insurance Amount" formControlName="insurance_amount" name="insurance_amount"></ion-input>
         </div>
-      </div>
-      <div class="pb-10">
+      </div> -->
+        <!-- <div class="pb-10">
         <p class="title">Amount Payable To Company</p>
         <div class="custom-input">
           <ion-input type="text" placeholder="Amount Payable To Company" formControlName="amount_payable_to_company" name="amount_payable_to_company"></ion-input>
         </div>
+      </div> -->
+      <!-- <div *ngIf="buyback_form.value.year0" class="pb-10">
+            <p class="title">Year0</p>
+            <div class="custom-input">
+              <ion-input type="number" [disabled]="true" placeholder="Year0" formControlName="year0"
+                name="year0"></ion-input>
+            </div>
+          </div>
+          <div *ngIf="buyback_form.value.year1" class="pb-10">
+            <p class="title">Year1</p>
+            <div class="custom-input">
+              <ion-input type="number" [disabled]="true" placeholder="Year1" formControlName="year1"
+                name="year1"></ion-input>
+            </div>
+          </div>
+
+          <div *ngIf="buyback_form.value.year2" class="pb-10">
+            <p class="title">Year2</p>
+            <div class="custom-input">
+              <ion-input type="number" [disabled]="true" placeholder="Year2" formControlName="year2"
+                name="year2"></ion-input>
+            </div>
+          </div>
+
+          <div *ngIf="buyback_form.value.year3" class="pb-10">
+            <p class="title">Year3</p>
+            <div class="custom-input">
+              <ion-input type="number" [disabled]="true" placeholder="Year3" formControlName="year3"
+                name="year3"></ion-input>
+            </div>
+          </div>
+
+          <div *ngIf="buyback_form.value.year4" class="pb-10">
+            <p class="title">Year4</p>
+            <div class="custom-input">
+              <ion-input type="number" [disabled]="true" placeholder="Year4" formControlName="year4"
+                name="year4"></ion-input>
+            </div>
+          </div> -->
+            <!-- <div *ngIf="buyback_form.value.perk_tax" class="pb-10">
+            <p class="title">Perk Tax</p>
+            <div class="custom-input">
+              <ion-input type="number" [disabled]="true" placeholder="Perk Tax" formControlName="perk_tax"
+                name="perk_tax"></ion-input>
+            </div>
+          </div> -->
       </div>
-
     </form>
-
   </div>
   <!-- <div class="submit-btn">
     <ion-button (click)="submit()" fill="clear">Save</ion-button>

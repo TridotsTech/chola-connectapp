@@ -20,7 +20,7 @@
 
   .holiday_list {
     .border-b {
-      border-bottom: 1px solid var(--border-col);
+      border-bottom: 1px solid var(--chola-border-color);
       border-radius: 0 !important;
 
       // border: unset;
@@ -153,14 +153,14 @@
 }
 
 .holidayListView{
-  border: 1px solid var(--border-col);
+  border: 1px solid var(--chola-border-color);
   border-radius: 10px;
 }
 
 .monthHeadList{
   background: #F6FAFF;
   padding: 10px;
-  border-bottom: 1px solid var(--border-col);
+  border-bottom: 1px solid var(--chola-border-col);
   border-radius: 10px 10px 0 0;
 }
 

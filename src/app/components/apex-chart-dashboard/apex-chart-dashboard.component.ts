@@ -150,7 +150,8 @@ export class ApexChartDashboardComponent  implements OnInit {
    if(this.currentChartValue && this.currentChartValue != 'Monthly'){
       chartOptions.xaxis.labels.formatter = function(val) {
         // Convert "2024-07-01" to "01 July"
-        if(val){
+        if(val && val.length >= 10){
+        // console.log(val)
         const dateParts = val.split('-');
         const date = new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
         const options:any = { day: '2-digit', month: 'short' };

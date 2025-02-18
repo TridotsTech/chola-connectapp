@@ -103,6 +103,7 @@ import { LeavePreviewWithdrawComponent } from './leaves-module/leave-preview-wit
 import { CommonPriorityComponent } from './common-priority/common-priority.component';
 import { TicketFeedbackComponent } from './ticket-feedback/ticket-feedback.component';
 import { JobReferalFiltersComponent } from './job-referal-filters/job-referal-filters.component';
+import { NewVoluntaryPfComponent } from './new-voluntary-pf/new-voluntary-pf.component';
 
 @NgModule({
   declarations: [
@@ -199,7 +200,8 @@ import { JobReferalFiltersComponent } from './job-referal-filters/job-referal-fi
     LeavePreviewWithdrawComponent,
     CommonPriorityComponent,
     TicketFeedbackComponent,
-    JobReferalFiltersComponent
+    JobReferalFiltersComponent,
+    NewVoluntaryPfComponent
   ],
   imports: [
     CommonModule,
@@ -308,7 +310,8 @@ import { JobReferalFiltersComponent } from './job-referal-filters/job-referal-fi
     LeavePreviewWithdrawComponent,
     CommonPriorityComponent,
     TicketFeedbackComponent,
-    JobReferalFiltersComponent
+    JobReferalFiltersComponent,
+    NewVoluntaryPfComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

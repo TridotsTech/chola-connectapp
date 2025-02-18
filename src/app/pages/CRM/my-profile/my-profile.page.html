@@ -53,7 +53,7 @@
               <ion-icon class="mouse camera" (click)="file_upload.click()" name="camera"></ion-icon>
             </div>
             <h5 class="m-0">{{db.cust_name}}</h5>
-            <h6 class="m-0">{{db.cust_designation}}</h6>
+            <h6 *ngIf="db.cust_designation != 'null'" class="m-0">{{db.cust_designation}}</h6>
             <p class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> {{db.employee_img ? db.employee_img.grade : 'CFF 1-NMS'}}</p>
           </div>
         </div>
@@ -67,7 +67,7 @@
                 <ion-label>{{item.page_name}}</ion-label>
                 <ion-icon slot="end" name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
               </ion-item> -->
-              <div class="d__flex just-s p-10-0">
+              <div class="d__flex just-s p-10-0" (click)="router_(item.route)">
                 <div class="d__flex gap-10">
                   <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
                   <ion-label class="fnt-14 fnt_w500">{{item.page_name}}</ion-label>

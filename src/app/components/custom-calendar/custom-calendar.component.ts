@@ -51,7 +51,6 @@ export class CustomCalendarComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedDate']) {
-      // console.log(this.selectedDate)
       if (this.selectedDate) {
         this.selectedDateTime = this.dateFormat1(this.selectedDate)
         let sel_date = new Date(this.selectedDateTime)
@@ -65,6 +64,8 @@ export class CustomCalendarComponent implements OnInit {
   }
 
   ngOnInit() {
+      // console.log(this.minValue)
+
     // console.log(this.selectedDate)
     if (this.selectedDate) {
       this.selectedDateTime = this.dateFormat1(this.selectedDate)
@@ -81,6 +82,7 @@ export class CustomCalendarComponent implements OnInit {
 
     if (this.minValue || this.maxValue) {
       this.generateYears();
+      this.generateDays();
     }
 
     if (this.table) {

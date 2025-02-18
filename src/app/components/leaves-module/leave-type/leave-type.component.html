@@ -1,8 +1,27 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
-<div class="box_sec">
+
+<div class="box_sec" *ngIf="!type">
   <div [class.active]="item['isActive']" (click)="add(item)" *ngFor="let item of leaveType" class="d__flex mouse boxs">
     <div>
       <h6 class="m-0 name_">{{item.name}} <span *ngIf="item.remaining_balance">({{item.remaining_balance}})</span></h6>
+    </div>
+    <ion-icon name="checkmark-circle-outline"></ion-icon>
+  </div>
+</div>
+
+<div class="box_sec" *ngIf="type == 'Effective From'">
+  <div (click)="add(item)" *ngFor="let item of datas" class="d__flex mouse boxs">
+    <div>
+      <h6 class="m-0 name_">{{item}}</h6>
+    </div>
+    <ion-icon name="checkmark-circle-outline"></ion-icon>
+  </div>
+</div>
+
+<div class="box_sec" *ngIf="type == 'Contribution Type'">
+  <div (click)="add(item.name)" *ngFor="let item of datas" class="d__flex mouse boxs">
+    <div>
+      <h6 class="m-0 name_">{{item.name}}</h6>
     </div>
     <ion-icon name="checkmark-circle-outline"></ion-icon>
   </div>

@@ -172,6 +172,10 @@
 }
 
 .mainCalSec{
-    border: 1px solid var(--border-col);
+    border: 1px solid var(--chola-border-color);
     border-radius: 10px;
+}
+
+.border-col{
+    border-bottom: 1px solid var(--chola-border-color);
 }

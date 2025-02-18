@@ -550,7 +550,8 @@
       gap: 10px;
 
       .over_flow {
-         flex: 0 0 calc(45% - 10px);
+         flex: 0 0 calc(50% - 7px);
+         // flex: 0 0 calc(45% - 10px);
          // border: 1px solid var(--border-col);
          border-radius: 7px;
          padding: 10px;
@@ -1748,7 +1749,7 @@
 }
 
 .border-r {
-   border-right: 1px solid var(--border-col);
+   border-right: 1px solid var(--chola-border-color);
 }
 
 .pr-10 {

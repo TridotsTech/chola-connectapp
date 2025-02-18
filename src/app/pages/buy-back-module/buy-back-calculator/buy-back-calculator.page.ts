@@ -13,9 +13,15 @@ export class BuyBackCalculatorPage implements OnInit {
   rates:any=[];
   assets_list:any=[]; 
   yearCalculator:any=[]; 
+  current_date:any;
   constructor(public db: DbService,private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    this.current_date = `${year}-${month}-${day}`;
     this.buyback_form = this.formBuilder.group({
       employee_code: new FormControl(localStorage['employee_id']),
       employee_name: new FormControl(localStorage['employee_name']),
@@ -53,7 +59,6 @@ export class BuyBackCalculatorPage implements OnInit {
             this.assetsType.push({name:res})
           }) 
         }
-        console.log(this.assetsType)
       }else{
         this.db.sendErrorMessage(res.message.message)
       }
@@ -160,7 +165,7 @@ export class BuyBackCalculatorPage implements OnInit {
           this.buyback_form.get('gst_amount').setValue(this.formatCurrencyString(res.message.data.gst_amount))
           this.buyback_form.get('perk_amount').setValue(this.formatCurrencyString(res.message.data.perk_amount))
           this.buyback_form.get('tax_on_perk_amount').setValue(this.formatCurrencyString(res.message.data.tax_on_perk_amount))
-          this.buyback_form.get('buyback_amount').setValue(this.formatCurrencyString(res.message.data.amount))
+          this.buyback_form.get('buyback_amount').setValue(res.message.data.amount)
           this.yearCalculator = res.message.data.table
         }else{
           this.db.sendErrorMessage(res.message.message)
@@ -223,32 +228,12 @@ export class BuyBackCalculatorPage implements OnInit {
     }
     this.db.fetch_buyback_years(year_data).subscribe(res => {
       if(res && res.message){
-        // && res.message.message == 'Success'
         this.buyback_form.get('perk_tax').setValue(res.message.perk_tax)
         this.rates = res.message.rates
-        // this.buyback_form.get('year0').setValue(res.message.buyback_data.year_0)
-        // this.buyback_form.get('year1').setValue(res.message.buyback_data.year_1)
-        // this.buyback_form.get('year2').setValue(res.message.buyback_data.year_2)
-        // this.buyback_form.get('year3').setValue(res.message.buyback_data.year_3)
-        // res.message.buyback_data.year_4 ? this.buyback_form.get('year4').setValue(res.message.buyback_data.year_4) : ''
-       
       }else{
         this.db.sendErrorMessage(res.message.message)
       }
     })
-   
-    // this.db.fetch_buyback_years(year_data).subscribe(res => {
-    //   if(res && res.message && res.message.message == 'Success'){
-    //     this.buyback_form.get('year0').setValue(res.message.buyback_data.year_0)
-    //     this.buyback_form.get('year1').setValue(res.message.buyback_data.year_1)
-    //     this.buyback_form.get('year2').setValue(res.message.buyback_data.year_2)
-    //     this.buyback_form.get('year3').setValue(res.message.buyback_data.year_3)
-    //     res.message.buyback_data.year_4 ? this.buyback_form.get('year4').setValue(res.message.buyback_data.year_4) : ''
-    //     this.buyback_form.get('perk_tax').setValue(res.message.buyback_data.perk_tax)
-    //   }else{
-    //     this.db.sendErrorMessage(res.message.message)
-    //   }
-    // })
   }
 
   onassetChange(eve,asset){
@@ -268,32 +253,5 @@ export class BuyBackCalculatorPage implements OnInit {
       }
     })
   }
-
-  // yearCalculator = [
-  //   {
-  //     year: 1,
-  //     value_of_the_car: 50000,
-  //     depreciation: 10000,
-  //     wdv: 40000
-  //   },
-  //   {
-  //     year: 2,
-  //     value_of_the_car: 40000,
-  //     depreciation: 8000,
-  //     wdv: 32000
-  //   },
-  //   {
-  //     year: 3,
-  //     value_of_the_car: 32000,
-  //     depreciation: 6400,
-  //     wdv: 25600
-  //   },
-  //   {
-  //     year: 4,
-  //     value_of_the_car: 25600,
-  //     depreciation: 5120,
-  //     wdv: 20480
-  //   },
-  // ]
 
 }

@@ -94,7 +94,7 @@
               </div>
               <p class="fnt-14 m-0 gray_clr">{{item.creation | date: 'h:mm a'}}</p>
             </div>
-            <p class="fnt-13 m-0" [class.textEnd]="item.owner == db.cust_email" [innerHtml]="item.content"></p>
+            <p class="fnt-13 m-0 msg_text" [class.textEnd]="item.owner == db.cust_email" [innerHtml]="item.content"></p>
           </div>
 
         </div>

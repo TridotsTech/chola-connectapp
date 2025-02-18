@@ -10,10 +10,14 @@ import { DbService } from 'src/app/services/db.service';
 export class LeaveTypeComponent  implements OnInit {
   leaveType:any=[];
   @Input() title:any;
+  @Input() type:any;
+  @Input() datas:any;
   constructor(public modalCtrl: ModalController, public db: DbService) { }
 
   ngOnInit() {
-    this.get_leave_type();
+    if(!this.type){
+      this.get_leave_type();
+    }
   }
 
   get_leave_type() {
@@ -24,10 +28,9 @@ export class LeaveTypeComponent  implements OnInit {
     const formattedDate = `${year}-${month}-${day}`;
     let data = {
      "employee_id":localStorage['employee_id'],
-    "posting_date":formattedDate
+     "posting_date":formattedDate
     };
     this.db.leave_remaining_balance(data).subscribe((res: any) => {
-      console.log(res)
       this.leaveType = res.message
     },
       (error) => {
@@ -36,7 +39,10 @@ export class LeaveTypeComponent  implements OnInit {
   }
 
   add(item){
-    this.modalCtrl.dismiss(item);
+    if(!this.type){
+      this.modalCtrl.dismiss(item);
+    }else
+      this.modalCtrl.dismiss(item,this.type);
   }
 
 }

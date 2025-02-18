@@ -11,11 +11,9 @@ import {
 } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { LeaveReasonDetailComponent } from 'src/app/components/leave-reason-detail/leave-reason-detail.component';
 import { WebsiteFormsComponent } from 'src/app/components/forms/website-forms/website-forms.component';
 import { DetailComponentComponent } from 'src/app/components/customer-details/detail-component/detail-component.component';
 import { LeaveApplicationPage } from '../leave-application/leave-application.page';
-// import { Console } from 'console';
 
 @Component({
   selector: 'app-leave-application-detail',
@@ -68,9 +66,6 @@ export class LeaveApplicationDetailPage implements OnInit {
   ngOnInit() {
 
     this.selectedTabSec = 'Pending'
-    // if(this.db.hr_manager_role){
-    //   this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
-    // }
     this.db.triggerSidemenu.subscribe(res => {
       if (res && res == 'loadPermission') {
         let route = this.db.permission_details.find((r) => { return r.page == 'Leave Application' });
@@ -89,15 +84,7 @@ export class LeaveApplicationDetailPage implements OnInit {
       this.search_data = {}
     }
 
-    if (this.db.hr_manager_role) {
-      this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
-      // this.selectedTabSec = 'Awaiting Approval'
-      // let val = { name: "My Leaves", route: "my" }
-      // this.options.push(val)
-      this.employee = false
-    } else {
-      // this.employee = true
-    }
+    
 
     this.route.params.subscribe((res: any) => {
       const currentDate = new Date();
@@ -105,10 +92,7 @@ export class LeaveApplicationDetailPage implements OnInit {
 
       this.db.leave_skeleton = true
       this.employee_id = res['id'];
-      // this.getLeaveRequestList();
-      // if(this.selectedTabSec != 'Pending')
         this.leave_details(res['id'])
-
       this.get_employee_details(res['id'])
     })
 
@@ -117,8 +101,6 @@ export class LeaveApplicationDetailPage implements OnInit {
     if (this.db.employee_role && (this.db.dashboard_values && this.db.dashboard_values.length != 0)) {
       this.leaveApplicationDetails = this.db.dashboard_values.find(res => { return res.page == "Leave Application" })
     }
-
-
 
     this.db.hasClass = false;
 
@@ -129,11 +111,6 @@ export class LeaveApplicationDetailPage implements OnInit {
         this.leave_details(this.employee_id)
       }
     })
-
-    // if(this.selectedTabSec == 'Pending'){
-    //   this.getLeaveRequestList('Pending');
-    // }
-
 
   }
 
@@ -161,13 +138,11 @@ export class LeaveApplicationDetailPage implements OnInit {
     if(this.selectedTabSec == 'Pending'){
       this.getLeaveRequestList('Pending');
     }
+    if (this.db.hr_manager_role) {
+      this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
+      this.employee = false
+    }
   }
-
-  // ionViewWillLeave(){
-  //   for(let i=0;i<this.tabs_array.length;i++){
-  //     this.tabs_array[i]['isActive'] = false
-  //   }
-  // }
 
   get_search_fields() {
     this.db.search_fields({ doctype: 'Leave Application' }).subscribe((res) => {
@@ -182,23 +157,18 @@ export class LeaveApplicationDetailPage implements OnInit {
   no_products = false;
   loading = false;
   load_more(event) {
-    // this.db.loadMoreButton = true;
     if (!this.no_products && this.db.ismobile && !this.loading) {
       this.loading = true;
-      // if (event && typeof (event) == 'string' && event == 'loadmore') {
       if ((this.page_no * 20) == this.leave_list.length) {
         this.page_no += 1;
         this.leave_details(this.employee_id);
       }
-      // }
-
     }
 
   }
 
   getLeaveRequestList(type){
     this.db.get_leave_requests_list(type).subscribe(res => {
-      // console.log(res)
       if(res && res.message && res.message.length != 0){
         this.leave_list = res.message;
       }else{
@@ -221,7 +191,6 @@ export class LeaveApplicationDetailPage implements OnInit {
     if (this.sort_by_order) {
       data['order_by'] = this.sort_by_order
     }
-    // this.db.hr_manager_role && !this.employee && 
     if (this.db.ismobile) {
       const now = new Date(data['date'])
       const year = now.getFullYear();
@@ -234,14 +203,11 @@ export class LeaveApplicationDetailPage implements OnInit {
       delete data['search_data']['status']
     }
 
-
     this.db.leave_details(data).subscribe(res => {
       this.detail_loader = false;
       this.ngZone.run(() => {
         this.db.leave_skeleton = false;
       })
-      // this.cdr.detectChanges();
-      console.log(this.db.leave_skeleton,'this.db.leave_skeleton')
       if (res && res.message) {
         if (res.message.dashboard && res.message.dashboard.length > 0) {
           if (this.db.employee_role || this.employee)
@@ -293,38 +259,24 @@ export class LeaveApplicationDetailPage implements OnInit {
 
 
   async openQuickForm(item) {
-    // if (this.db.hr_manager_role) {
-    // console.log(item,"item")
-  // this.router.navigateByUrl(`/leave-application/${item.name}`)
-    // } 
-
-    // else {
-      const modal = await this.modalCtrl.create({
-        component: LeaveApplicationPage,
-        cssClass: '',
-        componentProps: {
-          inputEmployeeDetails: item,
-          selectedTabSec: this.selectedTabSec
-        },
-        enterAnimation: this.db.enterAnimation,
-        leaveAnimation: this.db.leaveAnimation,
-      });
-      await modal.present();
-      const { data } = await modal.onWillDismiss();
-      // console.log(data)
-      // console.log(this.selectedTabSec)
-      if(this.selectedTabSec == 'Pending'){
-        this.getLeaveRequestList('Pending');
-      }
-      if(this.selectedTabSec == 'Awaiting Approval'){
-        this.getLeaveRequestList('Awaiting Approval');
-      }
-    //   if (data && data == 'Success') {
-
-    //   }
-
-    // }
-
+    const modal = await this.modalCtrl.create({
+      component: LeaveApplicationPage,
+      cssClass: '',
+      componentProps: {
+        inputEmployeeDetails: item,
+        selectedTabSec: this.selectedTabSec
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(this.selectedTabSec == 'Pending'){
+      this.getLeaveRequestList('Pending');
+    }
+    if(this.selectedTabSec == 'Awaiting Approval'){
+      this.getLeaveRequestList('Awaiting Approval');
+    }
   }
 
   fab_() {
@@ -339,22 +291,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   }
 
   navigate_to_next(item) {
-
-    // let leaveApplicationDetails: any;
-
-    // if (item.name == "Leave Application") {
-    //   leaveApplicationDetails = this.db.dashboard_values.find(res => { return res.page == "Leave Application" })
-    // } else if (item.name == "Leave Request") {
-    //   leaveApplicationDetails = this.db.dashboard_values.find(res => { return res.page == "Compensatory Leave Request" })
-    // }
-    // this.db.hasClass = !this.db.hasClass;
-    // leaveApplicationDetails = JSON.stringify(leaveApplicationDetails);
-    // leaveApplicationDetails = JSON.parse(leaveApplicationDetails);
-    // this.create_new(leaveApplicationDetails, item)
-
     this.db.hasClass = !this.db.hasClass;
-    // console.log(item)
-
     if(item.name == 'Leave Withdrawal'){
       this.router.navigate(['/leave-withdrawal/New'])
     }else
@@ -362,7 +299,6 @@ export class LeaveApplicationDetailPage implements OnInit {
   }
 
   menu_name(eve) {
-    // console.log(eve, "eve")
     this.selectedTabSec = eve.name
     this.page_no = 1;
     if (eve.route == "my") {
@@ -387,41 +323,7 @@ export class LeaveApplicationDetailPage implements OnInit {
     }, 700)
   }
 
-  // getMonth(eve) {
-  //   // console.log(eve);
-  //   this.currentYear = eve.label;
-  // }
-
-  // checkImages(data, type) {
-  //   switch (data) {
-  //     case "Total Leaves":
-  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-  //       break;
-  //     case "All Applications":
-  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-  //       break;
-  //     case "Used Leaves":
-  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-  //       break;
-  //     case "Open Applications":
-  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-  //       break;
-  //     case "Available Leaves":
-  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-  //       break;
-  //     case "Approved Applications":
-  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-  //       break;
-  //     case "Expired Leaves":
-  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-  //       break;
-  //     case "Rejected Applications":
-  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-  //       break;
-  //     default:
-  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-  //   }
-  // }
+  
 
   getCircleColor(data){
     if(data == 'Total Leaves'){
@@ -475,7 +377,6 @@ export class LeaveApplicationDetailPage implements OnInit {
     "total_leave_days",
     "actions",
     "modified",
-    // "Id",
   ]
 
   leave_request_table = [
@@ -485,7 +386,6 @@ export class LeaveApplicationDetailPage implements OnInit {
     "reason",
     "leave_type",
     "modified",
-    // " ",
   ]
 
   createNew() {
@@ -575,7 +475,6 @@ export class LeaveApplicationDetailPage implements OnInit {
             } else {
               let alert = (resp && resp.message && resp.message.message) ? resp.message.message : 'Something went wrong try again later'
               this.db.sendErrorMessage(alert);
-              // this.db.alert_animate.next(alert);
             }
             data.docstatus = 0
             data.status = 'Open';
@@ -595,17 +494,9 @@ export class LeaveApplicationDetailPage implements OnInit {
 
   load_all(item) {
     if (item && item.item) {
-      // console.log(item, "item")
-      // this.do_to_details.emit(item.item)
-      // this.send_data(item.item)
-      // this.enable_mat(item.item, item.i)
-      // this.active_item(item.item, item.i)
-      // this.check_active(this.list_data.data, item.i, item.item)
-
     }
   }
 
-  // Filter
   search = ''
   profile_menu1 = [
     { name: 'All Leaves', value: 'All Leaves', icon: '/assets/img/unmarked.svg', active_icon: '/assets/img/unmarked-active.svg' },
@@ -631,15 +522,12 @@ export class LeaveApplicationDetailPage implements OnInit {
         this.list_data = {}
         this.page_title = "Leave Application"
         await this.leave_details(this.employee_id)
-        // this.db.current_leave_segment = 'All Leaves'
-        // this.db.tab_buttons(this.profile_menu1, 'All Leaves', 'value');
       }
     }
 
   }
 
   get_tempate_and_datas(doctype) {
-    // this.db.leave_skeleton = true
     if (this.search_data && typeof this.search_data != 'object') {
       let parseJson = JSON.parse(this.search_data);
       let keys = Object.keys(parseJson)
@@ -699,7 +587,6 @@ export class LeaveApplicationDetailPage implements OnInit {
   }
 
 
-  // Pagination
   pagination_count = [
     { 'count': 20, 'selected': true },
     { 'count': 50, 'selected': false },
@@ -707,7 +594,6 @@ export class LeaveApplicationDetailPage implements OnInit {
   ]
   plus_count = 20;
   send_pagination(data, i) {
-    // console.log('pagination', data)
 
     this.pagination_count.map((res, index) => {
       if (i == index) {
@@ -734,30 +620,24 @@ export class LeaveApplicationDetailPage implements OnInit {
       await this.leave_details(this.employee_id)
     }
 
-    // this.get_tempate_and_datas(this.doc_type);
   }
 
   async load_popup(item) {
-    // console.log(this.db.selected_list, "this.db.selected_list")
     const modal = await this.modalCtrl.create({
       component: DetailComponentComponent,
       cssClass: 'filter-popup-3',
       componentProps: {
         id: item.name,
         doctype: this.leave_type == "Leaves" ? "Leave Application" : "Compensatory Leave Request",
-        // page_route: this.db.selected_list && this.db.selected_list.detail_route ? this.db.selected_list.detail_route : '',
-        // page_title: this.db.selected_list && this.db.selected_list.page_name ? this.db.selected_list.page_name : ''
         page_route: this.leave_type == "Leaves" ? 'leave-application' : 'compensatory-leave-request',
         page_title: this.leave_type == "Leaves" ? 'Leave Application' : 'Leave Request'
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    // console.log(data);
   }
 
   filterList(data) {
-    // this.loadBodySkeleon();
     this.db.listSkeleton = true;
 
     if (!this.db.ismobile)
@@ -765,10 +645,7 @@ export class LeaveApplicationDetailPage implements OnInit {
     if (data && data.status == 'success') {
 
       let search: any = Object.fromEntries(
-        // Object.entries(data.data).map(([key, value]) => [key, [key == 'status' ? '=' : 'Like', `%${value}%`]])
         Object.entries(data.data).map(([key, value]) => [key, ['Like', `%${value}%`]])
-
-        // Object.entries(data.data).map(([key, value]) => [key, value])
       );
 
       if (this.doc_type && this.doc_type == 'Employee') {
@@ -780,23 +657,16 @@ export class LeaveApplicationDetailPage implements OnInit {
       this.search_data = search ? search : this.search_data;
       this.leave_list = [];
       this.no_products = false;
-      // this.no_dash = false;
       this.page_no = 1;
-      // this.filter = true;
       let doctypes = ['Project', 'Employee', 'Salary Slip', 'Leave Application']
       let checkDoc = doctypes.find((res, i) => { return this.doc_type == res })
       checkDoc ? null : this.db.leave_skeleton = true;
-      // this.checkStatus(data)
-      // this.get_tempate_and_datas(this.doc_type);
       if(this.leave_type == "Leaves"){
         this.leave_details(this.employee_id)
       }else{
         this.get_tempate_and_datas("Compensatory Leave Request")
       }
     }
-
-    // let array = this.search_data ? JSON.parse(this.search_data) : [];
-    // this.selected_filter_numbers = Object.keys(array).length
   }
 
   
