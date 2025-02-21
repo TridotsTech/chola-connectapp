@@ -2,7 +2,7 @@
 
   <div [ngStyle]="{'min-height':(this.detail_doc && this.detail_doc['name'] && !db.scroll_event.detail_head) ? '50px' : '50px'}"
     class="secondary-head">
-    <div class="d__flex gap-10 just-s">
+    <div class="d__flex gap-10 just-s" *ngIf="!loader">
       <div class="d__flex back_btn">
         <ion-icon class="back"  (click)="doctype != 'HD Ticket'?location.back():back_btn()" (click)="db.hasClass = false"
           src="/assets/icon/arrow-left.svg"></ion-icon>

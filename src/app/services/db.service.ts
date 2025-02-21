@@ -2210,6 +2210,16 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 
+  get_applicable_employees(data: any): Observable<any> {
+    let endpoint = 'go1_elc.go1_elc.doctype.probation_evaluation.probation_evaluation.get_applicable_employees';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  probation_completed(data: any): Observable<any> {
+    let endpoint = 'go1_elc.go1_elc.doctype.probation_evaluation.probation_evaluation.probation_completed';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
   get_employee_attendance_list(data): Observable<any> {
     let endpoint = this.go1_apps_apis_hrmls + 'get_employee_attendance_list';
     return this.postmethod(this.baseMethod + endpoint, data);

@@ -40,6 +40,7 @@ export class CreateLetterRequestComponent  implements OnInit {
     if(item.name == 'Visa Letter'){
       item.from_date = ''
       item.to_date = ''
+      item.country = ''
     }
     const modal = await this.modalCtrl.create({
       component: LeavePreviewWithdrawFormComponent,
@@ -55,7 +56,7 @@ export class CreateLetterRequestComponent  implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data && data) {
-      console.log(data)
+      // console.log(data)
       item = data
       this.insert_letter_request(item)
     }
@@ -79,7 +80,7 @@ export class CreateLetterRequestComponent  implements OnInit {
       data.from_date = item.from_date
       data.to_date = item.to_date
       data.employee_id = localStorage['employee_id']
-      data.country = 'India'
+      data.country = item.country ? item.country : ''
       data.request_date = `${year}-${month}-${day}`;
       this.save_only ? data.workflow_state = 'Awaiting Approval' : data.workflow_state = 'Draft'
 

@@ -12,12 +12,15 @@ export class LeaveTypeComponent  implements OnInit {
   @Input() title:any;
   @Input() type:any;
   @Input() datas:any;
+  list_values:any=[];
   constructor(public modalCtrl: ModalController, public db: DbService) { }
 
   ngOnInit() {
     if(!this.type){
       this.get_leave_type();
     }
+    else if(this.type == 'document')
+      this.get_data()
   }
 
   get_leave_type() {
@@ -34,6 +37,23 @@ export class LeaveTypeComponent  implements OnInit {
       this.leaveType = res.message
     },
       (error) => {
+      }
+    );
+  }
+
+  get_data(){
+    let data = {
+      doctype: this.datas,
+      page_no: 1,
+      page_length: 50,
+      search_text: '',
+    };
+    this.db.label_values(data).subscribe((res: any) => {
+      console.log(res);
+      this.list_values = res.message
+    },
+      (error) => {
+        
       }
     );
   }

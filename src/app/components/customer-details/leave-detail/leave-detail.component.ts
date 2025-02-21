@@ -23,7 +23,6 @@ export class LeaveDetailComponent  implements OnInit {
   constructor(public loadingCtrl:LoadingController,public alertController:AlertController,public db:DbService, private modalCtrl: ModalController,public router: Router) { }
 
   ngOnInit() {
-    // console.log(this.selectedTab)
    }
 
   async leave_confirms(event:MouseEvent,data,item,type){
@@ -43,14 +42,7 @@ export class LeaveDetailComponent  implements OnInit {
                 handler: () => {
                   item.status = 'Approved'
                   this.approve_leave(data,item,type)
-                  // this.show_btn = false
-                  // this.show_reg_btn()
-                  // event.stopPropagation()
-                  // let val = {}
-                  // val['data'] = data
-                  // // val['item'] = item
-                  // val['type'] = type
-                  // this.leave_confirm.emit(val)
+                  
                 },
               },
             ],
@@ -79,15 +71,7 @@ export class LeaveDetailComponent  implements OnInit {
           item.rejected_reason = res.data.rejected_reason
           console.log(item.rejected_reason)
           this.approve_leave(data,item,type)
-          // this.show_btn = false
-          // this.show_reg_btn()
-          // event.stopPropagation()
-          // let val = {}
-          // val['data'] = data
-          // // val['reas']
-          // // val['item'] = item
-          // val['type'] = type
-          // this.leave_confirm.emit(val)
+         
         }
         else
           item.status = "Pending"
@@ -179,11 +163,7 @@ export class LeaveDetailComponent  implements OnInit {
   approve_leave(data,item, type) {
     let datas:any=[];
     let doc_status = 0;
-  //   data.leave_preview.map(res =>{
-  //     if(res.isChecked == true){
-        datas.push({date:item.date, status:item.status, rejected_reason:item.rejected_reason})
-  //     }
-  // })
+    datas.push({date:item.date, status:item.status, rejected_reason:item.rejected_reason})
     let check = this.data.leave_preview.filter(res => res.status == 'Approved' || res.status == 'Rejected' || res.count == 'Weekly Off' || res.count == 'Holiday' || res.count == 'Applied' || res.count == 'Attendance Marked')
     if(check && check.length == this.data.leave_preview.length){
       doc_status = 1
@@ -224,17 +204,6 @@ export class LeaveDetailComponent  implements OnInit {
       if(this.data.leave_preview && this.data.leave_preview.length != 0){
         datas['leave_preview'] = this.data.leave_preview;
       }
-
-      // datas = {...datas, ...this.leave_form.value}
-      // // datas['half_day'] = datas['half_day'] ? 1 : 0;
-
-      // if(this.leave_detail && this.leave_detail.name){
-      //   datas['name'] = this.leave_detail.name;
-      // }
-
-      // if(this.editFormValues && this.editFormValues.name){
-      //   datas['name'] = this.editFormValues.name;
-      // }
 
         datas['docstatus'] = 1;
         datas['name'] = this.data.name
@@ -294,13 +263,6 @@ export class LeaveDetailComponent  implements OnInit {
     });
     await modal.present();
     const val = await modal.onWillDismiss();
-    console.log(val)
-    // if (val && val.data && val.data == 'Success') {
-      // console.log(val)
-    // }
-
-    // this.modalCtrl.dismiss();
-    // this.router.navigate(['/leave-application'], { queryParams: { data: JSON.stringify(data) } });
 
   }
 
@@ -318,11 +280,6 @@ export class LeaveDetailComponent  implements OnInit {
     if(check && check.length == this.data.leave_preview.length){
       this.show_btn = true
     }
-    // this.data.leave_preview.map(res =>{
-    //     if(res.status == 'Approved' || ){
-    //       return this.show_btn = true
-    //     }
-    // })
   }
 
   async editLeaveLeavePreview(item,index){
@@ -341,30 +298,12 @@ export class LeaveDetailComponent  implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data && data) {
-      // console.log(data)
       item = data
     }
   }
   }
   async withdrawLeave(){
-    // const modal = await this.modalCtrl.create({
-    //   component: LeaveWithdrawalPage,
-    //   cssClass: '',
-    //   componentProps: {
-    //     from_date: this.data.from_date,
-    //     to_date: this.data.to_date,
-    //   },
-    //   enterAnimation: this.db.enterAnimation,
-    //   leaveAnimation: this.db.leaveAnimation,
-    // });
-    // await modal.present();
-    // const val = await modal.onWillDismiss();
-    // if (val && val.data && val.data == 'Success') {
-    //   // console.log(val)
-    // }
-
     this.modalCtrl.dismiss();
-    // this.router.navigateByUrl('/leave-withdrawal');
     this.router.navigate(['/leave-withdrawal'], { queryParams: { data: JSON.stringify(this.data) } });
   }
 }

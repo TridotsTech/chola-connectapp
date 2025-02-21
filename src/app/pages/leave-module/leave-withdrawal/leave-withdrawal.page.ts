@@ -40,7 +40,7 @@ export class LeaveWithdrawalPage implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       let data = JSON.parse(params['data'] || '[]');
-      console.log(data,'data')
+      // console.log(data,'data')
       this.filterStartDate = data.from_date ? data.from_date : data.filter_start_date;
       this.filterEndDate = data.to_date ? data.to_date : data.filter_end_date;
     });

@@ -92,16 +92,16 @@
               <div class="flex-35">
                 <h4 *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="values m-0">Registration No</h4>
                 <h4 *ngIf="buyback_form.value.asset_type == 'Vehicle'" class="values m-0  mb-5">
-                  {{buyback_form.value.vehicle_registration_no}}</h4>
+                  {{buyback_form.value.vehicle_registration_no ? buyback_form.value.vehicle_registration_no: '-'}}</h4>
                 <h4 *ngIf="buyback_form.value.asset_type == 'Mobile'" class="values m-0">Baz Ticket No</h4>
                 <h4 *ngIf="buyback_form.value.asset_type == 'Mobile'" class="values m-0  mb-5">
-                  {{buyback_form.value.baz_ticket_no}}</h4>
+                  {{buyback_form.value.baz_ticket_no ? buyback_form.value.baz_ticket_no: '-'}}</h4>
               </div>
               </div>
-            <h4 class="values m-0">Ex Showroom Cost</h4>
-            <h4 class="values m-0  mb-5">{{buyback_form.value.ex_showroom_cost}}</h4>
-            <h4 class="values m-0">Road Tax and Registration Charges</h4>
-            <h4 class="values m-0  mb-5">{{buyback_form.value.road_tax_and_registration_charges}}</h4>
+            <h4 *ngIf="buyback_form.value.ex_showroom_cost" class="values m-0">Ex Showroom Cost</h4>
+            <h4 *ngIf="buyback_form.value.ex_showroom_cost" class="values m-0  mb-5">{{buyback_form.value.ex_showroom_cost}}</h4>
+            <h4 *ngIf="buyback_form.value.road_tax_and_registration_charges" class="values m-0">Road Tax and Registration Charges</h4>
+            <h4 *ngIf="buyback_form.value.road_tax_and_registration_charges" class="values m-0  mb-5">{{buyback_form.value.road_tax_and_registration_charges}}</h4>
             <!-- <div  class="d__flex just-s mb-5">
               <div class="flex-65"> -->
             <h4 *ngIf="buyback_form.value.total_capitalized_value" class="values m-0">Total Capitalized Value</h4>

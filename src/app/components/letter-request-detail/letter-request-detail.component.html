@@ -7,7 +7,7 @@
       <h5 class="mb-10 m-0 fnt-15 fnt_w600">Letter Request Detail</h5>
       <p class="m-0 fnt-14" *ngIf="letterrequestDetail">{{letterrequestDetail.name}}</p>
     </div>
-    <ion-icon *ngIf="letterrequestDetail && letterrequestDetail.workflow_state == 'Approved'" class="fnt-22" (click)="downloadAndOpenPDF(letterrequestDetail)" src="assets/Employee-Home/download.svg"></ion-icon>
+    <ion-icon *ngIf="letterrequestDetail && letterrequestDetail.workflow_state == 'Approved'" class="fnt-18" (click)="downloadAndOpenPDF(letterrequestDetail)" src="assets/Employee-Home/download.svg"></ion-icon>
   </div>
 
   <div class="d__flex detailView p-10" *ngIf="letterrequestDetail" [class.height_reduce]="db.check_role('L1 Manager',letterrequestDetail.employee_id) && letterrequestDetail.workflow_state == 'Pending'">

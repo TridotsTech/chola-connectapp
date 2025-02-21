@@ -308,9 +308,24 @@ const routes: Routes = [
     loadChildren: () => import('./pages/voluntary-pf/voluntary-pf.module').then( m => m.VoluntaryPfPageModule)
   },
   {
+    path: 'documents',
+    loadChildren: () => import('./pages/documents/documents.module').then( m => m.DocumentsPageModule)
+  },
+  {
+    path: 'buyback-detail',
+    loadChildren: () => import('./pages/buyback-detail/buyback-detail.module').then( m => m.BuybackDetailPageModule)
+  },
+  {
+    path: 'buyback-detail/:id',
+    loadChildren: () => import('./pages/buyback-detail/buyback-detail.module').then( m => m.BuybackDetailPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+
+ 
+
 ];
 
 @NgModule({

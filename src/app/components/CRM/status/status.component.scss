@@ -451,6 +451,26 @@
     }
 }
 
+.under-review-ff {
+    p {
+        color: #0077FF;
+    }
+
+    div {
+        background: #0077FF;
+    }
+}
+
+.ff-completed {
+    p {
+        color: #EB9100;
+    }
+
+    div {
+        background: #EB9100;
+    }
+}
+
 .just-fe{
     justify-content: flex-end !important;
 }

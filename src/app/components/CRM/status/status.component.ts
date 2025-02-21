@@ -254,6 +254,12 @@ export class StatusComponent  implements OnInit {
           case 'qa inprogress': {
             return 'qa-inprogress';
           }
+          case 'under review f&f': {
+            return 'under-review-ff';
+          }
+          case 'f&f completed': {
+            return 'ff-completed';
+          }
           default: {
             return 'default';
           }

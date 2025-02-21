@@ -43,6 +43,7 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
   listData:any = [];
   showCalendar:any;
   page_no = 1;
+  page_no_status = 1;
   page_size = 20;
   no_products = false;
   skeleton = true;
@@ -51,6 +52,7 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
 
   employee_search_txt: any;
   viewTypeName: any;
+  no_record_found = false;
   constructor(public db:DbService, public modalCtrl: ModalController) { }
 
   ngOnInit() {
@@ -72,12 +74,17 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
       }
     })
 
-    if(this.db.routeAttendancePage){
+    if(this.db.routeAttendancePage || localStorage['routeAttendancePage']){
+      this.db.routeAttendancePage = this.db.routeAttendancePage ? this.db.routeAttendancePage : localStorage['routeAttendancePage'];
       this.viewTypeName = this.db.routeAttendancePage
       console.log(this.db.routeAttendancePage,'this.db.routeAttendancePage');
       this.db.tab_buttons(this.options, this.db.routeAttendancePage, 'route');
       this.chartOptions = undefined;
-      this.viewType = 'List'
+      if(this.db.routeAttendancePage == 'Overview'){
+        this.viewType = 'Overview'
+      }else{
+        this.viewType = 'List'
+      }
       this.getLoad();
       // if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
       //   this.viewType = 'List'
@@ -101,7 +108,8 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
         { name: "Overview", route: "Overview" }, 
         // { name: "List", route: "List" }, 
         // { name: "Late Arrivals", route: "List" }, 
-        { name: "Absent", route: "List" }, 
+        { name: "On Leave", route: "List" }, 
+        // { name: "Absent", route: "List" }, 
         { name: "Present", route: "List" }
       ]
     }else{
@@ -253,7 +261,9 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
     if(this.viewType == 'Overview'){
       this.skeleton = true;
       this.getLoad();
-    }else if(eve.name == 'Late Arrivals' || eve.name == 'Present' || eve.name == 'Absent'){
+    }else if(eve.name == 'Late Arrivals' || eve.name == 'Present' || eve.name == 'Absent' || eve.name == 'On Leave'){
+      this.page_no_status = 1;
+      this.no_record_found = false;
       this.getEmployeeAttendanceList(eve.name)
     }else{
       this.getValue();
@@ -355,9 +365,14 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
 
   async scrollEvent(event: Event): Promise<void> {
     const scrollableDiv = event.target as HTMLElement;
-    if (scrollableDiv.scrollTop + scrollableDiv.clientHeight >= scrollableDiv.scrollHeight - 20 && !this.no_products) {
-      this.page_no = this.page_no + 1
-      this.getValue();
+    if (scrollableDiv.scrollTop + scrollableDiv.clientHeight >= scrollableDiv.scrollHeight - 20 && !this.no_products && this.viewType == 'List') {
+      if(this.viewTypeName == 'List'){
+        this.page_no = this.page_no + 1
+        this.getValue();
+      }else{
+        this.page_no_status = this.page_no_status + 1;
+        this.getEmployeeAttendanceList(this.viewTypeName)
+      }
     }
   }
 
@@ -466,7 +481,9 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
     // this.getTimesheetDetail(this.db.current_dateAttendance);
     this.scrollTocenter();
     
-    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent' || this.viewTypeName == 'On Leave'){
+      this.page_no_status = 1;
+      this.no_record_found = false;
       this.getEmployeeAttendanceList(this.viewTypeName)
     }else{
       this.getValue();
@@ -498,7 +515,9 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
   // this.db.timeSheetDetail = undefined;
   this.db.current_dateAttendance = item.date_;
   
-  if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+  if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent' || this.viewTypeName == 'On Leave'){
+    this.page_no_status = 1;
+    this.no_record_found = false;
     this.getEmployeeAttendanceList(this.viewTypeName)
   }else{
     this.getValue();
@@ -513,7 +532,9 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
   search_txt(event){
     // console.log(event)
     this.employee_search_txt = event.detail.value;
-    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent' || this.viewTypeName == 'On Leave'){
+      this.page_no_status = 1;
+      this.no_record_found = false;
       this.getEmployeeAttendanceList(this.viewTypeName)
     }else{
       this.getValue();
@@ -523,7 +544,9 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
   clear_txt(){
     // console.log('Clear Text')
     this.employee_search_txt = '';
-    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent'){
+    if(this.viewTypeName == 'Late Arrivals' || this.viewTypeName == 'Present' || this.viewTypeName == 'Absent' || this.viewTypeName == 'On Leave'){
+      this.page_no_status = 1;
+      this.no_record_found = false;
       this.getEmployeeAttendanceList(this.viewTypeName)
     }else{
       this.getValue();
@@ -534,15 +557,22 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
     let data = {
       date: this.db.current_dateAttendance,
       filter: status,
-      search_data: this.employee_search_txt ? this.employee_search_txt : ''
+      search_data: this.employee_search_txt ? this.employee_search_txt : '',
+      page_no: this.page_no_status,
+      page_length: 10
     }
     this.db.get_employee_attendance_list(data).subscribe(res => {
       this.skeleton = false;
       console.log(res)
       if(res && res.message && res.message.data && res.message.data.length != 0 && res.message.status == 'Success'){
-        this.listData = res.message.data
+        if(this.page_no_status == 1){
+          this.listData = res.message.data
+        }else{
+          this.listData = [...this.listData,...res.message.data]
+        }
       }else{
-        this.listData = [];
+        this.no_record_found = true;
+        this.page_no_status == 1 ? this.listData = [] : null;
       }
     })
   }

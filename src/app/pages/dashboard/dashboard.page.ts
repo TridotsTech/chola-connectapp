@@ -136,6 +136,10 @@ export class DashboardPage implements OnInit {
   }
 
   ionViewWillEnter() {
+
+    this.db.routeAttendancePage = undefined;
+    delete localStorage['routeAttendancePage']
+
     this.scrollToTop();
     this.formattedDate = this.getFormattedDate();
     const parts = this.db.current_event_date.split('-');
@@ -906,12 +910,20 @@ export class DashboardPage implements OnInit {
   }
 
   routeToSpecificPage(data){
-    this.db.routeAttendancePage = data.label
-    if(data.label == "Claimed Expences"){
-      this.router.navigateByUrl('/list/expense-claim')
-    }else if(data.label == "Leave Applications"){
-      this.router.navigateByUrl('/leave-application-detail')
+    //  && data.label != 'On Leave'
+    if(data.label != 'Total Workforce' && data.label != 'Absent'){
+      this.db.routeAttendancePage = data.label;
+      localStorage['routeAttendancePage'] = data.label;
+      if(data.label == "Claimed Expences"){
+        this.router.navigateByUrl('/list/expense-claim')
+      }else if(data.label == "Leave Applications"){
+        this.router.navigateByUrl('/leave-application-detail')
+      }else{
+        this.router.navigateByUrl('/list/attendance')
+      }
     }else{
+      this.db.routeAttendancePage = 'Overview';
+      localStorage['routeAttendancePage'] = 'Overview';
       this.router.navigateByUrl('/list/attendance')
     }
   }

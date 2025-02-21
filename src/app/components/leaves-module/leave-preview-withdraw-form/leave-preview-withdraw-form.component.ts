@@ -17,7 +17,9 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   constructor(public db: DbService, public modalCntrl: ModalController) {}
 
   ngOnInit() {
-    console.log(this.editFormValues, 'this.editFormValues');
+    // console.log(this.editFormValues, 'this.editFormValues');
+    // this.db.select_drop_down.next(selected_item);
+
     if(this.type == 'leave request'){
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -27,7 +29,9 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       this.posting_date = formattedDate
     }
     this.db.select_drop_down.subscribe((res: any) => {
-      this.editFormValues.leave_type = res.name;
+      console.log(res)
+      if(res.fieldname == 'country')
+        this.editFormValues.country = res.name;
     });
   }
 
@@ -71,6 +75,21 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       if(val && val.data){
         this.editFormValues.leave_type = val.data.name
       }
+  }
+
+  open_country_dropdown() {
+    let val = {
+      type: 'Country',
+      fieldname: 'country',
+      fieldname_value: '',
+      selected_value: this.editFormValues.country,
+      send_all_value: true
+    }
+
+    let selected_value = {
+      doctype: "Country"
+    }
+    this.db.open_drop_down_options(val.type, val.fieldname, val.fieldname_value, selected_value)
   }
 
   datePickerChange(type, event) {
@@ -125,12 +144,10 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   }
 
   leave_req_save(){
-    // if (this.editFormValues.status && this.editFormValues.status == 'Rejected')
-      if (this.editFormValues.rejected_reason)
-        this.modalCntrl.dismiss(this.editFormValues);
-      else this.db.sendErrorMessage('Please enter the Rejected Reason');
-    // else
-      // this.editFormValues.status == 'Approved' || this.editFormValues.status == 'Rejected' ? this.modalCntrl.dismiss(this.editFormValues) : this.db.sendErrorMessage('Please enter the any status');
+  
+         if (this.editFormValues.rejected_reason)
+          this.modalCntrl.dismiss(this.editFormValues);
+        else this.db.sendErrorMessage('Please enter the Rejected Reason'); 
   }
 
   leave_withdraw_reason(){
@@ -178,8 +195,12 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   }
 
   letter_req_save(){
-    if (this.editFormValues.remarks)
-      this.modalCntrl.dismiss(this.editFormValues);
-    else this.db.sendErrorMessage('Please enter the Purpose of the Letter');
+    let flag = 0;
+    this.editFormValues.name == 'Visa Letter' ? this.editFormValues.country ? flag = 1: this.db.sendErrorMessage('Please enter the Country') : flag = 1;
+    if(flag == 1){
+      if (this.editFormValues.remarks)
+        this.modalCntrl.dismiss(this.editFormValues);
+      else this.db.sendErrorMessage('Please enter the Purpose of the Letter');
+  }
   }
 }

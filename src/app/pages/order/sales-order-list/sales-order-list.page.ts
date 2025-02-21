@@ -129,6 +129,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
   showRegularizationBanner = true;
   showWithdrawalBanner = true;
+  showBuybackBanner = true;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -602,6 +603,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         { doc_type: "Probation Evaluation", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
         { doc_type: "Voluntary PF", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
         { doc_type: "Regularization", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
+        { doc_type: "Asset Buyback", tabs: false, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: false, dash_len: [0, 1], list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4,5,6,7,8,9,10] },
       ]
     } else {
       data = [
@@ -2379,6 +2381,8 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.router.navigateByUrl('/performance-evaluation/' + data.name);
     } else if (this.doc_type && this.doc_type == 'Regularization') {
       this.openRegularizationDetail(data)
+    }else if (this.doc_type && this.doc_type == 'Asset Buyback') {
+      this.router.navigateByUrl('/buyback-detail/' + data.name);
     }else if (this.doc_type && this.doc_type == 'Employee Letter Request') {
       this.openletterrequestDetail(data)
     }

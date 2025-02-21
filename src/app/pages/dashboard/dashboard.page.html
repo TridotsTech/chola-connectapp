@@ -49,7 +49,7 @@
   
     <div class="businessSummary b-t-5">
       <div class="d__flex just-s w-100 mb-10">
-        <h5 class="m-0 fnt-15">Quick Links</h5>
+        <h5 class="m-0 fnt-14">Quick Links</h5>
         <ion-icon class="fnt-20" (click)="editQuick()" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="buttonsSection">
@@ -97,7 +97,7 @@
   
     <div class="leaveBalance b-t-5" *ngIf="ess_dashboard_data && ess_dashboard_data.leave_balance && ess_dashboard_data.leave_balance.length != 0" >
       <div class="d__flex just-s w-100 mb-10">
-        <h5 class="m-0 fnt-15">Leave Balance</h5>
+        <h5 class="m-0 fnt-14">Leave Balance</h5>
         <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="attendance_dashboard">
@@ -148,7 +148,7 @@
   
     <div class="attendanceSummary b-t-5">
       <div class="d__flex just-s w-100 mb-10">
-        <h5 class="m-0 fnt-15">Attendance</h5>
+        <h5 class="m-0 fnt-14">Attendance</h5>
         <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="calendar_att">
@@ -173,13 +173,14 @@
           </div>
           <div>
             <div class="d__flex gap-5 mb-5" *ngIf="db.cust_name">
+              <!-- <img src="/assets/icon/blue-tick.svg" alt=""> -->
               <p class="m-0 profile_name">{{db.cust_name}}</p>
-              <img src="/assets/icon/blue-tick.svg" alt="">
             </div>
-            <div class="d__flex gap-5 mb-5" *ngIf="db.cust_role">
+            <div class="d__flex gap-5 mb-5" *ngIf="db.cust_designation">
               <img class="work_img" src="/assets/icon/work-1-white.svg" alt="">
-              <p class="m-0 profile_role">{{db.cust_role}}</p>
+              <p class="m-0 profile_role">{{db.cust_designation}}</p>
             </div>
+            <img class="hr_link_icon" src="/assets/Employee-Home/dashboardheaderimage.svg" alt="">
             <!-- <div class="d__flex gap-5 mb-5">
               <img src="/assets/home-genie/hi.svg" alt="">
               <p class="m-0 fnt-12 fnt_w500 white">Welcome Back To Work!</p>
@@ -254,7 +255,7 @@
 
       <div class="businessSummaryHr b-t-5">
         <div class="d__flex just-s w-100 p-0-10 m-10-0 ">
-          <h5 class="m-0 fnt-15">Quick Links</h5>
+          <h5 class="m-0 fnt-14">Quick Links</h5>
           <ion-icon class="fnt-20" (click)="editQuick()" src="/assets/Employee-Home/more.svg"></ion-icon>
         </div>
         <div class="buttonsSection p-0-10">
@@ -268,7 +269,7 @@
 
       <div class="attendanceComparisonChart b-t-5">
         <div class="d__flex just-s w-100 m-10-0">
-          <h5 class="m-0 fnt-15">Attendance Trends</h5>
+          <h5 class="m-0 fnt-14">Attendance Trends</h5>
           <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
         </div>
         <div class="apexChart" *ngIf="chartObject">

@@ -6,7 +6,7 @@
   </p>
 </div> -->
 <div *ngIf="missing_days && missing_days.length != 0" class="d__flex just-s select_all">
-  <p class="m-0 fnt-11">Attendance Missed Outs</p>
+  <p class="m-0 fnt-12">Attendance Missed Outs</p>
   <div (click)="select_all1(2)" *ngIf="missing_days && missing_days.length != 0 && missing_days.length != 1" class="d__flex">
     <img src="/assets/Employee-Home/selectall.svg" alt="" />
     <span class="s_txt">{{ selectAll ? "Unselect All" : "SelectAll" }}</span>

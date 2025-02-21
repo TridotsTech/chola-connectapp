@@ -2671,9 +2671,26 @@ ion-spinner {
       margin-bottom: 10px;
    }
 
-   .sec-prob-2{
+   .sec-prob-2 {
       border-radius: 0 0 10px 10px;
       padding: 6px 10px;
       background: #F6FAFF;
+   }
+}
+
+.buyback_list {
+   padding: 10px;
+   border: 1px solid var(--border-col);
+   border-radius: 12px;
+   margin-bottom: 10px;
+
+   .asset_icon {
+      font-size: 35px;
+   }
+
+   .section2 {
+      background: #F5FAFF;
+      padding: 8px;
+      border-radius: 5px;
    }
 }

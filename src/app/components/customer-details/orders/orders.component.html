@@ -493,30 +493,34 @@
 <div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Buyback' && db.get_saleslist.data && db.get_saleslist.data.length != 0;">
   <div #tabList [class.height_scroll]="!db.ismobile" [class.no_tabs_height]="no_tabs"
     [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
-    [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)">
+    [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)" class="p-10">
     <div id="click_item" [class.selected_item]="db.selectedId == item.name"
       (click)="!db.ismobile ? active_item(item,i) : null" *ngFor="let item of db.get_saleslist.data; let i = index"
       [id]="i + 1 + 'scroll'" (click)="!db.ismobile ? check_active(db.get_saleslist.data,i,item) : null"
-      class="sec" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
+      class="buyback_list" (click)="do_to_details.emit(item)" (click)="!db.ismobile ? send_data(item) : null">
       <div class="s-1">
 
-        <div class="d__flex just-s mb-5">
-          <h3 class="m-0 fnt-13 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[2]]}}</h3>
-          <div *ngIf="item.workflow_state" class="sec__2d">
+        <div class="d__flex just-s mb-10">
+          <div class="d__flex gap-10">
+            <ion-icon class="asset_icon" [src]="item[db.get_saleslist.keys[3]] == 'Vehicle' ? '/assets/assets-managment/Vehicle.svg' : '/assets/assets-managment/Mobile.svg'"></ion-icon>
+            <h2 *ngIf="item[db.get_saleslist.keys[3]]" class="m-0 fnt-14"><span class="gray_clr">{{item[db.get_saleslist.keys[3]]}}</span></h2>
+          </div>
+          <div class="d__flex">
             <app-status [reverse]="true" [status]="item.status? item.status :item.workflow_state"></app-status>
           </div>
         </div>
 
-        <div class="d__flex just-s mb-5">
-          <h2 *ngIf="item[db.get_saleslist.keys[3]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[3]]}}</span></h2>
-          <h3 class="m-0 fnt-12">{{item[db.get_saleslist.keys[1]] | currency:db.website_settings.currency}}</h3>
-          
+        <div class="section2">
+          <div class="d__flex just-s mb-5">
+            <h2 *ngIf="item[db.get_saleslist.keys[7]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[3]] == 'Vehicle' ? item[db.get_saleslist.keys[7]] : item[db.get_saleslist.keys[8]]}}</span></h2>
+          </div>
+  
+          <div class="d__flex just-s">
+            <h2 class="m-0 fnt-13 d__flex gap-5"><ion-icon class="fnt-18" src="/assets/assets-managment/calendar.svg"></ion-icon> {{item[db.get_saleslist.keys[4]] | date: 'MMM d, y'}}</h2>
+            <h3 class="m-0 fnt-12">{{item[db.get_saleslist.keys[1]] | currency:db.website_settings.currency}}</h3>
+          </div>
         </div>
 
-        <div class="d__flex just-s mb-5">
-          <h2 class="m-0 fnt-13 d__flex gap-5"><span class="fnt-11">Purchase Date : </span> {{item[db.get_saleslist.keys[4]] | date: 'MMM d, y'}}</h2>
-          <h3 class="m-0 fnt-12">{{item[db.get_saleslist.keys[0]]}}</h3>
-        </div>
       </div>
     </div>
   </div>
