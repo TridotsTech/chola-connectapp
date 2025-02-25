@@ -40,9 +40,9 @@ export class NormalLoginComponent implements OnInit {
     })
 
     // this.sitename_data = 'v15mobiletest.tridotstech.com'
-    this.sitename_data = 'dev-chola.tridotstech.com'
+    // this.sitename_data = 'dev-chola.tridotstech.com'
     // this.sitename_data = ''
-    // this.sitename_data = 'erp14test.tridotstech.com'
+    this.sitename_data = 'stage-cholahrms.frappe.cloud'
 
   } 
 

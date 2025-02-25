@@ -192,7 +192,7 @@ export class PerformanceEvaluationPage implements OnInit {
 
   getPerformanceDetailList(){
     let data = {
-      doctype: 'performance evaluation Detail',
+      doctype: 'Probation Evaluation Parameter',
       fields: ["name","parameter","rating","description"]
     }
     this.db.get_list(data).subscribe(res => {

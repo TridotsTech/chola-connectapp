@@ -32,7 +32,7 @@
     <div class="app-calendar">
       <!-- <div class="d__flex"> -->
       <div [class.px-20]="!db.ismobile" class="w-50 stciky_cal" *ngIf="holiday_type == 'Calendar'">
-        <img src="/assets/Holiday-Page/HolidayBanner.svg" alt="calendar image" />
+        <img src="/assets/Holiday-Page/HolidayBanner.svg" alt="calendar image" class="w-100" />
 
         <div *ngIf="!db.ismobile" [ngSwitch]="view">
           <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate"

@@ -7,10 +7,10 @@
         <img class="profile-icon"
           [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'" />
         <h5 class="m-0">{{db.cust_name}}</h5>
-        <h6 class="m-0">{{db.cust_designation}}</h6>
+        <h6 class="m-0">{{db.employee_img ? db.employee_img.designation : ''}}</h6>
         <p class="m-0 d__flex gap-10 gray_clr">
           <ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon>
-          {{db.employee_img ? db.employee_img.grade : 'CFF 1-NMS'}}
+          {{db.employee_img ? db.employee_img.grade : ''}}
         </p>
       </div>
       <div class="sec-2-main">

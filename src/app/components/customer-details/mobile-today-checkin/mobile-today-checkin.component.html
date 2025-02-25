@@ -59,7 +59,7 @@
     
         <div class="min-h">
           <div class="box-sec">
-            <div class="list_data mouse" (click)="do_to_details(item)" *ngFor="let item of listData.slice(0,10);let i = index" >
+            <div class="list_data mouse" *ngFor="let item of listData.slice(0,10);let i = index" >
               <div class="gap-10 employee_">
                 <div class="s-1 mb-5">
                   <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5"> <img src="/assets/leaves/leaveicon.svg" alt=""> <span class="pl5 fnt_w600">{{item.name ? item.name : ' -'}}</span></h3>    
@@ -130,7 +130,7 @@
     
       <ng-container *ngIf="!skeleton && listData.length != 0">
   
-        <div class="list_data mouse" (click)="do_to_details(item)" *ngFor="let item of listData;let i = index" >
+        <div class="list_data mouse" *ngFor="let item of listData;let i = index" >
           <div class="d__flex gap-10 employee_">
             <div [class.image_div]="item.image" class="absolute_">
               <!-- <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div> -->
@@ -141,13 +141,15 @@
               <p class="m-0 mb-5 fnt-13 fnt_w500 webkit-text" [style.--line]="2">{{item.employee_name}}</p>
               <div class="d__flex just-s w-100 mb-5">
                 <p class="m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon class="fnt-16" slot="start" src="/assets/img/user-tag.svg"></ion-icon>{{item.name}}</p>
-                <p *ngIf="item.status" class="fnt-12 m-0">{{item.status}}</p>
+                <app-status [status]="item.status"></app-status>
+                <!-- <p *ngIf="item.status" class="fnt-12 m-0">{{item.status}}</p> -->
                 <!-- <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : ' - '}}</h3> -->
               </div>
 
               <div class="d__flex just-s w-100">
-                <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : item.time ? (item.time | date: 'h:mm a') : item.department ? item.department : ' - '}}</h3>
-                <h3 *ngIf="item.last_checkout && item.last_checkout != '00:00'" class="checkoutTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout && item.last_checkout != "00:00") ? converTime(item.last_checkout) : ' - '}}</h3>
+                <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{item.designation ? item.designation : ' - '}}</h3>
+                <!-- <h3 class="checkinTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.first_checkin && item.first_checkin != "00:00") ? converTime(item.first_checkin) : item.time ? (item.time | date: 'h:mm a') : item.department ? item.department : ' - '}}</h3> -->
+                <!-- <h3 *ngIf="item.last_checkout && item.last_checkout != '00:00'" class="checkoutTime m-0 fnt-12 gray_clr d__flex gap-5"><ion-icon *ngIf="false" src="/assets/attendance-ess/login-black.svg" class="fnt-13"></ion-icon>{{(item.last_checkout && item.last_checkout != "00:00") ? converTime(item.last_checkout) : ' - '}}</h3> -->
               </div>
 
             </div>

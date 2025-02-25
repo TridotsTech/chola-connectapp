@@ -26,27 +26,27 @@
   <div class="detailView" *ngIf="pfDetails">
     
     <div class="d__flex just-s">
-      <p class="m-0 fnt-14 fnt_w500 gray_clr">Payroll Period</p>
-      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.payroll_period ? pfDetails.payroll_period : '-'}}</p>
+      <p class="m-0 fnt-13 fnt_w500 gray_clr">Payroll Period</p>
+      <p class="m-0 fnt-13 fnt_w500">{{pfDetails.payroll_period ? pfDetails.payroll_period : '-'}}</p>
     </div>
 
     <div class="d__flex just-s">
-      <p class="m-0 fnt-14 fnt_w500 gray_clr">Basic</p>
-      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.basic ? (pfDetails.basic | currency:db.website_settings.currency) : '-'}}</p>
+      <p class="m-0 fnt-13 fnt_w500 gray_clr">Basic</p>
+      <p class="m-0 fnt-13 fnt_w500">{{pfDetails.basic ? (pfDetails.basic | currency:db.website_settings.currency) : '-'}}</p>
     </div>
 
     <div class="d__flex just-s">
-      <p class="m-0 fnt-14 fnt_w500 gray_clr">VPF Limit (% of Basic)</p>
-      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.vpf_limit_percent ? pfDetails.vpf_limit_percent : '-'}}</p>
+      <p class="m-0 fnt-13 fnt_w500 gray_clr">VPF Limit (% of Basic)</p>
+      <p class="m-0 fnt-13 fnt_w500">{{pfDetails.vpf_limit_percent ? pfDetails.vpf_limit_percent : '-'}}</p>
     </div>
 
     <div class="d__flex just-s">
-      <p class="m-0 fnt-14 fnt_w500 gray_clr">VPF Limit</p>
-      <p class="m-0 fnt-14 fnt_w500">{{pfDetails.vpf_limit ? (pfDetails.vpf_limit | currency:db.website_settings.currency) : '-'}}</p>
+      <p class="m-0 fnt-13 fnt_w500 gray_clr">VPF Limit</p>
+      <p class="m-0 fnt-13 fnt_w500">{{pfDetails.vpf_limit ? (pfDetails.vpf_limit | currency:db.website_settings.currency) : '-'}}</p>
     </div>
 
     <div class="d__flex just-s" *ngIf="false">
-      <p class="m-0 fnt-14 fnt_w500 gray_clr">Status</p>
+      <p class="m-0 fnt-13 fnt_w500 gray_clr">Status</p>
       <div class="d__flex">
         <app-status [reverse]="true" [status]="pfDetails.status"></app-status>
       </div>

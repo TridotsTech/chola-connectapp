@@ -123,31 +123,31 @@ margin: 10px;
         border-radius: 50%;
     }
 
-    img {
-        width: 55px;
-        height: 55px;
-        object-fit: cover;
-        border-radius: 50%;
-    }
+    // img {
+        // width: 55px;
+        // height: 55px;
+        // object-fit: cover;
+        // border-radius: 50%;
+    // }
 }
 
-.checkinTime::before{
-  content: " ";
-  height: 8px;
-  width: 8px;
-  border-radius: 50%;
-  background: #0CA637;
-  margin: 2px 2px 0 0;
-}
+// .checkinTime::before{
+//   content: " ";
+//   height: 8px;
+//   width: 8px;
+//   border-radius: 50%;
+//   background: #0CA637;
+//   margin: 2px 2px 0 0;
+// }
 
-.checkoutTime::before{
-  content: " ";
-  height: 8px;
-  width: 8px;
-  border-radius: 50%;
-  background: #e31818;
-  margin: 2px 2px 0 0;
-}
+// .checkoutTime::before{
+//   content: " ";
+//   height: 8px;
+//   width: 8px;
+//   border-radius: 50%;
+//   background: #e31818;
+//   margin: 2px 2px 0 0;
+// }
 
 }
 

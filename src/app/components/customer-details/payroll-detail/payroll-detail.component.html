@@ -16,7 +16,7 @@
   <div class="d__flex gap-10 header just-s employeeDetails">
     <img class="blue" src="/assets/timesheet/blue.svg" />
     <img class="yellow" src="/assets/timesheet/yellow.svg" />
-    <div class="d__flex m-0 details">
+    <div class="d__flex m-0 details w-100">
       <div class="imageDiv">
         <img *ngIf="earning_details.image" [src]="db.product_img(earning_details.image)" />
         <h4 *ngIf="!earning_details.image" class="m-0 fnt-15 fnt_w500">{{earning_details?.employee_name[0]}}</h4>

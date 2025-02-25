@@ -83,7 +83,12 @@ export class NewVoluntaryPfComponent  implements OnInit {
       if(res && res.message && res.message.status == 'Success'){
         this.db.sendSuccessMessage('Employee VPF created Succesully');
         this.modalCntrl.dismiss(res.message);
-      }else{
+      } else if (res._server_messages) {
+          var d = JSON.parse(res._server_messages);
+          var d1 = JSON.parse(d);
+          this.db.alert(d1.message);
+        }
+      else{
         this.db.sendErrorMessage('Failed to create Employee VPF');
       }
     })

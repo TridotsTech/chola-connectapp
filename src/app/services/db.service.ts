@@ -905,8 +905,44 @@ export class DbService {
 
       if (data["doctype_name"] == "Employee Grievance") {
         employee = { raised_by: ['=', localStorage['employee_id']] };
-      } else {
+      } 
+      else if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization"){
         employee = { employee: ['=', localStorage['employee_id']] };
+      }
+      else if(data["doctype_name"] == "Asset Buyback"){
+        employee = { employee_code: ['!=', localStorage['employee_id']] };
+      }
+      else if(endpoint.includes("go1_apps.go1_apps.api.get_salary_slip_details")){
+        // employee = { employee_code: ['=', localStorage['employee_id']] };
+      }
+      else {
+        employee = { employee_id: ['=', localStorage['employee_id']] };
+      }
+
+      if (typeof (data.search_data) == 'string' || data.search_data == '') {
+        let parameters = (data.search_data == '') ? {} : JSON.parse(data.search_data)
+        data.search_data = { ...parameters, ...employee }
+        data.search_data = JSON.stringify(data.search_data)
+      } else if (typeof (data.search_data) == 'object') {
+        data.search_data = { ...data.search_data, ...employee };
+      }
+    }
+    else if(localStorage['show_selfView']){
+      let employee: any = {};
+
+      if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization"){
+        employee = { employee: ['!=', localStorage['employee_id']] };
+      }
+      else if(data["doctype_name"] == "Asset Buyback"){
+        employee = { employee_code: ['!=', localStorage['employee_id']] };
+      }
+      else if(endpoint.includes("go1_apps.go1_apps.api.get_salary_slip_details") || endpoint.includes("go1_apps.go1_apps.apis.hrms.get_employee_attendance_list") || endpoint.includes("go1_apps.go1_apps.api.get_hd_ticket_details")
+        || endpoint.includes("go1_apps.go1_apps.api.get_leave_application")
+        || data["doctype_name"] == "Probation Evaluation" || data["doctype_name"] == "Employee VPF"){
+       
+      }
+      else {
+        employee = { employee_id: ['!=', localStorage['employee_id']] };
       }
 
       if (typeof (data.search_data) == 'string' || data.search_data == '') {
@@ -1512,7 +1548,8 @@ export class DbService {
           this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
           // this.hr_manager_role ? this.side_tab_dashboard.splice(0, 0, push_employee_att) : null;
-          this.hr_manager_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+
+          // this.hr_manager_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
 
           !this.sales_manager_role ? this.side_tab_dashboard.splice(0, 0, push_data) : null;
 
@@ -1625,7 +1662,7 @@ export class DbService {
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, approval_screen) : null;
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
 
-          this.hr_manager_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+          // this.hr_manager_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
 
         }
         this.chartOptions.series = dash_board.values;

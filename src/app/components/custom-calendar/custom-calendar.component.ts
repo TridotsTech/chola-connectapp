@@ -64,7 +64,7 @@ export class CustomCalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-      // console.log(this.minValue)
+      console.log(this.each)
 
     // console.log(this.selectedDate)
     if (this.selectedDate) {
