@@ -21,6 +21,8 @@ export class LeaveTypeComponent  implements OnInit {
     }
     else if(this.type == 'document')
       this.get_data()
+    else if(this.type == 'employee')
+      this.get_data_employee()
   }
 
   get_leave_type() {
@@ -49,6 +51,23 @@ export class LeaveTypeComponent  implements OnInit {
       search_text: '',
     };
     this.db.label_values(data).subscribe((res: any) => {
+      console.log(res);
+      this.list_values = res.message
+    },
+      (error) => {
+        
+      }
+    );
+  }
+
+  get_data_employee(){
+    let data = {
+      l1_manager: localStorage['employee_id'],
+      // page_no: 1,
+      // page_length: 50,
+      // search_text: '',
+    };
+    this.db.get_applicable_employees(data).subscribe((res: any) => {
       console.log(res);
       this.list_values = res.message
     },

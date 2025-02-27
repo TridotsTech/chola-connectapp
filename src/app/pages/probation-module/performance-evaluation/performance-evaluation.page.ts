@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { LeaveTypeComponent } from 'src/app/components/leaves-module/leave-type/leave-type.component';
 
 @Component({
   selector: 'app-performance-evaluation',
@@ -18,7 +19,7 @@ export class PerformanceEvaluationPage implements OnInit {
   performanceId: any;
   save_only = false;
   workflow_list:any=[];
-  constructor(public db: DbService,private formBuilder: FormBuilder,private nav: NavController,private route: ActivatedRoute) { }
+  constructor(public modalCntrl:ModalController,public db: DbService,private formBuilder: FormBuilder,private nav: NavController,private route: ActivatedRoute) { }
 
   ngOnInit() {
     const currentDate = new Date();
@@ -155,7 +156,21 @@ export class PerformanceEvaluationPage implements OnInit {
     {name: 'No'}
   ]
 
-  open_dropdown() {
+  async open_dropdown() {
+    // const modal = await this.modalCntrl.create({
+    //     component: LeaveTypeComponent,
+    //     cssClass: this.db.ismobile ? 'job-detail-popup' : 'filter-popup',
+    //     componentProps: {
+    //       title:'Employee',
+    //       type:'employee' 
+    //     },
+    //   });
+    //   await modal.present();
+    //   const val = await modal.onWillDismiss();
+    //   console.log(val)
+    //   if(val && val.data){
+    //     // this.editFormValues.leave_type = val.data.name
+    //   }
     let val = {
       type: 'Employee',
       fieldname: 'employee',

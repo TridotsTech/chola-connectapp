@@ -139,7 +139,8 @@ export class LeaveApplicationDetailPage implements OnInit {
       this.getLeaveRequestList('Pending');
     }
     if (this.db.hr_manager_role) {
-      this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
+      this.options = [{ name: "Awaiting Approval", route: "awaiting-approval" }]
+      // this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
       this.employee = false
     }
   }

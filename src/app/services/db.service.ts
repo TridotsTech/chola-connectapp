@@ -927,7 +927,7 @@ export class DbService {
         data.search_data = { ...data.search_data, ...employee };
       }
     }
-    else if(localStorage['show_selfView']){
+    else if(localStorage['show_selfView'] && !endpoint.includes("go1_apps.go1_apps.apis.hrms.get_emp_holiday_list") && !endpoint.includes("go1_apps.go1_apps.apis.hrms.get_employee_attendance_list") && !endpoint.includes("go1_apps.go1_apps.api.get_leave_application")){
       let employee: any = {};
 
       if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization"){
@@ -937,21 +937,32 @@ export class DbService {
         employee = { employee_code: ['!=', localStorage['employee_id']] };
       }
       else if(endpoint.includes("go1_apps.go1_apps.api.get_salary_slip_details") || endpoint.includes("go1_apps.go1_apps.apis.hrms.get_employee_attendance_list") || endpoint.includes("go1_apps.go1_apps.api.get_hd_ticket_details")
-        || endpoint.includes("go1_apps.go1_apps.api.get_leave_application")
+
+        || endpoint.includes("go1_apps.go1_apps.apis.hrms.get_emp_holiday_list")
         || data["doctype_name"] == "Probation Evaluation" || data["doctype_name"] == "Employee VPF"){
-       
+          // employee = ""
       }
       else {
         employee = { employee_id: ['!=', localStorage['employee_id']] };
       }
-
-      if (typeof (data.search_data) == 'string' || data.search_data == '') {
+      if (typeof (data.search_data) == 'string'  || data.search_data == '') {
         let parameters = (data.search_data == '') ? {} : JSON.parse(data.search_data)
-        data.search_data = { ...parameters, ...employee }
-        data.search_data = JSON.stringify(data.search_data)
+          data.search_data = { ...parameters, ...employee }
+          data.search_data = JSON.stringify(data.search_data)
       } else if (typeof (data.search_data) == 'object') {
         data.search_data = { ...data.search_data, ...employee };
       }
+    }
+    else if(localStorage['show_selfView'] && endpoint.includes("go1_apps.go1_apps.api.get_leave_application")){
+      // let employee: any = {};
+        data.employee_id = localStorage['employee_id'];
+      // if (typeof (data.search_data) == 'string'  || data.search_data == '') {
+      //   let parameters = (data.search_data == '') ? {} : JSON.parse(data.search_data)
+      //     data.search_data = { ...parameters, ...employee }
+      //     data.search_data = JSON.stringify(data.search_data)
+      // } else if (typeof (data.search_data) == 'object') {
+      //   data.search_data = { ...data.search_data, ...employee };
+      // }
     }
 
     // localStorage['customerRefId'] &&

@@ -5,16 +5,12 @@ import { Location, DatePipe } from '@angular/common';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { FiltersComponent } from 'src/app/components/categories/filters/filters.component';
 import { WebsiteFormsComponent } from 'src/app/components/forms/website-forms/website-forms.component';
-// import { PaymentMoneyComponent } from 'src/app/components/meena-gas/payment-money/payment-money.component';
 import { EditWebsiteFormsComponent } from 'src/app/components/forms/edit-website-forms/edit-website-forms.component';
 import { DetailComponent } from 'src/app/components/customer-details/detail/detail.component';
 import { PayrollDetailComponent } from 'src/app/components/customer-details/payroll-detail/payroll-detail.component';
 import { QuickFormsComponent } from 'src/app/components/forms/quick-forms/quick-forms.component';
 import { EditFormsPage } from '../../web-form/edit-forms/edit-forms.page';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-// import { UpdateTimesheetComponent } from 'src/app/components/Timesheet/update-timesheet/update-timesheet.component';
-// import { TaskKanbanComponent } from 'src/app/components/customer-details/task-kanban/task-kanban.component';
-// import { NewTaskFormComponent } from '../../../components/task/new-task-form/new-task-form.component';
 import { JobApplicantListPage } from '../../job-applicant-list/job-applicant-list.page';
 import { FreezeColumnComponent } from 'src/app/components/freeze-column/freeze-column.component';
 import { JobOpeningListComponent } from 'src/app/components/customer-details/job-opening-list/job-opening-list.component';
@@ -24,7 +20,6 @@ import { LetterRequestDetailComponent } from 'src/app/components/letter-request-
 import { CreateLetterRequestComponent } from 'src/app/components/create-letter-request/create-letter-request.component';
 import { BuybackFormComponent } from 'src/app/components/customer-details/buyback-form/buyback-form.component';
 import { LeavePreviewWithdrawComponent } from 'src/app/components/leaves-module/leave-preview-withdraw/leave-preview-withdraw.component';
-// import { BugsheetQuickformComponent } from 'src/app/components/bug-sheets/bugsheet-quickform/bugsheet-quickform.component';
 
 @Component({
   selector: 'app-sales-order-list',

@@ -62,12 +62,18 @@
    <app-sidemenu-header *ngIf="!db.ismobile && (routers != 'Customer' && routers != 'Lead')" [heading]="page_title"
     (toggleKanban)="toggleKanbans()" (toggleKanban_task)="toggleKanbans_task()" [doc_type]="doc_type" [kanban]="kanban"></app-sidemenu-header>
     <!-- [class.enable_fab4]="db.enable_detail && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length <= 5" [class.enable_fab_hd_ticket]="db.enable_detail && db.get_saleslist && db.get_saleslist.options && db.get_saleslist.options.length <= 5 && doc_type == 'HD Ticket'" -->
-   <ion-fab [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)" *ngIf="db.ismobile && !kanban && detail_doc && detail_doc['route'] && !db.hd_ticket_show && !db.full_width && doc_type != 'Employee' && doc_type != 'Attendance'">
+   <ion-fab [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)" *ngIf="db.ismobile && !kanban && detail_doc && detail_doc['route'] && !db.hd_ticket_show && !db.full_width && doc_type != 'Employee' && doc_type != 'Attendance' && (!db.show_selfView || db.selfView)">
       <ion-fab-button class="fab_btn" (click)="createNew(detail_doc)">  
         <!-- (click)="db.ismobile ? createNew(this.detail_doc) : open_route(detail_doc)" -->
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
    </ion-fab>
+   <ion-fab [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)" *ngIf="db.ismobile && !kanban && detail_doc && detail_doc['route'] && !db.hd_ticket_show && !db.full_width && doc_type != 'Employee' && doc_type != 'Attendance' && doc_type == 'Probation Evaluation'">
+    <ion-fab-button class="fab_btn" (click)="createNew(detail_doc)">  
+      <!-- (click)="db.ismobile ? createNew(this.detail_doc) : open_route(detail_doc)" -->
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+ </ion-fab>
 
    <ion-fab [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)" *ngIf="db.ismobile && (this.db.hr_manager_role && doc_type == 'Employee')">
     <ion-fab-button class="fab_btn" (click)="createNew(detail_doc)">  
@@ -174,19 +180,19 @@
     </div>
   </div>
 
-  <div class="applyTicketFrame" *ngIf="doc_type == 'Asset Buyback' && showBuybackBanner">
+  <div class="applyTicketFrame" *ngIf="doc_type == 'Asset Buyback' && showBuybackBanner && (!db.show_selfView || db.selfView)">
     <img class="d__flex w-100" src="/assets/Frame/buyback.svg" alt="">
     <ion-button (click)="openBuybackForm()">📃 Apply Buyback</ion-button>
     <ion-icon class="fnt-18" (click)="showBuybackBanner = false;" name="close-outline"></ion-icon>
   </div>
 
-  <div class="applyTicketFrame" *ngIf="doc_type == 'Regularization' && showRegularizationBanner">
+  <div class="applyTicketFrame" *ngIf="doc_type == 'Regularization' && showRegularizationBanner && (!db.show_selfView || db.selfView)">
     <img class="d__flex w-100" src="/assets/Frame/regularization.svg" alt="">
     <ion-button (click)="createNewRegularize()">📃 Apply Regularization</ion-button>
     <ion-icon class="fnt-18" (click)="showRegularizationBanner = false;" name="close-outline"></ion-icon>
   </div>
 
-  <div class="applyTicketFrame" *ngIf="doc_type == 'Leave Withdrawal' && showWithdrawalBanner">
+  <div class="applyTicketFrame" *ngIf="doc_type == 'Leave Withdrawal' && showWithdrawalBanner && (!db.show_selfView || db.selfView)">
     <img class="d__flex w-100" src="/assets/Frame/leave-withdrawal.svg" alt="">
     <ion-button (click)="createNewWithdrawal()">📃 Apply Withdrawal</ion-button>
     <ion-icon class="fnt-18" (click)="showWithdrawalBanner = false;" name="close-outline"></ion-icon>
@@ -812,7 +818,7 @@
     <app-ticket-list [doc_type]="doc_type" *ngIf="doc_type == 'HD Ticket' && db.get_saleslist && !db.hd_ticket_show" (menu_name)="menu_name($event)" [bg_white]="db.ismobile ? false : true" [tabs_array]="db.get_saleslist.options"  [data]="db.get_saleslist" (click_data)="load_all($event)" (load_data)="load_more($event)"></app-ticket-list>
     <app-timesheet-list *ngIf="doc_type == 'Timesheet' && !db.ismobile && !db.hd_ticket_show && !kanban" [search_filter]="search_filter" (createNew)="createNew(detail_doc)"></app-timesheet-list>
     <app-salary-slip-detail *ngIf="doc_type == 'Salary Slip'" [doc_type]="doc_type" [detail_route_name]="db.detail_route_name" [load_name]="db.load_name" [current_navigation_tab]="current_navigation_tab" ></app-salary-slip-detail>
-    <ion-fab *ngIf="doc_type == 'HD Ticket' && !db.hd_ticket_show" [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)">
+    <ion-fab *ngIf="doc_type == 'HD Ticket' && !db.hd_ticket_show " [class.enable_fab]="db.enable_detail" [ngStyle]= "db.set_primary_color(db.sales_dashboard)">
       <ion-fab-button class="fab_btn" (click)="createNew(detail_doc)">   
        <ion-icon name="add"></ion-icon>
       </ion-fab-button>

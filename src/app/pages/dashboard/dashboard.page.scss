@@ -962,7 +962,8 @@ g[opacity="0.4"] {
 
     .employeeDetails {
       margin: 0 10px;
-      background: #005BC317;
+      background: #EAF5FF;
+      // background: #005BC317;
       // background: linear-gradient(183deg, #DDE0FF 5.56%, rgb(255 255 255) 70.75%);
       // background: linear-gradient(183deg, #ffffff85 5.56%, rgb(255 255 255) 70.75%)
       border-radius: 12px;
@@ -1214,7 +1215,7 @@ g[opacity="0.4"] {
         border-radius: 10px;
         padding: 5px 10px;
         position: relative;
-
+        border: 1px solid #005BC31A;
         .bigDot {
           height: 20px;
           width: 20px;
@@ -1534,7 +1535,7 @@ g[opacity="0.4"] {
       overflow: auto;
       overflow-y: hidden;
       border: 1px solid var(--border-col);
-      border-radius: 20px 20px 0 0;
+      border-radius: 10px 10px 0 0;
       // border-radius: 20px;
       padding: 0px;
 

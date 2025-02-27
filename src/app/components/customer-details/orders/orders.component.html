@@ -192,7 +192,7 @@
 </div>
 
 <!-- Employee Letter Request -->
-<div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Employee Letter' && db.get_saleslist.data && db.get_saleslist.data.length == 0 && showLetterRequestBanner" class="applyTicketFrame">
+<div *ngIf="db.get_saleslist && db.get_saleslist.template_name && db.get_saleslist.template_name == 'Mobile Employee Letter' && db.get_saleslist.data && db.get_saleslist.data.length == 0 && showLetterRequestBanner && (!db.show_selfView || db.selfView)" class="applyTicketFrame">
   <img class="d__flex w-100" src="assets/Frame/letter-request.svg" alt="">
   <ion-button (click)="createNewLetterReq()">📃 Apply Letter Request</ion-button>
   <ion-icon class="fnt-18" (click)="showLetterRequestBanner = false;" name="close-outline"></ion-icon>
@@ -203,7 +203,7 @@
     [class.height_scroll_search]="db.enable_detail" (scroll)="load_data($event)" class="mouse list_common_height"
     [class.tab_active_heigth]="db.path.includes('/tabs')" *ngIf="(db.enable_material || db.ismobile)">
     
-    <div class="applyTicketFrame" *ngIf="showLetterRequestBanner">
+    <div class="applyTicketFrame" *ngIf="showLetterRequestBanner && (!db.show_selfView || db.selfView)">
       <img class="d__flex w-100" src="assets/Frame/letter-request.svg" alt="">
       <ion-button (click)="createNewLetterReq()">📃 Apply Letter Request</ion-button>
       <ion-icon class="fnt-18" (click)="showLetterRequestBanner = false;" name="close-outline"></ion-icon>

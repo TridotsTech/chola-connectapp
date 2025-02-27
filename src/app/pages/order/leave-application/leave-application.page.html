@@ -8,7 +8,8 @@
 
   <div class="body" *ngIf="!skeleton && employee_details && !leave_detail">
     <div *ngIf="leave_dashboard && leave_dashboard.length > 0" class="d__flex w-100 section">
-      <div class="box_1" [ngStyle]="{'background': getCircleColor(item.label)}" *ngFor="let item of leave_dashboard">
+      <!-- [ngStyle]="{'background': getCircleColor(item.label)}" -->
+      <div class="box_1"  *ngFor="let item of leave_dashboard">
         <div class="m-7 d__flex just-s">
           <ion-icon class="fnt-30" 
           [src]="get_leaves_icon(item.label)"></ion-icon>
@@ -24,7 +25,7 @@
         <div class="pb-10">
           <label for="leave_type" class="pb-10">Leave Type <span class="impt-star"> *</span></label>
           <div class="custom-input d__flex">
-            <img src="/assets/leaves/type.svg" alt="">
+            <img class="w_h_18" src="/assets/leaves/type.svg" alt="">
             <!-- [ngModel]="(db.drop_down_value && db.drop_down_value['leave_type'] ? db.drop_down_value['leave_type'] : leave_form.value.leave_type)" -->
             <ion-input type="text"
               placeholder="Leave type" (click)="open_dropdown()" name="leave_type" formControlName="leave_type"

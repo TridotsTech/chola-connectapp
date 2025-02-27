@@ -101,7 +101,8 @@
         <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="attendance_dashboard">
-        <div *ngFor="let item of ess_dashboard_data.leave_balance;let i = index" class="over_flow" [ngStyle]="{'background': getCircleColor(item.label)}">
+        <!-- [ngStyle]="{'background': getCircleColor(item.label)}" -->
+        <div *ngFor="let item of ess_dashboard_data.leave_balance;let i = index" class="over_flow">
           <!-- <div class="bigDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div>
           <div class="smallDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div> -->
           <div class="w-100 d__flex just-s first_sec mb-5" [routerLink]="'/leave-application-detail/' + db.employee_id">
