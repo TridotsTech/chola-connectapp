@@ -43,6 +43,7 @@ export class MobileMenuComponent implements OnInit {
 
   ngOnInit() {
     this.isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !/Windows/.test(navigator.userAgent);
+    localStorage['reportView'] ? this.db.reportView = true : false;
     // console.log(this.db.permission_details)
     // this.db.get_permission_details()
     // this.ngZone.run(() => {

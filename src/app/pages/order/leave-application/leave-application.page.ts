@@ -28,15 +28,32 @@ export class LeaveApplicationPage implements OnInit {
   res_name:any;
   overlapp_msg:any;
   is_maternity = 0;
+  is_paternity = 0;
+  is_special_leave = 0;
+  total_allocation = 0;
   image:any;
   constructor(public loadingCtrl:LoadingController,public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
+      // employee_id: new FormControl('', [Validators.required]),
+      // employee_name: new FormControl('', [Validators.required]),
       leave_type: new FormControl('', [Validators.required]),
       reason: new FormControl('', [Validators.required]),
       total_leave_days: new FormControl('', [Validators.required]),
       from_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
       to_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
     });
+
+    if(db.show_selfView && !db.selfView){
+      this.leave_form = this.formBuilder.group({
+        employee_id: new FormControl('', [Validators.required]),
+        employee_name: new FormControl('', [Validators.required]),
+        leave_type: new FormControl('', [Validators.required]),
+      reason: new FormControl('', [Validators.required]),
+      total_leave_days: new FormControl('', [Validators.required]),
+      from_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
+      to_date: new FormControl('', [Validators.required,Validators.min(this.db.employee_info.date_of_joining)]),
+      }); 
+    }
   }
 
   ionViewWillEnter(){
@@ -184,6 +201,14 @@ export class LeaveApplicationPage implements OnInit {
     return this.leave_form.get('leave_type');
   }
 
+  get employee_name() {
+    return this.leave_form.get('employee_name');
+  }
+
+  get employee_id() {
+    return this.leave_form.get('employee_id');
+  }
+
   get reason() {
     return this.leave_form.get('reason');
   }
@@ -243,8 +268,8 @@ export class LeaveApplicationPage implements OnInit {
           },
         ],
       });
-      if(this.is_maternity){
-        this.file_url ? await alert.present() : this.db.sendErrorMessage('Pls select the image');  
+      if(this.is_maternity || this.is_paternity || this.is_special_leave){
+        this.file_url ? await alert.present() : this.db.sendErrorMessage('Please select the image');  
       }
       else    
         await alert.present();
@@ -256,11 +281,11 @@ export class LeaveApplicationPage implements OnInit {
         await loader.present();
         let datas = {
           doctype: "Leave Request",
-          employee: localStorage['employee_id'],
+          employee: this.leave_form.get('employee_id') && this.leave_form.get('employee_id').value ? this.leave_form.get('employee_id').value :localStorage['employee_id'],
           posting_date: this.db.current_event_date,
         }
 
-        if(this.leave_preview && this.leave_preview.length != 0){
+        if(this.leave_preview && this.leave_preview.length != 0 && (!this.is_paternity && !this.is_special_leave)){
           datas['leave_preview'] = this.leave_preview;
         }
 
@@ -274,6 +299,8 @@ export class LeaveApplicationPage implements OnInit {
           datas['name'] = this.editFormValues.name;
         }
 
+        this.is_paternity ? datas['is_allocate_and_apply'] = this.is_paternity : ''
+        this.is_special_leave ? datas['is_allocate_and_apply'] = this.is_special_leave : ''
         this.is_maternity ? datas['is_maternity'] = this.is_maternity : ''
         this.file_url ? datas['attach_file'] = this.file_url : ''
 
@@ -319,38 +346,6 @@ export class LeaveApplicationPage implements OnInit {
       // }
     // }
   }
-
-  // checkImages(data, type) {
-  //   switch (data) {
-  //     case "Total Leaves":
-  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-  //       break;
-  //     case "All Applications":
-  //       return type == "color" ? '#5461FF' : type == "class" ? 'color_1' : "/assets/leaves/calendar-purple.svg"
-  //       break;
-  //     case "Used Leaves":
-  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-  //       break;
-  //     case "Open Applications":
-  //       return type == "color" ? '#E08700' : type == "class" ? 'color_2' : "/assets/leaves/calendar-yellow.svg"
-  //       break;
-  //     case "Available Leaves":
-  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-  //       break;
-  //     case "Approved Applications":
-  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-  //       break;
-  //     case "Expired Leaves":
-  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-  //       break;
-  //     case "Rejected Applications":
-  //       return type == "color" ? '#C01212' : type == "class" ? 'color_4' : "/assets/leaves/calendar-red.svg"
-  //       break;
-  //     default:
-  //       return type == "color" ? '#458F5A' : type == "class" ? 'color_3' : "/assets/leaves/calendar-green.svg"
-  //   }
-  // }
-
   getCircleColor(data){
     if(data == 'Total Leaves'){
       return '#6A12D71A'
@@ -386,7 +381,8 @@ export class LeaveApplicationPage implements OnInit {
     component: LeaveTypeComponent,
     cssClass: this.db.ismobile ? 'job-detail-popup' : 'filter-popup',
     componentProps: {
-      title:'Leave Type' 
+      title:'Leave Type',
+      employee_id: this.leave_form.get('employee_id') && this.leave_form.get('employee_id').value ? this.leave_form.get('employee_id').value: ''
     },
   });
   await modal.present();
@@ -395,7 +391,33 @@ export class LeaveApplicationPage implements OnInit {
   if(val && val.data){
     this.leave_form.get('leave_type').setValue(val.data.name)
     this.is_maternity = val.data.is_maternity ? val.data.is_maternity : 0;
+    this.is_special_leave = val.data.is_special_leave ? val.data.is_special_leave : 0;
+    this.is_paternity = val.data.is_paternity ? val.data.is_paternity : 0;
+    this.total_allocation = val.data.total_allocation ? val.data.total_allocation : 0;
+  }
+  }
 
+  async open_dropdown_emp() {
+    const modal = await this.modalCtrl.create({
+    component: LeaveTypeComponent,
+    cssClass: this.db.ismobile ? 'job-detail-popup' : 'filter-popup',
+    componentProps: {
+      title:'Employee',
+      type:'emp' 
+    },
+  });
+  await modal.present();
+  const val = await modal.onWillDismiss();
+  console.log(val)
+  if(val && val.data){
+    this.leave_form.get('employee_id').setValue(val.data.name)
+    this.leave_form.get('employee_name').setValue(val.data.employee_name)
+    this.leave_form.get('leave_type').setValue('')
+    this.leave_form.get('to_date').setValue('')
+    this.leave_form.get('from_date').setValue('')
+    this.leave_form.get('total_leave_days').setValue('')
+    this.leave_form.get('reason').setValue('')
+    this.leave_preview = [];
   }
   }
 
@@ -561,6 +583,9 @@ export class LeaveApplicationPage implements OnInit {
       this.leave_form.get('total_leave_days').setValue(180)
       // data.from_date 
     }
+    // else if(each == 'to_date' && (this.is_paternity || this.is_special_leave)){
+    //   this.leave_form.get('total_leave_days').value >= this.total_allocation ?'':`Total Allocation leave for ${this.total_allocation} days`
+    // }
 
 
   }

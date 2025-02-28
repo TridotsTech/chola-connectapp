@@ -12,6 +12,7 @@ export class LeaveTypeComponent  implements OnInit {
   @Input() title:any;
   @Input() type:any;
   @Input() datas:any;
+  @Input() employee_id:any;
   list_values:any=[];
   constructor(public modalCtrl: ModalController, public db: DbService) { }
 
@@ -23,6 +24,8 @@ export class LeaveTypeComponent  implements OnInit {
       this.get_data()
     else if(this.type == 'employee')
       this.get_data_employee()
+    else if(this.type == 'emp')
+      this.get_data_emp()
   }
 
   get_leave_type() {
@@ -32,7 +35,7 @@ export class LeaveTypeComponent  implements OnInit {
     const day = String(currentDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     let data = {
-     "employee_id":localStorage['employee_id'],
+     "employee_id":this.employee_id ? this.employee_id : localStorage['employee_id'],
      "posting_date":formattedDate
     };
     this.db.leave_remaining_balance(data).subscribe((res: any) => {
@@ -68,6 +71,22 @@ export class LeaveTypeComponent  implements OnInit {
       // search_text: '',
     };
     this.db.get_applicable_employees(data).subscribe((res: any) => {
+      console.log(res);
+      this.list_values = res.message
+    },
+      (error) => {
+        
+      }
+    );
+  }
+
+  get_data_emp(){
+    let data = {
+      employee_id: localStorage['employee_id'],
+      page_no: 1,
+      page_length: 100,
+    };
+    this.db.get_manager_team_members(data).subscribe((res: any) => {
       console.log(res);
       this.list_values = res.message
     },

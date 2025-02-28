@@ -7,7 +7,8 @@
   </app-leave-detail>
 
   <div class="body" *ngIf="!skeleton && employee_details && !leave_detail">
-    <div *ngIf="leave_dashboard && leave_dashboard.length > 0" class="d__flex w-100 section">
+    
+    <div *ngIf="leave_dashboard && leave_dashboard.length > 0 && (!db.show_selfView || db.selfView)" class="d__flex w-100 section">
       <!-- [ngStyle]="{'background': getCircleColor(item.label)}" -->
       <div class="box_1"  *ngFor="let item of leave_dashboard">
         <div class="m-7 d__flex just-s">
@@ -22,6 +23,30 @@
     <div class="section_3">
       <form [formGroup]="leave_form">
         <p class="error_msg" *ngIf="overlapp_msg" [innerHTML]="overlapp_msg"></p>
+        <div *ngIf="(db.show_selfView && !db.selfView)">
+          <div class="pb-10">
+            <label for="total_leave_days" class="pb-10">Employee ID <span class="impt-star"> *</span></label>
+            <!-- <p class="title">Employee ID <span class="impt-star"> *</span></p> -->
+            <div class="custom-input">
+              <ion-input (click)="open_dropdown_emp()" type="text" placeholder="Employee ID" formControlName="employee_id" name="employee_id"></ion-input>
+            </div>
+            <p class="impt-star pt-5" *ngIf="submitted && !employee_id.valid && employee_id.errors.required">Employee ID is required</p>
+          </div>
+          <div class="pb-10">
+            <label for="total_leave_days" class="pb-10">Employee Name <span class="impt-star"> *</span></label>
+            <!-- <p class="title">Employee Name <span class="impt-star"> *</span></p> -->
+            <div class="custom-input">
+              <ion-input type="text" [readonly]="true" placeholder="Employee Name" formControlName="employee_name" name="employee_name"></ion-input>
+            </div>
+            <p class="impt-star pt-5" *ngIf="submitted && !employee_name.valid && employee_name.errors.required">Employee Name is required</p>
+          </div>
+        </div>
+        <!-- <div *ngIf="leave_form.value.total_leave_days" class="pb-10">
+          <label for="total_leave_days" class="pb-10">Total Leave Days <span class="impt-star"> *</span></label>
+          <div class="custom-input">
+            <ion-input aria-disabled="true" type="text" placeholder="Total Leave Days" name="total_leave_days" formControlName="total_leave_days" class="form-input" readonly></ion-input>
+          </div>
+        </div> -->
         <div class="pb-10">
           <label for="leave_type" class="pb-10">Leave Type <span class="impt-star"> *</span></label>
           <div class="custom-input d__flex">
@@ -78,7 +103,7 @@
             <ion-input aria-disabled="true" type="text" placeholder="Total Leave Days" name="total_leave_days" formControlName="total_leave_days" class="form-input" readonly></ion-input>
           </div>
         </div>
-        <div *ngIf="is_maternity" class="image-div_">
+        <div *ngIf="is_maternity || is_special_leave || is_paternity" class="image-div_">
           <label for="total_leave_days" class="pb-10">Attach <span class="impt-star"> *</span></label>
           <input #file_upload class="image-d" (change)="changeListener($event)" type="file" [formControlName]="image" class="form-input">
           <div [class.attached]="file_url" class="browser d__flex">
@@ -91,7 +116,7 @@
           </div> 
         </div>
         
-        <div class="pb-10 leavePreview" *ngIf="leave_preview && leave_preview.length != 0">
+        <div class="pb-10 leavePreview" *ngIf="leave_preview && leave_preview.length != 0 && (!is_paternity && !is_special_leave)">
           <label for="reason" class="pb-10">Leave Preview</label>
           <div *ngFor="let item of leave_preview" class="boxes_">
             <div class="d__flex just-s">
@@ -102,7 +127,7 @@
             </div>
             <div class="d__flex just-s">
               <p class="m-0 fnt-14 d__flex gap-5"><span class="gray_clr">Count: </span> {{item.count}}</p>
-              <div *ngIf="item.count != 'Weekly Off' && item.count != 'Holiday' && item.count != 'Applied'">
+              <div *ngIf="item.count != 'Weekly Off' && item.count != 'Holiday' && item.count != 'Applied' && item.count != 'Attendance Marked'">
                 <ion-select aria-label="Duration" interface="popover" (ionChange)="changeDuration(item,$event)" placeholder="Duration" mode="ios" [value]="item.duration">
                   <ion-select-option *ngFor="let types of durationType" [value]="types.name">{{types.name}}</ion-select-option>
                 </ion-select>

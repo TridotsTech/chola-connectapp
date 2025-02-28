@@ -5,7 +5,7 @@
     <div>
       <h6 class="m-0 name_">{{item.name}} <span *ngIf="item.remaining_balance">({{item.remaining_balance}})</span></h6>
     </div>
-    <ion-icon name="checkmark-circle-outline"></ion-icon>
+    <ion-icon name="chevron-forward-outline"></ion-icon>
   </div>
 </div>
 
@@ -14,7 +14,7 @@
     <div>
       <h6 class="m-0 name_">{{item}}</h6>
     </div>
-    <ion-icon name="checkmark-circle-outline"></ion-icon>
+    <ion-icon name="chevron-forward-outline"></ion-icon>
   </div>
 </div>
 
@@ -23,7 +23,7 @@
     <div>
       <h6 class="m-0 name_">{{item.name}}</h6>
     </div>
-    <ion-icon name="checkmark-circle-outline"></ion-icon>
+    <ion-icon name="chevron-forward-outline"></ion-icon>
   </div>
 </div>
 <div class="box_sec" *ngIf="type == 'document'">
@@ -31,6 +31,14 @@
     <div>
       <h6 class="m-0 name_">{{item.name}}</h6>
     </div>
-    <ion-icon name="checkmark-circle-outline"></ion-icon>
+    <ion-icon name="chevron-forward-outline"></ion-icon>
+  </div>
+</div>
+<div class="box_sec" *ngIf="type == 'emp'">
+  <div (click)="add(item)" *ngFor="let item of list_values" class="d__flex mouse boxs">
+    <div>
+      <h6 class="m-0 name_">{{item.employee_name}}</h6>
+    </div>
+    <ion-icon name="chevron-forward-outline"></ion-icon>
   </div>
 </div>

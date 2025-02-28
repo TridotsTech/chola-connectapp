@@ -624,6 +624,7 @@ export class DbService {
         }
         localStorage['default_values'] = JSON.stringify(this.default_values);
         this.check_project_manager(res.roles);
+        localStorage['reportView'] =res.reporting_person
         this.roles = res.roles;
         // this.check_project_manager(this.permission_details);
         this.checkMobileMenu();
@@ -956,6 +957,18 @@ export class DbService {
     else if(localStorage['show_selfView'] && endpoint.includes("go1_apps.go1_apps.api.get_leave_application")){
       // let employee: any = {};
         data.employee_id = localStorage['employee_id'];
+        // if(this.show_selfView && !this.selfView && data.search_data && data.search_data.status == 'Rejected'){
+        // let employee:any={};
+        // delete data['employee_id']
+        //  employee = { employee_id: ['!=', localStorage['employee_id']] };
+        //  if (data.search_data != '') {
+        //   // let parameters = (data.search_data == '') ? {} : JSON.parse(data.search_data)
+        //     data.search_data = { ...parameters, ...employee }
+        //     data.search_data = JSON.stringify(data.search_data)
+        // } else if (typeof (data.search_data) == 'object') {
+        //   data.search_data = { ...data.search_data, ...employee };
+        // }
+        // }
       // if (typeof (data.search_data) == 'string'  || data.search_data == '') {
       //   let parameters = (data.search_data == '') ? {} : JSON.parse(data.search_data)
       //     data.search_data = { ...parameters, ...employee }

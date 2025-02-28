@@ -60,12 +60,12 @@ export class LeaveApplicationDetailPage implements OnInit {
   skeleton_value = { doc_type: "Leave Application", tabs: true, dashboard: 'dashboard', enable_dashboard: true, date_dash: false, dash_len: [0, 1, 2, 3], tabs_len: [0, 1] }
   skeleton_value_mobile = { doc_type: "Leave Application", tabs: true, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: true, dash_len: [0, 1], dashboard_count: false, filter_len: [0, 1, 2, 3, 4], search: false, month_filter: true, list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4], list_len_count: 10 }
 
-  selectedTabSec = 'Pending'
+  selectedTabSec :any;
   constructor(public db: DbService, private route: ActivatedRoute, public modalCtrl: ModalController, public router: Router, public alertController: AlertController,private cdr: ChangeDetectorRef,private ngZone: NgZone) { }
 
   ngOnInit() {
 
-    this.selectedTabSec = 'Pending'
+    this.selectedTabSec = (!this.db.show_selfView || this.db.selfView) ?  'Pending' : 'Awaiting Approval'
     this.db.triggerSidemenu.subscribe(res => {
       if (res && res == 'loadPermission') {
         let route = this.db.permission_details.find((r) => { return r.page == 'Leave Application' });
@@ -135,13 +135,17 @@ export class LeaveApplicationDetailPage implements OnInit {
         this.db.selected_list = localStorage['selected_list'] != "undefined" ? JSON.parse(localStorage['selected_list']) : null;
       }
     }
-    if(this.selectedTabSec == 'Pending'){
+    if(this.selectedTabSec == 'Pending' && (!this.db.show_selfView || this.db.selfView)){
       this.getLeaveRequestList('Pending');
     }
     if (this.db.hr_manager_role) {
       this.options = [{ name: "Awaiting Approval", route: "awaiting-approval" }]
+      // ,{ name: "Rejected", route: "Rejected" }
       // this.options = [{ name: "Pending", route: "Open" }, { name: "Awaiting Approval", route: "awaiting-approval" },{ name: "Approved", route: "Approved" }]
       this.employee = false
+      if(this.selectedTabSec == 'Awaiting Approval'){
+        this.getLeaveRequestList('Awaiting Approval');
+      }
     }
   }
 
@@ -318,6 +322,9 @@ export class LeaveApplicationDetailPage implements OnInit {
     if(this.selectedTabSec == 'Awaiting Approval'){
       this.getLeaveRequestList('Awaiting Approval');
     }
+
+    if(this.selectedTabSec == 'Rejected')
+      this.leave_details(this.employee_id);
 
     setTimeout(() => {
       this.content.scrollToTop(0);

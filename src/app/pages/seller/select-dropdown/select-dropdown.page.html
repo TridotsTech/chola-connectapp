@@ -38,7 +38,7 @@
           <h6 class="m-0 name_">{{item.label ? item.label : item.name}}</h6>
           <!-- <h6 class="m-0 name_">{{item.name}}</h6> -->
         </div>
-        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
       </div>
     </div>
     <div *ngIf="(type != 'Lead' || type != 'Opportunity')">
@@ -48,7 +48,7 @@
         <h6 class="m-0 name_">{{type == 'Department' ? item.name : item.label ? item.label : item.name ? item.name : item.address ? item.address : item.lable}}</h6>
         <!-- <h6 *ngIf="type == 'Account'" class="m-0 name_">{{item.value ? item.value : ''}}</h6> -->
         <!-- <h6 class="m-0 name_">{{item.lable}}</h6> -->
-        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
       </div>
     </div>
   </div>
