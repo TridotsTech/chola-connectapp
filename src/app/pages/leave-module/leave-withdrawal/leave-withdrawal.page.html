@@ -30,11 +30,13 @@
       <div class="pb-10 leavePreview">
         <label for="reason" class="pb-10">Leave Preview</label>
         <div *ngIf="leave_preview && leave_preview.length != 0">
-          <div *ngFor="let item of leave_preview; let i = index" class="boxes_" (click)="editLeaveLeavePreview(leave_preview,'Leave Preview',item,i)">
+          <!-- (click)="editLeaveLeavePreview(leave_preview,'Leave Preview',item,i)" -->
+          <div *ngFor="let item of leave_preview; let i = index" class="boxes_" (click)="addLeaveWithdrawal(item)">
             <div class="d__flex just-s">
               <div class="d__flex gap-5">
-                <div (click)="eventPropagation($event)" class="checkBox">
-                  <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+                <!-- (click)="eventPropagation($event)"  (ionChange)="addLeaveWithdrawal($event, item)"-->
+                <div class="checkBox">
+                  <ion-checkbox [checked]="item['isChecked']" ></ion-checkbox>
                 </div>
                 <!-- <span class="fnt_w500">To</span> {{item.to_date | date: 'MMM d, y'}} -->
                 <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} </p>
@@ -64,11 +66,12 @@
       <div class="pb-10 leavePreview">
         <label for="reason" class="pb-10">Leave Withdraw Approved List</label>
         <div *ngIf="leave_withdarawal_list && leave_withdarawal_list.length != 0">
-          <div *ngFor="let item of leave_withdarawal_list; let i = index" class="boxes_" (click)="editLeaveLeavePreview(leave_withdarawal_list,'Leave Withdraw',item,i)">
+          <div *ngFor="let item of leave_withdarawal_list; let i = index" class="boxes_" (click)="addLeaveWithdrawal(item)">
             <div class="d__flex just-s">
               <div class="d__flex gap-5">
-                <div (click)="eventPropagation($event)" class="checkBox">
-                  <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+                <div  class="checkBox">
+                  <!-- (ionChange)="addLeaveWithdrawal($event, item)" (click)="eventPropagation($event)" (click)="editLeaveLeavePreview(leave_withdarawal_list,'Leave Withdraw',item,i)" -->
+                  <ion-checkbox [checked]="item['isChecked']" ></ion-checkbox>
                 </div>
                 <!-- <span class="fnt_w500">To</span> {{item.to_date | date: 'MMM d, y'}} -->
                 <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} </p>
@@ -97,11 +100,12 @@
       <div class="pb-10 leavePreview">
         <label for="reason" class="pb-10">Leave Withdraw Open List</label>
         <div *ngIf="leave_withdarawal_open_list && leave_withdarawal_open_list.length != 0">
-          <div *ngFor="let item of leave_withdarawal_open_list; let i = index" class="boxes_" (click)="editLeaveLeavePreview(leave_withdarawal_open_list,'Leave Withdraw',item,i)">
+          <div *ngFor="let item of leave_withdarawal_open_list; let i = index" class="boxes_" (click)="addLeaveWithdrawalopen(item)">
             <div class="d__flex just-s">
               <div class="d__flex gap-5">
-                <div (click)="eventPropagation($event)" class="checkBox">
-                  <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawalopen($event, item)"></ion-checkbox>
+                <!-- (click)="editLeaveLeavePreview(leave_withdarawal_open_list,'Leave Withdraw',item,i)"  (click)="eventPropagation($event)"  (ionChange)="addLeaveWithdrawalopen($event, item)" -->
+                <div class="checkBox">
+                  <ion-checkbox [checked]="item['isChecked']" ></ion-checkbox>
                 </div>
                 <!-- <span class="fnt_w500">To</span> {{item.to_date | date: 'MMM d, y'}} -->
                 <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} </p>

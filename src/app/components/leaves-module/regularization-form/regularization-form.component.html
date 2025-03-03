@@ -17,19 +17,19 @@
     <div (click)="eventPropagation($event)" class="checkBox f5">
       <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
     </div>
-    <div class="f95 pr-10">
+    <div (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i)" class="f95 pr-10">
       <div class="d__flex just-s">
         <div class="d__flex gap-5">
-          <p (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i) " class="m-0 fnt-14 d__flex gap-5">
+          <p  class="m-0 fnt-14 d__flex gap-5">
             
             {{ item.date | date : "MMM d, y" }}
           </p>
         </div>
-        <div class="d__flex" (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i)">
+        <div class="d__flex">
           <p class="m-0 fnt-14 d__flex gap-5">{{ item.duration }}</p>
         </div>
       </div>
-      <div class="d__flex just-s" (click)="editLeaveLeavePreview(missing_days, 'Leave Preview', item, i)">
+      <div class="d__flex just-s">
         <p class="m-0 fnt-14 d__flex gap-5">
           
           {{ item.in_time | date : "h:mm a" }}

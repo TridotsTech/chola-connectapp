@@ -125,16 +125,16 @@ export class LeaveWithdrawalPage implements OnInit {
     item['isChecked'] =! item['isChecked']
   }
 
-  addLeaveWithdrawal(event, item){
-    event.stopPropagation();
+  addLeaveWithdrawal(item){
+    // event.stopPropagation();
     // console.log(item,'item')
     item['isChecked'] =! item['isChecked']
 
     let selectedArray = this.leave_withdarawal_list.filter(res => {return res['isChecked'] == true});
     // console.log(selectedArray,'selectedArray')
   }
-  addLeaveWithdrawalopen(event, item){
-    event.stopPropagation();
+  addLeaveWithdrawalopen( item){
+    // event.stopPropagation();
     item['isChecked'] =! item['isChecked']
   }
 

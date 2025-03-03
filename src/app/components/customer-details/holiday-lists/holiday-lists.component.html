@@ -54,7 +54,7 @@
       </div>
 
       <!-- No Delete this class="attendance_dashboard" -->
-      <div *ngIf="db.ismobile && list_data.cards && list_data.cards.length != 0" class="holiday_dashboard">
+      <div *ngIf="db.ismobile && list_data.cards && list_data.cards.length != 0 && holiday_type == 'Calendar' " class="holiday_dashboard">
         <div *ngFor="let item of list_data.cards.slice(0, 2);let i = index" class="over_flow" [ngStyle]="{'background': getBoxColor(item)}">
           <div class="w-100 d__flex just-s first_sec mb-10">
             <ion-icon [src]="getHolidayIcon(item)" class="fnt-30"></ion-icon>

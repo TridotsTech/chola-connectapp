@@ -84,7 +84,7 @@
               }}</span>
           </p>
         </div>
-        <p class="m-0 fnt-12">{{ attendance_info.timeAgo }}</p>
+        <p *ngIf="attendance_info.in_time" class="m-0 fnt-12">{{ attendance_info.timeAgo }}</p>
       </div>
     </div>
 
