@@ -1,14 +1,6 @@
-<!-- <ion-header translucent="true" *ngIf="db.ismobile">
-  <ion-toolbar >
-    <ion-back-button slot="start"  defaultHref="/tabs/home" (click)="db.opened_login_modal?modalCtrl.dismiss():''"></ion-back-button>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
   <div *ngIf="!db.guest_form" [ngClass]="!db.ismobile?'main-container':''"
     [class.height]="!db.ismobile && !db.registerform">
-
-
     <div class="form-container">
       <div class="container__from">
         <div class="mobile_logo mouse txt-c">

@@ -54,8 +54,6 @@ export class FiltersComponent implements OnInit {
   // @ViewChild('select', { static: false }) select: NgSelectComponent | any;
   @ViewChildren('select') select: QueryList<NgSelectComponent> | any;
   search_value = {};
-  first_name = 'Dinesh'
-  last_name = 'kumar'
   generate_val = ''
   mobile_error = false;
   link_values: any = {}
@@ -78,24 +76,6 @@ export class FiltersComponent implements OnInit {
       this.filterLinkfields();
       this.removeFilter()
     }
-
-
-    // if(this.date_filter && this.isNotModal){
-    //   this.generateHighlightedDates();
-    // }
-
-    // this.doctype ? this.getSearch() : null;
-
-    // let val = this;
-    // window.addEventListener('click', function(e:any){ 
-    //   let el = document.getElementById('clickbox') as HTMLElement 
-    //   if (el.contains(e.target)){
-    //     console.log('innside');
-    //   } else{
-    //     console.log('outside');
-    //     //  val.hideDiv();
-    //   }
-    // });
 
     if (this.search_data ) {
       this.changeDataFormat()
@@ -127,16 +107,6 @@ export class FiltersComponent implements OnInit {
   }
 
 
-  // getSearch(){
-  //   this.db.search_fields({ doctype: this.doctype }).subscribe((res) => {
-  //     if (res.status && res.status == 'failed') {
-  //       this.search_filter = [];
-  //     } else {
-  //       this.search_filter = res['message'];
-  //     }
-  //     this.db.search_filter = this.search_filter;
-  //   });
-  // }
 
   @HostListener('window:resize', ['$event'])
   private func() {
@@ -396,8 +366,6 @@ export class FiltersComponent implements OnInit {
   }
 
   get_link_values(item) {
-    // console.log('123456');
-
     if (this.link_w_fields_name && this.link_w_fields_name.length != 0) {
       this.link_w_fields_name.map((res) => {
         this.db.all_link_opts[res.doctype + res.fieldname + 'no_products'] = false;
@@ -405,20 +373,15 @@ export class FiltersComponent implements OnInit {
         this.db.all_link_opts[res.doctype + res.fieldname + 'search_text'] = '';
       });
     }
-
-
     if (this.link_w_fields_name && this.link_w_fields_name.length != 0) {
       this.link_w_fields_name.map((res) => {
         // this.db.form_values = this.store_old_data;
-
         if (item.options == res.doctype && !this.db.all_link_opts[res.doctype + res.fieldname + 'no_products']) {
           this.db.get_master_value(res.doctype, res.fieldname);
         }
         // this.db.get_master_value(res.doctype,res.fieldname);
       });
     }
-
-
     // console.log(this.db.all_link_opts,"all_link_opts")
   }
 

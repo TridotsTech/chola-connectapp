@@ -1,7 +1,5 @@
 <ion-tabs >
   <ion-tab-bar *ngIf="db.show_tabs" >
-    <!-- (click)="onClick(item.route)"  [routerLink]="item.route ? item.route : null" [tab]="item.title == 'Add' ? null :  item.tab"-->
-    
     <ion-tab-button *ngFor="let item of db.tabs_items;let i = index" [class.second-item]="i == 1" (click)="item.title == 'Add' ? null : close_fab()"
       [class.shop]="item.title == 'Add'" [routerLink]="item.route" [tab]="item.title == 'Add' ? null : item.tab"
       [ngStyle]= "db.set_primary_color(db.sales_dashboard)">
@@ -10,118 +8,24 @@
       <ion-label *ngIf="item.title != 'Add'" class="fnt-12"
         [class.active]="db.path == item.route">{{item.title}}</ion-label>
     </ion-tab-button>
-
-    <!-- <ion-tab-button *ngFor="let item of db.tabs_items;let i = index" [class.second-item]="i == 1" (click)="navigateTo(item)" [routerLinkActive]="'ion-active'"
-      [class.shop]="item.title == 'Add'"
-      [ngStyle]= "db.set_primary_color(db.sales_dashboard)">
-      <ion-icon *ngIf="item.title != 'Add'" class="icon"  [src]="db.path == item.route ? item.active_icon : item.icon"></ion-icon>
-      <ion-label *ngIf="item.title != 'Add'" class="fnt-12" [class.active]="db.path == item.route">{{item.title}}</ion-label>
-    </ion-tab-button> -->
-
   </ion-tab-bar>
   
   <ion-backdrop *ngIf="db.hasClass1" (ionBackdropTap)="fab()"></ion-backdrop>
-  
+
   <ion-fab *ngIf="db.centerFabShow && db.show_tabs && db.ismobile" class="ion-fab_home" slot="fixed" horizontal="center" vertical="bottom" #fablist [ngStyle]= "db.set_primary_color(db.sales_dashboard)">
     <ion-fab-button class="ion-fab-button_" (click)="enabled_fab()" id="fab-list">
       <ion-icon class="added" name="add"></ion-icon>
     </ion-fab-button>
-
-    <!-- Sales Manager -->
-    <!-- <ion-fab-list side="top" *ngIf="db.sales_manager_role">
-      <div class="fab_div">
-        <div (click)="test_navigate()" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/icon/fab-plus/Lead-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Lead</h6>
-        </div>
-        <div (click)="test_navigate1('/forms/opportunity')" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/icon/fab-plus/Opportunity-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Opportunity</h6>
-        </div>
-        <div (click)="test_navigate1('/forms/quotation')" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/icon/fab-plus/Quotation-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Quotation</h6>
-        </div>
-        <div (click)="test_navigate1('/forms/customer')" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/icon/fab-plus/Customer-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Customer</h6>
-        </div>
-        <div (click)="test_navigate1('/messages')" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/icon/fab-plus/whatsapp-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Whatsapp</h6>
-        </div>
-      </div>
-    </ion-fab-list> -->
-
     <!-- HR manager -->
-
     <ion-fab-list side="top" *ngIf="db.hr_manager_role || db.employee_role">
       <div class="fab_div">
-
-        <!-- <div class="buttonsSection">
-          <div class="d__flex buttons_ mouse" *ngFor="let data of (db.hr_manager_role ? hrEmployeePopUp : employeePopUp)" (click)="test_navigate1(data.route)">
-            <ion-icon [src]="get_home_icon(data.doctype)"></ion-icon>
-            <h6 class="h-6 webkit-text" [style.--line]="1">{{data.label}}</h6>
-          </div>
-        </div> -->
-
         <div *ngFor="let item of hrEmployeePopUp" (click)="test_navigate1(item.route)" class="sec">
           <ion-fab-button class="fab-1">
             <ion-icon class="icon_1" [src]="item.icon"></ion-icon>
           </ion-fab-button>
           <h6 class="m-0 title">{{item.label}}</h6>
         </div>
-
       </div>
     </ion-fab-list>
-
-    <!-- <ion-fab-list side="top" *ngIf="db.employee_role">
-      <div class="fab_div">
-        <div *ngFor="let item of employeePopUp" (click)="test_navigate1(item.route)" class="sec">
-          <ion-fab-button class="fab-1">
-            <ion-icon class="icon_1" [src]="item.icon"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">{{item.label}}</h6>
-        </div>
-       </div>
-    </ion-fab-list> -->
-
-
-    <!-- Project Role -->
-
-    <ion-fab-list side="top" *ngIf="db.project_role">
-      <div class="fab_div">
-       
-        <div (click)="test_navigate1('forms/task')" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/dashboard/Task-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Task</h6>
-        </div>
-        <div (click)="test_navigate1('forms/bug-sheet')" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/dashboard/BugSheet-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Bug Sheet</h6>
-        </div>
-        <div (click)="test_navigate1('timesheet-detail')" class="sec">
-          <ion-fab-button>
-            <ion-icon class="icon_" src="/assets/dashboard/Project-active.svg"></ion-icon>
-          </ion-fab-button>
-          <h6 class="m-0 title">Timesheet</h6>
-        </div>
-      </div>
-    </ion-fab-list>
-
   </ion-fab>
 </ion-tabs>

@@ -104,6 +104,7 @@ import { CommonPriorityComponent } from './common-priority/common-priority.compo
 import { TicketFeedbackComponent } from './ticket-feedback/ticket-feedback.component';
 import { JobReferalFiltersComponent } from './job-referal-filters/job-referal-filters.component';
 import { NewVoluntaryPfComponent } from './new-voluntary-pf/new-voluntary-pf.component';
+import { DownloadElvluationComponent } from './download-elvluation/download-elvluation.component';
 
 @NgModule({
   declarations: [
@@ -201,7 +202,8 @@ import { NewVoluntaryPfComponent } from './new-voluntary-pf/new-voluntary-pf.com
     CommonPriorityComponent,
     TicketFeedbackComponent,
     JobReferalFiltersComponent,
-    NewVoluntaryPfComponent
+    NewVoluntaryPfComponent,
+    DownloadElvluationComponent
   ],
   imports: [
     CommonModule,

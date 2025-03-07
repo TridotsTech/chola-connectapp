@@ -1,0 +1,44 @@
+.letter_sec {
+    padding: 0;
+    border: 1px solid #f1f1f1;
+    background: #fff;
+    margin: 10px;
+    border-radius: 10px;
+ 
+    .d1 {
+       padding: 7px 10px;
+    }
+ 
+    .f1 {
+       flex: 0 0 13%;
+    }
+ 
+    .f2 {
+       flex: 0 0 65%;
+    }
+ 
+ 
+    .d2 {
+       padding: 3px 10px;
+    }
+ 
+    .d3 {
+       background: #e9f7fb;
+       padding: 5px 10px;
+       border-bottom-left-radius: 10px;
+       border-bottom-right-radius: 10px;
+ 
+       .d_btn {
+          color: var(--primary-color);
+       }
+ 
+       .v_btn {
+          display: flex;
+       }
+ 
+       .pr20 {
+          padding-right: 20px;
+       }
+    }
+ 
+ }

@@ -170,9 +170,6 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     this.db.currentYear = year
     this.currentYear = year
     this.today = new Date();
-    // this.db.selected_project_name = '';
-    // this.db.full_width = true;
-    // this.search_data = {}
     this.db.enabled_hidden_fields = false;
     if (this.db.kanban) {
       this.kanban = this.db.kanban;
@@ -309,20 +306,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
           }
         }
 
-        // if (res && res['route_1'] && res['route_2']) {
-        //   this.supplier_route = true;
-        //   let search_data = { supplier: res['route_2'] };
-        //   this.search_data = JSON.stringify(search_data);
-        //   this.get_tempate_and_datas(this.db.selected_list.page);
-        //   this.supplier_id = res['route_2'];
-        // }
-
-        // && res['route_1'] != 'Lead'
-        // || res['route_1'] == 'Lead'
-        // || res['route_1'] == 'Lead'
-        // && res['route_1'] != 'Opportunity'
-        // || res['route_1'] == 'Opportunity' 
-        // || res['route_1'] == 'Opportunity' 
+       
         if (res && res['route_1'] && res['route_2'] && res['route_1'] != 'project' && res['route_1'] != 'employee' && res['route_1'] != 'salary-slip') {
           if (res['route_1'] == 'Lead' || res['route_1'] == 'Opportunity') {
             this.db.rightSideDetailSection = true;
@@ -366,23 +350,11 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
           }
         }
 
-        // if (res && ((res['route_1'] != 'meeting') && (res['route_1'] != 'tasks'))) {
-        // if (this.check_filter()) {
-        //   this.db.search_fields({ doctype: this.doc_type }).subscribe((res) => {
-        //     if (res.status && res.status == 'failed') {
-        //       this.search_filter = [];
-        //     } else {
-        //       this.search_filter = res['message'];
-        //     }
-        //   });
-        // }
-        // }
+        
       });
 
-      // let that = this
+  
       this.sub = this.db.selectedYearSubject.subscribe((res) => {
-        // console.log('this.db.path ',this.db.path);
-        // console.log('this.db.path ',this.doc_type);
 
         if (this.db.path.includes('/list/salary-slip')) {
           this.doc_type = 'Salary Slip'
@@ -428,9 +400,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
 
     this.sub = this.db.select_drop_down.subscribe((res: any) => {
-      // const topModal = this.modalCtrl.getTop();
-      // res.name != 'ALL' && 
-
+    
       if (this.db.SubjectEvent) {
         if (!this.kanban && res.fieldname == 'project' && this.doc_type == 'Task' && this.db.ismobile) {
 
@@ -488,12 +458,6 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       // this.get_ess_dashboard()
     }
 
-    // this.db.sendTaskSubmit.subscribe(res => {
-    //   if(res == 'Success' && this.db.updateTaskList){
-    //     this.get_tempate_and_datas(this.doc_type);
-    //   }
-    // })
-
     this.db.store_old_pagination = 0;
 
     this.db.clearSearchFilterInList.subscribe(resFilter => {
@@ -530,14 +494,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     this.page_no = 1;
     this.search_data = JSON.stringify(this.search_data)
     this.get_tempate_and_datas('Bug Sheet');
-
-    // this.db.clearSearchFilterInList.subscribe(resFilter => {
-    //   if (resFilter == 'Success' && this.db.clearFilterAccess) {
-    //     this.search_data = {};
-    //     this.page_no = 1;
-    //     this.get_tempate_and_datas('Bug Sheet');
-    //   }
-    // })
+    
   }
 
   receiveBugscreenFilter(eve) {
@@ -2743,10 +2700,6 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     if (data.name) {
       if (data.name == 'Timesheet' && this.db.employee_role) {
         this.openTimeSheet()
-      } else if (data.name == 'Task' && (this.db.hr_manager_role || this.db.project_role)) {
-        this.newTaskForm()
-      } else if (data.name == 'Bug Sheet') {
-        this.openBugQuickForm()
       } else {
         // this.edit_form = 1;
         // if (localStorage['employee_id'] != 'undefined' && this.db.sales_dashboard != 'Stock Manager' && this.doc_type != 'Timesheet') {
@@ -2877,11 +2830,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
     if (this.doc_type == 'Event') {
       this.page_no = 1;
-      // this.skeleton = true;
-      // let data = {
-      //   title: term.detail.value
-      // }
-      // this.search_data = JSON.stringify(data);
+     
       this.search_data = this.search_text;
       this.json_filter['event_category'] = "Meeting"
     } else {
@@ -3770,33 +3719,6 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     // }
   }
 
-  async newTaskForm() {
-    // const modal = await this.modalCtrl.create({
-    //   component: NewTaskFormComponent,
-    //   cssClass: 'newTaskForm',
-    //   enterAnimation: this.db.enterAnimation,
-    //   leaveAnimation: this.db.leaveAnimation,
-    // });
-    // await modal.present();
-    // const { data } = await modal.onWillDismiss();
-  }
-
-  async openBugQuickForm() {
-    // const modal = await this.modalCtrl.create({
-    //   component: BugsheetQuickformComponent,
-    //   cssClass: 'newBugForm',
-    //   // enterAnimation: this.db.enterAnimation,
-    //   // leaveAnimation: this.db.leaveAnimation,
-    // });
-    // await modal.present();
-    // const { data } = await modal.onWillDismiss();
-    // if (data && data == 'Success') {
-    //   // console.log(data)
-    //   this.get_tempate_and_datas('Bug Sheet');
-    // }
-  }
-
-
   leave_app_json = [
     {
       name: "name",
@@ -3904,29 +3826,29 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       { icon: 'list-outline', view: 'Table', isSelected: false },
     ]
 
-    if (this.doc_type == 'Task') {
-      if (!this.db.project_emp_role && this.db.app_name == 'Go1 Project') {
-        // this.viewList[0].isSelected = false;
-        // let tabs = [{ icon: 'image-outline', view: 'Gallery', isSelected: true },{ icon: 'bar-chart-outline', view: 'Kanban', isSelected: false }]
-        // this.viewList = [...tabs,...this.viewList]
-        this.viewList = [
-          { icon: 'image-outline', view: 'Gallery', isSelected: true },
-          { icon: 'grid-outline', view: 'Grid', isSelected: false },
-          { icon: 'list-outline', view: 'Table', isSelected: false },
-          { icon: 'bar-chart-outline', view: 'Kanban', isSelected: false }
-        ]
-      } else {
-        this.viewList[2] = { icon: 'bar-chart-outline', view: 'Kanban', isSelected: false };
-      }
-    }
+    // if (this.doc_type == 'Task') {
+    //   if (!this.db.project_emp_role && this.db.app_name == 'Go1 Project') {
+    //     // this.viewList[0].isSelected = false;
+    //     // let tabs = [{ icon: 'image-outline', view: 'Gallery', isSelected: true },{ icon: 'bar-chart-outline', view: 'Kanban', isSelected: false }]
+    //     // this.viewList = [...tabs,...this.viewList]
+    //     this.viewList = [
+    //       { icon: 'image-outline', view: 'Gallery', isSelected: true },
+    //       { icon: 'grid-outline', view: 'Grid', isSelected: false },
+    //       { icon: 'list-outline', view: 'Table', isSelected: false },
+    //       { icon: 'bar-chart-outline', view: 'Kanban', isSelected: false }
+    //     ]
+    //   } else {
+    //     this.viewList[2] = { icon: 'bar-chart-outline', view: 'Kanban', isSelected: false };
+    //   }
+    // }
 
-    if (this.doc_type == 'Lead') {
-      this.viewList = [
-        { icon: 'grid-outline', view: 'Lead Grid', isSelected: false },
-        { icon: 'list-outline', view: 'Table', isSelected: true },
-        { icon: 'bar-chart-outline', view: 'Kanban', isSelected: false }
-      ]
-    }
+    // if (this.doc_type == 'Lead') {
+    //   this.viewList = [
+    //     { icon: 'grid-outline', view: 'Lead Grid', isSelected: false },
+    //     { icon: 'list-outline', view: 'Table', isSelected: true },
+    //     { icon: 'bar-chart-outline', view: 'Kanban', isSelected: false }
+    //   ]
+    // }
 
     if (this.doc_type == 'Attendance') {
       this.viewList[0].isSelected = false;
@@ -3953,25 +3875,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
     this.db.rightSideDetailSection = false;
 
-    // if(this.doc_type == "Lead"){
-    //   this.toggleKanbans()
-    // }else{
-
-    //   this.db.sendViewType.next(data.view)
-
-    //   if (data.view == 'Kanban') {
-    //     this.kanban = true;
-    //   } else {
-    //     this.kanban = undefined;
-    //     this.db.viewListType = data.view
-    //   }
-
-    //   if (this.doc_type == 'Task' && data.view == 'Table') {
-    //     this.skeleton = true;
-    //     this.page_no = 1;
-    //     this.get_tempate_and_datas('Task')
-    //   }
-    // }
+   
 
 
 

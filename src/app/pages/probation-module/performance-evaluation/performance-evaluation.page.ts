@@ -44,6 +44,11 @@ export class PerformanceEvaluationPage implements OnInit {
       evaluation_date: new FormControl('',[Validators.required]),
       overall_comments: new FormControl('',[Validators.required]),
       no_more_extention: new FormControl(0),
+      grade: new FormControl(''),
+      confirmation_due_date: new FormControl(''),
+      probation_days: new FormControl(''),
+      band: new FormControl(''),
+      date_of_joining: new FormControl(''),
     });
 
     this.db.select_drop_down.subscribe((res: any) => {
@@ -157,32 +162,40 @@ export class PerformanceEvaluationPage implements OnInit {
   ]
 
   async open_dropdown() {
-    // const modal = await this.modalCntrl.create({
-    //     component: LeaveTypeComponent,
-    //     cssClass: this.db.ismobile ? 'job-detail-popup' : 'filter-popup',
-    //     componentProps: {
-    //       title:'Employee',
-    //       type:'employee' 
-    //     },
-    //   });
-    //   await modal.present();
-    //   const val = await modal.onWillDismiss();
-    //   console.log(val)
-    //   if(val && val.data){
-    //     // this.editFormValues.leave_type = val.data.name
-    //   }
-    let val = {
-      type: 'Employee',
-      fieldname: 'employee',
-      fieldname_value: '',
-      selected_value: this.evaluation_form.value.employee_code,
-      send_all_value: true
-    }
+    const modal = await this.modalCntrl.create({
+        component: LeaveTypeComponent,
+        cssClass: this.db.ismobile ? 'job-detail-popup' : 'filter-popup',
+        componentProps: {
+          title:'Employee',
+          type:'employee' 
+        },
+      });
+      await modal.present();
+      const val = await modal.onWillDismiss();
+      console.log(val)
+      if(val && val.data){
+        this.evaluation_form.get('employee_id').setValue(val.data.name)
+        this.evaluation_form.get('employee_name').setValue(val.data.employee_name)
+        this.evaluation_form.get('grade').setValue(val.data.grade)
+        this.evaluation_form.get('date_of_joining').setValue(val.data.date_of_joining)
+        this.evaluation_form.get('band').setValue(val.data.custom_band)
+        this.evaluation_form.get('confirmation_due_date').setValue(val.data.custom_confirmation_due_date)
+        this.evaluation_form.get('probation_days').setValue(val.data.custom_probation_days)
+        // this.evaluation_form.get('total_capitalized_value').setValue(val.data.custom_probation_extension_end_date)
+        // this.evaluation_form.get('total_capitalized_value').setValue(val.data.custom_probation_extension_start_date)
+      }
+    // let val = {
+    //   type: 'Employee',
+    //   fieldname: 'employee',
+    //   fieldname_value: '',
+    //   selected_value: this.evaluation_form.value.employee_code,
+    //   send_all_value: true
+    // }
 
-    let selected_value = {
-      doctype: "Employee"
-    }
-    this.db.open_drop_down_options(val.type, val.fieldname, val.fieldname_value, selected_value)
+    // let selected_value = {
+    //   doctype: "Employee"
+    // }
+    // this.db.open_drop_down_options(val.type, val.fieldname, val.fieldname_value, selected_value)
   }
 
   datePickerChange(fieldname,event){
@@ -222,8 +235,7 @@ export class PerformanceEvaluationPage implements OnInit {
   get_rating(item,rating){
     // this.rating_value = rating;
     item['rating'] = rating
-    // console.log(item)
-    // console.log(rating)
+   
   }
 
   submit_approval(type){

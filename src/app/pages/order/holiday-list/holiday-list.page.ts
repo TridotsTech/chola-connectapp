@@ -206,17 +206,6 @@ export class HolidayListPage implements OnInit {
     this.list_data['data'] = [];
     this.holiday_type = eve.name
     this.get_holidays();
-    // if (eve.route == "my") {
-    //   this.employee = true
-    // } else {
-    //   this.employee = false
-    //   this.search_data = { status: eve.route }
-    //   this.status = eve.name == 'All' ? '' : eve.name
-    // }
-    // this.leave_details(this.employee_id);
-    // setTimeout(() => {
-    //   this.content.scrollToTop(0);
-    // }, 700)
   }
 
   menu_name_month(eve){

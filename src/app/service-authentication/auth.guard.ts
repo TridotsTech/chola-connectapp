@@ -15,23 +15,6 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     if(this.auth.IsLoggedIn()){
-
-      // console.log(this.auth.Ispage())
-      // checkTabItems()
-      // console.log('login')
-      // console.log(currentUrl);
-      // this.db.side_tab_dashboard.map(res=>{
-      // console.log(res.route);
-      //   if(currentUrl.includes(res.route))
-      //   {
-      //     break;
-      //   }
-      //   else{
-      //     this.router.navigate(['dashboard'])
-      //     return false
-      //   }
-      // })
-
       return true;
     }
     this.router.navigate(['register'])

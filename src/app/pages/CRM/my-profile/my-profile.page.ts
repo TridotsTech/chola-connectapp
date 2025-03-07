@@ -5,6 +5,8 @@ import { AlertController, ModalController, LoadingController} from '@ionic/angul
 import { ShowImageComponent } from 'src/app/components/show-image/show-image.component';
 import lgZoom from 'lightgallery/plugins/zoom';
 import { BeforeSlideDetail } from 'lightgallery/lg-events';
+// import { title } from 'process';
+import { DownloadElvluationComponent } from 'src/app/components/download-elvluation/download-elvluation.component';
 
 @Component({
   selector: 'app-my-profile',
@@ -27,6 +29,7 @@ export class MyProfilePage implements OnInit {
   };
 
   new_dashboard_values:any;
+  is_probation:any = [];  
 
   constructor(public db:DbService, private router: Router, public loadingCtrl: LoadingController, public modalCtrl : ModalController, public alertCtrl: AlertController) { }
 
@@ -38,6 +41,17 @@ export class MyProfilePage implements OnInit {
 
   ionViewWillEnter(){
     this.db.get_employee_detail()
+    this.get_probation_detail()
+  }
+
+  get_probation_detail() {
+    let data = {
+      emp_id: localStorage['employee_id'],
+    }
+    this.db.probation_completed(data).subscribe(res => {
+      this.is_probation = res.message
+      // console.log(res)
+    })
   }
   
   router_(route) {
@@ -142,6 +156,18 @@ export class MyProfilePage implements OnInit {
         this.db.profile_loader = false;
       }
     })
+  }
+
+  async download_Evaluation(){
+    const modal = await this.modalCtrl.create({
+      component: DownloadElvluationComponent,
+      cssClass: 'job-detail-popup',
+      componentProps: {
+        title:'Download Probation',
+        data:this.is_probation
+      }
+    });
+    await modal.present();
   }
 
   async get_image(image){

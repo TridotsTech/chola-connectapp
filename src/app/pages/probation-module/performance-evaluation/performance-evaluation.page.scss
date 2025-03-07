@@ -199,3 +199,24 @@ ion-checkbox::part(container) {
     border-radius: 10px;
     background: #ACA6DC;
   }
+
+
+  .section-p {
+    padding: 8px;
+  }
+  
+  .detailSec {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    .values:nth-child(odd) {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray-color);
+    }
+
+    .values:nth-child(even) {
+      font-size: 13px;
+      font-weight: 500;
+      margin: 5px 0 15px 0;
+    }
+  }

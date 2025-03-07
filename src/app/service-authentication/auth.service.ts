@@ -12,7 +12,5 @@ export class AuthService {
   IsLoggedIn(){
     return !!localStorage.getItem('api_key')
   }
-
-  
   
 }

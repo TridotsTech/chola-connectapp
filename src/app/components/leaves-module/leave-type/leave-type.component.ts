@@ -66,8 +66,8 @@ export class LeaveTypeComponent  implements OnInit {
   get_data_employee(){
     let data = {
       l1_manager: localStorage['employee_id'],
-      // page_no: 1,
-      // page_length: 50,
+      page_no: 1,
+      page_length: 50,
       // search_text: '',
     };
     this.db.get_applicable_employees(data).subscribe((res: any) => {

@@ -30,35 +30,18 @@ export class TabsPage implements OnInit {
 
   @ViewChild(RouterOutlet) outlet: RouterOutlet | any;
 
-  // employeePopUp:any = [
-  //   {label:'Expense Claim', icon:'/assets/dashboard/ExpenseClaim-active.svg', route:'/forms/expense-claim'},
-  //   {label:'Employee Advance', icon:'/assets/dashboard/EmployeeAdvance-active.svg', route:'forms/employee-advance'},
-  //   {label:'Leave Application', icon:'/assets/dashboard/LeaveApplication-active.svg', route:'/forms/leave-application'},
-  // ];
-
   employeePopUp:any = [
-    // {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
-    // {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
     {label:'Leave Withdrawal', doctype:'Leave Withdrawal', icon:'/assets/Employee-Home/leave withdrawal.svg', route:'/leave-withdrawal/New'},
     {label:'Leave Request', doctype:'Leave Request', icon:'/assets/Employee-Home/leaverequest.svg', route:'/leave-application'},
   ];
 
   hrEmployeePopUp:any = [
-    // {label:'Expense Claim', doctype:'Expense Claim', icon:'/assets/Employee-Home/ExpenseClaim.svg', route:'/forms/expense-claim'},
-    // {label:'Employee Advance', doctype:'Employee Advance', icon:'/assets/Employee-Home/EmployeeAdvance.svg', route:'forms/employee-advance'},
     {label:'Leave Withdrawal', doctype:'Leave Withdrawal', icon:'/assets/Employee-Home/leave withdrawal.svg', route:'/leave-withdrawal/New'},
     {label:'Leave Request', doctype:'Compensatory Leave Request', icon:'/assets/Employee-Home/leaverequest.svg', route:'/leave-application'},
-    // {label:'Salary Slip', icon:'/assets/Employee-Home/SalarySlip.svg', route:'/forms/leave-application'},
   ];
 
-  // @ViewChild('outlet', { static: true }) outlet: RouterOutlet | any;
-
   constructor(public db: DbService, private router: Router, private viewContainerRef: ViewContainerRef, private modalCtrl: ModalController) { 
-    // this.router.events.subscribe((e:any) => {
-    //   if (e instanceof ActivationStart && e.snapshot.outlet === "administration")
-    //     console.log('e',e);
-    //     this.viewContainerRef.detach();
-    // });
+    
   }
 
   ngOnInit() {
@@ -68,25 +51,20 @@ export class TabsPage implements OnInit {
 
   ionViewWillEnter() {
     this.db.hasClass1 = false;
+    if(this.db.path == '/')
+      this.db.path = '/tabs/dashboard'
   }
-
 
   enabled_fab() {
     this.db.hasClass1 = !this.db.hasClass1;
   }
 
-
   fab() {
-    // let val: any;
     this.fabs_list.close();
-    // val = document.getElementById('fab-list');
-    // val.click();
     this.db.hasClass1 = false;
   }
 
   close_fab() {
-    // console.log('1234');
-    // this.viewContainerRef.detach();
     if (this.db.hasClass1) {
       this.fab();
     }
@@ -104,24 +82,17 @@ export class TabsPage implements OnInit {
   }
 
   onClick(data){
-    // console.log(data)
-    // console.log(this.db.path)
+   
   }
 
   navigateList(link){
-    // const navigationExtras: NavigationExtras = {
-    //   runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-    // };
-    // this.router.navigate(link, navigationExtras);
     this.router.navigate(link, { runGuardsAndResolvers: 'paramsOrQueryParamsChange' } as NavigationExtras);
   }
 
   navigateTo(route: any) {
-    // console.log('route URL',this.router.url);
-    // console.log('route',route);
+  
     route.title == 'Add' ? null : this.close_fab()
     if (this.router.url === route.route) {
-      // console.log("Already on the same route, no need to navigate again.");
       return;
     }
 
@@ -140,7 +111,6 @@ export class TabsPage implements OnInit {
     } else {
       data = img;
     }
-
     return data;
   }
 

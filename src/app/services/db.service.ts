@@ -20,11 +20,6 @@ import { YearPopupComponent } from '../components/year-popup/year-popup.componen
 import { DetailComponentComponent } from '../components/customer-details/detail-component/detail-component.component';
 import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import OneSignal from 'onesignal-cordova-plugin';
-// import { Howl } from 'howler';
-
-// import { File } from '@awesome-cordova-plugins/file/ngx';
-// import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
-// import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -38,13 +33,8 @@ export class DbService {
   baseResource = `https://${this.domainurl}/api/resource/`;
   baseMethod = `https://${this.domainurl}/api/method/`;
 
-
-
-  // seapi_apis_hrms = 'seapi.seapi.apis.hrms.';
-  // seapi_apis_projects = 'seapi.seapi.apis.project.';
   go1_apps_apis_hrmls = 'go1_apps.go1_apps.apis.hrms.'
   go1_apps_apis_projects = 'go1_apps.go1_apps.apis.project.'
-  // seapi_api = 'seapi.seapi.api.';
   go1_apps_api = 'go1_apps.go1_apps.api.'
   go1_apps_custom_api = 'go1_apps.go1_apps.custom_api.'
   
@@ -79,7 +69,6 @@ export class DbService {
   custom_form_update = new Subject();
   skeleton_detail: any;
   order_detail: any;
-  // webform variables
   ref_doc_type: any;
   map_fields_get = new Subject();
   loadTask = new Subject();
@@ -136,23 +125,19 @@ export class DbService {
   show_tabs = false;
   scroll_top = true;
   enable_material = false;
-  // checkin_var_load = false;
   employee_role: any;
   edit_web_forms = false;
   success_alert = false;
   verify_key = false;
   update_id = false;
-  // app_version: any;
   detailHeaderName: any;
   selected_from_employee: any;
   event_list_form = false;
-  // store_old_tab: any;
   selecting_drop_down = false;
   cust_designation: any;
   employee_img: any;
   selectedYear: any;
   selectedMonth: any;
-  // selectedMonth: any;
   selectedYearSubject = new Subject();
   employee_id: any;
   selected_year = false;
@@ -268,11 +253,7 @@ export class DbService {
     const year = now.getFullYear();
     const month = (now.getMonth() + 1).toString().padStart(2, '0');
     const day = now.getDate().toString().padStart(2, '0');
-
-
-
     this.current_event_date = `${year}-${month}-${day}`;
-    // this.customer_id = localStorage['customerRefId'];
   }
 
   site_values(site) {
@@ -336,15 +317,6 @@ export class DbService {
       await alert.onWillDismiss().then((res: any) => { });
     } else {
       this.alert_animate.next(data);
-      // const toast = await this.toastController.create({
-      //   message: data,
-      //   duration: 1500,
-      //   cssClass: 'toast-css',
-      //   position: 'bottom',
-      //   color: 'medium',
-      // });
-
-      // await toast.present();
     }
   }
 
@@ -464,8 +436,6 @@ export class DbService {
     let data = {
       name: localStorage['employee_id'],
       doctype: 'Employee'
-      // name: localStorage['customerRefId'],
-      // doctype: 'User'
     }
     this.doc_detail(data).subscribe(res => {
       this.profile_loader = false;
@@ -560,8 +530,6 @@ export class DbService {
 
   async selfViewFn() {
     this.ismobile ? this.menuCtrl.close() : this.router.navigateByUrl('/dashboard');
-
-    // this.ismobile ?  this.menuCtrl.close() : null;
     this.dashboard_values = [];
     this.permission_details = [];
     if (this.selfView) {
@@ -2059,6 +2027,21 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  send_aadhaar_otp(Info): Observable<any> {
+    let endpoint = 'go1_elc.utils.employee_transfer_verification.send_aadhaar_otp';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  verify_otp(Info): Observable<any> {
+    let endpoint = 'go1_elc.utils.karza_integration.verification.verify_aadhaar_otp';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  get_employee_transfers(Info): Observable<any> {
+    let endpoint = 'go1_elc.utils.employee_transfer.get_employee_transfers';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   custom_doc_fields(Info): Observable<any> {
     // let endpoint = (this.erp14 ? this.seapi_api:  this.go1_apps_api) + 'get_fields';
     let endpoint = this.go1_apps_api + 'get_form_fields';
@@ -2277,7 +2260,12 @@ export class DbService {
   }
 
   probation_completed(data: any): Observable<any> {
-    let endpoint = 'go1_elc.go1_elc.doctype.probation_evaluation.probation_evaluation.probation_completed';
+    let endpoint = 'go1_elc.go1_elc.doctype.probation_evaluation.probation_evaluation.probation_evaluation_created';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  get_pdf(data: any): Observable<any> {
+    let endpoint = 'go1_elc.go1_elc.doctype.probation_evaluation.probation_evaluation.get_pdf';
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 

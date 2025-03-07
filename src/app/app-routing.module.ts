@@ -320,9 +320,21 @@ const routes: Routes = [
     loadChildren: () => import('./pages/buyback-detail/buyback-detail.module').then( m => m.BuybackDetailPageModule)
   },
   {
+    path: 'emp-transfer',
+    loadChildren: () => import('./pages/order/emp-transfer/emp-transfer.module').then( m => m.EmpTransferPageModule)
+  },
+  {
+    path: 'my-slips',
+    loadChildren: () => import('./pages/my-slips/my-slips.module').then( m => m.MySlipsPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+  
+
+ 
+
 
  
 

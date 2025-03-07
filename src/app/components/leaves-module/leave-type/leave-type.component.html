@@ -34,7 +34,7 @@
     <ion-icon name="chevron-forward-outline"></ion-icon>
   </div>
 </div>
-<div class="box_sec" *ngIf="type == 'emp'">
+<div class="box_sec" *ngIf="type == 'emp' || type == 'employee'">
   <div (click)="add(item)" *ngFor="let item of list_values" class="d__flex mouse boxs">
     <div>
       <h6 class="m-0 name_">{{item.employee_name}}</h6>
@@ -42,3 +42,16 @@
     <ion-icon name="chevron-forward-outline"></ion-icon>
   </div>
 </div>
+<div class="emp_box d__flex column"><div ng-reflect-ng-class="image" class="image"><img class="img" src="assets/not-found/Probation Evaluation.svg">
+</div>
+<div class="d__flex content" ng-reflect-ng-class="content"><h6 class="m-0 h6">No record found</h6>
+  </div></div>
+
+<!-- <div class="box_sec" *ngIf="type == 'employee'">
+  <div (click)="add(item)" *ngFor="let item of list_values" class="d__flex mouse boxs">
+    <div>
+      <h6 class="m-0 name_">{{item.employee_name}}</h6>
+    </div>
+    <ion-icon name="chevron-forward-outline"></ion-icon>
+  </div>
+</div> -->

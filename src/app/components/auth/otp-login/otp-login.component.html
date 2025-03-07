@@ -2,13 +2,11 @@
   <form class="otp-form p-10" [formGroup]="otp_form" >
     <div class="d__flex just-c otp-container">
       <div class="mobile-input d__flex w-100" >
-        <!-- <ion-icon *ngIf="!otp_verifyy" name="call-outline"></ion-icon> -->
         <ion-select *ngIf="!otp_verifyy" value="+91" formControlName="country_code" class="country_code">
           <!--  [(ngModel)]="default_code" -->
           <ion-select-option *ngFor="let code of country_codes" value="{{code}}">{{code}}</ion-select-option>
         </ion-select>
         <ion-input *ngIf="!otp_verifyy" type="tele" class="otp-input" placeholder="Mobile number" formControlName="mobile_no"  (keyup.enter)="sendLoginCode()"  name="mobile_no" [(ngModel)]="mobile_no"> <span *ngIf="false"> +91 </span></ion-input>
-        <!-- <ion-icon *ngIf="otp_verifyy" name="call-outline"></ion-icon> -->
         <ion-input *ngIf="otp_verifyy" type="tele" class="otp-input" placeholder="OTP" name="otp" formControlName="otp" (keyup.enter)="verify_otp()" [(ngModel)]="otp"> </ion-input>
       </div>
       <div *ngIf="false">

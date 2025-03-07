@@ -171,8 +171,8 @@ export class NormalLoginComponent implements OnInit {
     });
   }
     
-  signup(){
-    this.router.navigateByUrl('/web-page?page_route=supplier-registration')
-  }
+  // signup(){
+  //   this.router.navigateByUrl('/web-page?page_route=supplier-registration')
+  // }
 
 }

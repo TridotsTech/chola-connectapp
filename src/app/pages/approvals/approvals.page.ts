@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { LeaveApplicationPage } from '../order/leave-application/leave-application.page';
+import { LetterRequestDetailComponent } from 'src/app/components/letter-request-detail/letter-request-detail.component';
 
 @Component({
   selector: 'app-approvals',
@@ -76,13 +77,30 @@ export class ApprovalsPage implements OnInit {
     this.getApprovalsList();
   }
 
-  send_to_detail(item){
+  async send_to_detail(item){
     console.log(item,'item')
     if(item.reference_doctype == 'Leave Withdrawal'){
       this.router.navigate(['/leave-withdrawal/' + item.reference_name]);
     }else if(item.reference_doctype == 'Leave Request'){
       this.getLeaveReqDetails(item.reference_name)
+    }else if(item.reference_doctype == 'Employee Letter Request'){
+      let data = item;
+      data.name = item.reference_name
+      const modal = await this.modalCtrl.create({
+        component: LetterRequestDetailComponent,
+        cssClass: 'regularization-popup',
+        componentProps: {
+          letterrequestDetail: data,
+        },
+      });
+      await modal.present();
+      const val = await modal.onWillDismiss();
+      if(val){
+        this.page_no = 1;
+        this.getApprovalsList();
+      }
     }
+
   }
 
   getLeaveReqDetails(id){

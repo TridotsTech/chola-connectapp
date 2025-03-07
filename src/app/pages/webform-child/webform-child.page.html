@@ -1,10 +1,5 @@
 <ion-content *ngIf="!db.ismobile" class="child_popup">
-  <!-- <div class="child_title d__flex just-s">
-    <h4 class="table_title">{{doctype}}</h4>
-    <div class="close-icon-div">
-      <ion-icon class="close-icon" (click)="db.close_modal()" name="close-circle-outline"></ion-icon>
-    </div>
-  </div> -->
+  
 
   <div *ngIf="!db.ismobile" class="forms__">
     <div class="d__flex gap-10 mar-0-10">
@@ -78,15 +73,6 @@
                 <span class="impt-star" *ngIf="each.reqd == 1"> *</span>
               </ion-label>
               <div class="custom-input link_field_mouse" *ngIf="each.fieldtype == 'Link' || each.fieldtype == 'Dynamic Link'">
-                <!-- (click)="gen_links(each,each.options,$event)" -->
-                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
-                  interface="popover">
-
-                  <ion-select-option>Select</ion-select-option>
-                  <ion-select-option *ngFor="let opts of all_link_opts[each.options]" [value]="opts">
-                    {{opts}}
-                  </ion-select-option>
-                </ion-select> -->
 
                 <div class="custom-input m-ng-select" *ngIf="each.fieldtype == 'Link' || each.fieldtype == 'Dynamic Link'">
                   <ion-input placeholder="Select {{each.label}}" type="text"
@@ -107,16 +93,6 @@
                   class="mouse 789 form-input" (ionFocus)="select_value($event)">
                   <ion-icon slot="end" class="input-icon" name="chevron-down-outline"></ion-icon>
                 </ion-input>
-
-                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
-                interface="popover" id="select-options" (ionChange)="changed($event)"> -->
-
-                <!-- <ion-select [formControlName]="each.fieldname" class="select-1" [placeholder]="each.label"
-                  interface="popover" id="select-options">
-                  <ion-select-option>Select</ion-select-option>
-                  <ion-select-option *ngFor="let item of (each.options.split('\n'))" [value]="item"> {{item}}
-                  </ion-select-option>
-                </ion-select> -->
 
               </div>
 
@@ -156,8 +132,7 @@
                     <ion-icon name="chevron-down-outline"></ion-icon>
                   </div>
                   <a (click)="each.file_url ? this.db.preview_image(db.product_img(each.file_url))  : file_upload.click()"
-                    class="m-0 mouse value_ webkit-text" [style.--line]="1">{{each.file_url ? each.file_url : 'Upload
-                    afile'}}</a>
+                    class="m-0 mouse value_ webkit-text" [style.--line]="1">{{each.file_url ? each.file_url : 'Uploadafile'}}</a>
                 </div>
 
               </div>

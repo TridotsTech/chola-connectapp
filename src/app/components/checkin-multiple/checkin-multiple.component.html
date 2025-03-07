@@ -99,46 +99,7 @@
           [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button>
       </div>
 
-      <!-- <h5 class="Heading">Check In / Out</h5> -->
-      <!-- <div class="timeSection" *ngIf="!routeValue && false">
-        <div class="d__flex just-s Heading">
-          <p class="m-0">Check In</p>
-          <p class="m-0">Check Out</p>
-          <p class="m-0">Duration</p>
-        </div>
-        <div
-          *ngFor="let item of employee_checkin_list"
-          class="d__flex just-s check_list"
-        >
-          <div class="box_">
-            <p class="m-0 fnt-14 just-c d__flex gap-5">
-              <ion-icon
-                class="fnt-18"
-                src="/assets/home-genie/Checkinicon.svg"
-              ></ion-icon>
-              {{ item.in_time ? (item.in_time | date : "hh:mm a") : "--:--" }}
-            </p>
-          </div>
-          <div class="box_">
-            <p class="m-0 fnt-14 just-c d__flex gap-5">
-              <ion-icon
-                class="fnt-18"
-                src="/assets/home-genie/Checkouticon.svg"
-              ></ion-icon>
-              {{ item.out_time ? (item.out_time | date : "hh:mma") : "--:--" }}
-            </p>
-          </div>
-          <div class="box_">
-            <p class="m-0 fnt-14 just-c d__flex gap-5 fnt_w500">
-              <ion-icon
-                class="fnt-18"
-                src="/assets/home-genie/totalhrsicon.svg"
-              ></ion-icon>
-              {{ item.duration ? item.duration : "--:--" }}
-            </p>
-          </div>
-        </div>
-      </div> -->
+      
 
       <div class="timeSection" *ngIf="routeValue">
         <div class="d__flex just-s Heading">
