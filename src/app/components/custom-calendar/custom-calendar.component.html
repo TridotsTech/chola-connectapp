@@ -6,7 +6,7 @@
     <img *ngIf="!task_form" src="assets/icon/calendar.svg" alt="calendar" class="" />
   </div>
 
-  <div *ngIf="show_cal" class="calendar-picker" [ngClass]="(web_form && each && (each.fieldname == 'from_time')) ? 'left-15' : (web_form && each && (each.fieldname == 'to_time')) ? 'right-15' : task_form ? 'bottom-35': ''">
+  <div *ngIf="show_cal" class="calendar-picker" [ngClass]="(web_form && each && (each.fieldname == 'from_time')) ? 'left-15' : right || (web_form && each && (each.fieldname == 'to_time')) ? 'right-15' : task_form ? 'bottom-35': ''">
 
     <div class="calendar-header">
       <button (click)="changeMonth(-1)" class="nav-button">&#10094;</button>

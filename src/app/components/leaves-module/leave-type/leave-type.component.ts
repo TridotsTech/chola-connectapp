@@ -13,6 +13,7 @@ export class LeaveTypeComponent  implements OnInit {
   @Input() type:any;
   @Input() datas:any;
   @Input() employee_id:any;
+  @Input() value:any;
   list_values:any=[];
   constructor(public modalCtrl: ModalController, public db: DbService) { }
 
@@ -26,6 +27,8 @@ export class LeaveTypeComponent  implements OnInit {
       this.get_data_employee()
     else if(this.type == 'emp')
       this.get_data_emp()
+    else if(this.type == 'month')
+      this.list_values = this.value
   }
 
   get_leave_type() {

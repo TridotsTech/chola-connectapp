@@ -9,12 +9,12 @@
     
         <div class="w-100">
           <div class="d__flex gap-10 just-s pb-5 flex-wrap">
-            <h6 class="m-0 bold_name-14" >{{data.employee_name}}</h6>
+            <h6 class="m-0 bold_name-12" >{{data.employee_name}}</h6>
           </div>
     
           <div class="d__flex  just-s gap-5 pb-5">
-            <p class="m-0 text_2 fnt-13">{{data.employee}}</p>
-            <h6 class="m-0 fnt-11" *ngIf="emp_detail && emp_detail.date_of_joining">{{getDateDifference(emp_detail.date_of_joining)}} </h6>
+            <p class="m-0 text_2 fnt-12">{{data.employee}}</p>
+            <h6 class="m-0 fnt-11 year_ago" *ngIf="emp_detail && emp_detail.date_of_joining">{{getDateDifference(emp_detail.date_of_joining)}} </h6>
           </div>
           <div class="d__flex gap-5"><ion-icon class="fnt-14" src="/assets/leaves/job.svg"></ion-icon>
             <p class="m-0 text_2 fnt-12" *ngIf="emp_detail && emp_detail.designation">{{emp_detail.designation}}</p>

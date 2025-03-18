@@ -47,11 +47,12 @@
     
         <div class="p-10 leavePreview" *ngIf="leave_withdraw.leave_withdraw_date && leave_withdraw.leave_withdraw_date.length != 0">
             <label for="reason" class="pb-10 fnt-14 fnt_w600">Leave Withdraw Approved Application List</label>
-            <div *ngFor="let item of leave_withdraw.leave_withdraw_date; let i = index" class="boxes_">
+            <div *ngFor="let item of leave_withdraw.leave_withdraw_date; let i = index" class="boxes_" (click)="addLeaveWithdrawal(item)">
                 <div class="d__flex just-s">
                     <div class="d__flex gap-5">
+                        <!-- (ionChange)="addLeaveWithdrawal($event, item)" -->
                         <div (click)="eventPropagation($event)" class="checkBox" *ngIf="leave_withdraw.docstatus == 0 && db.check_role('L1 Manager','')">
-                            <ion-checkbox [checked]="item['isChecked']" (ionChange)="addLeaveWithdrawal($event, item)"></ion-checkbox>
+                            <ion-checkbox [checked]="item['isChecked']" ></ion-checkbox>
                         </div>
                         <p class="m-0 fnt-14 d__flex gap-5"><ion-icon class="gray_clr" name="calendar-outline"></ion-icon> {{item.from_date | date: 'MMM d, y'}} </p>
                     </div>

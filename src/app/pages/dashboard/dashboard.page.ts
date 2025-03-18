@@ -147,12 +147,12 @@ export class DashboardPage implements OnInit {
     const month = parseInt(parts[1]);
     this.currentMonth = month
     this.currentYear = year
-    if(this.db.app_name == 'Go1 HR'){
+    // if(this.db.app_name == 'Go1 HR'){
       this.get_hr_dashboard();
       this.get_ess_dashboard();
       this.getChartHr()
       this.checkIn();
-    }  
+    // }  
 
     // if(this.db.employee_role){
       // this.get_ess_dashboard();

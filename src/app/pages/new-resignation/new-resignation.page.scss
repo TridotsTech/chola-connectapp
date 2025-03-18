@@ -1,0 +1,222 @@
+.formHeight {
+    height: calc(100vh - 100px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.form_Height {
+    height: calc(100vh - 60px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.title {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.custom-input {
+
+    ion-input,
+    ion-select {
+        border: 1px solid var(--border-col);
+        border-radius: 7px;
+        height: 40px;
+        min-height: 40px !important;
+        padding: 0 10px !important;
+        font-size: 13px;
+    }
+
+    ion-textarea {
+        border: 1px solid var(--border-col);
+        border-radius: 7px;
+        font-size: 13px;
+    }
+}
+
+.section2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+}
+
+.submit-btn {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    z-index: 99999;
+    border-top: 1px solid var(--border-col);
+
+    ion-button {
+        width: 100%;
+    }
+}
+
+ion-checkbox {
+    --checkbox-background-checked: var(--primary-color);
+    // margin-left: 10px;
+    // height: 100%;
+    --size: 13px;
+}
+
+ion-checkbox::part(container) {
+    border: 2px solid var(--primary-color);
+}
+
+.impt-star {
+    color: #DE0A0A;
+    font-size: 13px;
+    margin: 0;
+}
+
+.evaluationMain {
+    border: 1px solid var(--border-col);
+    border-radius: 5px;
+    border-bottom: none;
+
+    .title {
+        display: flex;
+        margin-bottom: 0px;
+        // display: grid;
+        // grid-template-columns: repeat(2, 1fr);
+        // padding: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        p {
+            flex: 0 0 65%;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+        }
+
+        p:nth-child(2) {
+            flex: 0 0 35% !important;
+            border-right: unset !important;
+        }
+    }
+
+    .values {
+        display: flex;
+        // display: grid;
+        // grid-template-columns: repeat(2, 1fr);
+        // padding: 10px;
+        border-bottom: 1px solid var(--border-col);
+
+        p {
+            flex: 0 0 65%;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+        }
+
+        div {
+            padding: 10px;
+        }
+    }
+}
+
+.active_star {
+    color: #ffbf00;
+}
+
+.btn {
+    display: flex;
+    gap: 10px;
+}
+
+.btn1 {
+    // border-radius: 5px;
+    --background: #FBE9EA !important;
+    color: #DC1414;
+    // gap: 5px;
+    // padding: 5px;
+    // width: 82px;
+
+    // ion-icon,
+    // span {
+    //     color: #DC1414;
+    // }
+}
+
+.btn2 {
+    --background: #69e2be52 !important;
+    color: #458F5A;
+    // background: #69e2be52;
+    // border-radius: 5px;
+    // gap: 5px;
+    // padding: 5px;
+    // width: 82px;
+
+    // ion-icon,
+    // span {
+    //     color: #458F5A;
+    // }
+}
+
+.employee_det {
+    border: 1px solid var(--border-col);
+    border-radius: 15px;
+    margin-bottom: 10px;
+
+    .sec-1 {
+        padding: 7px 15px;
+        background: #E7F8FF;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .sec-2 {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        ion-icon {
+            flex: 0 0 50px;
+            height: 50px;
+        }
+    }
+}
+
+.flex-70{
+    flex: 0 0 70%;
+}
+
+.profile_user_img {
+    flex: 0 0 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+    background: #ACA6DC;
+  }
+
+
+  .section-p {
+    padding: 8px;
+  }
+  
+  .detailSec {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    .values:nth-child(odd) {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray-color);
+    }
+
+    .values:nth-child(even) {
+      font-size: 13px;
+      font-weight: 500;
+      margin: 5px 0 15px 0;
+    }
+  }

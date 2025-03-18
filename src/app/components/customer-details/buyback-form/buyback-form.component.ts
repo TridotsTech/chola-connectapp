@@ -15,9 +15,12 @@ export class BuybackFormComponent  implements OnInit {
   rates:any=[];
   assets_list:any=[]; 
   @Input() title; 
+  each:any={}
+
   constructor(public modalCtrl:ModalController,public db: DbService,private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.each.field_name = 'to_date';
     this.buyback_form = this.formBuilder.group({
       employee_code: new FormControl(localStorage['employee_id']),
       employee_name: new FormControl(localStorage['employee_name']),

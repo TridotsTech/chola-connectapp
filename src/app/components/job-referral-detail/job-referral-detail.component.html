@@ -22,7 +22,7 @@
   <div class="scrollSection p-10">
     <div class="jobDescrition">
       <h5 class="fnt-14 fnt_w600 m-0 mb-10">Job Description</h5>
-      <p class="m-0 fnt-13 fnt_w400 gray_clr mt-5" [innerHtml]="referralDetail.description"></p>
+      <p class="m-0 fnt-13 fnt_w400 gray_clr mt-5" [innerHTML]="referralDetail.description"></p>
     </div>
   
     <div class="addressSection" *ngIf="referralDetail.job_requisition && referralDetail.job_requisition.length != 0">

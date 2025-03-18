@@ -1786,6 +1786,21 @@ ion-fab-button {
     }
   }
 
+  .download-slip-popup {
+    --width: 100% !important;
+    --height: 40% !important;
+    display: flex;
+    align-items: end;
+    --border-radius: 10px 10px 0 0px;
+    justify-content: end;
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.5) !important;
+    --ion-backdrop-color: var(--primary-bg);
+    .ion-page {
+      display: unset !important;
+      overflow: auto !important;
+    }
+  }
+
   .job-referral-detail {
     --width: 100% !important;
     --height: 90% !important;

@@ -2685,7 +2685,7 @@ export class NewWizardFormComponent  implements OnInit,OnDestroy {
   }
 
   getIp() {
-    this.http.get<{ ip: string }>('https://jsonip.com').subscribe((data) => {
+    this.http.get<{ ip: string }>('https://api.ipify.org/?format=json').subscribe((data) => {
       this.ip_address = data.ip;
     });
   }

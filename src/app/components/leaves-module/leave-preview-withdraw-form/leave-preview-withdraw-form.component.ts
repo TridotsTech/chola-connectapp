@@ -14,11 +14,12 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
   @Input() title: any;
   @Input() type: any;
   posting_date:any = new Date();
+  each:any={}
   constructor(public db: DbService, public modalCntrl: ModalController) {}
 
   ngOnInit() {
-    // console.log(this.editFormValues, 'this.editFormValues');
-    // this.db.select_drop_down.next(selected_item);
+    this.each.field_name = 'to_date';
+   
 
     if(this.type == 'leave request'){
       const currentDate = new Date();
@@ -29,7 +30,7 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
       this.posting_date = formattedDate
     }
     this.db.select_drop_down.subscribe((res: any) => {
-      console.log(res)
+      // console.log(res)
       if(res.fieldname == 'country')
         this.editFormValues.country = res.name;
     });

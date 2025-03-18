@@ -328,9 +328,21 @@ const routes: Routes = [
     loadChildren: () => import('./pages/my-slips/my-slips.module').then( m => m.MySlipsPageModule)
   },
   {
+    path: 'new-resignation',
+    loadChildren: () => import('./pages/new-resignation/new-resignation.module').then( m => m.NewResignationPageModule)
+  },
+  {
+    path: 'resignation',
+    loadChildren: () => import('./pages/resignation/resignation.module').then( m => m.ResignationPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+ 
+
+ 
+
   
 
  

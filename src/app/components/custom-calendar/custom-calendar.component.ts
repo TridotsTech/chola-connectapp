@@ -12,6 +12,7 @@ export class CustomCalendarComponent implements OnInit {
   @Input() selectedDate: any;
   @Input() web_form: any;
   @Input() each: any;
+  @Input() right: any;
   @Input() read_only: any;
   @Input() field_name: any;
   @Input() table: any;
@@ -64,7 +65,7 @@ export class CustomCalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-      console.log(this.each)
+      // console.log(this.each)
 
     // console.log(this.selectedDate)
     if (this.selectedDate) {

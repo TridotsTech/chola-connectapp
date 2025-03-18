@@ -49,7 +49,9 @@ export class MyProfilePage implements OnInit {
       emp_id: localStorage['employee_id'],
     }
     this.db.probation_completed(data).subscribe(res => {
-      this.is_probation = res.message
+      // if(res.)
+      if(res.message.status != 'Failed')
+        this.is_probation = res.message
       // console.log(res)
     })
   }

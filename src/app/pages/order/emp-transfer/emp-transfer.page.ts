@@ -9,7 +9,7 @@ import { DbService } from 'src/app/services/db.service';
 export class EmpTransferPage implements OnInit {
 
   page_no: any = 1;
-  page_length: any = 20;
+  page_length: any = 10;
   empTransferList: any = [];
   constructor(public db: DbService) { }
 
@@ -27,6 +27,8 @@ export class EmpTransferPage implements OnInit {
     }
     this.db.get_employee_transfers(data).subscribe(res => {
       console.log(res)
+      // res.message.data
+      this.empTransferList = res.message.data
       // if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
        
       // }

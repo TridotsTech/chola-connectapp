@@ -34,8 +34,9 @@
         }
 
         .imageDiv {
-            height: 75px;
-            width: 110px;
+            height: 60px;
+            flex: 0 0 65px;
+            // width: 110px;
             border-radius: 5px;
             display: flex;
             align-items: center;

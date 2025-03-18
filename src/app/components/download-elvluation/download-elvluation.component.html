@@ -1,28 +1,29 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
-
-<div class="letter_sec" *ngFor="let item of data">
-  <div class="s-1">
-    <div class="d__flex d1">
-      <div class="f1">
-        <img src="assets/Employee-Home/Letter-list.svg" alt="" />
-      </div>
-      <div class="f2">
-        <h2 class="m-0 fnt-12 fnt_w600 pb-5">
-          {{ item.name }}
-        </h2>
-        <p class="m-0 fnt-12 pb-5">Extended: {{ item.probation_extended }}</p>
-      </div>
-      <!-- <div class="f3">
-        <div  class="sec__2d">
-          <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
+<div class="scroll_h">
+    <div class="letter_sec" *ngFor="let item of data">
+      <div class="s-1">
+        <div class="d__flex d1">
+          <div class="f1">
+            <img src="assets/Employee-Home/Letter-list.svg" alt="" />
+          </div>
+          <div class="f2">
+            <h2 class="m-0 fnt-12 fnt_w600 pb-5">
+              {{ item.name }}
+            </h2>
+            <p class="m-0 fnt-12 pb-5">Extended: {{ item.probation_extended }}</p>
+          </div>
+          <!-- <div class="f3">
+            <div  class="sec__2d">
+              <app-status [reverse]="true" [status]="item.workflow_state"></app-status>
+            </div>
+          </div> -->
         </div>
-      </div> -->
+        <div (click)="download(item)" class="d__flex just-e d3">
+          <p class="m-0 fnt-12 d_btn">
+            Download
+            <img class="pl5" src="assets/Employee-Home/download.svg" alt="" />
+          </p>
+        </div>
+      </div>
     </div>
-    <div (click)="download(item)" class="d__flex just-e d3">
-      <p class="m-0 fnt-12 d_btn">
-        Download
-        <img class="pl5" src="assets/Employee-Home/download.svg" alt="" />
-      </p>
-    </div>
-  </div>
 </div>

@@ -203,7 +203,7 @@
     cursor: pointer;
 
     .date-input {
-        font-size: 14px;
+        font-size: 12px;
         border: none !important;
         cursor: pointer;
         width: 145px;
@@ -240,6 +240,9 @@
 .readOnlyClass {
     color: #333;
     background: #f8f8f8 !important;
+    input{
+        background: #f8f8f8 !important;
+    }
 }
 
 

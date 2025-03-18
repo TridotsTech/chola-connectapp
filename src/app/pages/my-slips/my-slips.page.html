@@ -1,8 +1,9 @@
-
+<app-header title="My Slips" [model]="false"></app-header>
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">my slips</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div>
+  <img class="p-0-10 pt-10 w-100" (click)="download('Salary Slip')" src="/assets/Frame/salary frame.svg" alt="">
+  <img class="p-0-10 pt-10 w-100" (click)="download('Offcycle Payslip')" src="/assets/Frame/offcycle payslip.svg" alt="">
+  <img class="p-0-10 pt-10 w-100" (click)="download('Form16')" src="/assets/Frame/form16.svg" alt="">
+  <img class="p-0-10 pt-10 w-100" (click)="download('Form12BB')" src="/assets/Frame/Form12BB.svg" alt="">
+  </div>  
 </ion-content>

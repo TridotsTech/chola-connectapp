@@ -135,14 +135,16 @@
 
   </div>
   <!-- *ngIf="performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" -->
-  <div *ngIf="db.check_role('L1 Manager','') && !performanceDetails" class="submit-btn">
-    <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
-  </div>
-  <div *ngIf="db.check_role('L1 Manager','') && performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" class="submit-btn">
-    <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
-  </div>
-  <div *ngIf="db.check_role('L2 Manager','') && performanceDetails && performanceDetails.workflow_state == 'Awaiting Approval'" class="submit-btn btn">
-    <ion-button class="btn1" (click)="submit_approval('Rejected')" fill="clear">Reject</ion-button>
-    <ion-button class="btn2" (click)="submit_approval('Approved')" fill="clear">Approve</ion-button>
-  </div>
+   <div *ngIf="workflow_list && workflow_list.length != 0">
+    <div *ngIf="db.check_role('L1 Manager','') && !performanceDetails" class="submit-btn">
+      <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
+    </div>
+    <div *ngIf="db.check_role('L1 Manager','') && performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" class="submit-btn">
+      <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
+    </div>
+    <div *ngIf="db.check_role('L2 Manager','') && performanceDetails && performanceDetails.workflow_state == 'Awaiting Approval'" class="submit-btn btn">
+      <ion-button class="btn1" (click)="submit_approval('Rejected')" fill="clear">Reject</ion-button>
+      <ion-button class="btn2" (click)="submit_approval('Approved')" fill="clear">Approve</ion-button>
+    </div>
+    </div>
 </ion-content>

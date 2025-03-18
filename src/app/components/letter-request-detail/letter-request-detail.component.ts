@@ -95,7 +95,7 @@ export class LetterRequestDetailComponent  implements OnInit {
   async openFile(filePath: string) {
     this.fileOpener.open(filePath, 'application/pdf')
       .then(() => {
-        alert('success')
+        // alert('success')
       })
       .catch(err => {
         alert('Failed')

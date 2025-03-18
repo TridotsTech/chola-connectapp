@@ -110,6 +110,12 @@ margin: 10px;
         height: 60px;
         display: flex;
         align-items: center;
+
+        img{
+          flex: 0 0 65px;
+          height: 60px;
+          object-fit: cover;
+        }
         // justify-content: center;
     }
 

@@ -105,6 +105,7 @@ import { TicketFeedbackComponent } from './ticket-feedback/ticket-feedback.compo
 import { JobReferalFiltersComponent } from './job-referal-filters/job-referal-filters.component';
 import { NewVoluntaryPfComponent } from './new-voluntary-pf/new-voluntary-pf.component';
 import { DownloadElvluationComponent } from './download-elvluation/download-elvluation.component';
+import { MyslipDownloadComponent } from './myslip-download/myslip-download.component';
 
 @NgModule({
   declarations: [
@@ -203,7 +204,8 @@ import { DownloadElvluationComponent } from './download-elvluation/download-elvl
     TicketFeedbackComponent,
     JobReferalFiltersComponent,
     NewVoluntaryPfComponent,
-    DownloadElvluationComponent
+    DownloadElvluationComponent,
+    MyslipDownloadComponent
   ],
   imports: [
     CommonModule,
@@ -313,7 +315,8 @@ import { DownloadElvluationComponent } from './download-elvluation/download-elvl
     CommonPriorityComponent,
     TicketFeedbackComponent,
     JobReferalFiltersComponent,
-    NewVoluntaryPfComponent
+    NewVoluntaryPfComponent,
+    MyslipDownloadComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

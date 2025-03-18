@@ -152,19 +152,27 @@
 
 <div class="p-10 overflow_auto" *ngIf="type == 'letterrequest'">
   <div *ngIf="editFormValues.name == 'Visa Letter'" class="d__flex gap-10">
-    <div class="pb-10">
+    <div class="pb-10 f_50">
       <label class="pb-10">From Date</label>
       <app-custom-calendar format="Date" [selectedDate]="editFormValues.from_date" (onChange)="datePickerChange('from_date',$event)"></app-custom-calendar>
     </div>
-    <div class="pb-10">
+    <div class="pb-10 f_50">
       <label for="filter_end_date" class="pb-10">To Date</label>
-      <app-custom-calendar format="Date" [selectedDate]="editFormValues.to_date " (onChange)="datePickerChange('end_date',$event)"></app-custom-calendar>
+      <app-custom-calendar format="Date" [right]="true" [selectedDate]="editFormValues.to_date " (onChange)="datePickerChange('end_date',$event)"></app-custom-calendar>
     </div>
   </div>
   <div *ngIf="editFormValues.name == 'Visa Letter'" class="pb-10">
     <label for="filter_end_date" class="pb-10">Country <span class="red"> *</span></label>
+    <div class="custom-input d__flex">
+      <img src="/assets/leaves/type.svg" class="w_h_18" alt="">
+      <ion-input class="pl10" (click)="open_country_dropdown()" type="text" placeholder="country"  [(ngModel)]="editFormValues.country" name="country"></ion-input>
+      <img src="/assets/leaves/arrow-down.svg" alt="">
+    </div>
+  </div>
+  <div  *ngIf="editFormValues.name == 'Bonafide Letter'" class="pb-10">
+    <label class="pb-10">Submit To </label>
     <div class="custom-input">
-      <ion-input (click)="open_country_dropdown()" type="text" placeholder="country"  [(ngModel)]="editFormValues.country" name="country"></ion-input>
+      <ion-input [(ngModel)]="editFormValues.submit_to"  type="text" name="submit_to" placeholder="Submit To" class="form-input" ></ion-input>
     </div>
   </div>
   <!-- <div class="pb-10">

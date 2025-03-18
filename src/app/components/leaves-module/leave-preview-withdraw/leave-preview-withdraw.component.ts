@@ -30,8 +30,8 @@ export class LeavePreviewWithdrawComponent  implements OnInit {
     })
   }
 
-  addLeaveWithdrawal(event, item){
-    event.stopPropagation();
+  addLeaveWithdrawal(item){
+    // event.stopPropagation();
     item['isChecked'] =! item['isChecked']
   }
 

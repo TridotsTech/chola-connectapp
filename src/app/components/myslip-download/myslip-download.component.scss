@@ -1,0 +1,38 @@
+.btn{
+    position: fixed;
+    padding: 10px;
+    bottom: 0px;
+    width: 100%;
+    border-top: 1px solid #ddd;
+    ion-button{
+        width: 100%;
+    }
+}
+
+.title{
+    margin: 0;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+.custom-input {
+    border: 1px solid var(--border-col);
+    border-radius: 7px;
+    padding: 0 10px !important;
+
+    ion-input,
+    ion-textarea {
+        font-size: 13px !important;
+    }
+}
+
+.w_h_18{
+    width: 18px;
+    height: 18px;
+}
+
+.pl10{
+    padding-left: 10px !important;
+}

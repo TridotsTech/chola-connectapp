@@ -879,7 +879,7 @@ export class DbService {
         employee = { employee: ['=', localStorage['employee_id']] };
       }
       else if(data["doctype_name"] == "Asset Buyback"){
-        employee = { employee_code: ['!=', localStorage['employee_id']] };
+        employee = { employee_code: ['=', localStorage['employee_id']] };
       }
       else if(endpoint.includes("go1_apps.go1_apps.api.get_salary_slip_details")){
         // employee = { employee_code: ['=', localStorage['employee_id']] };
@@ -1530,6 +1530,12 @@ export class DbService {
             route: '/buy-back-calculator',
           }
 
+          let push_my_slip = {
+            page: 'My Slip',
+            page_name: 'My Slip',
+            route: '/my-slips',
+          }
+
 
           // console.log(this.side_tab_dashboard,"side_tab_dashboard before")
           this.side_tab_dashboard.map(res => {
@@ -1538,6 +1544,7 @@ export class DbService {
             }
           })
           this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+          this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_my_slip) : null;
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
           // this.hr_manager_role ? this.side_tab_dashboard.splice(0, 0, push_employee_att) : null;
 
@@ -1626,6 +1633,12 @@ export class DbService {
             route: '/buy-back-calculator',
           }
 
+          let push_my_slip = {
+            page: 'My Slip',
+            page_name: 'My Slip',
+            route: '/my-slips',
+          }
+
           // let pushProjectMeeting = [
           //   {
           //     page: 'Meeting',
@@ -1649,6 +1662,7 @@ export class DbService {
 
           // this.project_role ? this.dashboard_values.splice(0, 0, pushProjectMeeting) : null;
           this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
+          this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_my_slip) : null;
           // this.project_role ? this.dashboard_values = [...this.dashboard_values, ...pushProjectMeeting] : null;
           this.hr_manager_role ? this.dashboard_values = [...this.dashboard_values,...approval_screen] : null;
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, approval_screen) : null;
@@ -1834,10 +1848,10 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 
-  get_activity(): Observable<any> {
-    let endPoint = 'Activity Type';
-    return this.get(this.baseResource + endPoint);
-  }
+  // get_activity(): Observable<any> {
+  //   let endPoint = 'Activity Type';
+  //   return this.get(this.baseResource + endPoint);
+  // }
 
   get_ip(): Observable<any> {
     let endpoint = 'https://jsonip.com';
@@ -2024,6 +2038,11 @@ export class DbService {
 
   employee_letter_request_download(Info): Observable<any> {
     let endpoint = 'go1_elc.go1_elc.doctype.employee_letter_request.employee_letter_request.download_pdf';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  get_employee_details(Info): Observable<any> {
+    let endpoint = 'td_payroll.apis.payroll_api.get_employee_details';
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 

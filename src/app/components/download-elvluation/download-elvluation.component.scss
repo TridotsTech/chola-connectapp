@@ -42,3 +42,8 @@
     }
  
  }
+
+ .scroll_h{
+   overflow: auto;
+    height: calc(100% - 55px);
+ }

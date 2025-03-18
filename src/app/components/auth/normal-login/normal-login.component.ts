@@ -39,10 +39,9 @@ export class NormalLoginComponent implements OnInit {
       password : new FormControl('',[Validators.required])
     })
 
-    // this.sitename_data = 'v15mobiletest.tridotstech.com'
-    // this.sitename_data = 'dev-chola.tridotstech.com'
+    this.sitename_data = 'dev-chola.tridotstech.com'
     // this.sitename_data = ''
-    this.sitename_data = 'stage-cholahrms.frappe.cloud'
+    // this.sitename_data = 'stage-cholahrms.frappe.cloud'
 
   } 
 

@@ -16,7 +16,7 @@
 .dash_board {
     position: relative;
     border: 1px solid #ddd;
-    padding: 10px 20px;
+    padding: 10px 10px;
     /* margin: 0 10px; */
     border-radius: 10px;
     display: flex;
@@ -29,7 +29,16 @@
 
 .detail_img {
     height: 70px;
-    object-fit: contain;
+    // object-fit: contain;
+    object-fit: cover;
+    flex: 0 0 65px;
+}
+
+.year_ago{
+    background: #F5F5F5;
+    border-radius: 7px;
+    padding: 2px 10px;
+    width: max-content;
 }
 
 .leave {

@@ -67,7 +67,7 @@
                     [style.--line]="1"><img src="/assets/leaves/leaveicon.svg" alt=""> <span class="pl5 fnt_w600">{{item.employee_name ? item.employee_name : ' - '}}</span></h3>
                   <app-status [status]="item.status"></app-status>
                 </div>
-                <div class="s-1 mb-5">
+                <div class="s-1">
                   <h3 class="m-0 fnt-15  d__flex"> <ion-icon src="/assets/leaves/calendar.svg"></ion-icon> <span class="pl5 fnt_w500">{{item.attendance_date | date: 'MMM d, y'}}</span> </h3>
                 </div>
                 <div *ngIf="false" [class.image_div]="item.image" class="absolute_">

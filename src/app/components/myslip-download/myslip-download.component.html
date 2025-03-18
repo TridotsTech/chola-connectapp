@@ -1,0 +1,26 @@
+<div>
+  <h2 class="title">{{title}}</h2>
+  <div class="d__flex p-0-10">
+    <div class="pb-10 pr-10">
+      <label for="leave_type" class="pb-10 fnt-12">Month Name <span class="impt-star"> *</span></label>
+      <div class="custom-input d__flex">
+        <img class="w_h_18" src="/assets/leaves/type.svg" alt="">
+        <ion-input type="text" placeholder="Month Name" (click)="open_dropdown('month')" name="month"
+          [(ngModel)]="month" class="form-input pl10"></ion-input>
+        <img src="/assets/leaves/arrow-down.svg" alt="">
+      </div>
+    </div>
+    <div class="pb-10">
+      <label for="leave_type" class="pb-10 fnt-12">Year <span class="impt-star"> *</span></label>
+      <div class="custom-input d__flex">
+        <img class="w_h_18" src="/assets/leaves/type.svg" alt="">
+        <ion-input type="text" placeholder="Year" (click)="db.yearPopUp(true)" name="year" [(ngModel)]="year"
+          class="form-input pl10"></ion-input>
+        <img src="/assets/leaves/arrow-down.svg" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="btn">
+  <ion-button (click)="download()">Download</ion-button>
+</div>

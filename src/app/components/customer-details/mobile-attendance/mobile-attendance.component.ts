@@ -118,6 +118,14 @@ export class MobileAttendanceComponent implements OnInit {
     this.viewType = eve.route
     this.db.tab_buttons(this.options1, this.options1[0].route, 'route');
     this.view = this.options1[0].route
+    if(this.viewType == 'overview'){
+      const currentDate = new Date();
+      const formattedDate = this.datePipe.transform(currentDate, 'yyyy-M');
+      let event: any = {};
+      event.detail = {}
+      event.detail.value = formattedDate
+      this.getCalendarDate.emit(event);
+    }
   }
 
   menu_name1(eve: any) {

@@ -297,7 +297,7 @@ export class PayrollDetailComponent implements OnInit {
   async openFile(filePath: string) {
     this.fileOpener.open(filePath, 'application/pdf')
           .then(() => {
-            alert('success')
+            // alert('success')
           })
           .catch(err => {
             // this.loader = false
