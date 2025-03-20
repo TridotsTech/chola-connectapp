@@ -56,7 +56,7 @@ export class NewResignationPage implements OnInit {
     this.resignation_form.get('employee').setValue(this.db.employee_img.name)
     this.resignation_form.get('employee_name').setValue(this.db.employee_img.employee_name)
     this.resignation_form.get('employee_grade').setValue(this.db.employee_img.grade)
-    this.resignation_form.get('custom_date_of_joining').setValue(this.db.employee_img.date_of_joining)
+    // this.resignation_form.get('custom_date_of_joining').setValue(this.db.employee_img.date_of_joining)
   }
 
   get employee_id(){
@@ -98,6 +98,9 @@ export class NewResignationPage implements OnInit {
     }
     this.db.get_employee_details(data).subscribe(res => {
       console.log(res)
+      if(res.message){
+        this.resignation_form.get('custom_date_of_joining').setValue(res.message.custom_date_of_joining)
+      }
       
     })
   }

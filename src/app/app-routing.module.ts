@@ -336,9 +336,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/resignation/resignation.module').then( m => m.ResignationPageModule)
   },
   {
+    path: 'emp-transfer-detail',
+    loadChildren: () => import('./pages/emp-transfer-detail/emp-transfer-detail.module').then( m => m.EmpTransferDetailPageModule)
+  },
+  {
+    path: 'emp-transfer-detail/:id',
+    loadChildren: () => import('./pages/emp-transfer-detail/emp-transfer-detail.module').then( m => m.EmpTransferDetailPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+
  
 
  

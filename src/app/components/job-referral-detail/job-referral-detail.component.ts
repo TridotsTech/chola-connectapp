@@ -14,7 +14,7 @@ referralDetail: any = {};
   constructor(public modalCntrl: ModalController,public db: DbService) { }
 
   ngOnInit() {
-    console.log(this.jobReferralDetail,'this.jobReferralDetail');
+    // console.log(this.jobReferralDetail,'this.jobReferralDetail');
     this.getDocDetails();
   }
 
@@ -31,6 +31,10 @@ referralDetail: any = {};
     } else {
       return `${diffInDays} days ago`;
     }
+  }
+
+  parseString(stringValue) {
+    return stringValue ? stringValue.replace(/\n/g, '<br>'): '';
   }
 
   changeDescription(description){

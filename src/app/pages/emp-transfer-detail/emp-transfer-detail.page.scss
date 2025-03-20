@@ -1,0 +1,52 @@
+.detail_sec {
+    padding: 10px;
+
+    .profile_sec {
+        padding: 10px;
+        border-radius: 10px;
+        background: #fff;
+
+        .sec1 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .img {
+                flex: 0 0 50px;
+                height: 50px;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        }
+
+        .sec2 {
+            padding: 10px;
+            background: #F5F9FD;
+            border-radius: 10px;
+        }
+    }
+
+    .transfer_detail {
+        padding: 10px;
+        background: #fff;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .current_detail{
+        padding: 10px;
+        background: #F5FAFF;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .new_detail{
+        padding: 10px;
+        background: #F5FAFF;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+}

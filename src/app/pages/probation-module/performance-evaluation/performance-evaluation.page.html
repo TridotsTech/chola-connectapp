@@ -134,12 +134,12 @@
     </form>
 
   </div>
-  <!-- *ngIf="performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" -->
-   <div *ngIf="workflow_list && workflow_list.length != 0">
+  <!-- *ngIf="performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" *ngIf="workflow_list && workflow_list.length != 0"-->
+   <div >
     <div *ngIf="db.check_role('L1 Manager','') && !performanceDetails" class="submit-btn">
       <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
     </div>
-    <div *ngIf="db.check_role('L1 Manager','') && performanceDetails && performanceDetails.workflow_state != 'Awaiting Approval'" class="submit-btn">
+    <div *ngIf="db.check_role('L1 Manager','') && performanceDetails && performanceDetails.workflow_state == 'Draft'" class="submit-btn">
       <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
     </div>
     <div *ngIf="db.check_role('L2 Manager','') && performanceDetails && performanceDetails.workflow_state == 'Awaiting Approval'" class="submit-btn btn">

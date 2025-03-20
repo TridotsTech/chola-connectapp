@@ -11,6 +11,7 @@ export class EmpTransferPage implements OnInit {
   page_no: any = 1;
   page_length: any = 10;
   empTransferList: any = [];
+  no_transfer_found = false;
   constructor(public db: DbService) { }
 
   ngOnInit() {
@@ -27,12 +28,29 @@ export class EmpTransferPage implements OnInit {
     }
     this.db.get_employee_transfers(data).subscribe(res => {
       console.log(res)
-      // res.message.data
-      this.empTransferList = res.message.data
-      // if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
-       
-      // }
+      if(res && res.message && res.message.data && res.message.data.length != 0){
+        if(this.page_no == 1){
+          this.empTransferList = res.message.data;
+        }else{
+          this.empTransferList = [...this.empTransferList,...res.message.data]
+        }
+      }else{
+        this.no_transfer_found = true;
+        this.page_no == 1 ? this.empTransferList = [] : null;
+      }
+     
     })
+  }
+
+  load_more(event){
+    if (!this.no_transfer_found) {
+      let value = event.target.offsetHeight + event.target.scrollTop + 1;
+      value = value.toFixed();
+      if (value >= event.target.scrollHeight) {
+        this.page_no += 1;
+        this.get_employee_transfer();
+      }
+    }
   }
 
 }

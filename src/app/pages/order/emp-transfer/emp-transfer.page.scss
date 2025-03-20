@@ -1,0 +1,23 @@
+.transfer_height {
+    padding: 10px;
+    height: calc(100vh - 50px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .emp_box {
+        background: #ffff;
+        border-radius: 10px;
+        padding: 10px;
+
+        .sec1 {}
+
+        .sec2 {
+            background: #F5FAFF;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    }
+}
