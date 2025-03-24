@@ -1,0 +1,38 @@
+<!-- <app-header [title]="'Enter OTP'" [showYear]="false" [model]="true"></app-header>
+
+<div class="otp_sec">
+
+  <div class="input_sec">
+    <p class="m-0 fnt-14 mb-10">Enter OTP here</p>
+    <input type="number" [(ngModel)]="otp_number">
+  </div>
+
+</div>
+<div class="button_sec">
+  <ion-button fill="clear" class="verfiyOTP fnt_w500" (click)="verifyOtp()">Verify OTP</ion-button>
+</div> -->
+<div *ngIf="!loader_snipper" class="otp_screen">
+  <div class="d__flex header">
+    <h6 class="m-0 heading__">OTP Verification</h6>
+    <ion-icon (click)="close_modal()" class="mouse" name="close-outline"></ion-icon>
+  </div>
+  <form class="form" [formGroup]="otp_form">
+    <ion-input type="number" class="otp-input" placeholder="OTP" formControlName="otp" name="otp" [(ngModel)]="otp"> </ion-input>
+    <ion-button [ngClass]="shake?'shaking':''" expand="full" class="action-button" fill="clear" (click)="verify_otp()">Verify OTP</ion-button>
+    <h6 class="error" *ngIf="alert_message">{{alert_message}}</h6>
+    <h6 class="resend mouse" (click)="resend()">Resend OTP</h6>
+    <div *ngIf="success_alert_message" class="tostify_ d__flex">
+      <div class="success-txt">{{success_alert_message}}</div>
+      <ion-icon class="close_icon" (click)="success_alert_message = undefined" name="close-outline"></ion-icon>
+    </div>
+  </form>
+</div>
+<div class="h-100" *ngIf="loader_snipper">
+  <div class="container mt25">
+    <div class="circle-border"></div>
+    <div class="circle">
+      <div class="success"></div>
+    </div>
+  </div>
+  <h6 class="m-0 success_msg" *ngIf="alert_message">{{alert_message}}</h6>
+</div>

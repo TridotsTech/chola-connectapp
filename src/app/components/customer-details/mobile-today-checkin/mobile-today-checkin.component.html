@@ -134,7 +134,7 @@
           <div class="d__flex gap-10 employee_">
             <div [class.image_div]="item.image" class="absolute_">
               <!-- <div class="dot_active"><div class="dot_color" [ngStyle]="{'background-color': item.status == 'Active' ? '#2BAF76' :  '#E21B22'}"></div></div> -->
-              <img *ngIf="item.image" [src]="db.product_img(item.image)" alt="">
+              <img *ngIf="item.image" class="" [src]="db.product_img(item.image)" alt="">
               <p *ngIf="!item.image" class="image_none m-0 fnt-18 fnt_w600 capitalize">{{item.employee_name[0]}}</p>
             </div>
             <div class="w-100">

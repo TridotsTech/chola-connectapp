@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-emp-transfer',
@@ -9,10 +10,10 @@ import { DbService } from 'src/app/services/db.service';
 export class EmpTransferPage implements OnInit {
 
   page_no: any = 1;
-  page_length: any = 10;
+  page_length: any =10;
   empTransferList: any = [];
   no_transfer_found = false;
-  constructor(public db: DbService) { }
+  constructor(public route: Router,public db: DbService) { }
 
   ngOnInit() {
     this.page_no = 1;
@@ -27,7 +28,7 @@ export class EmpTransferPage implements OnInit {
       page_length:this.page_length
     }
     this.db.get_employee_transfers(data).subscribe(res => {
-      console.log(res)
+      // console.log(res)
       if(res && res.message && res.message.data && res.message.data.length != 0){
         if(this.page_no == 1){
           this.empTransferList = res.message.data;
@@ -51,6 +52,10 @@ export class EmpTransferPage implements OnInit {
         this.get_employee_transfer();
       }
     }
+  }
+
+  goto_route(route){
+    this.route.navigateByUrl('/emp-transfer-detail/'+route)
   }
 
 }

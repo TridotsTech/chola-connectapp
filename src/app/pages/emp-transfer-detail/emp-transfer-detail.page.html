@@ -1,7 +1,7 @@
 <app-header [title]="'Transfer Detail'" [showYear]="false" [model]="false"></app-header>
 
 <ion-content [fullscreen]="true" style="--background: #F7FAFD;">
-  <div class="detail_sec">
+  <div *ngIf="transter_info" class="detail_sec">
     <div class="profile_sec mb-10">
       <div class="sec1 mb-10">
         <div class="img">
@@ -9,83 +9,131 @@
         </div>
         <div class="w-100">
           <div class="d__flex just-s">
-            <p class="m-0 fnt-15 fnt_w500">{{'Karthick'}}</p>
+            <p class="m-0 fnt-15 fnt_w500">{{transter_info.employee_name}}</p>
   
-            <div class="d__flex">
-              <app-status [reverse]="true" [status]="'Active'"></app-status>
+            <div *ngIf="db.employee_img" class="d__flex">
+              <app-status [reverse]="true" [status]="db.employee_img.status"></app-status>
             </div>
           </div>
-          <p class="m-0 fnt-14 d__flex gap-10"> <ion-icon src="/assets/Employee Transfer/designation.svg"></ion-icon> {{'Software Developer'}}</p>
+          <p *ngIf="db.employee_img" class="m-0 fnt-14 d__flex gap-10"> <ion-icon src="/assets/Employee Transfer/designation.svg"></ion-icon> {{db.employee_img.designation}}</p>
         </div>
       </div>
-      <div class="sec2 d__flex just-s">
-        <p class="m-0 fnt-14 fnt_w500">{{'Karthick'}}</p>
-        <p class="m-0 fnt-14 fnt_w500 d__flex gap-10"> <ion-icon class="fnt-18" src="/assets/Employee Transfer/medal.svg"></ion-icon> {{'CFF 1-NMS'}}</p>
+      <div *ngIf="db.employee_img" class="sec2 d__flex just-s">
+        <p class="m-0 fnt-14 fnt_w500"></p>
+        <p class="m-0 fnt-14 fnt_w500 d__flex gap-10"> <ion-icon class="fnt-18" src="/assets/Employee Transfer/medal.svg"></ion-icon> {{db.employee_img.grade}}</p>
       </div>
     </div>
 
     <h5 class="m-0 fnt-14 mb-10 gray_clr">TRANSFER DETAIL</h5>
 
     <div class="transfer_detail mb-10">
-      <p class="m-0 fnt-12 mb-10">{{'For Database Migration and cloud Data Monitoring'}}</p>
+      <!-- <p class="m-0 fnt-12 mb-10">{{'For Database Migration and cloud Data Monitoring'}}</p> border-t-->
 
-      <div class="d__flex just-s mb-10 pt-10 border-t">
+      <div class="d__flex just-s mb-10 pt-10 ">
         <div>
-          <p class="m-0 fnt-14 gray_clr">Initiator</p>
-          <p class="m-0 fnt-14 fnt_w500">{{'Ranjith'}}</p>
+          <p class="m-0 fnt-12 gray_clr">Initiate Date</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.transfer_initiation_date | date}}</p>
         </div>
         <div>
-          <p class="m-0 fnt-14 gray_clr">Initiate Date</p>
-          <p class="m-0 fnt-14 fnt_w500">{{'20 Feb 2025'}}</p>
+          <p class="m-0 fnt-12 gray_clr">Transfer Date</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.transfer_date | date}}</p>
         </div>
       </div>
 
       <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">Approval/Rejection Date</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'24 Feb 2025'}}</p>
+        <p class="m-0 fnt-12 gray_clr">Approval/Rejection Date</p>
+        <p class="m-0 fnt-14 fnt_w500">{{transter_info.approvalrejection_date | date}}</p>
       </div>
 
       <h5 class="m-0 fnt-14 mb-10 gray_clr">CURRENT</h5>
 
-    <div class="current_detail">
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">Current Work Location</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'Tamarai IT Park, Guindy'}}</p>
+      <div class="current_detail">
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Current Work Location</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.current_work_location}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Current L1 Manager</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.current_l1_manager_name}}</p>
+        </div>
+        <div *ngIf="transter_info.is_temporary_transfer" class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Start Date</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.start_date}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Current RHR</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.current_rhr ? transter_info.current_rhr: '-'}}</p>
+        </div>
       </div>
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">Current L1 Manager</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'Rajan'}}</p>
+
+      <h5 class="m-0 fnt-14 mb-10 gray_clr">NEW</h5>
+
+      <div class="new_detail">
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">New Work Location</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.new_work_location}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">New L1 Manager</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.new_l1_manager}}</p>
+        </div>
+        <div *ngIf="transter_info.is_temporary_transfer" class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">End Date</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.end_date}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Current RHR</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.new_rhr}}</p>
+        </div>
       </div>
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">Start Date</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'28 Feb 2025'}}</p>
+      <h5 class="m-0 fnt-14 mb-10 gray_clr">Organisation Level</h5>
+
+      <div class="new_detail">
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Group</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.group}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Financial Services Group</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.financial_services_group}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Department</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.department}}</p>
+        </div>
+        
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Department Code</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.department_code}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Function</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.function}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Product</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.product}}</p>
+        </div>
       </div>
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">Current RHR</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'Kalai'}}</p>
-      </div>
+      
+
+      <!-- <h5 class="m-0 fnt-14 mb-10 gray_clr">NEW WORK LOCATION DETAILS</h5>
+      <div class="location_detail">
+        <div class="mb-10">
+          <p class="m-0 mb-10 fnt-14">Cholamandalam Branch-3,Workafella IT Park, Sholinganallur, Chennai-600058</p>
+          <p class="m-0 fnt-14 d__flex gap-10 locationLink"> <ion-icon src="/assets/Employee Transfer/location.svg"></ion-icon> {{'Location Link'}}</p>
+        </div>
+      </div> -->
     </div>
 
-    <h5 class="m-0 fnt-14 mb-10 gray_clr">NEW</h5>
-
-    <div class="new_detail">
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">New Work Location</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'Workafella IT Park, Sholinganallur'}}</p>
-      </div>
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">New L1 Manager</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'Stephen'}}</p>
-      </div>
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">End Date</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'15 Apr 2025'}}</p>
-      </div>
-      <div class="mb-10">
-        <p class="m-0 fnt-14 gray_clr">Current RHR</p>
-        <p class="m-0 fnt-14 fnt_w500">{{'Shiva'}}</p>
-      </div>
-    </div>
-    </div>
+    <!-- <div class="buttons_sec">
+      <ion-button fill="clear" class="verfiyOTP fnt_w500" (click)="openOtp()">Send OTP</ion-button>
+    </div> -->
   </div>
 </ion-content>
+<ion-footer *ngIf="transter_info && transter_info.transfer_type == 'Group' && !transter_info.aadhaar_verified" class="f_cls">
+  <div class="buttons_sec">
+    <ion-button fill="clear" class="verfiyOTP fnt_w500" (click)="openOtp()">Send OTP</ion-button>
+  </div>
+</ion-footer>
+

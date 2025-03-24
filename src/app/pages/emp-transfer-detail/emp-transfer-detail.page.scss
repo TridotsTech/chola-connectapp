@@ -34,19 +34,50 @@
         background: #fff;
         border-radius: 10px;
         margin-bottom: 10px;
+        border: 1px solid var(--chola-border-color);
     }
 
-    .current_detail{
+    .current_detail {
         padding: 10px;
         background: #F5FAFF;
         border-radius: 10px;
         margin-bottom: 10px;
     }
 
-    .new_detail{
+    .new_detail {
         padding: 10px;
         background: #F5FAFF;
         border-radius: 10px;
         margin-bottom: 10px;
     }
+
+    .location_detail {
+        padding: 10px;
+        background: #F5FAFF;
+        border-radius: 10px;
+        margin-bottom: 10px;
+
+        .locationLink {
+            color: #005BC3;
+        }
+    }
+}
+
+.buttons_sec {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    .verfiyOTP {
+        width: 100%;
+        height: 40px;
+        border-radius: 5px;
+    }
+}
+
+.f_cls{
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background: #fff;
 }

@@ -22,7 +22,7 @@ export class MyslipDownloadComponent  implements OnInit {
 
   ngOnInit() {
     this.db.selectedYearSubject.subscribe((res) => {
-        console.log(res)
+        // console.log(res)
         this.year = this.db.selectedYear;
     })
   }
@@ -46,18 +46,22 @@ export class MyslipDownloadComponent  implements OnInit {
   }
 
   async download(){
-    if(this.title == 'Salary Slip')
-      this.payroll_download()
+    // if(this.year && this.month){
+      if(this.title == 'Salary Slip')
+        this.payroll_download('Salary Slip')
+      else if (this.title == 'Off Cycle Payroll')
+        this.payroll_download('Off Cycle Payroll')
+    // }
   }
 
-  async payroll_download(){
+  async payroll_download(doctype){
     try {
       let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
       await loader.present();
       setTimeout(() => {
         loader.dismiss();
       }, 10000);
-      this.db.get_salary_slip_content({filters:{'salary_slip_select_year': parseInt(this.year), 'salary_slip_select_month': this.month, 'employee':localStorage['employee_id'], 'doctype': 'Salary Slip'}}).subscribe(async res => {
+      this.db.get_salary_slip_content({filters:{'select_year': parseInt(this.year), 'select_month': this.month, 'employee':localStorage['employee_id'], 'doctype': doctype}}).subscribe(async res => {
         if (res && res.message.fname && res.message.fcontent) {
         const fileContent = res.message.fcontent;
         const fileName = res.message.fname
@@ -67,7 +71,14 @@ export class MyslipDownloadComponent  implements OnInit {
         setTimeout(() => {
           loader.dismiss();
         }, 4500);
-    } else {
+    } 
+    else if(res.status == "Failed"){
+      this.db.alert(res.message)
+      setTimeout(() => {
+        loader.dismiss();
+      }, 450);
+    }
+    else {
       this.db.alert('No Further Records')
       setTimeout(() => {
         loader.dismiss();

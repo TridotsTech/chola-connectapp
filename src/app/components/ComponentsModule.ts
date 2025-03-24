@@ -106,6 +106,7 @@ import { JobReferalFiltersComponent } from './job-referal-filters/job-referal-fi
 import { NewVoluntaryPfComponent } from './new-voluntary-pf/new-voluntary-pf.component';
 import { DownloadElvluationComponent } from './download-elvluation/download-elvluation.component';
 import { MyslipDownloadComponent } from './myslip-download/myslip-download.component';
+import { EmployeeTransferOtpComponent } from './employee-transfer-otp/employee-transfer-otp.component';
 
 @NgModule({
   declarations: [
@@ -205,7 +206,8 @@ import { MyslipDownloadComponent } from './myslip-download/myslip-download.compo
     JobReferalFiltersComponent,
     NewVoluntaryPfComponent,
     DownloadElvluationComponent,
-    MyslipDownloadComponent
+    MyslipDownloadComponent,
+    EmployeeTransferOtpComponent
   ],
   imports: [
     CommonModule,
@@ -316,7 +318,8 @@ import { MyslipDownloadComponent } from './myslip-download/myslip-download.compo
     TicketFeedbackComponent,
     JobReferalFiltersComponent,
     NewVoluntaryPfComponent,
-    MyslipDownloadComponent
+    MyslipDownloadComponent,
+    EmployeeTransferOtpComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

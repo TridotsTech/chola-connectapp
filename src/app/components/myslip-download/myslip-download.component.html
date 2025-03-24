@@ -22,5 +22,5 @@
   </div>
 </div>
 <div class="btn">
-  <ion-button (click)="download()">Download</ion-button>
+  <ion-button [disabled]="!year && !month" (click)="download()">Download</ion-button>
 </div>

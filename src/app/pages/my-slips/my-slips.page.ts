@@ -15,7 +15,7 @@ export class MySlipsPage implements OnInit {
   }
 
   async download(title){
-    if(title == 'Salary Slip'){
+    if(title == 'Salary Slip' || title == 'Off Cycle Payroll'){
       const modal = await this.modalCtrl.create({
         component: MyslipDownloadComponent,
         cssClass: 'download-slip-popup',

@@ -3,17 +3,18 @@
 <ion-content class="content_bg" [fullscreen]="true">
     
 <div *ngIf="empTransferList && empTransferList.length != 0" class="transfer_height" (scroll)="load_more($event)">  
-    <div *ngFor="let item of empTransferList" class="emp_box mb-10" [routerLink]="'/emp-transfer-detail'">
+    <!-- [routerLink]="/emp-transfer-detail/item.name" -->
+    <div *ngFor="let item of empTransferList" class="emp_box mb-10" (click)="goto_route(item.name)">
         <div class="sec1">
             <div class="d__flex just-s mb-5">
-                <p class="m-0 fnt-14 d__flex gap-10 fnt_w500"><ion-icon class="fnt-20" src="/assets/Employee Transfer/man.svg"></ion-icon> {{'EMP-TR-2025-7976'}}</p>
+                <p class="m-0 fnt-14 d__flex gap-10 fnt_w500"><ion-icon class="fnt-20" src="/assets/Employee Transfer/man.svg"></ion-icon> {{item.name}}</p>
                 <div class="d__flex">
                     <app-status [reverse]="true" [status]="item.status ? item.status : 'Pending'"></app-status>
                 </div>
             </div>
             <div class="d__flex just-s mb-5">
                 <p class="m-0 fnt-14 d__flex gap-10"><ion-icon class="fnt-20" src="/assets/Employee Transfer/profile.svg"></ion-icon> {{item.employee_name}}</p>
-                <p class="m-0 fnt-14 d__flex gap-10">{{'58 Days'}}</p>
+                <!-- <p class="m-0 fnt-14 d__flex gap-10">{{'58 Days'}}</p> -->
             </div>
         </div>
         <div class="sec2">
@@ -23,9 +24,14 @@
                 <p class="m-0 fnt-13 d__flex gap-10 fnt_w500">{{item.current_work_location}}</p>
             </div>
             <div class="d__flex just-s mb-5">
-                <p class="m-0 fnt-13 d__flex gap-10 fnt_w500 gray_clr">{{item.transfer_date | date: 'd MMM y'}}</p>
+                <p class="m-0 fnt-13 d__flex gap-10 fnt_w500 gray_clr">{{item.transfer_initiation_date | date: 'd MMM y'}}</p>
                 <ion-icon class="fnt-20" src="/assets/Employee Transfer/arrow.svg"></ion-icon>
                 <p class="m-0 fnt-13 d__flex gap-10">{{item.transfer_date | date: 'd MMM y'}}</p>
+            </div>
+            <div class="d__flex just-s mb-5">
+                <p class="m-0 fnt-13 d__flex gap-10 fnt_w500 gray_clr">{{item.current_l1_manager}}</p>
+                <ion-icon class="fnt-20" src="/assets/Employee Transfer/arrow.svg"></ion-icon>
+                <p class="m-0 fnt-13 d__flex gap-10 fnt_w500">{{item.new_l1_manager}}</p>
             </div>
         </div>
     </div>
