@@ -206,7 +206,7 @@ export class PerformanceEvaluationPage implements OnInit {
   }
 
   changeExtension(event){
-    console.log(event,'event')
+    // console.log(event,'event')
 
     this.evaluation_form.patchValue({
       no_more_extention: event.detail.checked ? 1 : 0

@@ -61,40 +61,6 @@
       </div>
     </div>
   
-    <div class="TaskSummary" *ngIf="false && ess_dashboard_data && ess_dashboard_data.tasks && ess_dashboard_data.tasks.length != 0">
-      <div class="d__flex just-s w-100 mb-20">
-        <h5 class="m-0 fnt-16">Tasks</h5>
-        <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
-      </div>
-      <div class="todayTask" >
-        <div class="d__flex just-s m-10 border-bottom">
-          <div>
-            <p class="m-0 fnt-14 primary_clr">Today Tasks</p>
-            <p class="m-0 fnt-16 d__flex gap-5">{{(ess_dashboard_data && ess_dashboard_data.task_count) ? ess_dashboard_data.task_count : '0'}}<span class="fnt-16 gray_clr fnt_w500">tasks are availabe</span></p>
-          </div>
-          <ion-icon class="fnt-60" src="/assets/Employee-Home/today-task.svg"></ion-icon>
-        </div>
-        <div (click)="openWebFormPopup(item)" *ngFor="let item of ess_dashboard_data.tasks.slice(0, 1)" class="p-10">
-          <p class="fnt-12 gray_clr m-0 capitalize">{{item.subject}}</p>
-          <div class="d__flex just-s">
-            <p class="m-0 fnt-14 description webkit-text" [style.--line]="2" [innerHtml]="item.description ? item.description : '-'"></p>
-            <div *ngIf="item.priority" class="d__flex gap-5 bg_high" [ngClass]="item.priority == 'Low' ? 'low_bg' : item.priority == 'Medium' ? 'medium_bg' : 'high_bg'">
-              <ion-icon [name]="check_priority(item.priority)"></ion-icon>
-              <p class="m-0">{{item.priority}}</p>
-            </div>
-          </div>
-          <div class="d__flex just-s">
-            <p class="fnt-12 d__flex gap-5 mb-5 webkit-text" [style.--line]="1"><ion-icon class="fnt-20" src="/assets/img/user-tag.svg"></ion-icon>{{item.owner}}</p>
-            <p class="m-0 d__flex gap-5 fnt-14 gray_clr"><ion-icon class="fnt-20" src="/assets/img/clock-gray.svg"></ion-icon>{{item.expected_time ? item.expected_time : '0 Hr'}}</p>
-          </div>
-        </div>
-        <div class="d__flex just-s showMoreTask">
-          <p routerLink="/forms/task" class="m-0 fnt-13 primary_clr d__flex gap-10"><ion-icon class="fnt-20" src="/assets/Employee-Home/add-task.svg"></ion-icon>New Task</p>
-          <p class="m-0 fnt-13" routerLink="/task-list">Show More</p>
-        </div>
-      </div>
-    </div>
-  
     <div class="leaveBalance b-t-5" *ngIf="ess_dashboard_data && ess_dashboard_data.leave_balance && ess_dashboard_data.leave_balance.length != 0" >
       <div class="d__flex just-s w-100 mb-10">
         <h5 class="m-0 fnt-14">Leave Balance</h5>
@@ -360,16 +326,8 @@
       </div>
     </div>
   
-    <app-common-search *ngIf="false && new_dashboard_values" [placeholder]="'Search'" (search_txt_value)="search_txt($event)"></app-common-search>
-
     <div class="business_summary" *ngIf="new_dashboard_values">
       <p class="m-0 fnt-16 fnt_w600">Quick Links</p>
-      <!-- <div class="color_page">
-        <div *ngFor="let item of new_dashboard_values.number_card" class="cards_value" routerLink="{{'/list/' + item.status}}">
-          <img [src]="get_color_icon(item.status)" alt="">
-          <p class="m-0 gray_clr fnt-13 fnt_w500 mt-5">{{item.status}}</p>
-        </div>
-      </div> -->
       <div class="gridBox">
         <div *ngFor="let item of db.permission_details" class="boxes_" routerLink="{{item.route}}">
           <!-- <ion-icon class="fnt_60" [src]="db.get_icon_lead_role(item.page)"></ion-icon> -->
@@ -377,16 +335,5 @@
         </div>
       </div>
     </div>
-    <!-- <div class="business_summary" *ngIf="new_dashboard_values">
-      <p class="m-0 fnt-16 fnt_w600">Lead Analysis</p>
-      <app-apex-chart [hover_name]="'Lead'" [new_dashboard_values]="new_dashboard_values.dashboard_chart"></app-apex-chart>
-    </div>
-
-    <div class="business_summary" *ngIf="new_dashboard_values && new_dashboard_values.event_list && new_dashboard_values.event_list.length != 0">
-      <p class="m-0 fnt-16 fnt_w600">Upcoming Events</p>
-      <div class="upcoming_event_list">
-        <app-meeting [no_delete]="true" [dashboard]="true" [summary]="true" [meetingList]="new_dashboard_values.event_list"></app-meeting>
-      </div>
-    </div> -->
   </div>
 </ion-content>

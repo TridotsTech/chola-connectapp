@@ -20,6 +20,7 @@ import { LetterRequestDetailComponent } from 'src/app/components/letter-request-
 import { CreateLetterRequestComponent } from 'src/app/components/create-letter-request/create-letter-request.component';
 import { BuybackFormComponent } from 'src/app/components/customer-details/buyback-form/buyback-form.component';
 import { LeavePreviewWithdrawComponent } from 'src/app/components/leaves-module/leave-preview-withdraw/leave-preview-withdraw.component';
+import { CreateLtaRequestComponent } from 'src/app/components/create-lta-request/create-lta-request.component';
 
 @Component({
   selector: 'app-sales-order-list',
@@ -3340,6 +3341,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     else if (data && data.name && data.name == 'Letter Request') {
       this.openLetterRequestForm();
     }
+    else if (data && data.name && data.name == 'LTA Request') {
+      this.openLTARequestForm();
+    }
     else if (data && data.name && data.name == 'Buyback') {
       this.openBuybackForm();
     }
@@ -3392,6 +3396,22 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       cssClass: '',
       componentProps: {
         title: 'Add Letter Request'
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data)
+      this.get_tempate_and_datas(this.doc_type)
+  }
+
+  async openLTARequestForm() {
+    const modal = await this.modalCtrl.create({
+      component: CreateLtaRequestComponent,
+      cssClass: '',
+      componentProps: {
+        title: 'Add LTA Request'
       },
       enterAnimation: this.db.enterAnimation,
       leaveAnimation: this.db.leaveAnimation,

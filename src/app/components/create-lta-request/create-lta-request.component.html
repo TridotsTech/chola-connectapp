@@ -1,0 +1,48 @@
+<app-header [title]="title" [showYear]="false" [model]="true"></app-header>
+<ion-content [fullscreen]="true">
+  <div class="p-10">
+    <!-- [ngClass]="workflow_list.length == 0 ? 'form_Height':'formHeight'" -->
+    <form [formGroup]="lta_form">   
+      <!-- <div *ngIf="ltaDetails" class="employee_det">
+        <div class="sec-2">
+          <div class="d__flex gap-10 flex-70">
+            <img class="profile_user_img" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) : '/assets/icon/profile-owner.svg'">
+            <div>
+              <p class="fnt-14 m-0 mb-5 fnt_w500 webkit-text" [style.--line]="1">{{ltaDetails.employee_name}}</p>
+              <p class="fnt-13 m-0 gray_clr">{{ltaDetails.employee}}</p>
+            </div>
+          </div>
+          <div class="flex-auto d__flex">
+            <app-status [reverse]="true" [status]="ltaDetails.workflow_state"></app-status>
+          </div>
+        </div>
+      </div> -->
+      <div *ngIf="lta_form.value.employee" class="detailSec">
+        <div class="section-p">
+          <h4 *ngIf="lta_form.value.employee_name && !ltaDetails" class="values m-0">Employee Name</h4>
+          <h4 *ngIf="lta_form.value.employee_name && !ltaDetails" class="values m-0  mb-5">{{lta_form.value.employee_name}}</h4>
+          <h4 *ngIf="lta_form.value.designation" class="values m-0">Designation</h4>
+          <h4 *ngIf="lta_form.value.designation" class="values m-0  mb-5">{{lta_form.value.designation}}</h4>
+          <h4 *ngIf="lta_form.value.company" class="values m-0">Company</h4>
+          <h4 *ngIf="lta_form.value.company" class="values m-0 mb-5">{{lta_form.value.company}}</h4>
+           <div  class="d__flex just-s mb-5">
+            <div class="flex-65">
+          <h4 class="values m-0">Grade</h4>
+          <h4 class="values m-0  mb-5">{{lta_form.value.grade ? lta_form.value.grade
+            :'-'}}</h4>
+            </div>
+            <div class="flex-35">
+              <h4 class="values m-0">Date Of Joining</h4>
+              <h4 class="values m-0  mb-5">
+                {{lta_form.value.date_of_joining ? lta_form.value.date_of_joining: '-'}}</h4>
+            </div>
+            </div>
+          
+            
+        </div>
+      </div>  
+     
+    </form>
+  </div>
+
+</ion-content>

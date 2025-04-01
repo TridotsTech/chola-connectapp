@@ -107,6 +107,7 @@ import { NewVoluntaryPfComponent } from './new-voluntary-pf/new-voluntary-pf.com
 import { DownloadElvluationComponent } from './download-elvluation/download-elvluation.component';
 import { MyslipDownloadComponent } from './myslip-download/myslip-download.component';
 import { EmployeeTransferOtpComponent } from './employee-transfer-otp/employee-transfer-otp.component';
+import { CreateLtaRequestComponent } from './create-lta-request/create-lta-request.component';
 
 @NgModule({
   declarations: [
@@ -207,7 +208,8 @@ import { EmployeeTransferOtpComponent } from './employee-transfer-otp/employee-t
     NewVoluntaryPfComponent,
     DownloadElvluationComponent,
     MyslipDownloadComponent,
-    EmployeeTransferOtpComponent
+    EmployeeTransferOtpComponent,
+    CreateLtaRequestComponent
   ],
   imports: [
     CommonModule,
@@ -319,7 +321,8 @@ import { EmployeeTransferOtpComponent } from './employee-transfer-otp/employee-t
     JobReferalFiltersComponent,
     NewVoluntaryPfComponent,
     MyslipDownloadComponent,
-    EmployeeTransferOtpComponent
+    EmployeeTransferOtpComponent,
+    CreateLtaRequestComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -6,8 +6,7 @@ import { Location } from '@angular/common';
 import { NavigationLinkPage } from '../navigation-link/navigation-link.page';
 import { AttachmentsComponent } from 'src/app/components/customer-details/attachments/attachments.component';
 import { FormsPage } from '../../forms/forms.page';
-// import { CrmCommentComponent } from 'src/app/components/CRM/crm-comment/crm-comment.component';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+// import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { ActionSheetController } from '@ionic/angular';
 import { Directory, Filesystem } from '@capacitor/filesystem';
@@ -21,24 +20,7 @@ import { EditFormsPage } from '../../web-form/edit-forms/edit-forms.page';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.page.html',
-  styleUrls: ['./detail.page.scss'],
-  // animations: [
-  //   // trigger('fadeInOut', [
-  //   //   state('void', style({
-  //   //     opacity: 0
-  //   //   })),
-  //   //   transition('void <=> *', animate(1000)),
-  //   // ])
-
-  //   trigger('fadeInOut', [
-  //     state('void', style({
-  //       opacity: 0
-  //     })),
-  //     transition('void => *', [
-  //       animate('1.0s ease-in-out', style({ opacity: 2 }))
-  //     ]),
-  //   ])
-  // ]
+  styleUrls: ['./detail.page.scss']
 })
 export class DetailPage implements OnInit,OnDestroy {
 
@@ -53,11 +35,9 @@ export class DetailPage implements OnInit,OnDestroy {
   creation = true;
   load_drop_down = false;
   loader = false;
-  // { name: 'Call', icon: "/assets/icon/menu/call.svg" }, { name: 'Mail', route: '/create-orders', icon: 'assets/icon/menu/e-mail.svg' }, { name: 'Whatsapp', icon: '/assets/icon/menu/whatsapp.svg' }
   fab_lead = [{ name: 'Opportunity', icon: '/assets/detail-fab/fab-Opportunity.svg' }, { name: 'Quotation', icon: '/assets/detail-fab/fab-Quotation.svg' }, { name: 'Customer', icon: '/assets/detail-fab/fab-Customer.svg' }];
   fab_opportunity = [{ name: 'Call', icon: "/assets/detail-fab/fab-phone.svg" }, { name: 'Mail', route: '/create-orders', icon: 'assets/detail-fab/fab-mail.svg' }, { name: 'Whatsapp', icon: '/assets/detail-fab/fab-whatsapp.svg' }, { name: 'Quotation', icon: '/assets/detail-fab/fab-Quotation.svg' }, { name: 'Customer', icon: '/assets/detail-fab/fab-Customer.svg' }];
   fab_quotation = [{ name: 'Call', icon: "/assets/detail-fab/fab-phone.svg" }, { name: 'Mail', route: '/create-orders', icon: 'assets/detail-fab/fab-mail.svg' }, { name: 'Whatsapp', icon: '/assets/detail-fab/fab-whatsapp.svg' } , { name: 'Set as Lost', icon: '/assets/detail-fab/fab-lost.svg' }];
-  // fab_default = [{ name: 'Call', icon: "/assets/icon/menu/call.svg" }, { name: 'Mail', route: '/create-orders', icon: 'assets/icon/menu/e-mail.svg' }, { name: 'Whatsapp', icon: '/assets/icon/menu/whatsapp.svg' }];
   fab_items: any = [];
   new_user_form = false;
   contact_number: any;
@@ -76,7 +56,6 @@ export class DetailPage implements OnInit,OnDestroy {
 
   tabs_array = [
     { name: 'Overview', route: 'Summary', value: 'Summary' },
-    // { name: 'Summary', route: 'Summary', value: 'Summary' },
     { name: 'Info', route: 'lead', value: 'lead' },
     { name: 'Notes', route: 'comment', value: 'comment' },
     { name: 'Tasks', route: 'activities', value: 'activities' },
@@ -288,31 +267,30 @@ export class DetailPage implements OnInit,OnDestroy {
     if (this.db.selected_list.next_doc) {
       next_doc_details = this.db.permission_details.find(r => r.page == this.db.selected_list.next_doc);
     }
-     if (doctype == 'Sales Order') {
-      if (order_detail.status == 'Draft' || order_detail.status == 'Cancelled' || order_detail.status == 'Closed' || order_detail.status == 'On Hold' || order_detail.status == 'To Deliver') {
-        next_doc_details ? next_doc_details.create = 0 : null;
-      }else {
-        next_doc_details ? next_doc_details.create = 1 : null;
-      }
-    } else if (doctype == 'Lead' || doctype == 'Opportunity') {
-      // this.db.tab_buttons(this.tabs_array, 'Overview', 'value');
-      this.db.tab_buttons(this.tabs_array, 'Summary', 'value');
-      next_doc_details ? next_doc_details.create = 0 : null;
-      if (order_detail.status == 'Converted') {
-        next_doc_details ? next_doc_details.create = 0 : null;
-      } else if (order_detail.status == 'Quotation' && this.db.selected_list.role == "Sales User") {
-        next_doc_details ? next_doc_details.create = 0 : null;
-      }
-    } else if (doctype == 'Opportunity') {
-      next_doc_details ? next_doc_details.create = 0 : null;
-      if (order_detail.status == 'Lost') {
-        next_doc_details ? next_doc_details.create = 0 : null;
-      }
-    } else if (doctype == 'Quotation') {
-      next_doc_details ? next_doc_details.create = 0 : null;
-    }else if (doctype == 'Request for Quotation' && this.page_title == 'Supplier Quotation') {
-      order_detail.status = 'Draft'
-    }
+    //  if (doctype == 'Sales Order') {
+    //   if (order_detail.status == 'Draft' || order_detail.status == 'Cancelled' || order_detail.status == 'Closed' || order_detail.status == 'On Hold' || order_detail.status == 'To Deliver') {
+    //     next_doc_details ? next_doc_details.create = 0 : null;
+    //   }else {
+    //     next_doc_details ? next_doc_details.create = 1 : null;
+    //   }
+    // } else if (doctype == 'Lead' || doctype == 'Opportunity') {
+    //   this.db.tab_buttons(this.tabs_array, 'Summary', 'value');
+    //   next_doc_details ? next_doc_details.create = 0 : null;
+    //   if (order_detail.status == 'Converted') {
+    //     next_doc_details ? next_doc_details.create = 0 : null;
+    //   } else if (order_detail.status == 'Quotation' && this.db.selected_list.role == "Sales User") {
+    //     next_doc_details ? next_doc_details.create = 0 : null;
+    //   }
+    // } else if (doctype == 'Opportunity') {
+    //   next_doc_details ? next_doc_details.create = 0 : null;
+    //   if (order_detail.status == 'Lost') {
+    //     next_doc_details ? next_doc_details.create = 0 : null;
+    //   }
+    // } else if (doctype == 'Quotation') {
+    //   next_doc_details ? next_doc_details.create = 0 : null;
+    // }else if (doctype == 'Request for Quotation' && this.page_title == 'Supplier Quotation') {
+    //   order_detail.status = 'Draft'
+    // }
 
     let selected_list;
     if (this.creation) {
@@ -329,18 +307,15 @@ export class DetailPage implements OnInit,OnDestroy {
     } else if (selected_list.read == 1) {
       this.enabled_read_only = true;
     }
-    if ((doctype == 'Lead' || doctype == 'Opportunity' || doctype == 'Sales Order') && selected_list.write == 1) {
-      this.order_id = this.sale_order_id;
-      this.enabled_read_only = false;
-    }
+    // if ((doctype == 'Lead' || doctype == 'Opportunity' || doctype == 'Sales Order') && selected_list.write == 1) {
+    //   this.order_id = this.sale_order_id;
+    //   this.enabled_read_only = false;
+    // }
     
-    // console.log(doctype) 
-    // console.log(order_detail)
     if (doctype == 'Leave Application' && order_detail && order_detail.status == 'Open') {
       this.order_id = this.sale_order_id;
       this.enabled_read_only = false;
     }
-    //  && order_detail && order_detail.status == 'Open'
     if (doctype == 'Bug Sheet') {
       this.order_id = this.sale_order_id;
       this.enabled_read_only = false;
@@ -359,10 +334,6 @@ export class DetailPage implements OnInit,OnDestroy {
       this.order_id = this.sale_order_id;
       this.enabled_read_only = false;
     }
-    // if (doctype == 'Employee Grievance' && order_detail && order_detail.status == 'Open') {
-    //   this.order_id = this.sale_order_id;
-    //   this.enabled_read_only = false;
-    // }
     if (doctype == 'Report') {
       this.order_id = this.sale_order_id;
       this.enabled_read_only = false;
@@ -409,64 +380,8 @@ export class DetailPage implements OnInit,OnDestroy {
       }
 
     } else {
-      // console.log(this.detail_doc['name'])
       this.detail_doc['name'] = undefined;
     }
-    // if(this.db.selected_list.write == 1 && (order_detail && order_detail.status == 'Draft') ){
-
-    //   let check = this.db.check_permission(this.db.selected_list.next_doc,'write');
-    //   if(check){
-    //     this.order_id = this.sale_order_id;
-    //     // this.detail_doc['name'] = 'Edit';
-    //   }
-
-    // }else if(this.db.selected_list.read == 1 && this.db.selected_list.create == 0){
-
-    //   let check = this.db.check_permission(this.db.selected_list.next_doc,'read');
-    //   this.enabled_read_only = true;
-
-    // }else if(this.db.selected_list.create == 1){
-
-    //   let check = this.db.check_permission(this.db.selected_list.next_doc,'create');
-
-    //   if(check && this.creation && (this.db.selected_list.page != 'Purchase Order' && this.db.selected_list.page != 'Purchase Receipt')){
-    //     this.enabled_read_only = true;
-    //     this.detail_doc['name'] = this.db.selected_list.next_doc;
-    //     // this.detail_doc['route'] = this.db.selected_list.next_doc 
-    //   }else if(check && this.creation && (this.db.selected_list.page == 'Purchase Order' || this.db.selected_list.page == 'Purchase Receipt')){
-
-    //     this.enabled_read_only = true;
-
-    //     if(this.db.selected_list.page == 'Purchase Order' && order_detail && order_detail.status == 'To Bill'){
-    //       let route;
-    //       if(this.db.selected_list.page == 'Purchase Order'){
-    //         route = this.db.permission_details.find(r=> r.page == 'Purchase Receipt');
-    //         route.page = this.db.selected_list.page;
-    //       }else{
-    //         route = this.db.selected_list;
-    //       }
-    //       this.db.selected_list = route;
-    //       this.detail_doc['name'] = this.db.selected_list.next_doc;
-    //     }else if(this.db.selected_list.page == 'Purchase Order') {
-    //       this.detail_doc['name'] = this.db.selected_list.next_doc;
-    //     }
-
-    //   }else if(this.db.selected_list.read == 1){
-
-    //     let check = this.db.check_permission(this.db.selected_list.next_doc,'create');
-    //     this.enabled_read_only = true;
-    //     if(check){
-    //       this.detail_doc['name'] = this.db.selected_list.next_doc;
-    //     }
-
-
-    //   }
-
-    // }
-
-    // if(doctype == 'Sales Order' && (order_detail.status == "To Deliver and Bill" || order_detail.status == "To Bill")){
-    //   this.enabled_read_only = true;
-    // }
 
     if(doctype == 'Sales Order' && this.page_route == 'Sales Invoice' && this.page_title == 'Sales Invoice'){
       this.enabled_read_only = false;
@@ -506,7 +421,6 @@ export class DetailPage implements OnInit,OnDestroy {
     this.order_detail = order_detail;
 
     if (type != 'next_detail') {
-      // loader.dismiss()
     } else {
       this.order_detail.next_type = type;
       this.order_detail.enable_reference = this.enable_reference
@@ -514,15 +428,12 @@ export class DetailPage implements OnInit,OnDestroy {
       this.order_detail.enabled_read_only = this.enabled_read_only
       this.order_detail.items_values = this.items_values
       localStorage['Next_Detail'] = JSON.stringify(this.order_detail);
-      // this.db.next_previous.next("next_previous");
     }
 
 
     if(this.db.selected_list && this.db.selected_list.page && (this.db.selected_list.page == 'Lead' || this.db.selected_list.page == 'Opportunity')){
       this.detail_doc['name'] = 'Overview'
-      // this.detail_doc['name'] = 'Summary'
     }
-    // console.log(this.order_detail)
   }
 
   enable_reference = false;
@@ -530,7 +441,6 @@ export class DetailPage implements OnInit,OnDestroy {
   employeeId:any;
 
   load_detail(data) {
-    // console.log(data);
     this.items_values = (this.order_detail && this.order_detail.items) ? this.order_detail.items : []
     let material_request_type = (this.order_detail && this.order_detail.material_request_type) ? this.order_detail.material_request_type : undefined
     if(this.order_detail && this.order_detail.employee){
@@ -546,7 +456,6 @@ export class DetailPage implements OnInit,OnDestroy {
     let name = this.sale_order_id;
     this.page_title = this.db.selected_list.next_doc;
     this.enable_reference = true;
-    // console.log(doctype)
     if (data == 'Quotation') {
       this.page_route = data;
     } if (data == 'Opportunity') {
@@ -560,31 +469,20 @@ export class DetailPage implements OnInit,OnDestroy {
     } else if(doctype == 'Material Request'){
       this.page_route = this.page_title 
     } else if (this.db.selected_list.next_doc) {
-      // console.log(this.db.permission_details)
       let page_name = this.db.permission_details.find(r => r.page == this.db.selected_list.next_doc);
-      // console.log(page_name)
-      // console.log(data)
       this.page_route = page_name.detail_route;
-
-      // this.page_route = page_name.detail_route == data ? page_name.detail_route : page_name.next_doc == data ? page_name.next_doc : data;
     }
-    // console.log(this.page_route)
-
     if (doctype == 'Project') {
       this.project_to_task(doctype, name);
     } else {
       if ((this.page_title == 'Purchase Order' && (material_request_type && material_request_type == 'Purchase')) || this.page_title == 'Purchase Receipt' || doctype == 'Lead' || doctype == 'Opportunity') {
-
         this.createNew = true;
-        
         let type = '';
-
         if (this.page_title == 'Purchase Order') {
           type = 'make_purchase_order'
         } else if (this.page_title == 'Purchase Receipt') {
           type = 'make_purchase_receipt'
         }
-
         if (doctype == "Lead") {
           if (this.page_route == 'Opportunity') {
             type = "make_opportunity"
@@ -604,24 +502,17 @@ export class DetailPage implements OnInit,OnDestroy {
             type = "make_sales_order"
           }
         }
-        // console.log(this.page_route)
         this.get_create_detail(doctype, name, type)
       } else {
         if(this.page_title && this.page_title == 'Payment Entry'){
-          //  this.get_invoice_detail(doctype, name, '');
         }else{
           this.get_order_details(doctype, name, '');
         }
       }
     }
-
-
   }
 
-
   async project_to_task(doctype, name) {
-    // let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
-    // await loader.present();
     let data_obj = {
       'project': name,
       'status': 'Open'
@@ -633,10 +524,6 @@ export class DetailPage implements OnInit,OnDestroy {
   async get_create_detail(doctype, name, type) {
 
     let doctype_name = doctype;
-
-    // let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
-    // await loader.present();
-
     doctype = doctype.toLocaleLowerCase();
 
     if (doctype.includes(' ')) {
@@ -651,16 +538,12 @@ export class DetailPage implements OnInit,OnDestroy {
       "method": type
     }
     this.db.get_default_data(data).subscribe(res => {
-
       if (res && res.status && res.status == 'Success') {
         this.check_permissions(res.message, doctype_name, '');
       } else {
-        // loader.dismiss();
         this.db.alert('Something went wrong try again later');
       }
     }, (error: any) => {
-      // console.log(error);
-      // loader.dismiss();
       this.db.alert('Something went wrong try again later');
     })
 
@@ -668,12 +551,6 @@ export class DetailPage implements OnInit,OnDestroy {
 
   async next_doc(name) {
     this.loader = true;
-    // this.db.next_tag = true;
-    // this.db.text_width = false;
-    // this.db.infoSummary = true;
-    // let loader = await this.loadingCtrl.create({ message: 'Please Wait...'});
-    // await loader.present();
-
     let data = {
       "doctype": this.db.selected_list.page,
       "value": this.sale_order_id,
@@ -682,32 +559,24 @@ export class DetailPage implements OnInit,OnDestroy {
     }
     this.db.next_doc(data).subscribe(res => {
       if (res && res.status == "Failed") {
-        // this.order_detail = undefined;
         var d = JSON.parse(res._server_messages);
         var d1 = JSON.parse(d);
         this.db.alert(d1.message);
         this.loader = false;
-        // this.check_permissions(res.message,loader,doctype_name);
       } else {
-        // if(res && res.status && res.status == 'Success')
         this.loader = false;
         this.sale_order_id = res.message;
-        // this.db.selected_project_name = res.message
         localStorage['selected_project_id'] = res.message
         this.content.scrollToTop(400);
         this.get_order_details(this.db.selected_list.page, res.message, 'next_detail');
-        //  loader.dismiss(); 
       }
     }, (error: any) => {
-      // console.log(error);
-      // loader.dismiss(); 
       this.db.alert('Something went wrong try again later');
     })
 
   }
 
   goBack(){
-    console.log('this.db.path', this.db.path);
      if(this.db.path && this.db.path.includes('/detail/customer/')){
       this.router.navigateByUrl('/tabs/list/Customer')
     }else if(this.db.path && this.db.path.includes('/detail/Lead/')){
@@ -731,20 +600,10 @@ export class DetailPage implements OnInit,OnDestroy {
       });
       await modal.present();
       let val: any = await modal.onWillDismiss();
-      // this.db.enable_activities = true;
       if (val && val.data && val.data.status && val.data.status == "Success") {
-        // this.order_detail = val.data.data
-        // let value = {
-        //   name: this.order_detail.reference_name,
-        //   doctype: this.order_detail.reference_type
-        // }
-        // this.db.doc_detail(value).subscribe(res => {
-        //   // console.log(res)
-        //   this.order_detail = res.message;
-        // })
+        
       }
     } else if (data == '/forms/Meetings') {
-      // console.log(this.doctype)
       const modal = await this.modalCtrl.create({
         component: FormsPage,
         cssClass: 'crm-event-comment',
@@ -757,7 +616,6 @@ export class DetailPage implements OnInit,OnDestroy {
       });
       await modal.present();
       let { data } = await modal.onWillDismiss();
-      // this.db.enable_activities = true;
       if (data && data.status && data.status == "Success") {
         this.order_detail = data.data
         if (this.order_detail) {
@@ -780,38 +638,7 @@ export class DetailPage implements OnInit,OnDestroy {
 
       }
     } else if(data == '/forms/Notes'){
-      // const modal = await this.modalCtrl.create({
-      //   component: CrmCommentComponent,
-      //   cssClass: this.db.ismobile ? 'crm-add-comment' : 'web_site_form',
-      //   componentProps: {
-      //     name: this.sale_order_id,
-      //     title: 'Add a Note',
-      //     doctype: this.doctype,
-      //   },
-      // });
-      // await modal.present();
       
-      // let { data } = await modal.onWillDismiss();
-
-      // if (data && data.message && data.message.status == 'Success') {
-      //   let loader = await this.loadingCtrl.create({ message: 'Please Wait...' });
-      //   await loader.present();
-
-      //   let data = {
-      //     doctype: 'CRM Note',
-      //     fields: ['added_by', 'added_on', 'note', 'name'],
-      //     filters: {
-      //       parent: this.sale_order_id,
-      //     },
-      //   };
-      //   this.db.get_list(data).subscribe((res) => {
-      //     loader.dismiss()
-      //     this.lead_comments = res.message;
-      //   },error=>{
-      //     loader.dismiss()
-      //   });
-      
-      // }
     }
   
   }
@@ -822,13 +649,8 @@ export class DetailPage implements OnInit,OnDestroy {
 
 
   async open_pop_up() {
-
     let select_item = [{ 'label': this.detail_doc.name }];
-
-    // let select_item = [{ 'label':this.db.selected_list.page }];
-
     if (this.db.selected_list.page == 'Purchase Order') {
-      // select_item.push({ 'label': 'Print' })
     }
 
     const modal = await this.modalCtrl.create({
@@ -844,7 +666,6 @@ export class DetailPage implements OnInit,OnDestroy {
     await modal.present();
 
     const { data } = await modal.onWillDismiss();
-    // console.log(data)
     if (data && data == 'Success') {
       this.load_detail('');
     }
@@ -853,9 +674,7 @@ export class DetailPage implements OnInit,OnDestroy {
   // ion-model slide left transaction
 
   menu_name(event: any) {
-    // console.log(event)
     this.detail_doc['name'] = event ? event.name  : event;
-   
     if (event.name == 'Tasks' || event.name == 'Meetings' || event.name == 'Notes') {
       this.detail_doc['route'] = '/forms/' + event.name;
     }
@@ -874,53 +693,52 @@ export class DetailPage implements OnInit,OnDestroy {
 
   navigate_to_next(item) {
     this.new_user_form = true;
-    if (item.name == 'Call') {
-      // console.log(this.contact_number)
-      this.contact_number ? this.call() : this.db.sendErrorMessage("This customer doesn't have a phone number.so, can't connect");
-    } else if (item.name == 'Mail') {
-      this.contact_email ? this.sendEmail() : this.db.sendErrorMessage("This customer doesn't have a Email.so, can't connect");
-    } else if (item.name == 'Whatsapp') {
-      this.contact_number ? this.openWhatsApp() : this.db.sendErrorMessage("This customer doesn't have a Whatsapp number. So, can't connect");
-    } else if (item.name == 'Opportunity') {
-      this.load_detail('Opportunity');
-    } else if (item.name == 'Quotation') {
-      this.load_detail('Quotation');
-    } else if (item.name == 'Customer') {
-      this.load_detail('Customer');
-    } else if (item.name == 'Sales Invoice') {
-      this.load_detail('Sales Invoice');
-    } else if (item.name == 'Sales Order') {
-      this.load_detail('sales-order-creation');
-    } else if(item.name == 'Set as Lost'){
-      // this.db.lost_quotation.next(item.name)
-      this.add_reason();
-    }
+    // if (item.name == 'Call') {
+    //   this.contact_number ? this.call() : this.db.sendErrorMessage("This customer doesn't have a phone number.so, can't connect");
+    // } else if (item.name == 'Mail') {
+    //   this.contact_email ? this.sendEmail() : this.db.sendErrorMessage("This customer doesn't have a Email.so, can't connect");
+    // } else if (item.name == 'Whatsapp') {
+    //   this.contact_number ? this.openWhatsApp() : this.db.sendErrorMessage("This customer doesn't have a Whatsapp number. So, can't connect");
+    // } else if (item.name == 'Opportunity') {
+    //   this.load_detail('Opportunity');
+    // } else if (item.name == 'Quotation') {
+    //   this.load_detail('Quotation');
+    // } else if (item.name == 'Customer') {
+    //   this.load_detail('Customer');
+    // } else if (item.name == 'Sales Invoice') {
+    //   this.load_detail('Sales Invoice');
+    // } else if (item.name == 'Sales Order') {
+    //   this.load_detail('sales-order-creation');
+    // } else if(item.name == 'Set as Lost'){
+    //   // this.db.lost_quotation.next(item.name)
+    //   this.add_reason();
+    // }
     this.db.hasClass = !this.db.hasClass;
   }
 
   navigate_to_next_opportunity(item) {
     this.new_user_form = true;
-    if (item.name == 'Call') {
-      // console.log(this.contact_number)
-      this.order_detail.contact_mobile ? this.call_1(this.order_detail.contact_mobile) : this.db.sendErrorMessage("This customer doesn't have a phone number.so, can't connect");
-    } else if (item.name == 'Mail') {
-      this.order_detail.contact_email ? this.sendEmail_1(this.order_detail.contact_email) : this.db.sendErrorMessage("This customer doesn't have a Email.so, can't connect");
-    } else if (item.name == 'Whatsapp') {
-      this.order_detail.contact_mobile ? this.openWhatsApp_1(this.order_detail.contact_mobile) : this.db.sendErrorMessage("This customer doesn't have a Whatsapp number. So, can't connect");
-    } else if (item.name == 'Opportunity') {
-      this.load_detail('Opportunity');
-    } else if (item.name == 'Quotation') {
-      this.load_detail('Quotation');
-    } else if (item.name == 'Customer') {
-      this.load_detail('Customer');
-    } else if (item.name == 'Sales Invoice') {
-      this.load_detail('Sales Invoice');
-    } else if (item.name == 'Sales Order') {
-      this.load_detail('sales-order-creation');
-    } else if(item.name == 'Set as Lost'){
-      // this.db.lost_quotation.next(item.name)
-      this.add_reason();
-    }
+    // if (item.name == 'Call') {
+    //   // console.log(this.contact_number)
+    //   this.order_detail.contact_mobile ? this.call_1(this.order_detail.contact_mobile) : this.db.sendErrorMessage("This customer doesn't have a phone number.so, can't connect");
+    // } else if (item.name == 'Mail') {
+    //   this.order_detail.contact_email ? this.sendEmail_1(this.order_detail.contact_email) : this.db.sendErrorMessage("This customer doesn't have a Email.so, can't connect");
+    // } else if (item.name == 'Whatsapp') {
+    //   this.order_detail.contact_mobile ? this.openWhatsApp_1(this.order_detail.contact_mobile) : this.db.sendErrorMessage("This customer doesn't have a Whatsapp number. So, can't connect");
+    // } else if (item.name == 'Opportunity') {
+    //   this.load_detail('Opportunity');
+    // } else if (item.name == 'Quotation') {
+    //   this.load_detail('Quotation');
+    // } else if (item.name == 'Customer') {
+    //   this.load_detail('Customer');
+    // } else if (item.name == 'Sales Invoice') {
+    //   this.load_detail('Sales Invoice');
+    // } else if (item.name == 'Sales Order') {
+    //   this.load_detail('sales-order-creation');
+    // } else if(item.name == 'Set as Lost'){
+    //   // this.db.lost_quotation.next(item.name)
+    //   this.add_reason();
+    // }
     this.db.hasClass = !this.db.hasClass;
   }
 
@@ -1028,26 +846,6 @@ export class DetailPage implements OnInit,OnDestroy {
     } catch (error) {
       // console.error('Unable to save PDF file', error);
     }
-
-    // try {
-    //   const pdfUrl = this.db.baseMethod + `frappe.utils.print_format.download_pdf?doctype=Sales%20Invoice&name=${this.order_detail.name}&format=Tax%20Invoice&no_letterhead=0&letterhead=Tridots%20Header%20and%20Footer&settings=%7B%7D&_lang=en`; // URL to the sample PDF file
-    //   const response = await fetch(pdfUrl);
-    //   const pdfBlob = await response.blob();
-    //   const fileName = 'Sales Invoice' + this.order_detail.name;
-  
-    //   const blobUrl = URL.createObjectURL(pdfBlob);
-    //   const a = document.createElement('a');
-    //   document.body.appendChild(a);
-    //   a.href = blobUrl;
-    //   a.download = fileName;
-    //   a.click();
-    //   window.URL.revokeObjectURL(blobUrl);
-    //   document.body.removeChild(a);
-  
-    //   console.log('PDF file saved successfully');
-    // } catch (error) {
-    //   console.error('Unable to save PDF file', error);
-    // }
   }
 
   async share() {

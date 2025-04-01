@@ -875,7 +875,7 @@ export class DbService {
       if (data["doctype_name"] == "Employee Grievance") {
         employee = { raised_by: ['=', localStorage['employee_id']] };
       } 
-      else if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization"){
+      else if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization" || data["doctype_name"] == "LTA Request"){
         employee = { employee: ['=', localStorage['employee_id']] };
       }
       else if(data["doctype_name"] == "Asset Buyback"){
@@ -899,7 +899,7 @@ export class DbService {
     else if(localStorage['show_selfView'] && !endpoint.includes("go1_apps.go1_apps.apis.hrms.get_emp_holiday_list") && !endpoint.includes("go1_apps.go1_apps.apis.hrms.get_employee_attendance_list") && !endpoint.includes("go1_apps.go1_apps.api.get_leave_application")){
       let employee: any = {};
 
-      if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization"){
+      if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization" || data["doctype_name"] == "LTA Request"){
         employee = { employee: ['!=', localStorage['employee_id']] };
       }
       else if(data["doctype_name"] == "Asset Buyback"){

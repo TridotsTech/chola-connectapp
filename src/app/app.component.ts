@@ -7,6 +7,11 @@ import { AlertController, NavController, Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 import { App } from '@capacitor/app';
+import { AndroidBiometryStrength, BiometricAuth } from '@aparajita/capacitor-biometric-auth';
+import { Network } from '@capacitor/network';
+import { SSLCertificateChecker } from 'capacitor-ssl-pinning';
+import { Device } from '@capacitor/device';
+import { ScreenOrientation } from '@capacitor/screen-orientation';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +23,51 @@ export class AppComponent implements OnInit {
   alert_animatings: any = [];
   alert_animate = false;
   sub1: any
-  sub2
-  constructor(private navCtrl: NavController, public db: DbService, private alertCtrl: AlertController, private platform: Platform, private appVersion: AppVersion, public storage: Storage, private router: Router, public location: Location) { }
+  sub2;
+  wasOffline = false;
+  constructor(private navCtrl: NavController, public db: DbService, private alertCtrl: AlertController, private platform: Platform, private appVersion: AppVersion, public storage: Storage, private router: Router, public location: Location) { 
+    this.checkNetworkOnStart();
+    this.listenNetworkChanges();
+  }
+
+  async checkNetworkOnStart() {
+    const status = await Network.getStatus();
+    this.handleNetworkChange(status.connected);
+  }
+
+  // Listen for real-time network changes
+  listenNetworkChanges() {
+    Network.addListener('networkStatusChange', (status) => {
+      this.handleNetworkChange(status.connected);
+    });
+  }
+
+  // Handle network changes (Prevents multiple calls)
+  handleNetworkChange(isConnected: boolean) {
+    if (!isConnected && !this.wasOffline) {
+      this.wasOffline = true;
+      this.networkExitApp();
+    } else if (isConnected && this.wasOffline) {
+      this.wasOffline = false;
+      // this.db.alertDesign('Back to Online','Okay');
+    }
+  }
+
+  async networkExitApp() {
+    const alert = await this.alertCtrl.create({
+      header: "You are offline!",
+      cssClass: 'my-custom-alert-class-network',
+      message: 'Please connect to the internet and retry',
+      backdropDismiss: false,
+      buttons: [{
+        text: 'Ok',
+        handler: () => {
+          App.exitApp();
+        }
+      }]
+    });
+    await alert.present();
+  }
 
 
   ngOnInit() {
@@ -34,6 +82,8 @@ export class AppComponent implements OnInit {
 
     // this.db.get_dashboard();
     if (this.platform.is('android')) {
+      this.checkDeviceStatus();
+      // this.enableFingerprint();
       // this.db.enable_location();
       // this.get_app_version();
     }
@@ -93,10 +143,84 @@ export class AppComponent implements OnInit {
       setTimeout(() => { this.alert_animatings.shift(); }, 2500);
     });
 
+    this.platform.ready().then(() => {
+      // this.configureSSLPinning();
+    });
+
   }
 
   async createStorage() {
     await this.storage.create();
+  }
+
+
+  async configureSSLPinning() {
+    try {
+      const isCertValid = await SSLCertificateChecker.checkCertificate({ url: this.db.baseUrl,fingerprint: '2D:ED:DF:36:AC:5F:4F:E7:E0:CF:61:72:9D:C1:BE:A6:CA:BD:FF:81:57:65:87:3A:51:A5:FF:58:39:3A:17:6D',});
+      if (isCertValid) {
+        console.log('SSL Pinning successful.');
+      } else {
+        console.error('SSL Pinning failed: Certificate mismatch');
+      }
+    } catch (error) {
+      console.error('Error configuring SSL Pinning:', error);
+    }
+  }
+
+  async checkDeviceStatus() {
+    try {
+      // Get device information using the Device API
+      const info = await Device.getInfo();
+      console.log('Device Info:', info);
+      // Use the info to perform root/jailbreak detection logic
+      if (this.isDeviceJailbroken(info)) {
+        console.log('Your device appears to be jailbroken or rooted.')
+      } else {
+        console.log('Device is secure');
+      }
+    } catch (error) {
+      console.error('Error getting device info:', error);
+    }
+  }
+
+  isDeviceJailbroken(info:any) {
+    // Basic checks for jailbroken devices
+    if (info.platform === 'ios') {
+      // Example checks for iOS jailbreak (modify as needed)
+      const jailbreakIndicators = ['/Applications/Cydia.app', '/usr/sbin/sshd', '/bin/bash'];
+      for (const path of jailbreakIndicators) {
+        if (this.checkFileExists(path)) {
+          return true;
+        }
+      }
+    }
+
+    if (info.platform === 'android') {
+      // Example checks for Android root (modify as needed)
+      const rootIndicators = ['/system/app/Superuser.apk', '/system/xbin/su'];
+      for (const path of rootIndicators) {
+        if (this.checkFileExists(path)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  // Function to check if a file exists (simplified for example)
+  checkFileExists(path: string): boolean {
+    // This function would need native code to check for actual files on the device.
+    // For this example, we'll assume it's not present, but you'd implement this in native code for a real use case.
+    return false;
+  }
+
+  async lockOrientation() {
+    try {
+      await ScreenOrientation.lock({ orientation: 'portrait' });
+    } catch (error) {
+      console.error('Error locking orientation:', error);
+    }
   }
 
 
@@ -107,6 +231,32 @@ export class AppComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   private func() {
     this.db.ismobile = this.db.checkmobile();
+  }
+
+  async enableFingerprint() {
+
+    BiometricAuth.authenticate({
+      reason: 'Please authenticate to continue',  // Message shown to the user during authentication
+      iosFallbackTitle: 'Use Passcode',           // iOS fallback message if biometric fails
+      cancelTitle: 'Cancel',
+      allowDeviceCredential: true,
+      androidTitle: 'Biometric login',
+      androidSubtitle: 'Log in using biometric authentication',
+      androidConfirmationRequired: false,
+      androidBiometryStrength: AndroidBiometryStrength.weak,
+    })
+      .then((result:any) => {
+        if (result.success) {
+          console.log('Authentication successful');
+          // Perform actions after successful authentication
+        } else {
+          console.error('Authentication failed');
+        }
+      })
+      .catch(error => {
+        console.error('Authentication error:', error);
+        // Handle cases where biometric authentication is not available or fails
+      }); 
   }
 
   get_app_version() {

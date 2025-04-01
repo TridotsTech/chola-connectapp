@@ -1,5 +1,4 @@
 <app-header title="Leaves" [showYear]="selectedTabSec == 'Approved' ? 'getYearLeave' : false" [model]="false"></app-header>
-<!-- [showYear]="'getYearLeave'" -->
 <ion-content class="ion-content content_bg" [fullscreen]="true">
 
   <div *ngIf="db.hasClass" [ngClass]="{'backdrop-visible': db.hasClass}">
@@ -48,29 +47,6 @@
         <app-skeleton-loader [type]="skeleton_value_mobile.list_type"
           [list_len]="skeleton_value_mobile.list_len ? skeleton_value_mobile.list_len : []"
           [list_len_count]="skeleton_value_mobile.list_len_count"></app-skeleton-loader>
-      </div>
-    </div>
-
-
-
-
-
-    <div *ngIf="false && leave_dashboard && !no_employee_details && employee_details" class="employe_details">
-
-      <div *ngIf="!employee_details.image" class="avathar">{{employee_details.employee_name[0]}}</div>
-      <div *ngIf="employee_details.image" class="imageDiv">
-        <img [src]="db.product_img(employee_details.image)" />
-      </div>
-
-      <!-- <img src="/assets/icon/Ellipse 291 .png"> -->
-      <!-- <div class="userImage"> -->
-      <!-- <img class="mouse" slot="start" [src]="(db.employee_img && db.employee_img.user_image) ? db.product_img(db.employee_img.user_image) :  db.load_icon(db.cust_name)"> -->
-      <!-- </div> -->
-
-      <!-- <ion-icon class="fnt-50 mouse" slot="start" [src]="db.load_icon(db.cust_name)"></ion-icon> -->
-      <div>
-        <p class="m-0 white fnt-16 fnt_w600">{{employee_details.employee_name}}</p>
-        <p class="m-0 fnt-15 fnt_w500 white">{{employee_details.designation}}</p>
       </div>
     </div>
     
