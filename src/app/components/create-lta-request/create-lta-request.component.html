@@ -37,12 +37,56 @@
                 {{lta_form.value.date_of_joining ? lta_form.value.date_of_joining: '-'}}</h4>
             </div>
             </div>
+            <div  class="d__flex just-s mb-5">
+              <div class="flex-65">
+            <h4 class="values m-0">LTA Block Period</h4>
+            <h4 class="values m-0  mb-5">{{lta_form.value.lta_block_period ? lta_form.value.lta_block_period
+              :'-'}}</h4>
+              </div>
+              <div class="flex-35">
+                <h4 class="values m-0">LTA Mode</h4>
+                <h4 class="values m-0  mb-5">
+                  {{lta_form.value.lta_mode ? lta_form.value.lta_mode: '-'}}</h4>
+              </div>
+              </div>
+              <div  class="d__flex just-s mb-5">
+                <div class="flex-65">
+              <h4 class="values m-0">LTA Amount Requested</h4>
+              <h4 class="values m-0  mb-5">{{lta_form.value.lta_amount_requested | currency:db.website_settings.currency}}</h4>
+                </div>
+                <div class="flex-35">
+                  <h4 class="values m-0">Status</h4>
+                  <h4 class="values m-0  mb-5">
+                    {{lta_form.value.status ? lta_form.value.status: '-'}}</h4>
+                </div>
+                </div>
           
             
         </div>
       </div>  
-     
+
+      <div class="mt-10">
+        <h4 class="select_lable m-0">Select LTA Year</h4>
+        <ng-multiselect-dropdown 
+          [placeholder]="'Select LTA Year'" 
+          [data]="year_list" 
+          [(ngModel)]="year" 
+          [ngModelOptions]="{standalone: true}"
+          (ngModelChange)="onYearChange($event)" 
+          [settings]="dropdownSettings">
+        </ng-multiselect-dropdown>  
+      </div>
+      <div class="custom-input mt-10">
+        <ion-textarea class="text-area" formControlName="remarks" placeholder="Enter Your Remarks Here..." ></ion-textarea>
+      </div>
     </form>
   </div>
 
 </ion-content>
+<ion-footer *ngIf="lta_form.value.status == 'Pending'">
+  <ion-toolbar>
+    <div class="button_">
+      <ion-button (click)="save()">{{title == 'Add LTA Request' ? 'Save' : 'Update'}}</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

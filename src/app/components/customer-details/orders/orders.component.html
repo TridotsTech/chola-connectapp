@@ -303,7 +303,7 @@
           </div>
         </div>
         <div class="d__flex just-e d3">
-          <!-- <p class="m-0 fnt-12 v_btn" [ngClass]="item.workflow_state == 'Approved' ? '':''">View <img class="pl5" src="assets/Employee-Home/view.svg" alt=""></p> -->
+          <p class="m-0 fnt-12 v_btn" >{{item.lta_amount_requested | currency:db.website_settings.currency }} </p>
         </div>
       </div>
     </div>

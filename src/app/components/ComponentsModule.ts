@@ -108,6 +108,7 @@ import { DownloadElvluationComponent } from './download-elvluation/download-elvl
 import { MyslipDownloadComponent } from './myslip-download/myslip-download.component';
 import { EmployeeTransferOtpComponent } from './employee-transfer-otp/employee-transfer-otp.component';
 import { CreateLtaRequestComponent } from './create-lta-request/create-lta-request.component';
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 
 @NgModule({
   declarations: [
@@ -219,10 +220,12 @@ import { CreateLtaRequestComponent } from './create-lta-request/create-lta-reque
     RouterModule,
     NgSelectModule,
     QuillModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
     DragDropModule,
     NgApexchartsModule,
     CalendarModule,
-    LightgalleryModule
+    LightgalleryModule,
+    
   ],
   exports: [
     HeaderComponent,

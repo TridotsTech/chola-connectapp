@@ -220,3 +220,17 @@ ion-checkbox::part(container) {
       margin: 5px 0 15px 0;
     }
   }
+
+  .button_{
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    ion-button{
+        width: 100%;
+    }
+  }
+
+  .select_lable{
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gray-color);
+  }

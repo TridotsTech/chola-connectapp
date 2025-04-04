@@ -2334,7 +2334,11 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.router.navigateByUrl('/performance-evaluation/' + data.name);
     } else if (this.doc_type && this.doc_type == 'Regularization') {
       this.openRegularizationDetail(data)
-    }else if (this.doc_type && this.doc_type == 'Asset Buyback') {
+    }
+    else if (this.doc_type && this.doc_type == 'LTA Request') {
+      this.openLTARequestForm(data,'Edit')
+    }
+    else if (this.doc_type && this.doc_type == 'Asset Buyback') {
       this.router.navigateByUrl('/buyback-detail/' + data.name);
     }else if (this.doc_type && this.doc_type == 'Employee Letter Request') {
       this.openletterrequestDetail(data)
@@ -3342,7 +3346,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.openLetterRequestForm();
     }
     else if (data && data.name && data.name == 'LTA Request') {
-      this.openLTARequestForm();
+      this.openLTARequestForm('','Add');
     }
     else if (data && data.name && data.name == 'Buyback') {
       this.openBuybackForm();
@@ -3406,12 +3410,13 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       this.get_tempate_and_datas(this.doc_type)
   }
 
-  async openLTARequestForm() {
+  async openLTARequestForm(res,type) {
     const modal = await this.modalCtrl.create({
       component: CreateLtaRequestComponent,
       cssClass: '',
       componentProps: {
-        title: 'Add LTA Request'
+        title: type + ' LTA Request',
+        data:res
       },
       enterAnimation: this.db.enterAnimation,
       leaveAnimation: this.db.leaveAnimation,

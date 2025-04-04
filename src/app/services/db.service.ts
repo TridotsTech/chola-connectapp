@@ -20,6 +20,7 @@ import { YearPopupComponent } from '../components/year-popup/year-popup.componen
 import { DetailComponentComponent } from '../components/customer-details/detail-component/detail-component.component';
 import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import OneSignal from 'onesignal-cordova-plugin';
+import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 @Injectable({
   providedIn: 'root',
@@ -236,6 +237,9 @@ export class DbService {
   leave_skeleton = false;
 
   employee_info:any;
+
+  api_key:any;
+  api_secret:any;
   constructor(
     private animationCtrl: AnimationController,
     private http: HttpClient,
@@ -492,8 +496,13 @@ export class DbService {
   ];
 
   store_customer_info(res: any) {
-    localStorage['api_key'] = res.api_key;
-    localStorage['api_secret'] = res.api_secret;
+    SecureStoragePlugin.set({ key: 'api_key', value: res.api_key ? res.api_key :'' });
+    SecureStoragePlugin.set({ key: 'api_secret', value: res.api_secret ? res.api_secret :'' });
+    this.api_key = res.api_key;
+    this.api_secret = res.api_secret;
+    // localStorage['api_key'] = res.api_key;
+    // localStorage['api_secret'] = res.api_secret;
+
     localStorage['CustomerName'] = res.full_name;
     localStorage['customerRefId'] = res.user_id;
     localStorage['employee_id'] = res.employee_id;
@@ -501,6 +510,7 @@ export class DbService {
     localStorage['employee_name'] = res.employee_name ? res.employee_name : null;
     localStorage['designation'] = res.designation ? res.designation : null;
     localStorage['role'] = (res.roles && res.roles.length != 0) ? res.roles[0].role : ''
+    this.get_sec_value()
 
     this.get_customer_values();
     this.get_dashboard();
@@ -508,7 +518,7 @@ export class DbService {
 
   cust_role: any;
   get_customer_values() {
-    if (localStorage['api_key']) {
+    if (localStorage['employee_id']) {
       this.cust_name = localStorage['CustomerName'];
       this.cust_email = localStorage['customerRefId'];
       this.cust_designation = localStorage['designation'];
@@ -566,7 +576,6 @@ export class DbService {
     let data: any = {
       user_id: localStorage['customerRefId'],
       app_name: this.app_name
-      // module: 'HR'
     };
 
     if (this.employee_role) {
@@ -845,14 +854,17 @@ export class DbService {
   ];
 
   get(endpoint: string) {
-    if (localStorage['api_key'] != undefined) {
+    if (this.api_key != undefined) {
+    // if (localStorage['api_key'] != undefined) {
       this.httpHeaders = new HttpHeaders({
         Authorization:
-          'token ' + localStorage['api_key'] + ':' + localStorage['api_secret'],
+          'token ' + this.api_key + ':' + this.api_secret,
       });
     }
+    else
+      this.get_sec_value()
 
-    if (localStorage['api_key']) {
+    if (this.api_key != undefined) {
       this.httpOptions = { headers: this.httpHeaders };
     } else {
       this.httpOptions = {};
@@ -861,13 +873,30 @@ export class DbService {
     return this.http.get(endpoint, this.httpOptions);
   }
 
+  get_sec_value(){
+    Promise.all([
+      SecureStoragePlugin.get({ key: 'api_key' }),
+      SecureStoragePlugin.get({ key: 'api_secret' })
+    ])
+      .then(results => {
+        console.log(results[0].value)
+        this.api_key = results[0].value;
+        this.api_secret = results[1].value;
+      })
+      .catch(error => {
+        console.error('Error retrieving data securely:', error);
+      });
+  }
+
   postmethod(endpoint: string, data: any) {
-    if (localStorage['api_key'] != undefined) {
+    if (this.api_key != undefined) {
       this.httpHeaders = new HttpHeaders({
         Authorization:
-          'token ' + localStorage['api_key'] + ':' + localStorage['api_secret'],
+          'token ' + this.api_key + ':' + this.api_secret,
       });
     }
+    else
+      this.get_sec_value()
 
     if ((data["doctype_name"] != "Project" && data["doctype_name"] != "Bug Sheet" && data["doctype_name"] != "Project") && localStorage['selfView'] && (endpoint == (this.baseMethod + this.go1_apps_api + 'get_tempate_and_datas') || endpoint == (this.baseMethod + this.go1_apps_api + 'get_salary_slip_details'))) {
       let employee: any = {};
@@ -947,7 +976,7 @@ export class DbService {
     }
 
     // localStorage['customerRefId'] &&
-    if (localStorage['api_key']) {
+    if (this.api_key != undefined) {
       this.httpOptions = { headers: this.httpHeaders };
     } else {
       this.httpOptions = {};
@@ -967,6 +996,21 @@ export class DbService {
 
   get_contact_person(data: any): Observable<any> {
     let endpoint = this.go1_apps_api + 'get_link_title';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  get_lta_block_period(data: any): Observable<any> {
+    let endpoint = this.go1_apps_api + 'get_lta_block_period';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  get_lta_availeble_years(data: any): Observable<any> {
+    let endpoint = this.go1_apps_api + 'get_lta_availeble_years';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  get_lta_amount(data: any): Observable<any> {
+    let endpoint = this.go1_apps_api + 'get_lta_amount';
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 
@@ -2941,17 +2985,17 @@ export class DbService {
     }
   }
 
-  beachValue = [
-    { icon: '/assets/beach/blue.svg', color: '#5461FF' },
-    { icon: '/assets/beach/orange.svg', color: '#FFB949' },
-    { icon: '/assets/beach/green.svg', color: '#069855' },
-  ]
+  // beachValue = [
+  //   { icon: '/assets/beach/blue.svg', color: '#5461FF' },
+  //   { icon: '/assets/beach/orange.svg', color: '#FFB949' },
+  //   { icon: '/assets/beach/green.svg', color: '#069855' },
+  // ]
 
-  projectValue = [
-    { icon: '/assets/projects/blue.svg', color: '#5461FF' },
-    { icon: '/assets/projects/orange.svg', color: '#FFB949' },
-    { icon: '/assets/projects/green.svg', color: '#069855' },
-  ]
+  // projectValue = [
+  //   { icon: '/assets/projects/blue.svg', color: '#5461FF' },
+  //   { icon: '/assets/projects/orange.svg', color: '#FFB949' },
+  //   { icon: '/assets/projects/green.svg', color: '#069855' },
+  // ]
 
   employeeList = [
     { icon: '/assets/employees/blue.svg', color: '#5461FF' },

@@ -11,16 +11,13 @@
               <p class="m-0 profile_name">{{greeting}}</p>
             </div>
             <div class="d__flex gap-5 mb-5">
-              <!-- <img class="work_img" src="/assets/icon/work-1-white.svg" alt=""> -->
               <p class="m-0 profile_role">Welcome back to your work!</p>
             </div>
           </div>
         </div>
         <img class="emp_link_icon" src="/assets/Employee-Home/dashboardheaderimage.svg" alt="">
       </div>
-      <!-- <img class="w-100" [src]="(db.appScreen && db.appScreen.screen_attachment) ? db.product_img(db.appScreen.screen_attachment) : '/assets/Employee-Home/Frame.svg'" alt=""> -->
         <div class="bottom_segment">
-
         </div>
         <div class="employeeDetails">
           <div class="d__flex gap-10 p-10-0">
@@ -37,12 +34,8 @@
           </div>
           <div class="checkInButton mouse">
             <ion-icon class="fnt-20 checkInHand" src="/assets/Employee-Home/to-do-notes.svg"></ion-icon>
-            
             <ion-button *ngIf="!is_Attendance" class="checkin_btn" fill="clear" (click)="check_In('IN')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{db.checkInOutTime ? (db.checkInOutTime + ' - Click to Punch In') : 'Click to Punch In'}}</span></ion-button>
             <ion-button *ngIf="is_Attendance" class="checkout_btn" fill="clear" [disabled]="true"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{'Already Punch In'}}</span></ion-button>
-            
-            <!-- <ion-button *ngIf="db.checkin" class="checkin_btn" fill="clear" (click)="check_In('IN')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{getCurrentTime() + '- Click to Check In'}}</span></ion-button>
-            <ion-button *ngIf="!db.checkin" class="checkout_btn" fill="clear" (click)="check_In('OUT')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{getCurrentTime() + '- Click to Check Out'}}</span></ion-button> -->
           </div>
         </div>
     </div>
@@ -67,13 +60,9 @@
         <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="attendance_dashboard">
-        <!-- [ngStyle]="{'background': getCircleColor(item.label)}" -->
         <div *ngFor="let item of ess_dashboard_data.leave_balance;let i = index" class="over_flow">
-          <!-- <div class="bigDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div>
-          <div class="smallDot" [ngStyle]="{'background': getCircleColor(item.label)}"></div> -->
           <div class="w-100 d__flex just-s first_sec mb-5" [routerLink]="'/leave-application-detail/' + db.employee_id">
             <ion-icon [src]="get_leaves_icon(item.label)" class="fnt-30"></ion-icon>
-            <!-- [ngStyle]="{'color':get_leaves_color(item.label)}" -->
             <p  class="m-0 fnt-14 fnt_w600">{{item.count}}</p>
           </div>
           <p class="m-0 fnt-12 fnt_w500 label black_color">{{item.label.replaceAll('Leaves', ' ')}}</p>
@@ -95,15 +84,12 @@
             </div>
             <app-status [status]="ess_dashboard_data.salary_slip.status"></app-status>
           </div>
-
           <div class="d__flex gap-10 just-s pb-5">
             <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-13">{{ess_dashboard_data.salary_slip.name}}</span></p>
             <p class="m-0 flex-auto bold_name-13 inter_">{{ ess_dashboard_data.salary_slip.net_pay ? ( ess_dashboard_data.salary_slip.net_pay |
               currency:db.website_settings.currency) : 0 }}</p>
           </div>
-
           <div class="d__flex gap-10 just-s pb-5">
-            <!-- <p class="m-0 d__flex gap-5"><span class="m-0 text_2 fnt-13">{{' - '}}</span></p> -->
             <div class="flex-auto">
               <p class="m-0 fnt-12 fnt_w500 gray_clr mt-5 inter_"><span style="color: #E21B22;">- </span>{{(ess_dashboard_data.salary_slip.total_deduction ?
                 ess_dashboard_data.salary_slip.total_deduction : 0) | currency:db.website_settings.currency}}</p>
@@ -119,8 +105,6 @@
         <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
       </div>
       <div class="calendar_att">
-        <!-- <ion-datetime mode="ios" presentation="date" (ionChange)="getCalendarDate($event)" [highlightedDates]="highlightedDates"></ion-datetime> -->
-
         <app-month-calendar [highlightedDates]="highlightedDates" (onChange)="getCalendarDate($event)" ></app-month-calendar>
       </div>
     </div>
@@ -131,7 +115,6 @@
 <ion-content *ngIf="db.hr_manager_role && db.ismobile">
   
   <div *ngIf="db.ismobile">
-
     <div class="profile_rel_hr">
       <div class="profile_">
         <div class="d__flex gap-10">
@@ -140,7 +123,6 @@
           </div>
           <div>
             <div class="d__flex gap-5 mb-5" *ngIf="db.cust_name">
-              <!-- <img src="/assets/icon/blue-tick.svg" alt=""> -->
               <p class="m-0 profile_name">{{db.cust_name}}</p>
             </div>
             <div class="d__flex gap-5 mb-5" *ngIf="db.cust_designation">
@@ -148,23 +130,16 @@
               <p class="m-0 profile_role">{{db.cust_designation}}</p>
             </div>
             <img class="hr_link_icon" src="/assets/Employee-Home/dashboardheaderimage.svg" alt="">
-            <!-- <div class="d__flex gap-5 mb-5">
-              <img src="/assets/home-genie/hi.svg" alt="">
-              <p class="m-0 fnt-12 fnt_w500 white">Welcome Back To Work!</p>
-            </div> -->
           </div>
         </div>
       </div>
-      <!-- <img class="link_icon" src="/assets/HR-Home/water.png" alt=""> -->
     </div>
 
     <div class="hr_sec">
-
       <div class="d__flex gap-5 mb-10 p-10-10-0-10">
         <img src="/assets/home-genie/hi.svg" alt="">
         <p class="m-0 fnt-12 fnt_w500">Welcome Back To Work!</p>
       </div>
-
       <div *ngIf="false" class="attendanceStatus">
         <img src="/assets/HR-Home/attendance-guide.svg" alt="">
         <div class="attendanceCount" *ngIf="db.hr_dashboard_data && db.hr_dashboard_data.attendance_details && db.hr_dashboard_data.attendance_details.length != 0">
@@ -180,10 +155,6 @@
       </div>
 
       <div class="hrOverview p-0-10">
-        <!-- <div class="d__flex just-s w-100 mb-20">
-          <h5 class="m-0">Overview</h5>
-          <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
-        </div> -->
         <div class="attendanceEntries" *ngIf="db.hr_dashboard_data && db.hr_dashboard_data.dashboard_details && db.hr_dashboard_data.dashboard_details.length != 0">
           <div (click)="routeToSpecificPage(item)" class="box_1" *ngFor="let item of db.hr_dashboard_data.dashboard_details; let i = index">
             <div>
@@ -192,33 +163,10 @@
                 <p class="m-0 fnt-18 fnt_w500">{{item.count}}</p>
                 <ion-icon class="fnt-50" [src]="attendanceEntry[i]"></ion-icon>
               </div>
-              <!-- <div class="d__flex via gap-5">
-                <div [class.green]="item.new_count > item.old_count" class="d__flex red gap-5">
-                  <ion-icon class="fnt-12" [name]="item.new_count > item.old_count ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
-                  <span class="fnt-10">{{item.new_count}}%</span>
-                </div>
-                <span class="fnt-10 gray_clr">vs Yesterday</span>
-              </div> -->
             </div>
           </div>
         </div>
-        
       </div>
-
-      
-
-      <!-- <div class="hrBusinessSummary">
-        <div class="d__flex just-s w-100 mb-20">
-          <h5 class="m-0">Business Summary</h5>
-          <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
-        </div>
-        <div class="color_page">
-          <div *ngFor="let item of db.dashboard_values" class="cards_value" [routerLink]="item.route ? item.route : null">
-            <ion-icon class="fnt-20" [src]="db.get_icon(item.page)"></ion-icon>
-            <p class="m-0 gray_clr fnt-13 mt-5">{{item.page_name}}</p>
-          </div>
-        </div>
-      </div> -->
 
       <div class="businessSummaryHr b-t-5">
         <div class="d__flex just-s w-100 p-0-10 m-10-0 ">
@@ -240,30 +188,14 @@
           <ion-icon class="fnt-20" *ngIf="false" src="/assets/Employee-Home/more.svg"></ion-icon>
         </div>
         <div class="apexChart" *ngIf="chartObject">
-
-          <!-- <div  class="chartDays">
-            <ion-icon class="fnt-20" src="/assets/HR-Home/chart-filter.svg"></ion-icon>
-            <div class="d__flex gap-5" *ngFor="let item of chartDay; let i = index" (click)="changeCalendarDay(item,i)">
-              <div class="radioBox" [class.radioBoxSelect]="item.selected"></div>
-              <p class="m-0 fnt-14" [ngStyle]="{'color': item.selected ? '#007EE5' : '#000'}">{{item.name}}</p>
-            </div>
-          </div> -->
-
           <div class="bg_primary__">
-            <!-- <app-tabs-button [border_none]="true" [overflow]="true" (menu_name)="menu_name($event)"
-            [bg_white]="true" bg_color="#f6f7f9" [tabs_array]="chartDay" [Lead_seg]="db.sales_manager_role ? true : false"></app-tabs-button> -->
             <div *ngFor="let item of apexChartType; let i = index" [class.isSelectedChart]="item['isSelected']" (click)="selectApex(item,i)">
               <p class="m-0">{{item.name}}</p>
             </div>
-          </div>
-
-          <!-- <apx-chart [series]="series" [chart]="charts" [dataLabels]="dataLabels" [markers]="markers" [title]="title" [fill]="fill"
-            [yaxis]="yaxis" [xaxis]="xaxis" [tooltip]="tooltip" [autoUpdateSeries]="true"></apx-chart> -->
+          </div> 
           <div class="chartView">
             <app-apex-chart-dashboard [currentChartValue]="currentChartValue" [hover_name]="'Attendance'" [chart_value]="chartObject"></app-apex-chart-dashboard>
-            <!-- <app-apex-chart [currentChartValue]="currentChartValue" [hover_name]="'Attendance'" [chart_value]="chartObject"></app-apex-chart> -->
           </div>
-
         </div>
       </div>
     </div>
@@ -291,7 +223,6 @@
         </div>
         <div class="d__flex gap-5 p-10">
           <img src="/assets/home-genie/hi.svg" alt="">
-          <!-- {{db.cust_name ? db.cust_name : ''}} -->
           <p class="m-0 fnt_w500"><span class="fnt-13 fnt_w500" style="color: #5461FF;"> HI, Welcome</span><span class="fnt-13 fnt_w500"> Back To Work!</span></p>
         </div>
       </div>
@@ -330,7 +261,6 @@
       <p class="m-0 fnt-16 fnt_w600">Quick Links</p>
       <div class="gridBox">
         <div *ngFor="let item of db.permission_details" class="boxes_" routerLink="{{item.route}}">
-          <!-- <ion-icon class="fnt_60" [src]="db.get_icon_lead_role(item.page)"></ion-icon> -->
           <p class="m-0 gray_clr fnt-13 fnt_w500 mt-5">{{item.page_name}}</p>
         </div>
       </div>

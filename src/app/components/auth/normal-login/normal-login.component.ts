@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { MailOtpComponent } from '../mail-otp/mail-otp.component';
 import { DbService } from 'src/app/services/db.service';
+import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 @Component({
   selector: 'app-normal-login',
@@ -41,7 +42,7 @@ export class NormalLoginComponent implements OnInit {
 
     // this.sitename_data = 'dev-chola.tridotstech.com'
     // this.sitename_data = ''
-    this.sitename_data = 'stage-cholahrms.frappe.cloud'
+    this.sitename_data = 'stage-hrms.frappe.cloud'
 
   } 
 
@@ -52,10 +53,6 @@ export class NormalLoginComponent implements OnInit {
     }
   }
 
-  // @HostListener('document:keyup.t')
-  // onDocumentKeyupT() {
-  //   this.login()
-  // }
   get site_name(){
     return this.loginform.get('site_name');
   }
@@ -73,37 +70,15 @@ export class NormalLoginComponent implements OnInit {
   login() {
     this.submitted = true;
     this.buttonLoader = true;
-    // localStorage['api_key'] = '78d3df01ad93d7f';
-    // localStorage['api_secret'] = '8564d006436a58a';
-    // this.router.navigateByUrl('/dashboard');
-
     if (this.loginform.status == 'VALID') {
       let site_name = this.loginform.value.site_name;
-
-      // if(site_name == 'admin.tridotstech.com'){
-      //   localStorage['go1App'] = 'go1App';
-      //   this.db.erp14 = false;
-      // }
-
-      if(site_name == 'erp14test.tridotstech.com'){
-        localStorage['go1App'] = 'go1App';
-      }
-
       this.db.site_values(site_name);
         let data = {
           usr: this.loginform.value.email,
-          pwd: this.loginform.value.password,
-          // "user_type": "Jobseeker"
+          pwd: this.loginform.value.password
         }
         this.db.getLogin(data).subscribe((data:any) => {
-
           if(data.message.status == "Success"){
-
-            // this.db.reportView = true;
-            // localStorage['reportView'] = true;
-            // this.db.show_selfView = true;
-            // localStorage['show_selfView'] = true;
-
             if(data.message.roles){
               let check = data.message.roles.map(res=> {return res.role == 'HR Manager' || res.role == 'L1 Manager' || res.role == 'L2 Manager'})
               if(check){
@@ -114,15 +89,15 @@ export class NormalLoginComponent implements OnInit {
 
             localStorage['site_name'] = site_name;
             this.db.side_menu_show = true;
-            localStorage['CustomerPwd'] = this.loginform.value.password;
+            SecureStoragePlugin.set({ key: 'CustomerPwd', value: this.loginform.value.password });
+            // localStorage['CustomerPwd'] = this.loginform.value.password;
             data.message.full_name = data.full_name ? data.full_name : '';
             this.db.store_customer_info(data.message);
             
             if(data.message){
-              localStorage['api_key'] = data.message.api_key;
+              SecureStoragePlugin.set({ key: 'api_key', value: data.message.api_key });
+              // localStorage['api_key'] = data.message.api_key;
             }
-            // this.db.get_path()
-            // setTimeout( () => {  this.router.navigateByUrl(this.db.ismobile ? '/tabs/dashboard' : '/dashboard'); },100);
             this.db.side_menu_show = true;
             this.submitted = false;
             this.loginform.reset();   
@@ -143,7 +118,6 @@ export class NormalLoginComponent implements OnInit {
         this.buttonLoader = false;
         setTimeout( () => { this.shake = false },400)
         this.alert_message = 'Invalid Email/Password';
-        // console.log(error);
       });
     }else{
       this.shake = true;
@@ -163,15 +137,9 @@ export class NormalLoginComponent implements OnInit {
         type:'login'
       }
     })
-
     await modal.present();
-
     await modal.onWillDismiss().then( res =>{    
     });
   }
     
-  // signup(){
-  //   this.router.navigateByUrl('/web-page?page_route=supplier-registration')
-  // }
-
 }

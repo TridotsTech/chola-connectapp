@@ -15,11 +15,8 @@
 
       <div autoHide="false" *ngIf="!db.ismobile && !(db.path.includes('web-page?'))  &&  !(db.path == '/register') && db.path != '/page-not-found'" [class.container_profile]="db.profile_side_menu"  class="container__">
         <div class="container_1 ">
-          <!-- <app-mobile-menu></app-mobile-menu> -->
           <app-side-tabs type="menu"></app-side-tabs>
           <div [class.progress_]="db.profile_side_menu">
-            <!-- <app-profile-card type="side_bar"></app-profile-card> -->
-            <!-- <app-side-tabs type="policy"></app-side-tabs> -->
           </div>
         </div>
       </div>

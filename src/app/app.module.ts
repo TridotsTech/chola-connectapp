@@ -25,6 +25,7 @@ import { RevoGridModule } from '@revolist/angular-datagrid';
 // import { FrappeDataTableModule } from 'frappe-datatable';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
@@ -34,6 +35,7 @@ import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, BrowserAnimationsModule, QuillModule.forRoot(), IonicModule.forRoot({mode:'md'}), IonicStorageModule.forRoot(), AppRoutingModule, ComponentsModule, HttpClientModule, NgSelectModule, LightgalleryModule, RevoGridModule, 
+    NgMultiSelectDropDownModule.forRoot(),
     // FrappeDataTableModule
     CalendarModule.forRoot({
       provide: DateAdapter,

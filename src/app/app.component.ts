@@ -12,6 +12,8 @@ import { Network } from '@capacitor/network';
 import { SSLCertificateChecker } from 'capacitor-ssl-pinning';
 import { Device } from '@capacitor/device';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 @Component({
   selector: 'app-root',
@@ -78,15 +80,28 @@ export class AppComponent implements OnInit {
     this.createStorage()
 
     this.db.ismobile = this.db.checkmobile();
-    this.db.get_customer_values();
+    Promise.all([
+      SecureStoragePlugin.get({ key: 'api_key' }),
+      SecureStoragePlugin.get({ key: 'api_secret' })
+    ])
+      .then(results => {
+        this.db.api_key = results[0].value;
+        this.db.api_secret = results[1].value;
+        this.db.get_customer_values();
+      })
+      .catch(error => {
+        console.error('Error retrieving data securely:', error);
+      });
 
     // this.db.get_dashboard();
     if (this.platform.is('android')) {
-      this.checkDeviceStatus();
+      // this.checkDeviceStatus();
       // this.enableFingerprint();
       // this.db.enable_location();
       // this.get_app_version();
     }
+
+
 
     this.platform.ready().then(res => {
       if ((this.db.ismobile || res == 'ios' || res == 'ipad' || res == 'iphone' || res == 'mobile' || res == 'tablet') && res != 'dom') {
@@ -98,6 +113,13 @@ export class AppComponent implements OnInit {
         }
       })
     })
+
+    this.platform.ready().then(() => {
+      // Hide the splash screen after 3 seconds
+      setTimeout(() => {
+        SplashScreen.hide(); // Hide the splash screen
+      }, 3500); // 3000 ms = 3 seconds
+    });
 
     this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
 
@@ -144,6 +166,7 @@ export class AppComponent implements OnInit {
     });
 
     this.platform.ready().then(() => {
+      this.lockOrientation();
       // this.configureSSLPinning();
     });
 

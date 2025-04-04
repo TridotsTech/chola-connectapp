@@ -13,12 +13,24 @@ export class AuthGuard implements CanActivate {
 
   }
 
-  canActivate() {
-    if(this.auth.IsLoggedIn()){
+  async canActivate() {
+    const isLoggedIn = await this.auth.IsLoggedIn();
+    if(isLoggedIn){
+    // if(this.auth.IsLoggedIn()){
       return true;
     }
+
     this.router.navigate(['register'])
+    // this.router.navigateByUrl('/login')
+    // this.router.navigateByUrl('/signup?page_route=business-register')
     return false;
   }
+  // canActivate() {
+  //   if(this.auth.IsLoggedIn()){
+  //     return true;
+  //   }
+  //   this.router.navigate(['register'])
+  //   return false;
+  // }
 
 }

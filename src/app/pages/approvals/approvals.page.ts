@@ -37,6 +37,7 @@ export class ApprovalsPage implements OnInit {
       filters : { 
         reference_doctype : 
         ['Like' , '%' + (this.searchDoctypeTest ? this.searchDoctypeTest : '') + '%' ],
+        
         status:'Open'
       }
     }

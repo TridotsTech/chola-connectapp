@@ -39,7 +39,7 @@ export class MyslipDownloadComponent  implements OnInit {
       });
       await modal.present();
       const val = await modal.onWillDismiss();
-      console.log(val)
+      // console.log(this.year)
       if(val && val.data){
         type == 'month' ? this.month = val.data : ''
       }
