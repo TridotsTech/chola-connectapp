@@ -34,8 +34,8 @@
           </div>
           <div class="checkInButton mouse">
             <ion-icon class="fnt-20 checkInHand" src="/assets/Employee-Home/to-do-notes.svg"></ion-icon>
-            <ion-button *ngIf="!is_Attendance" class="checkin_btn" fill="clear" (click)="check_In('IN')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{db.checkInOutTime ? (db.checkInOutTime + ' - Click to Punch In') : 'Click to Punch In'}}</span></ion-button>
-            <ion-button *ngIf="is_Attendance" class="checkout_btn" fill="clear" [disabled]="true"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{'Already Punch In'}}</span></ion-button>
+            <ion-button *ngIf="!db.is_Attendance" class="checkin_btn" fill="clear" (click)="check_In('IN')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{db.checkInOutTime ? (db.checkInOutTime + ' - Click to Punch In') : 'Click to Punch In'}}</span></ion-button>
+            <ion-button *ngIf="db.is_Attendance" class="checkout_btn" fill="clear" [disabled]="true"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{'Already Punch In'}}</span></ion-button>
           </div>
         </div>
     </div>

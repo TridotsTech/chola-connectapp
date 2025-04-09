@@ -170,23 +170,6 @@ export class CheckinMultipleComponent  implements OnInit {
     })
   }
 
-  // calculateTotalDuration(): string {
-  //   let totalSeconds = 0;
-
-  //   // Calculate total seconds
-  //   this.employee_checkin_list.forEach(res_duration => {
-  //     const [hours, minutes, seconds] = res_duration.duration.split(':').map(Number);
-  //     totalSeconds += hours * 3600 + minutes * 60 + seconds;
-  //   });
-
-  //   // Convert total seconds back to hours, minutes, and seconds
-  //   const hours = Math.floor(totalSeconds / 3600);
-  //   const minutes = Math.floor((totalSeconds % 3600) / 60);
-  //   const seconds = totalSeconds % 60;
-
-  //   return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
-  // }
-
   // Helper function to pad single digit numbers with leading zeros
   pad(num: number): string {
     return (num < 10 ? '0' : '') + num;
@@ -226,6 +209,8 @@ export class CheckinMultipleComponent  implements OnInit {
           this.fromTime = undefined;
           this.checkin = true;
         this.get_employee_checkin(localStorage['employee_id'])
+        this.db.enable_call_dash_data = true;
+          this.db.call_dashboard_data.next('Success');
       }else if(res.message.missing_days){
         const modal = await this.modalCtrl.create({
           component: RegularizationFormComponent,

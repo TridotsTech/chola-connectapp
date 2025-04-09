@@ -68,7 +68,7 @@ export class DashboardPage implements OnInit {
   public tooltip: ApexTooltip | any;
   formattedDate: any;
   check_in_condition: any = [];
-  is_Attendance:any = false;
+  // is_Attendance:any = false;
   constructor(
     private zone: NgZone,
     public db: DbService,
@@ -129,6 +129,14 @@ export class DashboardPage implements OnInit {
     }
 
     this.db.checkInOutDetail = '';
+
+    this.db.call_dashboard_data.subscribe(resS => {
+      if(resS && resS == 'Success' && this.db.enable_call_dash_data){
+        this.db.enable_call_dash_data = false;
+        this.get_ess_dashboard();
+        this.checkIn();
+      }
+    })
   }
 
   ionViewWillLeave(){
@@ -188,10 +196,12 @@ export class DashboardPage implements OnInit {
     }
     this.db.checkIn(datas).subscribe(res => {
       if(res && res.message && res.message.status == "success"){
-        this.is_Attendance = true;
+        this.db.is_Attendance = true;
       }else if(res && res.message && res.status == "Employee Not Found"){
         this.db.alert(res.message)
       }
+      else if(res && res.message && res.message.status == "failed")
+        this.db.is_Attendance = false;
     })
   }
 
@@ -508,50 +518,11 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  // swipeStartX: any;
-  // swipeEndX: any;
-  // swipeThreshold:any = 50; // Minimum distance in pixels to be considered a swipe
-
-  // @HostListener('document:touchstart', ['$event'])
-  // onTouchStart(event: TouchEvent) {
-  //   this.swipeStartX = event.touches[0].clientX;
-  // }
-
-  // @HostListener('document:touchmove', ['$event'])
-  // onTouchMove(event: TouchEvent) {
-  //   if (this.swipeStartX !== undefined) {
-  //     this.swipeEndX = event.touches[0].clientX;
-  //   }
-  // }
-
-  // @HostListener('document:touchend', ['$event'])
-  // onTouchEnd(event: TouchEvent) {
-  //   if (this.swipeStartX !== undefined && this.swipeEndX !== undefined) {
-  //     const deltaX = this.swipeEndX - this.swipeStartX;
-
-  //     // Determine if it's a horizontal swipe and meets the threshold
-  //     if (Math.abs(deltaX) > this.swipeThreshold) {
-  //       if (deltaX > 0) {
-  //         this.handleButtonClick();
-  //       } else {
-  //         this.handleButtonClick();
-  //       }
-  //     }
-
-  //     // Reset swipe variables
-  //     this.swipeStartX = undefined;
-  //     this.swipeEndX = undefined;
-  //   }
-  // }
-
   handleButtonClick() {
-   
     const hostElement = document.querySelector('.calendar_att ion-datetime');
-    
     if (hostElement) {
       // Access the shadow root
       const shadowRoot = hostElement.shadowRoot;
-  
       if (shadowRoot) {
         // Query the ion-label element inside the shadow DOM
         const ionLabel:any = shadowRoot.querySelector('ion-label');
@@ -627,9 +598,6 @@ export class DashboardPage implements OnInit {
   ]
   
   initChartData(dataChart) {
-
-    // console.log('dataChart',dataChart)
-
     let ts2: any = 1484418600000;
     let dates: any = [];
     for (let i = 0; i < 120; i++) {

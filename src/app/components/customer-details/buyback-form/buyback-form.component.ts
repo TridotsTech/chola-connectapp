@@ -78,7 +78,14 @@ export class BuybackFormComponent  implements OnInit {
           this.buyback_form.get('tax_on_perk_amount').setValue(this.formatCurrencyString(res.message.data.tax_on_perk_amount))
           this.buyback_form.get('buyback_amount').setValue(this.formatCurrencyString(res.message.data.amount))
         }else{
-          this.db.sendErrorMessage(res.message.message)
+          if(res._server_messages){
+            let d = JSON.parse(res._server_messages)
+            let f = JSON.parse(d[0])
+            this.db.sendErrorMessage(f.message)
+          }else{
+            this.db.sendErrorMessage(res.message.message)
+          }
+          // this.db.sendErrorMessage(res.message.message)
         }
       })
       this.buyback_form.get('buyback_date').setValue(event.value)

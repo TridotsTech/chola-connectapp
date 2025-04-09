@@ -240,6 +240,12 @@ export class DbService {
 
   api_key:any;
   api_secret:any;
+
+  call_dashboard_data = new Subject();
+  enable_call_dash_data = false;
+
+  is_Attendance:any = false;
+
   constructor(
     private animationCtrl: AnimationController,
     private http: HttpClient,
@@ -601,6 +607,8 @@ export class DbService {
         }
         localStorage['default_values'] = JSON.stringify(this.default_values);
         this.check_project_manager(res.roles);
+        this.enable_call_dash_data = true;
+        this.call_dashboard_data.next('Success');
         localStorage['reportView'] =res.reporting_person
         this.roles = res.roles;
         // this.check_project_manager(this.permission_details);
@@ -879,7 +887,6 @@ export class DbService {
       SecureStoragePlugin.get({ key: 'api_secret' })
     ])
       .then(results => {
-        console.log(results[0].value)
         this.api_key = results[0].value;
         this.api_secret = results[1].value;
       })
@@ -1091,9 +1098,6 @@ export class DbService {
   }
 
   checkIn(Info): Observable<any> {
-    // let endpoint ='Attendance' +`?filters=[["attendance_date","=","${Info.date}"],["employee_name","=","${localStorage['CustomerName']}"]]`;
-    // let endpoint = 'Attendance' + `?filters=[["attendance_date","=","${Info.date}"],["employee","=","${localStorage['employee_id']}"]]`;
-    // let endpoint = 'Employee Checkin' + `?filters=[["time", ["Between", ["2024-07-15 00:00:00", "2024-07-15 23:59:59"]]],["employee","=","${localStorage['employee_id']}"]]`;
     let endpoint = 'td_shift_and_attendance.td_shift_and_attendance.utils.mobile_api.check_attendance';
     return this.postmethod(this.baseMethod + endpoint, Info);
   }

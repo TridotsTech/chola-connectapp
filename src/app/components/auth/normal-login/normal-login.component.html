@@ -35,7 +35,7 @@
   
 </form>
 <div class="log-button ion-text-center">
-  <ion-button expand="full" class="action-button m-0" [ngClass]="shake?'shaking':''" fill="clear"(click)="buttonLoader ? null : login()" >
+  <ion-button expand="full" class="action-button m-0" [ngClass]="shake?'shaking':''" fill="clear" (click)="buttonLoader ? null : login()" >
     <p class="m-0 white fnt-14" *ngIf="!buttonLoader">Sign In</p>
     <ion-spinner name="circular" *ngIf="buttonLoader"></ion-spinner>
   </ion-button>
