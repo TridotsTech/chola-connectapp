@@ -4,7 +4,7 @@
   
   <div *ngIf="!skeleton" class="d__flex search_sec">
     <div class="text_srch">
-      <app-common-search [placeholder]="'Search'" (call_clear_txt)="clear_txt($event)" (search_txt_value)="searchPro($event)"></app-common-search>
+      <app-common-search [placeholder]="'Search'" (call_clear_txt)="clear_txt($event)" [noFilter]="true" (search_txt_value)="searchPro($event)"></app-common-search>
     </div>
     <div class="funnel_srch" (click)="openSearchFilter()">
       <div class="search_">

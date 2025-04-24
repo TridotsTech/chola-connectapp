@@ -1324,6 +1324,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         this.db.dashboardValues = res.message.dashboard;
         // this.db.ismobile &&
         if (this.doc_type == 'Attendance') {
+          // console.log(res.message)
           if (res.message.data && res.message.data.length > 0) {
             if (this.page_no == 1) {
               this.db.get_saleslist = {};
@@ -1339,7 +1340,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
           // this.db.get_saleslist['data'] = res.message.data
           this.skeleton = false;
           this.spinner_loader = false;
-          this.generateHighlightedDates(res.message.dashboard)
+          this.generateHighlightedDates(res.message.dashboard,res.message.holidays,res.message.missed_dates)
         }
       } else {
         // this.db.alert(res.message.message)
@@ -1374,14 +1375,14 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
             this.db.get_saleslist['data'] = [...this.db.get_saleslist['data'], ...res.message.data]
           }
         }
-        this.generateHighlightedDates(res.message.data)
+        this.generateHighlightedDates(res.message.data,res.message.holidays,res.message.missed_dates)
       }
     })
   }
 
 
   highlightedDates: any = []
-  generateHighlightedDates(data) {
+  generateHighlightedDates(data,holidays,missed_dates) {
     const presentDates: any = [];
     const absentDates: any = [];
 
@@ -1402,8 +1403,34 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       });
     }
 
+    const holidayDates: any = [];
+    const WeekOffDates: any = [];
+    if(holidays && holidays.length != 0){
+      
+      holidays.map((record: any) => {
+        if(record.weekly_off == 1)
+          WeekOffDates.push(record.date)
+        else
+          holidayDates.push(record.date)
+
+      });
+    }
+
+    const missedDates: any = [];
+    if(missed_dates && missed_dates.length != 0){
+      
+      missed_dates.map((record: any) => {
+        missedDates.push(record.attendance_date)
+
+      });
+    }
+
     const dynamicGreenDates = presentDates;
     const dynamicRedDates = absentDates;
+    const dynamicGreyDates = WeekOffDates;
+    const dynamicBlueDates = holidayDates;
+    const dynamicSantalDates = missedDates;
+
 
     this.highlightedDates = [
       ...dynamicGreenDates.map(date => ({
@@ -1411,10 +1438,25 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
         textColor: '#000',
         backgroundColor: '#1DAC4526',
       })),
-      ...dynamicRedDates.map(date => ({
+      ...dynamicRedDates.map(r => ({
+        date:r.date,
+        textColor: '#000',
+        backgroundColor: r.status == 'Absent' ? '#f3db66':  r.color,
+      })),
+      ...dynamicGreyDates.map(date => ({
         date,
         textColor: '#000',
-        backgroundColor: '#AC1D1D26',
+        backgroundColor: '#ecf0ed',
+      })),
+      ...dynamicBlueDates.map(date => ({
+        date,
+        textColor: '#000',
+        backgroundColor: '#a2cdff',
+      })),
+      ...dynamicSantalDates.map(date => ({
+        date,
+        textColor: '#000',
+        backgroundColor: '#f3db66',
       })),
     ];
 

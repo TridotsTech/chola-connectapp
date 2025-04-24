@@ -251,12 +251,12 @@ export class HolidayListsComponent  implements OnInit {
       ...dynamicGreenDates.map(date => ({
         date,
         textColor: '#000',
-        backgroundColor: '#1DAC4526',
+        backgroundColor: '#a2cdff',
       })),
       ...dynamicRedDates.map(date => ({
         date,
         textColor: '#000',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#ecf0ed',
       })),
     ];
 

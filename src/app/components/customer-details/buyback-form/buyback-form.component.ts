@@ -16,10 +16,15 @@ export class BuybackFormComponent  implements OnInit {
   assets_list:any=[]; 
   @Input() title; 
   each:any={}
-
+  current_date:any;
   constructor(public modalCtrl:ModalController,public db: DbService,private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    this.current_date = `${year}-${month}-${day}`;
     this.each.field_name = 'to_date';
     this.buyback_form = this.formBuilder.group({
       employee_code: new FormControl(localStorage['employee_id']),
@@ -178,7 +183,7 @@ export class BuybackFormComponent  implements OnInit {
     this.buyback_form.value.perk_amount =  this.convertCurrencyToNumber(this.buyback_form.value.perk_amount)
     let data:any={};
     data = this.buyback_form.value
-    data.doctype = 'Buyback'
+    data.doctype = 'Asset Buyback'
     this.db.inset_docs({ data: data }).subscribe(res => {
       if (res && res.message && res.message.status == 'Success') {  
         if(res.message.data && res.message.data.name)

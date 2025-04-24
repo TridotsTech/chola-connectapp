@@ -1423,7 +1423,7 @@ ion-fab-button {
 }
 
 .inter_ {
-  font-family: 'Inter' !important;
+  // font-family: 'Inter' !important;
 }
 
 .fnt-125 {
@@ -4318,6 +4318,10 @@ input:focus {
 
 .flex-auto {
   flex: 0 0 auto;
+}
+
+.flex-30{
+  flex: 0 0 30%;
 }
 
 h4,

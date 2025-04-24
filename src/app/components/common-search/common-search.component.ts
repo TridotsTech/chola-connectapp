@@ -48,6 +48,7 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.noFilter,'this.noFilter');
     this.platform.ready().then((res) => {
       if (
         (this.db.ismobile ||

@@ -16,7 +16,7 @@
             <p class="m-0 text_2 fnt-12">{{data.employee}}</p>
             <h6 class="m-0 fnt-11 year_ago" *ngIf="emp_detail && emp_detail.date_of_joining">{{getDateDifference(emp_detail.date_of_joining)}} </h6>
           </div>
-          <div class="d__flex gap-5"><ion-icon class="fnt-14" src="/assets/leaves/job.svg"></ion-icon>
+          <div *ngIf="emp_detail && emp_detail.designation" class="d__flex gap-5"><ion-icon class="fnt-14" src="/assets/leaves/job.svg"></ion-icon>
             <p class="m-0 text_2 fnt-12" *ngIf="emp_detail && emp_detail.designation">{{emp_detail.designation}}</p>
           </div>
         </div>
@@ -70,6 +70,17 @@
       <div *ngIf="data.total_leave_days" class="d__flex gap-20 flex-wrap pb-10">
         <h6 class="m-0 text_2 fnt-13 flex-35">Total Days</h6>
         <p class="m-0 fnt-14">{{data.total_leave_days}}</p>
+      </div>
+      <div *ngIf="data.attach_file">
+        <lightgallery [settings]="lightGallerySettings" class="lightgallery">
+          <div class="img_cont" >
+            <div *ngIf="data.attach_file && !data.attach_file.includes('pdf')">
+              <a [href]="db.product_img(data.attach_file)">
+                <img class="img" [src]="db.product_img(data.attach_file)" alt="" />
+              </a>
+            </div>
+          </div>
+        </lightgallery>
       </div>
         
     </div>

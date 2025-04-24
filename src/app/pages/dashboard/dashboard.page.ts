@@ -453,8 +453,6 @@ export class DashboardPage implements OnInit {
   generateHighlightedDates() {
 
     const presentDates: any = [];
-    const workFromHomeDates: any = [];
-    const onLeaveDates: any = [];
     const absentDates: any = [];
 
     if(this.ess_dashboard_data && this.ess_dashboard_data.attendance_details && this.ess_dashboard_data.attendance_details.length != 0){
@@ -468,14 +466,39 @@ export class DashboardPage implements OnInit {
             break;
           case 'On Leave':
           case 'Absent':
-            absentDates.push(record.attendance_date);
+            absentDates.push({date:record.attendance_date, leave_type:record.leave_type, color:record.color,status:record.status});
             break;
         }
+      });
+    }
+
+    const holidayDates: any = [];
+    const WeekOffDates: any = [];
+    if(this.ess_dashboard_data && this.ess_dashboard_data.holidays && this.ess_dashboard_data.holidays.length != 0){
+      
+      this.ess_dashboard_data.holidays.map((record: any) => {
+        if(record.weekly_off == 1)
+          WeekOffDates.push(record.date)
+        else
+          holidayDates.push(record.date)
+
+      });
+    }
+    
+    const missedDates: any = [];
+    if(this.ess_dashboard_data && this.ess_dashboard_data.missed_dates && this.ess_dashboard_data.missed_dates.length != 0){
+      
+      this.ess_dashboard_data.missed_dates.map((record: any) => {
+        missedDates.push(record.attendance_date)
+
       });
     }
     
     const dynamicGreenDates = presentDates;
     const dynamicRedDates = absentDates;
+    const dynamicGreyDates = WeekOffDates;
+    const dynamicBlueDates = holidayDates;
+    const dynamicSantalDates = missedDates;
 
     this.highlightedDates = [
       ...dynamicGreenDates.map(date => ({
@@ -483,12 +506,29 @@ export class DashboardPage implements OnInit {
         textColor: '#000',
         backgroundColor: '#1DAC4526',
       })),
-      ...dynamicRedDates.map(date => ({
+      ...dynamicRedDates.map((r:any) => ({
+          date:r.date,
+          textColor: '#000',
+          backgroundColor: r.status == 'Absent' ? '#f3db66':  r.color,
+      })),
+      ...dynamicGreyDates.map(date => ({
         date,
         textColor: '#000',
-        backgroundColor: '#AC1D1D26',
+        backgroundColor: '#ecf0ed',
+      })),
+      ...dynamicBlueDates.map(date => ({
+        date,
+        textColor: '#000',
+        backgroundColor: '#a2cdff',
+      })),
+      ...dynamicSantalDates.map(date => ({
+        date,
+        textColor: '#000',
+        backgroundColor: '#f3db66',
       })),
     ];
+    // console.log(dynamicRedDates)
+    // console.log(this.highlightedDates)
 
     this.db.highlightedDates = this.highlightedDates
     this.db.monthChange.next('success')

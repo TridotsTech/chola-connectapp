@@ -235,7 +235,7 @@ export class PayrollDetailComponent implements OnInit {
       setTimeout(() => {
         loader.dismiss();
       }, 10000);
-      this.db.get_salary_slip_content({filters:{'salary_slip_select_year': parseInt(Year), 'salary_slip_select_month': monthName, 'employee': info.employee, 'doctype': 'Salary Slip'}}).subscribe(async res => {
+      this.db.get_salary_slip_content({filters:{'select_year': parseInt(Year), 'select_month': monthName, 'employee': info.employee, 'doctype': 'Salary Slip'}}).subscribe(async res => {
         if (res && res.status && res.status == 'Success') {
         const fileContent = res.message.fcontent;
         const fileName = res.message.fname
@@ -255,7 +255,7 @@ export class PayrollDetailComponent implements OnInit {
         loader.dismiss();
       }, 2000);
     } else {
-      this.db.alert('No Further Records')
+      this.db.alert(res.message)
       setTimeout(() => {
         loader.dismiss();
       }, 450);

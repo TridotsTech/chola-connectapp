@@ -174,3 +174,25 @@ ion-checkbox {
 ion-checkbox::part(container) {
     border: 2px solid var(--primary-color);
 }
+
+.lightgallery {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+
+    a {
+        width: 35%;
+    }
+
+    .img_cont {
+        height: 100px !important;
+        // width: 120px !important;
+        width: unset !important;
+
+        .img {
+            height: 100px;
+        }
+
+
+    }
+}

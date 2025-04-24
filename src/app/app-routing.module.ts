@@ -343,9 +343,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/emp-transfer-detail/emp-transfer-detail.module').then( m => m.EmpTransferDetailPageModule)
   },
   {
+    path: 'car-purchase',
+    loadChildren: () => import('./pages/car-purchase/car-purchase.module').then( m => m.CarPurchasePageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+ 
+
 
  
 

@@ -45,7 +45,7 @@
   
         <div class="pb-10">
           <p class="title">Buyback Date</p>
-          <app-custom-calendar format="Date" [right]="true" [selectedDate]="buyback_form.value.buyback_date" (onChange)="datePickerChange('buyback_date',$event)"></app-custom-calendar>
+          <app-custom-calendar format="Date" [minValue]="current_date" [right]="true" [selectedDate]="buyback_form.value.buyback_date" (onChange)="datePickerChange('buyback_date',$event)"></app-custom-calendar>
         </div>
 
       </div>

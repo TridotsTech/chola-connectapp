@@ -7,6 +7,9 @@ import { LeaveWithdrawalPage } from 'src/app/pages/leave-module/leave-withdrawal
 import { LeaveApplicationPage } from 'src/app/pages/order/leave-application/leave-application.page';
 import { LeavePreviewWithdrawFormComponent } from '../../leaves-module/leave-preview-withdraw-form/leave-preview-withdraw-form.component';
 
+import lgThumbnail from 'lightgallery/plugins/thumbnail';
+import lgZoom from 'lightgallery/plugins/zoom';
+
 @Component({
   selector: 'app-leave-detail',
   templateUrl: './leave-detail.component.html',
@@ -20,6 +23,23 @@ export class LeaveDetailComponent  implements OnInit {
   @Output() leave_confirm = new EventEmitter()
   show_btn = false;
   
+  lightGallerySettings = {
+    selector: 'a',
+    plugins: [lgThumbnail, lgZoom],
+    thumbnail: false,
+    zoom: true,
+    fullScreen: true,
+    download: true,
+    share: true,
+    actualSize: true,
+    showCloseIcon:true,
+    closable:true,
+    mobileSettings: {
+      controls: true,
+      showCloseIcon: true // this must be true
+    }
+  };
+
   constructor(public loadingCtrl:LoadingController,public alertController:AlertController,public db:DbService, private modalCtrl: ModalController,public router: Router) { }
 
   ngOnInit() {

@@ -52,9 +52,9 @@
               <h4 *ngIf="!db.employee_img.user_image" class="m-0 fnt-15 fnt_w500">{{db.employee_img?.employee_name[0]}}</h4>
               <ion-icon class="mouse camera" (click)="file_upload.click()" name="camera"></ion-icon>
             </div>
-            <h5 class="m-0">{{db.cust_name}}</h5>
+            <h5 class="m-0 capitalize">{{db.cust_name}}</h5>
             <h6 *ngIf="db.cust_designation != 'null'" class="m-0">{{db.cust_designation}}</h6>
-            <p class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> {{db.employee_img ? db.employee_img.grade : 'CFF 1-NMS'}}</p>
+            <p class="m-0 d__flex gap-10 gray_clr just-s"><ion-icon class="fnt-18 flex-30" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span> {{db.employee_img ? db.employee_img.grade : 'CFF 1-NMS'}}</span></p>
           </div>
         </div>
       
@@ -96,13 +96,13 @@
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
             </div>
-            <!-- <div class="d__flex just-s p-10-0" (click)="router_('my-slips')">
+            <div class="d__flex just-s p-10-0" (click)="router_('car-purchase')">
               <div class="d__flex gap-10">
                 <ion-icon class="menu-icon" [src]="db.get_icon('document')"></ion-icon>
-                <ion-label class="fnt-14 fnt_w500">My Slips</ion-label>
+                <ion-label class="fnt-14 fnt_w500">Car Purchase</ion-label>
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
-            </div> -->
+            </div>
           </div>
         </div>
       

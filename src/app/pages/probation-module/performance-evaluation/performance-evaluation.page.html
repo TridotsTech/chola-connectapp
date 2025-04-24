@@ -20,7 +20,7 @@
               <p class="fnt-13 m-0 gray_clr">{{performanceDetails.employee_id}}</p>
             </div>
           </div>
-          <div class="flex-auto d__flex">
+          <div class="flex-30 d__flex">
             <app-status [reverse]="true" [status]="performanceDetails.workflow_state"></app-status>
           </div>
         </div>
@@ -63,6 +63,8 @@
           <h4 *ngIf="evaluation_form.value.band" class="values m-0  mb-5">{{evaluation_form.value.band}}</h4>
           <h4 *ngIf="evaluation_form.value.confirmation_due_date" class="values m-0">Confirmation Due Date</h4>
           <h4 *ngIf="evaluation_form.value.confirmation_due_date" class="values m-0  mb-5">{{evaluation_form.value.confirmation_due_date}}</h4>
+          <h4 *ngIf="evaluation_form.value.probation_days" class="values m-0">Probation Days</h4>
+          <h4 *ngIf="evaluation_form.value.probation_days" class="values m-0  mb-5">{{evaluation_form.value.probation_days}}</h4>
          
         </div>
       </div>
@@ -115,7 +117,7 @@
         <div *ngFor="let evaluations of evaluationDetails" class="values">
           <p class="m-0 fnt-14">{{evaluations.parameter}}</p>
           <div>
-            <ion-icon (click)="get_rating(evaluations,item)" class="mouse" *ngFor="let item of [0.2,0.4,0.6,0.8,1];let i = index"  [ngClass]="{'active_star': item <= evaluations.rating}"  [name]="item <= evaluations.rating ? 'star' : 'star-outline'"> </ion-icon>
+            <ion-icon (click)="get_rating(evaluations,star)" class="mouse" *ngFor="let star of [0.2,0.4,0.6,0.8,1];let i = index"  [ngClass]="{'active_star': star <= evaluations.rating}"  [name]="star <= evaluations.rating ? 'star' : 'star-outline'"> </ion-icon>
           </div>
         </div>
       </div>

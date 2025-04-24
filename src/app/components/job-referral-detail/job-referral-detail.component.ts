@@ -14,7 +14,7 @@ referralDetail: any = {};
   constructor(public modalCntrl: ModalController,public db: DbService) { }
 
   ngOnInit() {
-    // console.log(this.jobReferralDetail,'this.jobReferralDetail');
+    console.log(this.jobReferralDetail,'this.jobReferralDetail');
     this.getDocDetails();
   }
 
@@ -62,7 +62,7 @@ referralDetail: any = {};
       component: ReferFriendFormComponent,
       cssClass: 'friend-referral-form',
       componentProps: {
-        jobReferralDetail: this.referralDetail
+        jobReferralDetail: this.referralDetail.job_opening
       }
     })
     await modal.present();
@@ -70,13 +70,18 @@ referralDetail: any = {};
 
   getDocDetails(){
     let data = {
-      doctype: 'Job Opening',
-      name: this.jobReferralDetail.name
+      "job_opneningId":this.jobReferralDetail.name,
+      "job_requisitionId":this.jobReferralDetail.job_requisition,
+      // "skills":skill_list
+      // doctype: 'Job Opening',
+      // name: this.jobReferralDetail.name
     }
-    this.db.doc_detail(data).subscribe(res => {
-      console.log(res)
-      if(res && res.message && res.message.length != 0 && res.message[0].status == 'Success'){
-        this.referralDetail = res.message[1]
+    this.db.get_joboping_details(data).subscribe(res => {
+      // console.log(res)
+      if(res && res.message && (res.message.job_opening || res.message.job_requisition || res.message.skills)){
+        this.referralDetail.job_opening = res.message.job_opening
+        this.referralDetail.job_requisition = res.message.job_requisition
+        this.referralDetail.job_opening.skills = res.message.skills
       }else{
         this.referralDetail = {}
       }

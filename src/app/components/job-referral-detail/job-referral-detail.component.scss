@@ -1,8 +1,8 @@
 .main-Sec {
 
     .scrollSection {
-        height: calc(100vh - 215px);
-        overflow: auto;
+        // height: calc(100vh - 230px);
+        // overflow: auto;
 
         &::-webkit-scrollbar {
             display: none;
@@ -114,6 +114,23 @@
         }
     }
 
+    // .referButton {
+    //     padding: 10px;
+    //     border-top: 1px solid var(--border-col);
+
+    //     ion-button {
+    //         height: 40px;
+    //         width: 100%;
+    //     }
+    // }
+
+}
+
+.h94{
+    height: 91%;
+}
+
+ion-footer{
     .referButton {
         padding: 10px;
         border-top: 1px solid var(--border-col);
@@ -123,5 +140,4 @@
             width: 100%;
         }
     }
-
 }

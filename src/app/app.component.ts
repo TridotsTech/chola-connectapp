@@ -101,6 +101,11 @@ export class AppComponent implements OnInit {
       // this.get_app_version();
     }
 
+    // if(this.platform.is('ios'))
+    //   this.get_ios_app_versions()
+
+    
+
 
 
     this.platform.ready().then(res => {
@@ -117,8 +122,10 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       // Hide the splash screen after 3 seconds
       setTimeout(() => {
+        // const loadingEl = document.getElementById('custom-loading');
+        // if (loadingEl) loadingEl.remove();
         SplashScreen.hide(); // Hide the splash screen
-      }, 3500); // 3000 ms = 3 seconds
+      }, 500); // 3000 ms = 3 seconds
     });
 
     this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
@@ -170,6 +177,19 @@ export class AppComponent implements OnInit {
       // this.configureSSLPinning();
     });
 
+  }
+
+  get_ios_app_versions(){
+    this.db.get_ios_app_version().subscribe(res =>{
+      if(res && res.version){
+        this.appVersion.getVersionNumber().then(value =>{
+          let new_version  = value
+          let force = res && res.force ? res.force : false
+          new_version != res.version && res.show_popup ? this.update_ios_notify(res.version,new_version,force) : null
+        })
+
+      }
+    })
   }
 
   async createStorage() {
@@ -316,6 +336,31 @@ export class AppComponent implements OnInit {
         }
       ]
     })
+
+    await alert.present();
+  }
+
+  async update_ios_notify(version,new_version,force){
+    const alert = await this.alertCtrl.create({
+      header : 'Update Available',
+      message :'A new version(' + version  + ') of this app is available for download. Must update it from AppStore !',
+      subHeader: 'current version : ' + new_version,
+      buttons : [
+        {
+          text : 'cancel',
+          handler: () => {
+            force ? App.exitApp() : null
+          }
+        },
+        {
+          text:'Update',
+          handler : () =>{
+            window.open("https://apps.apple.com/us/app/miindia/id1001089710", '_system');
+            App.exitApp()
+          }
+        }
+      ]
+    })  
 
     await alert.present();
   }

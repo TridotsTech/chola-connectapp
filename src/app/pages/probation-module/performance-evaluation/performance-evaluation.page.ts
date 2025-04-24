@@ -63,9 +63,9 @@ export class PerformanceEvaluationPage implements OnInit {
       evaluation_date: formattedDate,
     });
 
-    // if(!this.performanceId){
+    if(!this.performanceId){
       this.getPerformanceDetailList();
-    // }
+    }
   }
 
   ionViewWillEnter(){
@@ -93,7 +93,7 @@ export class PerformanceEvaluationPage implements OnInit {
       name: id
     }
     this.db.doc_detail(data).subscribe(res => {
-      console.log(res)
+      // console.log(res)
       if(res && res.message && res.message.length != 0 && res.status == 'Success'){
         if(res.message[1]){
           this.performanceDetails = res.message[1];
@@ -104,6 +104,7 @@ export class PerformanceEvaluationPage implements OnInit {
             })
           }
           this.evaluationDetails = this.performanceDetails.evaluation_details
+          console.log(this.evaluationDetails)
           if(this.performanceDetails.workflow_state == 'Draft')
             this.save_only = true;
         }
@@ -117,7 +118,7 @@ export class PerformanceEvaluationPage implements OnInit {
       name: id
     }
     this.db.doc_detail(data).subscribe(res => {
-      console.log(res)
+      // console.log(res)
       if(res && res.message && res.message.length != 0 && res.status == 'Success'){
         if(res.message[1]){
           this.evaluation_form.patchValue({
@@ -274,6 +275,15 @@ export class PerformanceEvaluationPage implements OnInit {
 
       if(this.evaluationDetails && this.evaluationDetails.length != 0){
         data.evaluation_details = this.evaluationDetails;
+      }
+      if(this.performanceDetails && this.performanceDetails.name){
+        this.performanceDetails.evaluation_details.map(res => {
+          this.evaluationDetails.map(r => {
+            if(r.parameter == res.parameter)
+              res.rating = r.rating
+          })          
+        })
+        data.evaluation_details = this.performanceDetails.evaluation_details;
       }
 
       if(this.performanceDetails && this.performanceDetails.name){

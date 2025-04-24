@@ -17,6 +17,7 @@ export class CreateLtaRequestComponent  implements OnInit {
   dropdownSettings = {};
   year:any;
   year_list:any=[];
+  lta_id:any;
   constructor(private formBuilder: FormBuilder,public loadingCtrl:LoadingController,public modalCtrl: ModalController, public db: DbService) {
 
     
@@ -61,6 +62,7 @@ export class CreateLtaRequestComponent  implements OnInit {
         name: this.data.name,
       }
       this.db.doc_detail(data).subscribe(res => {
+        this.lta_id = res.message[1].name
         Object.keys(res.message[1]).forEach(field => {
           const control = this.lta_form.get(field);
           if (control) {
@@ -165,13 +167,18 @@ export class CreateLtaRequestComponent  implements OnInit {
       data.doctype = 'LTA Request'
       data.date_of_request = `${year}-${month}-${day}`;
       data.status = 'Pending'
-      data.lta_year_detail = this.year
+      data.lta_year_detail = [];
+      this.year.map(r =>{
+        data.lta_year_detail.push({lta_year:r})
+      })
+      this.lta_id ? data.name = this.lta_id : ''
+      // data.lta_year_detail = 
       this.db.inset_docs({data: data}).subscribe(res => {
         setTimeout(() => {
           loader.dismiss()
         }, 1000);
         if (res && res.message && res.message.status == 'Success') {
-          this.modalCtrl.dismiss();
+          this.modalCtrl.dismiss(res.message);
           this.db.sendSuccessMessage("LTA Request created successfully!")
         }else{
           if(res._server_messages){
