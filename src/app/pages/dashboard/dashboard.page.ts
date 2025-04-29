@@ -425,7 +425,7 @@ export class DashboardPage implements OnInit {
     }else if(data == 'Pending Leaves'){
       return '/assets/Employee-Home/PendingLeaves.svg'
     }else{
-      return '/assets/Employee-Home/Total-Leaves.svg'
+      return '/assets/Employee-Home/Available-leaves.svg'
     }
   }
 

@@ -518,19 +518,23 @@
       <div class="s-1">
 
         <div class="d__flex just-s d1">
-          <h3 class="m-0 fnt-13 webkit-text capitalize d__flex" [style.--line]="2"><img src="assets/Employee-Home/regulaztion.svg" alt=""> <span class="pl5 fnt_w600">{{item[db.get_saleslist.keys[0]]}}</span></h3>
+          <h3  *ngIf="doc_type == 'Regularization' && (!db.show_selfView || db.selfView)" class="m-0 fnt-13 webkit-text capitalize d__flex" [style.--line]="2"><img src="assets/Employee-Home/regulaztion.svg" alt=""> <span class="pl5 fnt_w600">{{item[db.get_saleslist.keys[0]]}}</span></h3>
+          <h3  *ngIf="doc_type == 'Regularization' && (db.show_selfView && !db.selfView)" class="m-0 fnt-13 webkit-text capitalize d__flex" [style.--line]="2"><img src="assets/Employee-Home/regulaztion.svg" alt=""> <span class="pl5 fnt_w600">{{item.employee_name}}</span></h3>
           <div *ngIf="item.workflow_state" class="sec__2d">
             <app-status [reverse]="true" [status]="item.status? item.status :item.workflow_state"></app-status>
           </div>
         </div>
 
         <div class="d__flex just-s mb-5 d2">
-          <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2>
+          <h2 *ngIf="doc_type == 'Regularization' && (db.show_selfView && !db.selfView)" class="m-0 fnt-12"><span class="gray_clr">{{item.employee}}</span></h2>
+          <h2 *ngIf="item[db.get_saleslist.keys[5]] && doc_type == 'Regularization' && (!db.show_selfView || db.selfView)" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2>
+
           <!-- <h3 class="m-0 fnt-12 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[0]]}}</h3> -->
           <h3 class="m-0 fnt-12 webkit-text capitalize" [style.--line]="2">{{item[db.get_saleslist.keys[3]] ? item[db.get_saleslist.keys[6]] : 'Full Day'}}</h3>
         </div>
 
         <div class="d__flex just-s d3">
+          <h2 *ngIf="item[db.get_saleslist.keys[5]] && doc_type == 'Regularization' && (db.show_selfView && !db.selfView)" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2>
           <!-- <h2 *ngIf="item[db.get_saleslist.keys[5]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[5]] | date: 'MMM d, y'}}</span></h2> -->
           <h2 *ngIf="item[db.get_saleslist.keys[7]]" class="m-0 fnt-12"><span class="gray_clr">{{item[db.get_saleslist.keys[7]]}}</span></h2>
         </div>

@@ -1293,7 +1293,8 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
     }
 
-    if (localStorage['role'] == 'Employee' || localStorage['role'] == 'Tridots Employee') {
+    if(this.db.check_role_emp('Employee')){
+    // if (localStorage['role'] == 'Employee' || localStorage['role'] == 'Tridots Employee') {
       data["employee_id"] = localStorage['employee_id']
     }
 
@@ -1375,7 +1376,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
             this.db.get_saleslist['data'] = [...this.db.get_saleslist['data'], ...res.message.data]
           }
         }
-        this.generateHighlightedDates(res.message.data,res.message.holidays,res.message.missed_dates)
+        this.generateHighlightedDates(res.message.dashboard,res.message.holidays,res.message.missed_dates)
       }
     })
   }
@@ -1383,6 +1384,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
   highlightedDates: any = []
   generateHighlightedDates(data,holidays,missed_dates) {
+    console.log(data)
     const presentDates: any = [];
     const absentDates: any = [];
 
@@ -1397,7 +1399,8 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
             break;
           case 'On Leave':
           case 'Absent':
-            absentDates.push(record.attendance_date);
+            absentDates.push({date:record.attendance_date, leave_type:record.leave_type, color:record.color,status:record.status});
+            // absentDates.push(record.attendance_date);
             break;
         }
       });
@@ -1431,7 +1434,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     const dynamicBlueDates = holidayDates;
     const dynamicSantalDates = missedDates;
 
-
+    console.log(dynamicRedDates)
     this.highlightedDates = [
       ...dynamicGreenDates.map(date => ({
         date,

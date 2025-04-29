@@ -751,12 +751,27 @@ export class DbService {
             this.app_name = 'Go1 HR';
             localStorage.clear();
             this.clearData();
+            this.removeSecureData();
             this.router.navigateByUrl('/register');
           },
         },
       ],
     });
     await alert.present();
+  }
+
+  async removeSecureData() {
+    try {
+      // Remove multiple keys at once
+      await Promise.all([
+        SecureStoragePlugin.remove({ key: 'api_key' }),
+        SecureStoragePlugin.remove({ key: 'api_secret' }),
+        SecureStoragePlugin.remove({ key: 'CustomerPwd' }),
+      ]);
+      console.log('All data has been removed securely.');
+    } catch (error) {
+      console.error('Error removing data securely:', error);
+    }
   }
 
   clearData() {
@@ -2558,6 +2573,11 @@ export class DbService {
     // console.log(emp)
     let check = this.roles.find(obj => obj.role == role)
     return emp == '' ? check ? true : false : check && emp != localStorage['employee_id'] ? true : false
+  }
+
+  check_role_emp(role){
+    let check = this.roles.find(obj => obj.role == role)
+    return check ? true : false 
   }
 
 

@@ -54,7 +54,8 @@
             </div>
             <h5 class="m-0 capitalize">{{db.cust_name}}</h5>
             <h6 *ngIf="db.cust_designation != 'null'" class="m-0">{{db.cust_designation}}</h6>
-            <p class="m-0 d__flex gap-10 gray_clr just-s"><ion-icon class="fnt-18 flex-30" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span> {{db.employee_img ? db.employee_img.grade : 'CFF 1-NMS'}}</span></p>
+            <p *ngIf="db.employee_img && db.employee_img.grade_name" class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span> {{db.employee_img ? db.employee_img.grade_name + ' - ' + db.employee_img.band_name: '-'}}</span></p>
+            <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 gap-10 text-c gray_clr"><span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p> 
           </div>
         </div>
       
@@ -89,7 +90,7 @@
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
             </div>
-            <div class="d__flex just-s p-10-0" (click)="router_('new-resignation')">
+            <!-- <div class="d__flex just-s p-10-0" (click)="router_('new-resignation')">
               <div class="d__flex gap-10">
                 <ion-icon class="menu-icon" [src]="db.get_icon('ResignationLetter')"></ion-icon>
                 <ion-label class="fnt-14 fnt_w500">Resignation</ion-label>
@@ -102,7 +103,7 @@
                 <ion-label class="fnt-14 fnt_w500">Car Purchase</ion-label>
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
-            </div>
+            </div> -->
           </div>
         </div>
       
