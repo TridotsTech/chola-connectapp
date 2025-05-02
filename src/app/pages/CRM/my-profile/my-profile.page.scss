@@ -556,7 +556,7 @@ ion-backdrop {
     align-items: center;
     justify-content: center;
     position: relative;
-    background: #ffff;
+    background: #f5f5f5;
 
     //  background: #f1f1f1;
     img {
@@ -597,7 +597,7 @@ ion-backdrop {
 
 
 .voluntary-profileSection {
-    border: 1px solid var(--border-col);
+    // border: 1px solid var(--border-col);
     border-radius: 15px;
     margin: 10px;
     position: relative;
@@ -610,13 +610,13 @@ ion-backdrop {
 
     .sec-1 {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        // flex-direction: column;
+        align-items: left;
         justify-content: center;
         gap: 5px;
-        padding: 10px 10px 40px 10px;
+        padding: 10px 10px 10px 10px;
         border-radius: 15px 15px 0 0;
-        background: #E3F0FF;
+        // background: #E3F0FF;
 
         .profile-icon {
             height: 60px;
@@ -634,10 +634,10 @@ ion-backdrop {
     }
 
     .main_user_detail {
-        padding: 10px;
-        position: absolute;
+        padding-top: 10px;
+        // position: absolute;
         width: 100%;
-        top: 180px;
+        // top: 180px;
 
         .user_detail {
             border: 1px solid var(--border-col);
@@ -657,3 +657,40 @@ ion-backdrop {
 .flex-30{
     flex: 0 0 30px;
 }
+
+.flex-19{
+    flex:0 0 19%;
+}
+
+.flex-80{
+    flex:0 0 80%;
+}
+
+.pl-10{
+    padding-left: 10px;
+}
+
+.detailSec {
+    border: 1px solid var(--border-col);
+    border-radius: 5px;
+    .values:nth-child(odd) {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray-color);
+    }
+
+    .values:nth-child(even) {
+      font-size: 13px;
+      font-weight: 500;
+      margin: 5px 0 15px 0;
+    }
+  }
+
+  .section-p {
+    padding: 8px;
+  }
+
+//   .body_sec{
+//     border: 1px solid var(--border-col);
+//     border-radius: 5px;
+//   }

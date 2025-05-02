@@ -47,15 +47,48 @@
       <div class="voluntary-profileSection">
         <div>
           <div class="sec-1">
-            <div class="imageDiv">
+            <div class="imageDiv flex-19">
               <img *ngIf="db.employee_img.user_image" [src]="db.product_img(db.employee_img.user_image)" />
               <h4 *ngIf="!db.employee_img.user_image" class="m-0 fnt-15 fnt_w500">{{db.employee_img?.employee_name[0]}}</h4>
               <ion-icon class="mouse camera" (click)="file_upload.click()" name="camera"></ion-icon>
             </div>
+            <div class="flex-80 pl-10">
             <h5 class="m-0 capitalize">{{db.cust_name}}</h5>
-            <h6 *ngIf="db.cust_designation != 'null'" class="m-0">{{db.cust_designation}}</h6>
+            <h6 *ngIf="db.cust_designation != 'null'" class="m-0 d__flex"> <ion-icon class="fnt-18" src="/assets/Employee-Home/designation.svg"></ion-icon> <span class="pl-5"> {{db.cust_designation}}</span>  </h6>
             <p *ngIf="db.employee_img && db.employee_img.grade_name" class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span> {{db.employee_img ? db.employee_img.grade_name + ' - ' + db.employee_img.band_name: '-'}}</span></p>
-            <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 gap-10 text-c gray_clr"><span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p> 
+            <!-- <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 gap-10 text-c gray_clr"><ion-icon class="fnt-24" src="/assets/company.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p>  -->
+          </div>
+          </div>
+          <div class="detailSec">
+            <div class="section-p">
+              <h4 class="values m-0">Company</h4>
+                  <h4 class="values m-0  mb-5">{{db.employee_img ? db.employee_img.company : '-'}}</h4>
+                  <h4 class="values m-0">Department</h4>
+              <h4 class="values m-0  mb-5">{{db.employee_img && db.employee_img.department ? db.employee_img.department : '-'}}</h4>
+               <div  class="d__flex just-s mb-5">
+                <div class="flex-65">
+                  <h4 class="values m-0">Location</h4>
+                  <h4 class="values m-0  mb-5">{{db.employee_img && db.employee_img.location ? db.employee_img.location : '-'}}</h4>
+                </div>
+                <div class="flex-35">
+                  <h4 class="values m-0">Employee Code</h4>
+                  <h4 class="values m-0  mb-5">
+                    {{db.employee_img && db.employee_img.custom_employee_code ? db.employee_img.custom_employee_code : '-'}}</h4>
+                </div>
+                </div>
+             
+              
+              <div  class="d__flex just-s mb-5">
+                <div class="flex-65"> 
+              <h4  class="values m-0">Official mail ID</h4>
+              <h4 class="values m-0 mb-5">{{db.employee_img ? db.employee_img.company_email : '-'}}</h4>
+                 </div>
+              <div class="flex-35">
+              <h4 class="values m-0">Mobile Number</h4>
+              <h4 class="values m-0">{{db.employee_img ? db.employee_img.cell_number : '-'}}</h4>
+               </div>
+              </div>
+            </div>
           </div>
         </div>
       

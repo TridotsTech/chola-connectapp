@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy, HostListener } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy, HostListener, ElementRef, Renderer2 } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 @Component({
   selector: 'app-month-calendar',
@@ -25,7 +25,12 @@ export class MonthCalendarComponent implements OnInit, OnDestroy {
   private touchStartX: number = 0;
   private touchEndX: number = 0;
   slideDirection: 'left' | 'right' | null = null;
-  constructor(public db: DbService) {
+
+  // @Input('appTooltip') tooltipTitle: string = '';
+  // tooltip: HTMLElement | null = null;
+  // offset = 10;
+
+  constructor(public db: DbService,private el: ElementRef, private renderer: Renderer2) {
     const today = new Date();
     this.currentMonth = today.getMonth();
     this.currentYear = today.getFullYear();
@@ -46,6 +51,49 @@ export class MonthCalendarComponent implements OnInit, OnDestroy {
 
   // console.log(this.highlightedDates,'this.highlightedDates');
   // console.log(this.db.highlightedDates,'this.db.highlightedDates')
+  }
+
+  // @HostListener('mouseenter') onMouseEnter() {
+  //   if (!this.tooltip) {
+  //     this.show();
+  //   }
+  // }
+
+  // @HostListener('mouseleave') onMouseLeave() {
+  //   this.hide();
+  // }
+
+  // private show() {
+  //   this.tooltip = this.renderer.createElement('span');
+  //   if (this.tooltip) {
+  //     this.tooltip.innerText = this.tooltipTitle;
+  //   }
+  //   this.renderer.appendChild(document.body, this.tooltip);
+  //   this.renderer.addClass(this.tooltip, 'tooltip');
+
+  //   // Safe check
+  //   if (!this.tooltip) return;
+
+  //   const hostPos = this.el.nativeElement.getBoundingClientRect();
+  //   const tooltipPos = this.tooltip.getBoundingClientRect();
+
+  //   const top = hostPos.top - tooltipPos.height - this.offset;
+  //   const left = hostPos.left + (hostPos.width - tooltipPos.width) / 2;
+  //   console.log(top)
+  //   this.renderer.setStyle(this.tooltip, 'top', `${top}px`);
+  //   this.renderer.setStyle(this.tooltip, 'left', `${left}px`);
+  // }
+
+  // private hide() {
+  //   if (this.tooltip) {
+  //     this.renderer.removeChild(document.body, this.tooltip);
+  //     this.tooltip = null;
+  //   }
+  // }
+
+  display_msg(msg){
+    console.log(msg)
+    this.db.sendSuccessMessage(msg.day)
   }
 
   dateFormat1(date) {

@@ -19,7 +19,7 @@
       <div class="calendar-days">
         <!-- (click)="selectDate(day)" -->
         <div *ngFor="let day of days" class="bg-change" [class.selected]="isSelected(day?.day)" [class.disabled]="day?.isDisabled" [ngStyle]="day?.styles">
-          <span  class="weekday" *ngIf="day" class="bg-change" [ngStyle]="{color: day?.styles?.color}">{{ day.day }}</span>
+          <span class="weekday" *ngIf="day" class="bg-change" [ngStyle]="{color: day?.styles?.color}">{{ day.day }}</span>
         </div>
       </div>
     </div>
