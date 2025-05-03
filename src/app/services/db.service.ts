@@ -516,6 +516,8 @@ export class DbService {
     localStorage['employee_name'] = res.employee_name ? res.employee_name : null;
     localStorage['designation'] = res.designation ? res.designation : null;
     localStorage['role'] = (res.roles && res.roles.length != 0) ? res.roles[0].role : ''
+    localStorage['player_id'] != undefined && localStorage['player_id'] != 'undefined' && localStorage['employee_id'] != undefined && localStorage['employee_id'] != 'undefined' ? this.update_onsignal_id().subscribe(res => { console.log("one signal id updated..", res) }) : null
+
     this.get_sec_value()
 
     this.get_customer_values();
@@ -745,13 +747,14 @@ export class DbService {
             this.cust_name = undefined;
             this.side_menu_show = false;
             this.profile_side_menu = false;
-
+            let player_id = localStorage['player_id'];
             this.hr_manager_role = undefined
             this.employee_role = undefined;
             this.app_name = 'Go1 HR';
             localStorage.clear();
             this.clearData();
             this.removeSecureData();
+            localStorage['player_id'] = player_id;
             this.router.navigateByUrl('/register');
           },
         },
@@ -926,7 +929,7 @@ export class DbService {
       if (data["doctype_name"] == "Employee Grievance") {
         employee = { raised_by: ['=', localStorage['employee_id']] };
       } 
-      else if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization" || data["doctype_name"] == "LTA Request"){
+      else if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization" || data["doctype_name"] == "LTA Request" || data["doctype_name"] == "National Pension Scheme"){
         employee = { employee: ['=', localStorage['employee_id']] };
       }
       else if(data["doctype_name"] == "Asset Buyback"){
@@ -950,7 +953,7 @@ export class DbService {
     else if(localStorage['show_selfView'] && !endpoint.includes("go1_apps.go1_apps.apis.hrms.get_emp_holiday_list") && !endpoint.includes("go1_apps.go1_apps.apis.hrms.get_employee_attendance_list") && !endpoint.includes("go1_apps.go1_apps.api.get_leave_application")){
       let employee: any = {};
 
-      if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization" || data["doctype_name"] == "LTA Request"){
+      if(data["doctype_name"] == "Leave Withdrawal" || data["doctype_name"] == "Regularization" || data["doctype_name"] == "LTA Request" || data["doctype_name"] == "National Pension Scheme"){
         employee = { employee: ['!=', localStorage['employee_id']] };
       }
       else if(data["doctype_name"] == "Asset Buyback"){

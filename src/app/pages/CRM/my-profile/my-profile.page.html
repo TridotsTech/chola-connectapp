@@ -53,9 +53,9 @@
               <ion-icon class="mouse camera" (click)="file_upload.click()" name="camera"></ion-icon>
             </div>
             <div class="flex-80 pl-10">
-            <h5 class="m-0 capitalize">{{db.cust_name}}</h5>
+            <h5 class="m-0 capitalize bold_name-13">{{db.cust_name}}</h5>
             <h6 *ngIf="db.cust_designation != 'null'" class="m-0 d__flex"> <ion-icon class="fnt-18" src="/assets/Employee-Home/designation.svg"></ion-icon> <span class="pl-5"> {{db.cust_designation}}</span>  </h6>
-            <p *ngIf="db.employee_img && db.employee_img.grade_name" class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span> {{db.employee_img ? db.employee_img.grade_name + ' - ' + db.employee_img.band_name: '-'}}</span></p>
+            <p *ngIf="db.employee_img && db.employee_img.grade_name" class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-16" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span> {{db.employee_img ? db.employee_img.grade_name + ' - ' + db.employee_img.band_name: '-'}}</span></p>
             <!-- <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 gap-10 text-c gray_clr"><ion-icon class="fnt-24" src="/assets/company.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p>  -->
           </div>
           </div>
@@ -123,14 +123,14 @@
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
             </div>
-            <!-- <div class="d__flex just-s p-10-0" (click)="router_('new-resignation')">
+            <div class="d__flex just-s p-10-0" (click)="router_('new-resignation')">
               <div class="d__flex gap-10">
                 <ion-icon class="menu-icon" [src]="db.get_icon('ResignationLetter')"></ion-icon>
                 <ion-label class="fnt-14 fnt_w500">Resignation</ion-label>
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
             </div>
-            <div class="d__flex just-s p-10-0" (click)="router_('car-purchase')">
+            <!-- <div class="d__flex just-s p-10-0" (click)="router_('car-purchase')">
               <div class="d__flex gap-10">
                 <ion-icon class="menu-icon" [src]="db.get_icon('document')"></ion-icon>
                 <ion-label class="fnt-14 fnt_w500">Car Purchase</ion-label>

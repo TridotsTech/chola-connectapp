@@ -109,6 +109,7 @@ import { MyslipDownloadComponent } from './myslip-download/myslip-download.compo
 import { EmployeeTransferOtpComponent } from './employee-transfer-otp/employee-transfer-otp.component';
 import { CreateLtaRequestComponent } from './create-lta-request/create-lta-request.component';
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
+import { CreateNpsRequestComponent } from './create-nps-request/create-nps-request.component';
 
 @NgModule({
   declarations: [
@@ -210,7 +211,8 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
     DownloadElvluationComponent,
     MyslipDownloadComponent,
     EmployeeTransferOtpComponent,
-    CreateLtaRequestComponent
+    CreateLtaRequestComponent,
+    CreateNpsRequestComponent
   ],
   imports: [
     CommonModule,
@@ -325,7 +327,8 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
     NewVoluntaryPfComponent,
     MyslipDownloadComponent,
     EmployeeTransferOtpComponent,
-    CreateLtaRequestComponent
+    CreateLtaRequestComponent,
+    CreateNpsRequestComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

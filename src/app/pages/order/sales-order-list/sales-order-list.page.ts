@@ -21,6 +21,7 @@ import { CreateLetterRequestComponent } from 'src/app/components/create-letter-r
 import { BuybackFormComponent } from 'src/app/components/customer-details/buyback-form/buyback-form.component';
 import { LeavePreviewWithdrawComponent } from 'src/app/components/leaves-module/leave-preview-withdraw/leave-preview-withdraw.component';
 import { CreateLtaRequestComponent } from 'src/app/components/create-lta-request/create-lta-request.component';
+import { CreateNpsRequestComponent } from 'src/app/components/create-nps-request/create-nps-request.component';
 
 @Component({
   selector: 'app-sales-order-list',
@@ -3393,6 +3394,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     else if (data && data.name && data.name == 'LTA Request') {
       this.openLTARequestForm('','Add');
     }
+    else if (data && data.name && data.name == 'NPS Request') {
+      this.openNPSRequestForm('','Add');
+    }
     else if (data && data.name && data.name == 'Buyback') {
       this.openBuybackForm();
     }
@@ -3461,6 +3465,23 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       cssClass: '',
       componentProps: {
         title: type + ' LTA Request',
+        data:res
+      },
+      enterAnimation: this.db.enterAnimation,
+      leaveAnimation: this.db.leaveAnimation,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data)
+      this.get_tempate_and_datas(this.doc_type)
+  }
+
+  async openNPSRequestForm(res,type) {
+    const modal = await this.modalCtrl.create({
+      component: CreateNpsRequestComponent,
+      cssClass: '',
+      componentProps: {
+        title: type + ' NPS Request',
         data:res
       },
       enterAnimation: this.db.enterAnimation,

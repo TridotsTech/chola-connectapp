@@ -1,0 +1,25 @@
+<app-header [title]="title" [showYear]="false" [model]="true"></app-header>
+<ion-content>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+            <ion-label>Employee</ion-label>
+            <ion-input formControlName="employee" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Company</ion-label>
+            <ion-input formControlName="company" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Amount</ion-label>
+            <ion-input formControlName="amount" type="text"></ion-input>            
+        </ion-item>
+        <ion-item>
+            <ion-label>Additional</ion-label>
+            <ion-input formControlName="additional" type="text"></ion-input>
+        </ion-item> 
+        <ion-button expand="full" type="submit" [disabled]="!employeeForm.valid">Submit</ion-button>                
+    </form>
+</ion-content>
+<ion-footer>
+  
+</ion-footer>

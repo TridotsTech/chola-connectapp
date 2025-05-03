@@ -1,0 +1,45 @@
+<ion-content>
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <!-- Employee Name Field -->
+      <ion-item>
+        <ion-label position="floating">Employee Name</ion-label>
+        <ion-input type="text" formControlName="employee"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="isSubmitted && formControls.employee.errors">
+        <small *ngIf="formControls.employee.errors.required">Employee name is required</small>
+        <small *ngIf="formControls.employee.errors.minlength">Employee name must be at least 2 characters</small>
+      </ion-text>
+
+      <!-- Company Field -->
+      <ion-item>
+        <ion-label position="floating">Company</ion-label>
+        <ion-input type="text" formControlName="company"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="isSubmitted && formControls.company.errors">
+        <small *ngIf="formControls.company.errors.required">Company name is required</small>
+        <small *ngIf="formControls.company.errors.minlength">Company name must be at least 2 characters</small>
+      </ion-text>
+
+      <!-- Amount Field -->
+      <ion-item>
+        <ion-label position="floating">Amount</ion-label>
+        <ion-input type="number" formControlName="amount"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="isSubmitted && formControls.amount.errors">
+        <small *ngIf="formControls.amount.errors.required">Amount is required</small>
+        <small *ngIf="formControls.amount.errors.pattern">Please enter a valid number</small>
+      </ion-text>
+
+      <!-- Additional Checkbox -->
+      <ion-item>
+        <ion-label>Additional</ion-label>
+        <ion-checkbox formControlName="additional"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" type="submit" [disabled]="!employeeForm.valid">
+      Submit
+    </ion-button>
+  </form>
+</ion-content> 

@@ -26,13 +26,13 @@
             </div>
             <div style="flex: 0 0 calc(80% - 10px);">
               <div class="d__flex just-s mb-5">
-                <p class="m-0 bold_name-13 webkit-text flex-60 capitalize" [style.--line]="2">{{db.cust_name}}</p>
+                <p class="m-0 bold_name-13 webkit-text flex-60 capitalize" [style.--line]="1">{{db.cust_name}}</p>
                 <p class="m-0 fnt-12 text-e">{{formattedDate}}</p>
               </div>
               <p *ngIf="db.cust_designation != 'null'" class="m-0 fnt-12 d__flex gap-5 mb-5"><ion-icon class="fnt-18" src="/assets/Employee-Home/designation.svg"></ion-icon>{{db.cust_designation}}</p>
               <p *ngIf="db.employee_img && db.employee_img.grade_name" class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-16" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.grade_name : '-'}}</span></p> 
               <!-- + ' - ' + db.employee_img.band_name -->
-              <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-24" src="/assets/company.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p> 
+              <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 h-30 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/company.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p> 
             </div>
           </div>
           <div class="checkInButton mouse">

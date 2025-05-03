@@ -616,6 +616,12 @@ ion-backdrop {
         gap: 5px;
         padding: 10px 10px 10px 10px;
         border-radius: 15px 15px 0 0;
+
+        background: #EAF5FF;
+        border-radius: 10px;
+        width: 100%;
+        border: 1px solid #f9f9f9;
+        margin-bottom: 10px;
         // background: #E3F0FF;
 
         .profile-icon {
@@ -625,7 +631,7 @@ ion-backdrop {
         }
 
         h6 {
-            font-size: 13px;
+            font-size: 12px;
         }
 
         p {
@@ -688,6 +694,10 @@ ion-backdrop {
 
   .section-p {
     padding: 8px;
+  }
+
+  .pl-5{
+    padding-left: 5px;
   }
 
 //   .body_sec{
