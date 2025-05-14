@@ -1,4 +1,4 @@
-<app-header title="Leaves" [showYear]="selectedTabSec == 'Approved' ? 'getYearLeave' : false" [model]="false"></app-header>
+<app-header title="Leaves" [showYear]="selectedTabSec == 'Approved' || selectedTabSec == 'Rejected' ? 'getYearLeave' : false" [model]="false"></app-header>
 <ion-content class="ion-content content_bg" [fullscreen]="true">
 
   <div *ngIf="db.hasClass" [ngClass]="{'backdrop-visible': db.hasClass}">
@@ -65,7 +65,7 @@
         <div class="box_1" *ngFor="let item of leave_dashboard">
           <div class="m-7 d__flex just-s">
             <ion-icon class="fnt-30" [src]="get_leaves_icon(item.label)"></ion-icon>
-            <p class="m-0 fnt_w600 " >{{item.count}}</p>
+            <p class="m-0 fnt_w600 " >{{item.count | number}}</p>
           </div>
           <p class="fnt-12 m-0 ">{{item.label.replaceAll('Leaves', ' ')}}</p>
         </div>

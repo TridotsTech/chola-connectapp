@@ -502,31 +502,48 @@ export class DbService {
   ];
 
   store_customer_info(res: any) {
-    SecureStoragePlugin.set({ key: 'api_key', value: res.api_key ? res.api_key :'' });
-    SecureStoragePlugin.set({ key: 'api_secret', value: res.api_secret ? res.api_secret :'' });
-    this.api_key = res.api_key;
-    this.api_secret = res.api_secret;
-    // localStorage['api_key'] = res.api_key;
-    // localStorage['api_secret'] = res.api_secret;
+    if(res.employee_id){
+      SecureStoragePlugin.set({ key: 'api_key', value: res.api_key ? res.api_key :'' });
+      SecureStoragePlugin.set({ key: 'api_secret', value: res.api_secret ? res.api_secret :'' });
+      this.api_key = res.api_key;
+      this.api_secret = res.api_secret;
+      // localStorage['api_key'] = res.api_key;
+      // localStorage['api_secret'] = res.api_secret;
 
-    localStorage['CustomerName'] = res.full_name;
-    localStorage['customerRefId'] = res.user_id;
-    localStorage['employee_id'] = res.employee_id;
-    localStorage['customer_id'] = res.customer_id ? res.customer_id : null;
-    localStorage['employee_name'] = res.employee_name ? res.employee_name : null;
-    localStorage['designation'] = res.designation ? res.designation : null;
-    localStorage['role'] = (res.roles && res.roles.length != 0) ? res.roles[0].role : ''
-    localStorage['player_id'] != undefined && localStorage['player_id'] != 'undefined' && localStorage['employee_id'] != undefined && localStorage['employee_id'] != 'undefined' ? this.update_onsignal_id().subscribe(res => { console.log("one signal id updated..", res) }) : null
+      localStorage['CustomerName'] = res.full_name;
+      localStorage['customerRefId'] = res.user_id;
+      localStorage['employee_id'] = res.employee_id;
+      localStorage['customer_id'] = res.customer_id ? res.customer_id : null;
+      localStorage['employee_name'] = res.employee_name ? res.employee_name : null;
+      localStorage['designation'] = res.designation ? res.designation : null;
+      localStorage['role'] = (res.roles && res.roles.length != 0) ? res.roles[0].role : ''
+      localStorage['player_id'] != undefined && localStorage['player_id'] != 'undefined' && localStorage['employee_id'] != undefined && localStorage['employee_id'] != 'undefined' ? this.update_onsignal_id().subscribe(res => { console.log("one signal id updated..", res) }) : null
 
-    this.get_sec_value()
+      this.get_sec_value()
 
-    this.get_customer_values();
-    this.get_dashboard();
+      this.get_customer_values();
+      this.get_dashboard();
+    }else{
+       this.cust_name = undefined;
+        this.side_menu_show = false;
+        this.profile_side_menu = false;
+        let player_id = localStorage['player_id'];
+        this.hr_manager_role = undefined
+        this.employee_role = undefined;
+        this.app_name = 'Go1 HR';
+        this.api_key = undefined
+        this.api_secret = undefined;
+        localStorage.clear();
+        this.clearData();
+        this.removeSecureData();
+        localStorage['player_id'] = player_id;
+        this.router.navigateByUrl('/register');
+    }
   }
 
   cust_role: any;
   get_customer_values() {
-    if (localStorage['employee_id']) {
+    if (localStorage['employee_id'] && localStorage['employee_id'] != 'undefined') {
       this.cust_name = localStorage['CustomerName'];
       this.cust_email = localStorage['customerRefId'];
       this.cust_designation = localStorage['designation'];
@@ -542,6 +559,21 @@ export class DbService {
       }
       this.get_permission_details();
       // this.sale_person_id = localStorage['CustomerId'];
+    }else{
+      this.cust_name = undefined;
+        this.side_menu_show = false;
+        this.profile_side_menu = false;
+        let player_id = localStorage['player_id'];
+        this.hr_manager_role = undefined
+        this.employee_role = undefined;
+        this.app_name = 'Go1 HR';
+        this.api_key = undefined
+        this.api_secret = undefined;
+        localStorage.clear();
+        this.clearData();
+        this.removeSecureData();
+        localStorage['player_id'] = player_id;
+        this.router.navigateByUrl('/register');
     }
 
   }
@@ -591,7 +623,25 @@ export class DbService {
     }
 
     this.get_permission_detail(data).subscribe((res) => {
-      if (res && res.message) {
+      console.log(res)
+      if(res.status == 'failed'){
+        this.alert(res._error_message)
+        this.cust_name = undefined;
+        this.side_menu_show = false;
+        this.profile_side_menu = false;
+        let player_id = localStorage['player_id'];
+        this.hr_manager_role = undefined
+        this.employee_role = undefined;
+        this.app_name = 'Go1 HR';
+        this.api_key = undefined
+        this.api_secret = undefined;
+        localStorage.clear();
+        this.clearData();
+        this.removeSecureData();
+        localStorage['player_id'] = player_id;
+        this.router.navigateByUrl('/register');
+      }
+      else if (res && res.message) {
         // this.ismobile ? this.get_dashboard() : null;
         let appScreen = res.app_screen ? res.app_screen : [];
         if (appScreen.length != 0) {
@@ -750,6 +800,8 @@ export class DbService {
             let player_id = localStorage['player_id'];
             this.hr_manager_role = undefined
             this.employee_role = undefined;
+            this.api_key = undefined
+            this.api_secret = undefined;
             this.app_name = 'Go1 HR';
             localStorage.clear();
             this.clearData();
@@ -2283,7 +2335,8 @@ export class DbService {
   }
 
   leave_remaining_balance(data: any): Observable<any> {
-    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leave_remaining_balance';
+    let endpoint = this.go1_apps_apis_hrmls  +'leave_remaining_balance';
+    // let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leave_remaining_balance';
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 

@@ -29,16 +29,16 @@
                 <p class="m-0 bold_name-13 webkit-text flex-60 capitalize" [style.--line]="1">{{db.cust_name}}</p>
                 <p class="m-0 fnt-12 text-e">{{formattedDate}}</p>
               </div>
-              <p *ngIf="db.cust_designation != 'null'" class="m-0 fnt-12 d__flex gap-5 mb-5"><ion-icon class="fnt-18" src="/assets/Employee-Home/designation.svg"></ion-icon>{{db.cust_designation}}</p>
+              <p class="m-0 fnt-12 d__flex gap-5 mb-5 h18"><ion-icon class="fnt-18" src="/assets/Employee-Home/designation.svg"></ion-icon><span *ngIf="db.cust_designation != 'null'"> {{db.cust_designation ? db.cust_designation : '-'}}</span></p>  
               <p *ngIf="db.employee_img && db.employee_img.grade_name" class="m-0 d__flex gap-10 gray_clr"><ion-icon class="fnt-16" src="/assets/Voluntary-Pf/Medal.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.grade_name : '-'}}</span></p> 
               <!-- + ' - ' + db.employee_img.band_name -->
-              <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 h-30 d__flex gap-10 gray_clr"><ion-icon class="fnt-18" src="/assets/company.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p> 
+              <p *ngIf="db.employee_img && db.employee_img.company" class="m-0 h-30 d__flex gap-10 gray_clr"><ion-icon class="fnt-18 f-0-18" src="/assets/company.svg"></ion-icon> <span class="fnt-11"> {{db.employee_img ? db.employee_img.company : '-'}}</span></p> 
             </div>
           </div>
           <div class="checkInButton mouse">
             <ion-icon class="fnt-20 checkInHand" src="/assets/Employee-Home/to-do-notes.svg"></ion-icon>
             <ion-button *ngIf="!db.is_Attendance" class="checkin_btn" fill="clear" (click)="check_In('IN')"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{db.checkInOutTime ? (db.checkInOutTime + ' - Click to Punch In') : 'Click to Punch In'}}</span></ion-button>
-            <ion-button *ngIf="db.is_Attendance" class="checkout_btn" fill="clear" [disabled]="true"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{'Already Punch In'}}</span></ion-button>
+            <ion-button *ngIf="db.is_Attendance" class="checkout_btn" fill="clear" [disabled]="true"><ion-icon class="fnt-20 mr-5" src="/assets/Employee-Home/timer.svg"></ion-icon><span class="white fnt-12" >{{db.checkInOutDetail}}</span></ion-button>
           </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
         <div *ngFor="let item of ess_dashboard_data.leave_balance;let i = index" class="over_flow">
           <div class="w-100 d__flex just-s first_sec mb-5" [routerLink]="'/leave-application-detail/' + db.employee_id">
             <ion-icon [src]="get_leaves_icon(item.label)" class="fnt-30"></ion-icon>
-            <p  class="m-0 fnt-14 fnt_w600">{{item.count}}</p>
+            <p  class="m-0 fnt-14 fnt_w600">{{item.count | number}}</p>
           </div>
           <p class="m-0 fnt-12 fnt_w500 label black_color">{{item.label.replaceAll('Leaves', ' ')}}</p>
         </div>

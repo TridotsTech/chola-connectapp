@@ -92,6 +92,15 @@ export class BuybackFormComponent  implements OnInit {
           }
           // this.db.sendErrorMessage(res.message.message)
         }
+      },error => {
+        if(error.error._server_messages){
+          let d = JSON.parse(error.error._server_messages)
+          let f = JSON.parse(d[0])
+          this.db.sendErrorMessage(f.message)
+        }else{
+          this.db.sendErrorMessage(error.message)
+        }
+        // this.db.sendErrorMessage(error.message)
       })
       this.buyback_form.get('buyback_date').setValue(event.value)
     }

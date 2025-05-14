@@ -25,6 +25,9 @@ export class MonthCalendarComponent implements OnInit, OnDestroy {
   private touchStartX: number = 0;
   private touchEndX: number = 0;
   slideDirection: 'left' | 'right' | null = null;
+  tooltipVisible: boolean = false;
+  tooltipText: string = '';
+  tooltipPosition: { x: number, y: number } = { x: 0, y: 0 };
 
   // @Input('appTooltip') tooltipTitle: string = '';
   // tooltip: HTMLElement | null = null;
@@ -49,47 +52,8 @@ export class MonthCalendarComponent implements OnInit, OnDestroy {
       }
   })
 
-  // console.log(this.highlightedDates,'this.highlightedDates');
-  // console.log(this.db.highlightedDates,'this.db.highlightedDates')
   }
 
-  // @HostListener('mouseenter') onMouseEnter() {
-  //   if (!this.tooltip) {
-  //     this.show();
-  //   }
-  // }
-
-  // @HostListener('mouseleave') onMouseLeave() {
-  //   this.hide();
-  // }
-
-  // private show() {
-  //   this.tooltip = this.renderer.createElement('span');
-  //   if (this.tooltip) {
-  //     this.tooltip.innerText = this.tooltipTitle;
-  //   }
-  //   this.renderer.appendChild(document.body, this.tooltip);
-  //   this.renderer.addClass(this.tooltip, 'tooltip');
-
-  //   // Safe check
-  //   if (!this.tooltip) return;
-
-  //   const hostPos = this.el.nativeElement.getBoundingClientRect();
-  //   const tooltipPos = this.tooltip.getBoundingClientRect();
-
-  //   const top = hostPos.top - tooltipPos.height - this.offset;
-  //   const left = hostPos.left + (hostPos.width - tooltipPos.width) / 2;
-  //   console.log(top)
-  //   this.renderer.setStyle(this.tooltip, 'top', `${top}px`);
-  //   this.renderer.setStyle(this.tooltip, 'left', `${left}px`);
-  // }
-
-  // private hide() {
-  //   if (this.tooltip) {
-  //     this.renderer.removeChild(document.body, this.tooltip);
-  //     this.tooltip = null;
-  //   }
-  // }
 
   display_msg(msg){
     console.log(msg)
@@ -201,9 +165,15 @@ export class MonthCalendarComponent implements OnInit, OnDestroy {
     this.days = Array.from({ length: daysInMonth }, (_, i) => {
       const dayDate = new Date(this.currentYear, this.currentMonth, i + 1);
       const key = `${dayDate.getFullYear()}-${dayDate.getMonth()}-${dayDate.getDate()}`;
+      // console.log(key)
       return {
         day: i + 1,
-        styles: dateStyles[key] || {}, // Apply styles if available, otherwise empty
+        styles: dateStyles[key] || {},
+        status: this.db.highlightedDates.find(date => {
+          const highlightDate = new Date(date.date);
+          const highlightKey = `${highlightDate.getFullYear()}-${highlightDate.getMonth()}-${highlightDate.getDate()}`;
+          return highlightKey === key;
+        })?.status || ''
       };
     });
 
@@ -256,5 +226,30 @@ export class MonthCalendarComponent implements OnInit, OnDestroy {
   //       this.show_cal = false;
   //     }
   //   }
+  // }
+
+  // @HostListener('window:scroll', ['$event'])
+  // onScroll() {
+  //   this.hideTooltip();
+  // }
+
+  // @HostListener('window:touchmove', ['$event'])
+  // onTouchMove() {
+  //   this.hideTooltip();
+  // }
+
+  // showTooltip(event: MouseEvent, day: any) {
+  //   if (day && day.status) {
+  //     this.tooltipText = day.status;
+  //     this.tooltipPosition = {
+  //       x: event.clientX,
+  //       y: event.clientY
+  //     };
+  //     this.tooltipVisible = true;
+  //   }
+  // }
+
+  // hideTooltip() {
+  //   this.tooltipVisible = false;
   // }
 }

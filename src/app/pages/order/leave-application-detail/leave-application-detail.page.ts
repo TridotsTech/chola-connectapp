@@ -40,7 +40,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   search_data: any = {};
   @ViewChild('fab') fab!: IonFab | any;
   @ViewChild(IonContent, { static: true }) content: IonContent | any;
-  options = [{ name: "Pending", route: "Open" }, { name: "Approved", route: "Approved" }]
+  options = [{ name: "Pending", route: "Open" }, { name: "Approved", route: "Approved" },{ "name": "Rejected", "route": "Rejected" }]
   search_filter: any = [];
   showCalendar: any;
   sort_by_order: any;

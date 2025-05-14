@@ -197,6 +197,7 @@ export class DashboardPage implements OnInit {
     this.db.checkIn(datas).subscribe(res => {
       if(res && res.message && res.message.status == "success"){
         this.db.is_Attendance = true;
+        res.message.message.status == 'On Leave' ? this.db.checkInOutDetail = 'Your on leave today' : this.db.checkInOutDetail = 'Already Punched In'
       }else if(res && res.message && res.status == "Employee Not Found"){
         this.db.alert(res.message)
       }
@@ -450,6 +451,12 @@ export class DashboardPage implements OnInit {
     { icon: '/assets/Employee-Home/Expired-Leaves.svg', color: '#C01212' },
   ]
 
+  // stripHtml(html: string): string {
+  //   const tmp = document.createElement('DIV');
+  //   tmp.innerHTML = html;
+  //   return tmp.textContent || tmp.innerText || '';
+  // }
+
   generateHighlightedDates() {
 
     const presentDates: any = [];
@@ -462,11 +469,11 @@ export class DashboardPage implements OnInit {
           case 'Present':
           case 'Half Day':
           case 'Work From Home':
-            presentDates.push(record.attendance_date);
+            presentDates.push({date:record.attendance_date,status:'P'});
             break;
           case 'On Leave':
           case 'Absent':
-            absentDates.push({date:record.attendance_date, leave_type:record.leave_type, color:record.color,status:record.status});
+            absentDates.push({date:record.attendance_date, leave_type:record.leave_type, color:record.color,status:record.status == 'On Leave' ? record.abbreviations : 'A'});
             break;
         }
       });
@@ -478,9 +485,9 @@ export class DashboardPage implements OnInit {
       
       this.ess_dashboard_data.holidays.map((record: any) => {
         if(record.weekly_off == 1)
-          WeekOffDates.push(record.date)
+          WeekOffDates.push({date:record.date, status: ''})
         else
-          holidayDates.push(record.date)
+          holidayDates.push({date:record.date, status: ''})
 
       });
     }
@@ -489,7 +496,7 @@ export class DashboardPage implements OnInit {
     if(this.ess_dashboard_data && this.ess_dashboard_data.missed_dates && this.ess_dashboard_data.missed_dates.length != 0){
       
       this.ess_dashboard_data.missed_dates.map((record: any) => {
-        missedDates.push(record.attendance_date)
+        missedDates.push({date:record.attendance_date, status:'A'})
 
       });
     }
@@ -502,29 +509,34 @@ export class DashboardPage implements OnInit {
 
     this.highlightedDates = [
       ...dynamicGreenDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#1DAC4526',
+        status:date.status
       })),
       ...dynamicRedDates.map((r:any) => ({
           date:r.date,
           textColor: '#000',
-          backgroundColor: r.status == 'Absent' ? '#f3db66':  r.color,
+          backgroundColor: r.status == 'A' ? '#f3db66':  r.color,
+          status:r.status
       })),
       ...dynamicGreyDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#ecf0ed',
+        status:date.status
       })),
       ...dynamicBlueDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#a2cdff',
+        status:date.status
       })),
       ...dynamicSantalDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#f3db66',
+        status:date.status
       })),
     ];
     // console.log(dynamicRedDates)

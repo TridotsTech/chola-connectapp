@@ -1396,11 +1396,11 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
           case 'Present':
           case 'Half Day':
           case 'Work From Home':
-            presentDates.push(record.attendance_date);
+            presentDates.push({date:record.attendance_date, status:record.status == 'Present' ? 'P' : ''});
             break;
           case 'On Leave':
           case 'Absent':
-            absentDates.push({date:record.attendance_date, leave_type:record.leave_type, color:record.color,status:record.status});
+            absentDates.push({date:record.attendance_date, leave_type:record.leave_type, color:record.color,status:record.status == 'On Leave' ?record.abbreviations : 'A'});
             // absentDates.push(record.attendance_date);
             break;
         }
@@ -1413,9 +1413,9 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       
       holidays.map((record: any) => {
         if(record.weekly_off == 1)
-          WeekOffDates.push(record.date)
+          WeekOffDates.push({date:record.date, status: ''})
         else
-          holidayDates.push(record.date)
+          holidayDates.push({date:record.date, status: ''})
 
       });
     }
@@ -1424,7 +1424,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     if(missed_dates && missed_dates.length != 0){
       
       missed_dates.map((record: any) => {
-        missedDates.push(record.attendance_date)
+        missedDates.push({date:record.attendance_date, status:'A'})
 
       });
     }
@@ -1438,29 +1438,34 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     console.log(dynamicRedDates)
     this.highlightedDates = [
       ...dynamicGreenDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#1DAC4526',
+        status:date.status
       })),
       ...dynamicRedDates.map(r => ({
         date:r.date,
         textColor: '#000',
-        backgroundColor: r.status == 'Absent' ? '#f3db66':  r.color,
+        backgroundColor: r.status == 'A' ? '#f3db66':  r.color,
+        status:r.status
       })),
       ...dynamicGreyDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#ecf0ed',
+        status:date.status
       })),
       ...dynamicBlueDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#a2cdff',
+        status:date.status
       })),
       ...dynamicSantalDates.map(date => ({
-        date,
+        date:date.date,
         textColor: '#000',
         backgroundColor: '#f3db66',
+        status:date.status
       })),
     ];
 

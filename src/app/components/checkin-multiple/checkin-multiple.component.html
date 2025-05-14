@@ -50,14 +50,14 @@
           </div>
         </div>
       </div>
-      <p class="check_in-d text-c" *ngIf="db.checkInOutDetail">
+      <!-- <p class="check_in-d text-c" *ngIf="db.checkInOutDetail">
         {{ db.checkInOutDetail }}
-      </p>
+      </p> -->
       <p *ngIf="!is_Attendance" class="fnt-12 gray_clr text-c check_btn">
         Click to Punch In
       </p>
       <p *ngIf="is_Attendance" class="fnt-12 gray_clr text-c check_btn">
-        Already Punch In
+        {{ db.checkInOutDetail }}
       </p>
     </div>
 

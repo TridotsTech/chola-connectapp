@@ -33,6 +33,13 @@ export class NewVoluntaryPfComponent  implements OnInit {
         // this.db.sendErrorMessage(f.message)
         this.pfDetails = {}
       }
+    },error => {
+      if(error.error._server_messages){
+        let d = JSON.parse(error.error._server_messages)
+        let f = JSON.parse(d[0])
+        this.db.sendErrorMessage(f.message)
+      }
+      // this.db.sendErrorMessage('Something went wrong')
     })
   }
 

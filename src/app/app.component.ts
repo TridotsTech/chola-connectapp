@@ -14,6 +14,7 @@ import { Device } from '@capacitor/device';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
+import { AppUpdateService } from './services/app-update.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ export class AppComponent implements OnInit {
   sub1: any
   sub2;
   wasOffline = false;
-  constructor(private navCtrl: NavController, public db: DbService, private alertCtrl: AlertController, private platform: Platform, private appVersion: AppVersion, public storage: Storage, private router: Router, public location: Location) { 
+  updatePopupState$ = this.appUpdateService.updatePopupState$;
+  constructor(private navCtrl: NavController, public db: DbService, private alertCtrl: AlertController, private platform: Platform, private appVersion: AppVersion, public storage: Storage, private router: Router, public location: Location, private appUpdateService: AppUpdateService) { 
     this.checkNetworkOnStart();
     this.listenNetworkChanges();
   }
@@ -95,10 +97,7 @@ export class AppComponent implements OnInit {
 
     // this.db.get_dashboard();
     if (this.platform.is('android')) {
-      // this.checkDeviceStatus();
-      // this.enableFingerprint();
-      // this.db.enable_location();
-      // this.get_app_version();
+      this.appUpdateService.checkForUpdate();
     }
 
     // if(this.platform.is('ios'))
@@ -120,12 +119,18 @@ export class AppComponent implements OnInit {
     })
 
     this.platform.ready().then(() => {
-      // Hide the splash screen after 3 seconds
-      setTimeout(() => {
-        // const loadingEl = document.getElementById('custom-loading');
-        // if (loadingEl) loadingEl.remove();
-        SplashScreen.hide(); // Hide the splash screen
-      }, 500); // 3000 ms = 3 seconds
+
+    // Hide the splash screen after 3 seconds
+    setTimeout(() => {
+      // const loadingEl = document.getElementById('custom-loading');
+      // if (loadingEl) loadingEl.remove();
+      SplashScreen.hide(); // Hide the splash screen
+    }, 500); // 3000 ms = 3 seconds
+      
+      // Hide the splash screen after the app is ready
+      SplashScreen.hide().catch(err => {
+        console.error('Error hiding splash screen:', err);
+      });
     });
 
     this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
@@ -144,7 +149,7 @@ export class AppComponent implements OnInit {
     });
 
     this.db.domainurl = localStorage['site_name'] ? localStorage['site_name'] : null;
-
+    this.db.domainurl == null ? this.db.removeSecureData() : null 
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.db.path = event.url;
@@ -355,7 +360,7 @@ export class AppComponent implements OnInit {
         {
           text:'Update',
           handler : () =>{
-            window.open("https://apps.apple.com/us/app/miindia/id1001089710", '_system');
+            window.open("https://apps.apple.com/us/app/chola-hr/id6742024031", '_system');
             App.exitApp()
           }
         }

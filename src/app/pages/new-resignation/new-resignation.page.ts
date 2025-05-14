@@ -100,6 +100,10 @@ export class NewResignationPage implements OnInit {
       console.log(res)
       if(res.message){
         this.resignation_form.get('custom_date_of_joining').setValue(res.message.custom_date_of_joining)
+        this.resignation_form.get('custom_l1_manager_name').setValue(res.message.custom_l1_manager_name)
+        this.resignation_form.get('custom_total_working_days').setValue(res.message.custom_total_working_days)
+        this.resignation_form.get('custom_l2_manager_name').setValue(res.message.custom_l2_manager_name)
+        this.resignation_form.get('employee_grade').setValue(res.message.employee_grade)
       }
       
     })

@@ -109,7 +109,7 @@ export class MobileTodayCheckinComponent  implements OnInit, OnDestroy {
         // { name: "List", route: "List" }, 
         // { name: "Late Arrivals", route: "List" }, 
         { name: "On Leave", route: "List" }, 
-        // { name: "Absent", route: "List" }, 
+        { name: "Absent", route: "List" }, 
         { name: "Present", route: "List" }
       ]
     }else{

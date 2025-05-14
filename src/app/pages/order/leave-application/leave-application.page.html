@@ -103,7 +103,7 @@
             <ion-input aria-disabled="true" type="text" placeholder="Total Leave Days" name="total_leave_days" formControlName="total_leave_days" class="form-input" readonly></ion-input>
           </div>
         </div>
-        <div *ngIf="is_maternity || is_special_leave || is_paternity" class="image-div_">
+        <div *ngIf="is_maternity || is_special_leave || is_paternity || is_miscarriage_leave" class="image-div_">
           <label for="total_leave_days" class="pb-10">Attach <span class="impt-star"> *</span></label>
           <input #file_upload class="image-d" (change)="changeListener($event)" type="file" [formControlName]="image" class="form-input">
           <div [class.attached]="file_url" class="browser d__flex">

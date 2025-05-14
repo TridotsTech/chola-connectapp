@@ -31,6 +31,7 @@ export class LeaveApplicationPage implements OnInit {
   is_paternity = 0;
   is_special_leave = 0;
   total_allocation = 0;
+  is_miscarriage_leave = 0;
   image:any;
   constructor(public loadingCtrl:LoadingController,public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
@@ -268,7 +269,7 @@ export class LeaveApplicationPage implements OnInit {
           },
         ],
       });
-      if(this.is_maternity || this.is_paternity || this.is_special_leave){
+      if(this.is_maternity || this.is_paternity || this.is_special_leave || this.is_miscarriage_leave){
         this.file_url ? await alert.present() : this.db.sendErrorMessage('Please select the image');  
       }
       else    
@@ -306,7 +307,8 @@ export class LeaveApplicationPage implements OnInit {
 
         datas['docstatus'] = 0;
         this.res_name = undefined
-        datas['workflow_state'] = 'Awaiting Approval';
+        datas['workflow_state'] = 'Draft';
+        // datas['workflow_state'] = 'Awaiting Approval';
        
         this.db.inset_docs({ data: datas }).subscribe(res => {
           setTimeout(() => {
@@ -394,6 +396,13 @@ export class LeaveApplicationPage implements OnInit {
     this.is_special_leave = val.data.is_special_leave ? val.data.is_special_leave : 0;
     this.is_paternity = val.data.is_paternity ? val.data.is_paternity : 0;
     this.total_allocation = val.data.total_allocation ? val.data.total_allocation : 0;
+    this.is_miscarriage_leave = val.data.is_miscarriage_leave ? val.data.is_miscarriage_leave : 0;
+    let is_doc_mandatory = val.data.is_doc_mandatory ? val.data.is_doc_mandatory : 0;
+    if(is_doc_mandatory){
+      let condition = val.data.doc_mandatory_condition ? val.data.doc_mandatory_condition : 0;
+      // doc_mandatory_days
+      // this.db.sendErrorMessage('Please select the image')
+    }
   }
   }
 
@@ -576,11 +585,11 @@ export class LeaveApplicationPage implements OnInit {
       let data1 = this.leave_form.getRawValue();
       const currentDate = new Date(data1.from_date);
       // Add 180 days to the current date
-      currentDate.setDate(currentDate.getDate() + 179);
+      currentDate.setDate(currentDate.getDate() + 181);
       // Format the date as YYYY-MM-DD
       const formattedDate = currentDate.toISOString().split('T')[0];
       this.leave_form.get('to_date').setValue(formattedDate)
-      this.leave_form.get('total_leave_days').setValue(180)
+      this.leave_form.get('total_leave_days').setValue(182)
       // data.from_date 
     }
     // else if(each == 'to_date' && (this.is_paternity || this.is_special_leave)){

@@ -32,7 +32,7 @@
   
     <h6 class="m-0 today_employee" *ngIf="viewType == 'Overview' && today_employee">Today Number of Employee :<span>{{today_employee}}</span></h6>
     
-    <div id="chart" *ngIf="viewType == 'Overview' && chartOptions">
+    <div id="chart" *ngIf="viewType == 'Overview' && chartOptions && listData && listData.length != 0">
       <apx-chart 
         [series]="chartOptions.series" 
         [chart]="chartOptions.chart" 
@@ -51,15 +51,16 @@
     
         <div class="d__flex just-s header-cs">
           <h4 class="m-0 fnt-14 fnt_w500">Punch In Details</h4>
-          <h4 *ngIf="listData.length > 10" (click)="go_list()" class="m-0 d__flex gap-5 fnt-12 fnt_w400">
+          <!-- <h4 *ngIf="listData.length > 10" (click)="go_list()" class="m-0 d__flex gap-5 fnt-12 fnt_w400">
             <span class="fnt-12 fnt_w400">View All</span>
             <ion-icon class="fnt-13" name="chevron-forward-outline"></ion-icon>
-          </h4>
+          </h4> -->
         </div>
     
         <div class="min-h">
           <div class="box-sec">
-            <div class="list_data mouse" *ngFor="let item of listData.slice(0,10);let i = index" >
+            <!-- slice(0,10) -->
+            <div class="list_data mouse" *ngFor="let item of listData;let i = index" >
               <div class="gap-10 employee_">
                 <div class="s-1 mb-5">
                   <h3 *ngIf="db.selfView" class="m-0 fnt-13 fnt_w400 gray_clr d__flex gap-5"> <img src="/assets/leaves/leaveicon.svg" alt=""> <span class="pl5 fnt_w600">{{item.name ? item.name : ' -'}}</span></h3>    
@@ -115,8 +116,10 @@
         </div> -->
   
       </ng-container>
-    
     </div>
+    <app-no-record-found *ngIf="!skeleton && viewType == 'Overview' && chartOptions && listData.length == 0" [column]="true" height="calc(100vh - 300px)" [heading]="'No record found'" [image]="'assets/not-found/no-list-found.svg'"></app-no-record-found>
+
+
     
     
     

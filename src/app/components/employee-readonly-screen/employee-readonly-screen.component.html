@@ -66,28 +66,46 @@
   
       <div class="d__flex detailView p-10" *ngIf="!employeeDetail['workingBranchDetails']">
         <h4 class="m-0">Branch</h4>
-        <h4 class="m-0 text-transform-none">{{employeeDetail.custom_working_branch ? employeeDetail.custom_working_branch : '-'}}</h4>
+        <h4 class="m-0 text-transform-none">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].branch ? employeeDetail.enterprise_data[0].branch : '-'}}</h4>
         <h4 class="m-0">Branch Code</h4>
-        <h4 class="m-0">{{employeeDetail.custom_working_branch_code ? employeeDetail.custom_working_branch_code : '-'}}</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].branch_code ? employeeDetail.enterprise_data[0].branch_code : '-'}}</h4>
         <h4 class="m-0">SBU</h4>
-        <h4 class="m-0">{{employeeDetail.custom_working_sbu ? employeeDetail.custom_working_sbu : '-'}}</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].sbu ? employeeDetail.enterprise_data[0].sbu : '-'}}</h4>
         <h4 class="m-0">SBU Code</h4>
-        <h4 class="m-0">{{employeeDetail.custom_working_sbu_code ? employeeDetail.custom_working_sbu_code : '-'}}</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].sbu_code ? employeeDetail.enterprise_data[0].sbu_code : '-'}}</h4>
         <h4 class="m-0">Department</h4>
-        <h4 class="m-0">{{employeeDetail.custom_working_department ? employeeDetail.custom_working_department : '-'}}</h4>
+        <h4 class="m-0">{{employeeDetail.department ? employeeDetail.department : '-'}}</h4>
         <h4 class="m-0">Department Code</h4>
-        <h4 class="m-0">{{employeeDetail.custom_working_department_code ? employeeDetail.custom_working_department_code : '-'}}</h4>
-        <h4 class="m-0">Function</h4>
-        <h4 class="m-0">{{employeeDetail.custom_working_function ? employeeDetail.custom_working_function : '-'}}</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].department_code ? employeeDetail.enterprise_data[0].department_code : '-'}}</h4>
+        <h4 class="m-0">Continent</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].continent ? employeeDetail.enterprise_data[0].continent : '-'}}</h4>
+        <h4 class="m-0">Country</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].country ? employeeDetail.enterprise_data[0].country : '-'}}</h4>
+        <h4 class="m-0">Zone</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].zone ? employeeDetail.enterprise_data[0].zone : '-'}}</h4>
+        <h4 class="m-0">Sub Zone </h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].sub_zone ? employeeDetail.enterprise_data[0].sub_zone : '-'}}</h4>
+        <h4 class="m-0">State</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].state ? employeeDetail.enterprise_data[0].state : '-'}}</h4>
+        <h4 class="m-0">State BU</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].state_bu ? employeeDetail.enterprise_data[0].state_bu : '-'}}</h4>
+        <h4 class="m-0">Region </h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].region ? employeeDetail.enterprise_data[0].region : '-'}}</h4>
+        <h4 class="m-0">Area</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].area ? employeeDetail.enterprise_data[0].area : '-'}}</h4>
+        <h4 class="m-0">Location</h4>
+        <h4 class="m-0">{{employeeDetail.location ? employeeDetail.location : '-'}}</h4>
+        <!-- <h4 class="m-0">Function</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].function ? employeeDetail.enterprise_data[0].function : '-'}}</h4>
         <h4 class="m-0">Product</h4>
-        <h4 class="m-0">{{employeeDetail.custom_working_product ? employeeDetail.custom_working_product : '-'}}</h4>
+        <h4 class="m-0">{{employeeDetail.enterprise_data.length > 0 && employeeDetail.enterprise_data[0].product ? employeeDetail.enterprise_data[0].product : '-'}}</h4>
 
         <div *ngIf="employeeDetail && employeeDetail.custom_working_sub_product && employeeDetail.custom_working_sub_product.length != 0" class="w-100">
           <h4 class="m-0">Sub Product</h4>
           <div class="subProdList mt-5">
             <p class="m-0 fnt-15 fnt_w500" *ngFor="let itemSub of employeeDetail.custom_working_sub_product">{{itemSub.sub_product}}</p>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 

@@ -31,9 +31,10 @@ import { File } from '@awesome-cordova-plugins/file/ngx';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 // import { FrappeChartsModule } from 'ngx-frappe-chart';
 // import { IonCalendarModule } from '@heliomarpm/ion-calendar';
+import { ForceUpdatePopupComponent } from './components/force-update-popup/force-update-popup.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ForceUpdatePopupComponent],
   imports: [BrowserModule, BrowserAnimationsModule, QuillModule.forRoot(), IonicModule.forRoot({mode:'md'}), IonicStorageModule.forRoot(), AppRoutingModule, ComponentsModule, HttpClientModule, NgSelectModule, LightgalleryModule, RevoGridModule, 
     NgMultiSelectDropDownModule.forRoot(),
     // FrappeDataTableModule

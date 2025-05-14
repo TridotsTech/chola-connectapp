@@ -79,38 +79,52 @@ export class NormalLoginComponent implements OnInit {
         }
         this.db.getLogin(data).subscribe((data:any) => {
           if(data.message.status == "Success"){
-            if(data.message.roles){
-              let check = data.message.roles.map(res=> {return res.role == 'HR Manager' || res.role == 'L1 Manager' || res.role == 'L2 Manager'})
-              if(check){
-                data.message.roles = data.message.roles.filter(res=> {return res.role != 'Employee'})
+            if(data.message.employee_id){
+              if(data.message.roles){
+                let check = data.message.roles.map(res=> {return res.role == 'HR Manager' || res.role == 'L1 Manager' || res.role == 'L2 Manager'})
+                if(check){
+                  data.message.roles = data.message.roles.filter(res=> {return res.role != 'Employee'})
+                }
+                this.db.check_project_manager(data.message.roles)
               }
-              this.db.check_project_manager(data.message.roles)
-            }
 
-            localStorage['site_name'] = site_name;
-            this.db.side_menu_show = true;
-            SecureStoragePlugin.set({ key: 'CustomerPwd', value: this.loginform.value.password });
-            // localStorage['CustomerPwd'] = this.loginform.value.password;
-            data.message.full_name = data.full_name ? data.full_name : '';
-            this.db.store_customer_info(data.message);
-            
-            if(data.message){
-              SecureStoragePlugin.set({ key: 'api_key', value: data.message.api_key });
-              // localStorage['api_key'] = data.message.api_key;
-            }
-            this.db.side_menu_show = true;
-            this.submitted = false;
-            this.loginform.reset();   
-            setTimeout(()=>{
-              this.buttonLoader = false;
-              this.router.navigateByUrl(this.db.ismobile ? '/tabs/dashboard' :'/dashboard'); 
-            },800)
+              localStorage['site_name'] = site_name;
+              this.db.side_menu_show = true;
+              SecureStoragePlugin.set({ key: 'CustomerPwd', value: this.loginform.value.password });
+              // localStorage['CustomerPwd'] = this.loginform.value.password;
+              data.message.full_name = data.full_name ? data.full_name : '';
+              this.db.store_customer_info(data.message);
+              
+              if(data.message){
+                SecureStoragePlugin.set({ key: 'api_key', value: data.message.api_key });
+                // localStorage['api_key'] = data.message.api_key;
+              }
+              
+              this.submitted = false;
+              this.loginform.reset();   
+              setTimeout(()=>{
+                this.buttonLoader = false;
+                this.router.navigateByUrl(this.db.ismobile ? '/tabs/dashboard' :'/dashboard'); 
+              },800)
+          }
+          else{
+            this.shake = true;
+            this.buttonLoader = false;
+            setTimeout( () => { this.shake = false },400);
+            this.alert_message = 'Employee ID not found';
+          }
           }else{
             this.shake = true;
             this.buttonLoader = false;
             setTimeout( () => { this.shake = false },400);
             if(data.message && data.message.status != 'Success'){
-              this.alert_message = data.message.message;
+              if(data._server_messages){
+                let d = JSON.parse(data._server_messages)
+                let f = JSON.parse(d[0])
+                this.alert_message = f.message
+              }else{
+                this.alert_message = data.message.message
+              }
             }
           }
       },(error:any) => {
