@@ -2334,6 +2334,11 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 
+  get_employee_continuous_leaves(data: any): Observable<any> {
+    let endpoint = this.go1_apps_apis_hrmls  +  'get_employee_continuous_leaves';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
   leave_remaining_balance(data: any): Observable<any> {
     let endpoint = this.go1_apps_apis_hrmls  +'leave_remaining_balance';
     // let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.leave_remaining_balance';

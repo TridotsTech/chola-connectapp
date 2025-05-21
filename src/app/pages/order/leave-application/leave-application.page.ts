@@ -33,6 +33,10 @@ export class LeaveApplicationPage implements OnInit {
   total_allocation = 0;
   is_miscarriage_leave = 0;
   image:any;
+  mandatory_days:any;
+  mandatory_condition:any;
+  is_mandatory:any;
+  is_image_mandatory:any;
   constructor(public loadingCtrl:LoadingController,public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
       // employee_id: new FormControl('', [Validators.required]),
@@ -397,11 +401,10 @@ export class LeaveApplicationPage implements OnInit {
     this.is_paternity = val.data.is_paternity ? val.data.is_paternity : 0;
     this.total_allocation = val.data.total_allocation ? val.data.total_allocation : 0;
     this.is_miscarriage_leave = val.data.is_miscarriage_leave ? val.data.is_miscarriage_leave : 0;
-    let is_doc_mandatory = val.data.is_doc_mandatory ? val.data.is_doc_mandatory : 0;
-    if(is_doc_mandatory){
-      let condition = val.data.doc_mandatory_condition ? val.data.doc_mandatory_condition : 0;
-      // doc_mandatory_days
-      // this.db.sendErrorMessage('Please select the image')
+    this.is_mandatory = val.data.is_doc_mandatory ? val.data.is_doc_mandatory : 0;
+    if(this.is_mandatory){
+      this.mandatory_condition = val.data.doc_mandatory_condition ? val.data.doc_mandatory_condition : 0;
+      this.mandatory_days = val.data.doc_mandatory_days ? val.data.doc_mandatory_days : 0;
     }
   }
   }
@@ -576,8 +579,9 @@ export class LeaveApplicationPage implements OnInit {
       if(this.fromDate && this.toDate){
         this.calculateLeavePreview(this.fromDate,this.toDate,data.leave_type)
       }
+      
       // console.log(this.fromDate)
-      // console.log(this.toDate)
+      // console.log(data)
       if(this.fromDate >= this.toDate)
         this.fromDate == this.toDate ? '': this.db.sendErrorMessage('Please select the todate greater than from date')
     }
@@ -644,6 +648,20 @@ export class LeaveApplicationPage implements OnInit {
           this.leave_preview = [];
           this.leave_form.get('total_leave_days').setValue(res.message.total_leave_days)
         }
+        if(this.fromDate && this.toDate && this.is_mandatory){
+          if(this.mandatory_condition == ">"){
+            res.message.total_leave_days > this.mandatory_days ? this.is_image_mandatory = true : this.continuous_leaves(this.fromDate,type);
+          }
+          else if(this.mandatory_condition == ">="){
+            res.message.total_leave_days >= this.mandatory_days ? this.is_image_mandatory = true : this.continuous_leaves(this.fromDate,type);
+          }
+          else if(this.mandatory_condition == "="){
+            res.message.total_leave_days == this.mandatory_days ? this.is_image_mandatory = true : this.continuous_leaves(this.fromDate,type);
+          }
+          else
+            this.continuous_leaves(this.fromDate,type)
+          
+        }
       })
 
       this.db.leaves_for_overlapping_team_members({ "employee": localStorage['employee_id'], "from_date": from_date, "to_date": to_date,}).subscribe(res => {
@@ -653,6 +671,25 @@ export class LeaveApplicationPage implements OnInit {
 
       })
 
+      
+
   }
+
+  continuous_leaves(from_date,type){
+    let data = {
+      "employee_id": localStorage['employee_id'],
+      "specific_date": from_date,
+      leave_type:type
+    }
+    this.db.get_employee_continuous_leaves(data).subscribe(res => {
+      if(res && res.message && res.message.document_required && res.message.leave_dates && res.message.leave_dates.length != 0){
+        this.is_image_mandatory = true;
+      }else{
+        this.is_image_mandatory = false;
+      }
+    })
+
+
+}
 
 }

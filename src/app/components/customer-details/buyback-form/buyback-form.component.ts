@@ -17,6 +17,7 @@ export class BuybackFormComponent  implements OnInit {
   @Input() title; 
   each:any={}
   current_date:any;
+  submitted = false;
   constructor(public modalCtrl:ModalController,public db: DbService,private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -29,8 +30,8 @@ export class BuybackFormComponent  implements OnInit {
     this.buyback_form = this.formBuilder.group({
       employee_code: new FormControl(localStorage['employee_id']),
       employee_name: new FormControl(localStorage['employee_name']),
-      asset_type: new FormControl(''),
-      asset: new FormControl(''),
+      asset_type: new FormControl('',Validators.required),
+      asset: new FormControl('',Validators.required),
       vehicle_registration_no: new FormControl(''),
       baz_ticket_no: new FormControl(''),
       date_of_purchase: new FormControl(''),
@@ -182,40 +183,44 @@ export class BuybackFormComponent  implements OnInit {
   }
 
   submit(){
-    this.buyback_form.value.amount_payable_to_company =  this.convertCurrencyToNumber(this.buyback_form.value.amount_payable_to_company)
-    this.buyback_form.value.buyback_amount =  this.convertCurrencyToNumber(this.buyback_form.value.buyback_amount)
-    this.buyback_form.value.ex_showroom_cost =  this.convertCurrencyToNumber(this.buyback_form.value.ex_showroom_cost)
-    this.buyback_form.value.gst_amount =  this.convertCurrencyToNumber(this.buyback_form.value.gst_amount)
-    this.buyback_form.value.road_tax_and_registration_charges =  this.convertCurrencyToNumber(this.buyback_form.value.road_tax_and_registration_charges)
-    this.buyback_form.value.total_capitalized_value =  this.convertCurrencyToNumber(this.buyback_form.value.total_capitalized_value)
-    this.buyback_form.value.tax_on_perk_amount =  this.convertCurrencyToNumber(this.buyback_form.value.tax_on_perk_amount)
-    this.buyback_form.value.perk_amount =  this.convertCurrencyToNumber(this.buyback_form.value.perk_amount)
-    let data:any={};
-    data = this.buyback_form.value
-    data.doctype = 'Asset Buyback'
-    this.db.inset_docs({ data: data }).subscribe(res => {
-      if (res && res.message && res.message.status == 'Success') {  
-        if(res.message.data && res.message.data.name)
-          this.db.sendSuccessMessage("Buyback created successfully!")
-          setTimeout(() => {
-            this.modalCtrl.dismiss(res)
-          }, 500);
-      }else{
-        if(res._server_messages){
-          let d = JSON.parse(res._server_messages)
+    this.submitted = true;
+
+    if(this.buyback_form.status == 'VALID'){
+      this.buyback_form.value.amount_payable_to_company =  this.convertCurrencyToNumber(this.buyback_form.value.amount_payable_to_company)
+      this.buyback_form.value.buyback_amount =  this.convertCurrencyToNumber(this.buyback_form.value.buyback_amount)
+      this.buyback_form.value.ex_showroom_cost =  this.convertCurrencyToNumber(this.buyback_form.value.ex_showroom_cost)
+      this.buyback_form.value.gst_amount =  this.convertCurrencyToNumber(this.buyback_form.value.gst_amount)
+      this.buyback_form.value.road_tax_and_registration_charges =  this.convertCurrencyToNumber(this.buyback_form.value.road_tax_and_registration_charges)
+      this.buyback_form.value.total_capitalized_value =  this.convertCurrencyToNumber(this.buyback_form.value.total_capitalized_value)
+      this.buyback_form.value.tax_on_perk_amount =  this.convertCurrencyToNumber(this.buyback_form.value.tax_on_perk_amount)
+      this.buyback_form.value.perk_amount =  this.convertCurrencyToNumber(this.buyback_form.value.perk_amount)
+      let data:any={};
+      data = this.buyback_form.value
+      data.doctype = 'Asset Buyback'
+      this.db.inset_docs({ data: data }).subscribe(res => {
+        if (res && res.message && res.message.status == 'Success') {  
+          if(res.message.data && res.message.data.name)
+            this.db.sendSuccessMessage("Buyback created successfully!")
+            setTimeout(() => {
+              this.modalCtrl.dismiss(res)
+            }, 500);
+        }else{
+          if(res._server_messages){
+            let d = JSON.parse(res._server_messages)
+            let f = JSON.parse(d[0])
+            this.db.sendErrorMessage(f.message)
+          }else{
+            this.db.sendErrorMessage(res.message.message)
+          }
+        }
+      }, error => {
+        if(error.error){
+          let d = JSON.parse(error.error._server_messages)
           let f = JSON.parse(d[0])
           this.db.sendErrorMessage(f.message)
-        }else{
-          this.db.sendErrorMessage(res.message.message)
         }
-      }
-    }, error => {
-      if(error.error){
-        let d = JSON.parse(error.error._server_messages)
-        let f = JSON.parse(d[0])
-        this.db.sendErrorMessage(f.message)
-      }
-    })
+      })
+    }
   }
 
 }

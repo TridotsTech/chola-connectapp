@@ -4,15 +4,16 @@
   <div class="p-10 scroll_h">
     <form [formGroup]="buyback_form">
       <div class="pb-10">
-        <p class="title">Asset Type</p>
+        <p class="title">Asset Type <span class="required"> *</span></p>
         <div class="custom-input">
           <ion-select interface="popover" placeholder="Asset Type" formControlName="asset_type" name="asset_type" (ionChange)="onassettypeChange($event)">
             <ion-select-option *ngFor="let assets of assetsType" [value]="assets.name">{{assets.name}}</ion-select-option>
           </ion-select>
         </div>
+        <p class="error-msg-alert" *ngIf="submitted && buyback_form.get('asset_type')?.invalid && buyback_form.get('asset_type')?.errors?.['required']">Please Select Asset Type</p>
       </div>
       <div class="pb-10">
-        <p class="title">Asset</p>
+        <p class="title">Asset <span class="required">*</span></p>
         <div class="custom-input">
           <ion-select interface="popover" placeholder="Asset" formControlName="asset" name="asset" (ionChange)="onassetChange($event,'')">
             <ion-select-option *ngFor="let ass of assets_list" [value]="ass.name">{{ass.name}}</ion-select-option>
@@ -21,6 +22,7 @@
             placeholder="Asset" (click)="open_dropdown1()" name="asset" formControlName="asset"
             class="form-input"></ion-input> -->
         </div>
+        <p class="error-msg-alert" *ngIf="submitted && buyback_form.get('asset')?.invalid && buyback_form.get('asset')?.errors?.['required']">Please Select Asset</p>
       </div>
 
       <div *ngIf="buyback_form.value.asset_type == 'Vehicle' && buyback_form.value.vehicle_registration_no" class="pb-10">

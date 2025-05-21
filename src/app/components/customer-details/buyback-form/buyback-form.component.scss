@@ -78,3 +78,15 @@
     height: calc(100vh - 100px);
     overflow: auto;
 }
+
+.required{
+    color: red;
+}
+
+.error-msg-alert {
+        color: red;
+        font-size: 11px;
+        padding: 0;
+        margin-top: 5px;
+        margin-bottom: 0;
+      }
