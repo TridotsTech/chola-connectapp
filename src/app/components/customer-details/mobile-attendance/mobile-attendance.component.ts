@@ -64,6 +64,8 @@ export class MobileAttendanceComponent implements OnInit {
   getCircleColor(data){
     if(data == 'Total Working Days'){
       return '#6A12D71A'
+    }else if(data == 'Total Leave Days'){
+      return '#a2cdff7a'
     }else
       return '#e9f7fb'
   }
@@ -136,7 +138,9 @@ export class MobileAttendanceComponent implements OnInit {
     event.detail ={}
     this.ngZone.run(() => {
       event.detail.value = formattedDate
-      this.view == 'calendar' ? this.getCalendarDate.emit(event): '';
+      this.getCalendarDate.emit(event);
+      // this.view == 'calendar' ? this.getCalendarDate.emit(event): '';
+      this.view == 'list' ? this.getDateFromCalendars.emit(event): '';
       // this.highlightedDates = this.highlightedDates; // Ensure view updates on change
     });
   }
@@ -146,10 +150,10 @@ export class MobileAttendanceComponent implements OnInit {
       icon: '/assets/attendance-ess/calendar-tick.svg',
     },
     {
-      icon: '/assets/attendance-ess/check-in.svg',
+      icon: '/assets/attendance-ess/leave.svg',
     },
     {
-      icon: '/assets/attendance-ess/check-out.svg',
+      icon: '/assets/attendance-ess/check-in.svg',
     },
   ]
 

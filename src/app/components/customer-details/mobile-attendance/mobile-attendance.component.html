@@ -41,7 +41,7 @@
 
       <div class="calendar_att1">
         <app-month-calendar [highlightedDates]="highlightedDates"
-          (onChange)="getCalendarDate.emit($event)"></app-month-calendar>
+          (onChange)="getCalendarDate.emit($event)" (onChange)="getDateFromCalendars.emit($event)"></app-month-calendar>
       </div>
 
     </div>
@@ -84,7 +84,7 @@
     </div>
 
     <app-no-record-found [Lead_detail]="db.sales_manager_role ? true : false"
-      *ngIf="list_data && list_data.data && list_data.data.length == 0" [column]="true"
+      *ngIf="list_data && list_data.data && list_data.data.length == 0 && view == 'list'" [column]="true"
       [height]="db.ismobile ? 'calc(100vh - 300px)' : 'calc(100vh - 600px)'" [heading]="'No record found'"
       [image]="db.getNotFoundImage('Attendance')"></app-no-record-found>
   </div>

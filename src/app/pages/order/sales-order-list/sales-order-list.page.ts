@@ -488,7 +488,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   changeBugSheetFilter(eve) {
     let data: any
     data = ''
-    console.log(eve)
+    // console.log(eve)
     data = {
       project: eve.name
     }
@@ -502,7 +502,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   receiveBugscreenFilter(eve) {
     let data: any
     data = ''
-    console.log(eve)
+    // console.log(eve)
     if (eve.filterType == 'Module') {
       data = {
         module: eve.module
@@ -674,7 +674,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   fab_() {
     let val;
     val = document.getElementById('fab');
-    console.log(val)
+    // console.log(val)
     val.click();
     this.db.hasClass = false;
     this.open_notification = false;
@@ -1385,7 +1385,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
 
   highlightedDates: any = []
   generateHighlightedDates(data,holidays,missed_dates) {
-    console.log(data)
+    // console.log(data)
     const presentDates: any = [];
     const absentDates: any = [];
 
@@ -1435,7 +1435,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     const dynamicBlueDates = holidayDates;
     const dynamicSantalDates = missedDates;
 
-    console.log(dynamicRedDates)
+    // console.log(dynamicRedDates)
     this.highlightedDates = [
       ...dynamicGreenDates.map(date => ({
         date:date.date,
@@ -1492,10 +1492,18 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
   }
 
   getDateFromCalendars(eve) {
-
-    // this.no_dash = false;
+    if(eve.detail && eve.detail.value){
+      const parts = eve.detail.value.split('-');
+      this.db.selectedMonth = parts[1];
+      this.db.selectedYear = parts[0];
+    }else{
+      // this.no_dash = false;
+      const parts = eve.split('-');
+      this.db.selectedMonth = parts[1];
+      this.db.selectedYear = parts[0];
+      this.getDateFromCalendar(eve)
+    }
     this.get_attendance_dashboard_counts()
-    this.getDateFromCalendar(eve)
   }
 
   get_attendance_dashboard_counts() {
@@ -2446,7 +2454,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     });
     await modal.present();
     const val = await modal.onWillDismiss();
-    console.log(val)
+    // console.log(val)
     if(val && val.data)
       data.status = val.data.status
   }
@@ -2812,7 +2820,7 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
       cssStyle = 'childTablecss'
     }
 
-    console.log(this.page_route, "this.page_route")
+    // console.log(this.page_route, "this.page_route")
     const modal = await this.modalCtrl.create({
       component: WebsiteFormsComponent,
       cssClass: data.name == 'Lead' || data.name == 'Opportunity' || data.name == 'Quotation' || data.name == 'Customer' ? 'Crm_site_form' : this.doc_type == 'HD Ticket' ? 'hd_ticket_form' : cssStyle,

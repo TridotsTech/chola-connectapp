@@ -273,7 +273,7 @@ export class LeaveApplicationPage implements OnInit {
           },
         ],
       });
-      if(this.is_maternity || this.is_paternity || this.is_special_leave || this.is_miscarriage_leave){
+      if(this.is_maternity || this.is_paternity || this.is_special_leave || this.is_miscarriage_leave || this.is_image_mandatory){
         this.file_url ? await alert.present() : this.db.sendErrorMessage('Please select the image');  
       }
       else    
@@ -406,6 +406,10 @@ export class LeaveApplicationPage implements OnInit {
       this.mandatory_condition = val.data.doc_mandatory_condition ? val.data.doc_mandatory_condition : 0;
       this.mandatory_days = val.data.doc_mandatory_days ? val.data.doc_mandatory_days : 0;
     }
+    else{
+      this.is_image_mandatory = false;
+    }
+    this.file_url = '';
   }
   }
 
@@ -516,7 +520,7 @@ export class LeaveApplicationPage implements OnInit {
       "to_date": data.to_date,
       leave_preview:datas
     }
-    console.log(res_data)
+    // console.log(res_data)
     // if(datas.length == data.leave_preview.length){
     this.db.leave_approve_reject(res_data).subscribe(res => {
         if(res.status == 'Success'){
