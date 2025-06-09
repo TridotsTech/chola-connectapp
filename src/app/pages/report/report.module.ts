@@ -8,7 +8,7 @@ import { ReportPageRoutingModule } from './report-routing.module';
 
 import { ReportPage } from './report.page';
 import { ComponentsModule } from 'src/app/components/ComponentsModule';
-import { RevoGridModule } from '@revolist/angular-datagrid';
+// import { RevoGridModule } from '@revolist/angular-datagrid';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { RevoGridModule } from '@revolist/angular-datagrid';
     IonicModule,
     ReportPageRoutingModule,
     ComponentsModule,
-    RevoGridModule
+    // RevoGridModule
   ],
   declarations: [ReportPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],

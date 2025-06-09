@@ -4,21 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ReportDetailPageRoutingModule } from './report-detail-routing.module';
+import { CalendarPageRoutingModule } from './calendar-routing.module';
 
-import { ReportDetailPage } from './report-detail.page';
+import { CalendarPage } from './calendar.page';
 import { ComponentsModule } from 'src/app/components/ComponentsModule';
-// import { RevoGridModule } from '@revolist/angular-datagrid';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReportDetailPageRoutingModule,
-    // RevoGridModule,
+    CalendarPageRoutingModule,
     ComponentsModule
   ],
-  declarations: [ReportDetailPage]
+  declarations: [CalendarPage]
 })
-export class ReportDetailPageModule {}
+export class CalendarPageModule {}

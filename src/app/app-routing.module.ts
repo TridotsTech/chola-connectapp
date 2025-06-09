@@ -347,6 +347,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/car-purchase/car-purchase.module').then( m => m.CarPurchasePageModule)
   },
   {
+    path: 'calendar',
+    loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule),
+    canActivate:[AuthGuard]
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },

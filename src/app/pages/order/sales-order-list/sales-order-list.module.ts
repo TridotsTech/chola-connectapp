@@ -10,7 +10,7 @@ import { SalesOrderListPage } from './sales-order-list.page';
 import { ComponentsModule } from 'src/app/components/ComponentsModule';
 // import { AttendanceListPageModule } from '../../attendance/attendance-list/attendance-list.module';
 import { AttendanceListPage } from '../../attendance/attendance-list/attendance-list.page';
-import { RevoGridModule } from '@revolist/angular-datagrid';
+// import { RevoGridModule } from '@revolist/angular-datagrid'; 
 
 @NgModule({
   imports: [
@@ -19,7 +19,7 @@ import { RevoGridModule } from '@revolist/angular-datagrid';
     IonicModule,
     SalesOrderListPageRoutingModule,
     ComponentsModule,
-    RevoGridModule
+    // RevoGridModule
     // IonicPageModule.forChild(AttendanceListPage),
     // AttendanceListPageModule
   ],

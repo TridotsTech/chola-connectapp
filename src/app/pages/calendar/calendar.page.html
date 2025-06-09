@@ -1,0 +1,231 @@
+<app-header title="Calendar" [model]="false" [showYear]="false" [showMonth]="viewType === 'calendar'"></app-header>
+
+<app-sidemenu-header *ngIf="!db.ismobile" heading="Calendar"></app-sidemenu-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Mobile Skeleton -->
+  <div *ngIf="skeleton && (!list_data || (list_data.data && list_data.data.length == 0)) && db.ismobile">
+    <!-- Image Section  -->
+    <app-skeleton-loader type="img_sec"></app-skeleton-loader>
+
+    <!-- Common Dashboard -->
+    <div class="Common_dashboardSkeleton">
+      <div class="small_box" *ngFor="let item of [0,1];index as i">
+        <app-skeleton-loader type="dashboard"></app-skeleton-loader>
+      </div>
+    </div>
+
+    <app-skeleton-loader type="search"></app-skeleton-loader>
+    <app-skeleton-loader type="holiday_list" [list_len]="[0,1,2,3,4,5]" [list_len_count]="6"></app-skeleton-loader>
+  </div>
+
+  <!-- Main Calendar Content -->
+  <div class="calendar-container" *ngIf="!skeleton && list_data">
+    
+    <!-- Mobile View -->
+    <div *ngIf="db.ismobile" class="mobile-calendar">
+      
+      <!-- View Toggle Tabs -->
+      <div class="view-toggle-tabs">
+        <div class="tab-item" 
+             [class.active]="viewType === 'calendar'" 
+             (click)="toggleView('calendar')">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Calendar</span>
+        </div>
+        <div class="tab-item" 
+             [class.active]="viewType === 'list'" 
+             (click)="toggleView('list')">
+          <ion-icon name="list-outline"></ion-icon>
+          <span>List</span>
+        </div>
+      </div>
+
+      <!-- Holiday Filter Tabs -->
+      <div class="holiday-filter-tabs">
+        <div *ngFor="let item of options; let i = index" 
+             (click)="menu_name(item)" 
+             class="filter-tab" 
+             [class.active]="holiday_type === item.name">
+          <h5 class="m-0">{{item.name}}</h5>
+        </div>
+      </div>
+
+      <!-- Dashboard Cards -->
+      <div class="holiday-dashboard" *ngIf="list_data.cards && list_data.cards.length > 0">
+        <div *ngFor="let item of list_data.cards" class="dashboard-card">
+          <div class="card-header">
+            <ion-icon name="calendar-outline" class="card-icon"></ion-icon>
+            <p class="card-count">{{item.count}}</p>
+          </div>
+          <p class="card-label">{{item.label}}</p>
+        </div>
+      </div>
+
+      <!-- Calendar View -->
+      <div *ngIf="viewType === 'calendar'" class="calendar-view">
+        <h5 class="calendar-title">Calendar View</h5>
+        <app-month-calendar 
+          [highlightedDates]="highlightedDates" 
+          (onChange)="changeMonthCal($event)">
+        </app-month-calendar>
+      </div>
+
+      <!-- List View -->
+      <div *ngIf="viewType === 'list'" class="list-view">
+        <app-common-search 
+          [noFilter]="true" 
+          placeholder="Search holidays" 
+          (call_clear_txt)="clear_txt()" 
+          (search_txt_value)="searchTxtValue($event)">
+        </app-common-search>
+        
+        <div class="list-header">
+          <p class="list-title">{{holiday_type}} - {{list_data.data?.length || 0}} days</p>
+        </div>
+
+        <div class="holiday-list">
+          <div *ngFor="let item of list_data.data; let i = index" 
+               class="holiday-item">
+            <div class="date-section">
+              <h5 class="date-number">{{item.date | date: "d"}}</h5>
+              <p class="date-month">{{item.date | date: "MMM"}}</p>
+            </div>
+            <div class="details-section">
+              <h6 class="holiday-name" [innerHTML]="item.description"></h6>
+              <div class="holiday-meta">
+                <p class="holiday-date">{{checkDateFormat(item.date, 'date')}}</p>
+                <div class="separator">•</div>
+                <p class="holiday-day">{{checkDateFormat(item.date, '')}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop View -->
+    <div *ngIf="!db.ismobile" class="desktop-calendar">
+      
+      <!-- Header with View Toggle -->
+      <div class="desktop-header">
+        <div class="header-left">
+          <h1 class="page-title">Calendar & Holidays</h1>
+        </div>
+        <div class="header-right">
+          <div class="view-toggle">
+            <button class="toggle-btn" 
+                    [class.active]="viewType === 'calendar'" 
+                    (click)="toggleView('calendar')">
+              <ion-icon name="calendar-outline"></ion-icon>
+              Calendar
+            </button>
+            <button class="toggle-btn" 
+                    [class.active]="viewType === 'list'" 
+                    (click)="toggleView('list')">
+              <ion-icon name="list-outline"></ion-icon>
+              List
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar View (Desktop) -->
+      <div *ngIf="viewType === 'calendar'" class="desktop-calendar-view">
+        <div class="calendar-section">
+          <app-month-calendar 
+            [highlightedDates]="highlightedDates" 
+            (onChange)="changeMonthCal($event)">
+          </app-month-calendar>
+        </div>
+        
+        <div class="sidebar-info">
+          <!-- Dashboard Cards -->
+          <div class="info-cards">
+            <div *ngFor="let item of list_data.cards" class="info-card">
+              <div class="card-content">
+                <h6 class="card-title">{{item.label}}</h6>
+                <h4 class="card-number">{{item.count}}</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Holiday List -->
+          <div class="quick-holidays">
+            <h6 class="section-title">Upcoming Holidays</h6>
+            <div class="quick-holiday-list">
+              <div *ngFor="let item of list_data.data.slice(0, 5)" class="quick-holiday-item">
+                <div class="quick-date">
+                  <span class="day">{{item.date | date: "d"}}</span>
+                  <span class="month">{{item.date | date: "MMM"}}</span>
+                </div>
+                <div class="quick-details">
+                  <p class="quick-name">{{item.description}}</p>
+                  <p class="quick-type">{{item.type}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- List View (Desktop) -->
+      <div *ngIf="viewType === 'list'" class="desktop-list-view">
+        
+        <!-- Filters and Search -->
+        <div class="list-controls">
+          <app-tabs-button 
+            [overflow]="true" 
+            [bg_custom]="false" 
+            [border_none]="true" 
+            (menu_name)="menu_name($event)"
+            [tabs_array]="options">
+          </app-tabs-button>
+          
+          <app-common-search 
+            [noFilter]="true" 
+            placeholder="Search holidays" 
+            (call_clear_txt)="clear_txt()" 
+            (search_txt_value)="searchTxtValue($event)">
+          </app-common-search>
+        </div>
+
+        <!-- Holiday List -->
+        <div class="desktop-holiday-list">
+          <div class="list-header">
+            <h6 class="list-title">{{holiday_type}} - {{list_data.data?.length || 0}} holidays</h6>
+          </div>
+          
+          <div class="holiday-grid">
+            <div *ngFor="let item of list_data.data" class="holiday-card">
+              <div class="holiday-date-section">
+                <h4 class="holiday-day">{{item.date | date: "d"}}</h4>
+                <p class="holiday-month">{{item.date | date: "MMM"}}</p>
+                <p class="holiday-year">{{item.date | date: "yyyy"}}</p>
+              </div>
+              <div class="holiday-info-section">
+                <h5 class="holiday-title" [innerHTML]="item.description"></h5>
+                <div class="holiday-details">
+                  <p class="holiday-full-date">{{checkDateFormat(item.date, 'date')}}</p>
+                  <p class="holiday-weekday">{{checkDateFormat(item.date, '')}}</p>
+                </div>
+                <span class="holiday-badge">{{item.type}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data State -->
+    <app-no-record-found 
+      *ngIf="!list_data || (list_data.data && list_data.data.length === 0)"
+      [column]="true" 
+      height="calc(100vh - 384px)" 
+      [heading]="'No holidays found'"
+      [image]="'assets/icon/empty.svg'">
+    </app-no-record-found>
+  </div>
+
+</ion-content>
