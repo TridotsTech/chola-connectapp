@@ -12,12 +12,27 @@ import { AlertController, LoadingController, ModalController } from '@ionic/angu
 
 export class LetterRequestDetailComponent  implements OnInit {
   @Input() letterrequestDetail;
+  workflow_list:any;
   constructor(public modalctrl:ModalController, public alertController:AlertController,public loadingCtrl: LoadingController,private fileOpener: FileOpener,public db: DbService) { }
 
   ngOnInit() {
     this.get_employee_l_r_detail()
+    // this.letterrequestDetail.name ? this.get_workflow_states(this.letterrequestDetail.name):''
     // console.log(this.letterrequestDetail)
   }
+
+  // get_workflow_states(id){
+  //   let data = {
+  //     doctype: 'Employee Letter Request',
+  //     docname: id
+  //   }
+  //   this.db.get_workflow_states(data).subscribe(res => {
+  //     console.log(res)
+  //     if(res && res.message && res.message.length != 0){
+  //       this.workflow_list = res.message;
+  //     }
+  //   })
+  // }
 
   get_employee_l_r_detail() {
     let data = {
@@ -105,8 +120,8 @@ export class LetterRequestDetailComponent  implements OnInit {
 
   async approve(item,type){
     const alert = await this.alertController.create({
-      header: type == 'Approved' ?'Approval':'Reject',
-      message: `Are you sure do you want to ${type == 'Approved' ?'Approval':'Reject'} for letter request..?`,
+      header: type == 'Approved' || type == 'Pending' ?'Approval':'Reject',
+      message: `Are you sure do you want to ${type == 'Approved' || type == 'Pending' ?'Approval':'Reject'} for letter request..?`,
       buttons: [
         {
           text: 'Cancel',

@@ -61,7 +61,6 @@
         "capacitor-native-settings": "^5.0.1",
         "capacitor-razorpay": "git+https://github.com/razorpay/razorpay-capacitor.git",
         "capacitor-secure-storage-plugin": "^0.11.0",
-        "capacitor-ssl-pinning": "^0.0.14",
         "cordova-plugin-app-version": "^0.1.14",
         "cordova-plugin-file-opener2": "^4.0.0",
         "cordova-plugin-geolocation": "^4.1.0",

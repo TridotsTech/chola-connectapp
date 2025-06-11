@@ -3,7 +3,7 @@
     flex-wrap: wrap;
     gap: 10px;
     align-items: unset;
-    height: 340px;
+    height: 340px; // Default height for desktop
     overflow: auto;
     margin: 0 10px 10px 10px;
     border-radius: 10px;
@@ -82,3 +82,12 @@
 .height_reduce {
     height: 305px !important;
 }
+
+.detailView {
+    // ...existing styles...
+
+    @media (max-width: 768px) {
+      height: calc(calc(95vh - 340px)); // Adjust 120px as needed for your header/footer
+      max-height: 100vh;
+    }
+  }

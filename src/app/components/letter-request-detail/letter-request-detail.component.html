@@ -10,7 +10,7 @@
     <ion-icon *ngIf="letterrequestDetail && letterrequestDetail.workflow_state == 'Approved'" class="fnt-18" (click)="downloadAndOpenPDF(letterrequestDetail)" src="assets/Employee-Home/download.svg"></ion-icon>
   </div>
 
-  <div class="d__flex detailView p-10" *ngIf="letterrequestDetail" [class.height_reduce]="db.check_role('L1 Manager',letterrequestDetail.employee_id) && letterrequestDetail.workflow_state == 'Pending'">
+  <div class="d__flex detailView p-10" *ngIf="letterrequestDetail" [class.height_reduce]="(db.check_role('Regional HR',letterrequestDetail.employee_id) && letterrequestDetail.workflow_state == 'Pending') ||  letterrequestDetail.workflow_state == 'Draft'">
       <h4 class="m-0 mb-7">Employee Name</h4>
       <h4 class="m-0 mb-7 text-transform-none">{{letterrequestDetail.employee_name ? letterrequestDetail.employee_name : '-'}}</h4>
       <h4 class="m-0 mb-7">Letter Type</h4>
@@ -43,12 +43,12 @@
       
   </div>
 
-  <div *ngIf="db.check_role('L1 Manager',letterrequestDetail.employee_id) && letterrequestDetail.workflow_state == 'Pending'" class="save_">
+  <div *ngIf="db.check_role('Regional HR',letterrequestDetail.employee_id) && letterrequestDetail.workflow_state == 'Pending'" class="save_">
     <ion-button (click)="approve(letterrequestDetail,'Rejected')" class="clear_btn" >Reject</ion-button>
     <ion-button (click)="approve(letterrequestDetail,'Approved')" class="save_btn">Approve</ion-button>
   </div>
-  <!-- <div *ngIf="letterrequestDetail.workflow_state == 'Draft' && letterrequestDetail.employee_id == ''" class="save_">
-    <ion-button (click)="approve(letterrequestDetail,'S')" class="save_btn">Approve</ion-button>
-  </div> -->
+  <div *ngIf="letterrequestDetail.workflow_state == 'Draft'" class="save_">
+    <ion-button (click)="approve(letterrequestDetail,'Pending')" class="save_btn">Submit</ion-button>
+  </div>
   
 </div>

@@ -9,7 +9,7 @@ import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 import { App } from '@capacitor/app';
 import { AndroidBiometryStrength, BiometricAuth } from '@aparajita/capacitor-biometric-auth';
 import { Network } from '@capacitor/network';
-import { SSLCertificateChecker } from 'capacitor-ssl-pinning';
+// import { SSLCertificateChecker } from 'capacitor-ssl-pinning';
 import { Device } from '@capacitor/device';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -179,7 +179,6 @@ export class AppComponent implements OnInit {
 
     this.platform.ready().then(() => {
       this.lockOrientation();
-      // this.configureSSLPinning();
     });
 
   }
@@ -202,18 +201,18 @@ export class AppComponent implements OnInit {
   }
 
 
-  async configureSSLPinning() {
-    try {
-      const isCertValid = await SSLCertificateChecker.checkCertificate({ url: this.db.baseUrl,fingerprint: '2D:ED:DF:36:AC:5F:4F:E7:E0:CF:61:72:9D:C1:BE:A6:CA:BD:FF:81:57:65:87:3A:51:A5:FF:58:39:3A:17:6D',});
-      if (isCertValid) {
-        console.log('SSL Pinning successful.');
-      } else {
-        console.error('SSL Pinning failed: Certificate mismatch');
-      }
-    } catch (error) {
-      console.error('Error configuring SSL Pinning:', error);
-    }
-  }
+  // async configureSSLPinning() {
+  //   try {
+  //     const isCertValid = await SSLCertificateChecker.checkCertificate({ url: this.db.baseUrl,fingerprint: '2D:ED:DF:36:AC:5F:4F:E7:E0:CF:61:72:9D:C1:BE:A6:CA:BD:FF:81:57:65:87:3A:51:A5:FF:58:39:3A:17:6D',});
+  //     if (isCertValid) {
+  //       console.log('SSL Pinning successful.');
+  //     } else {
+  //       console.error('SSL Pinning failed: Certificate mismatch');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error configuring SSL Pinning:', error);
+  //   }
+  // }
 
   async checkDeviceStatus() {
     try {

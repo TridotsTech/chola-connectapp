@@ -1,25 +1,43 @@
 <app-header [title]="title" [showYear]="false" [model]="true"></app-header>
-<ion-content>
-    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-        <ion-item>
-            <ion-label>Employee</ion-label>
-            <ion-input formControlName="employee" type="text"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label>Company</ion-label>
-            <ion-input formControlName="company" type="text"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label>Amount</ion-label>
-            <ion-input formControlName="amount" type="text"></ion-input>            
-        </ion-item>
-        <ion-item>
-            <ion-label>Additional</ion-label>
-            <ion-input formControlName="additional" type="text"></ion-input>
-        </ion-item> 
-        <ion-button expand="full" type="submit" [disabled]="!employeeForm.valid">Submit</ion-button>                
-    </form>
+<ion-content [fullscreen]="true">
+    <div class="body">
+        <div class="section_3">
+            <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+                <div class="pb-10">
+                    <label for="employee" class="pb-10">Employee <span class="impt-star">*</span></label>
+                    <div class="custom-input">
+                        <ion-input formControlName="employee" type="text" placeholder="Enter employee name" name="employee"></ion-input>
+                    </div>
+                    <p class="impt-star pt-5" *ngIf="employeeForm.get('employee')?.invalid && employeeForm.get('employee')?.touched">Employee is required</p>
+                </div>
+
+                <div class="pb-10">
+                    <label for="company" class="pb-10">Company <span class="impt-star">*</span></label>
+                    <div class="custom-input">
+                        <ion-input formControlName="company" type="text" placeholder="Enter company name" name="company"></ion-input>
+                    </div>
+                    <p class="impt-star pt-5" *ngIf="employeeForm.get('company')?.invalid && employeeForm.get('company')?.touched">Company is required</p>
+                </div>
+
+                <div class="pb-10">
+                    <label for="amount" class="pb-10">Amount <span class="impt-star">*</span></label>
+                    <div class="custom-input">
+                        <ion-input formControlName="amount" type="number" placeholder="Enter amount" name="amount"></ion-input>
+                    </div>
+                    <p class="impt-star pt-5" *ngIf="employeeForm.get('amount')?.invalid && employeeForm.get('amount')?.touched">Amount is required</p>
+                </div>
+
+                <div class="pb-10">
+                    <label for="additional" class="pb-10">Additional Information</label>
+                    <div class="custom-input">
+                        <ion-textarea class="text-area" formControlName="additional" placeholder="Enter additional information..." name="additional"></ion-textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="submit-btn">
+            <ion-button (click)="onSubmit()" fill="clear" [disabled]="!employeeForm.valid">Submit</ion-button>
+        </div>
+    </div>
 </ion-content>
-<ion-footer>
-  
-</ion-footer>

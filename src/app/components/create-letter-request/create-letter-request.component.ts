@@ -83,8 +83,8 @@ export class CreateLetterRequestComponent  implements OnInit {
       data.country = item.country ? item.country : ''
       data.submit_to = item.submit_to ? item.submit_to : ''
       data.request_date = `${year}-${month}-${day}`;
-      // this.save_only ? data.workflow_state = 'Awaiting Approval' : data.workflow_state = 'Draft'
-      data.workflow_state = 'Awaiting Approval'
+      this.save_only ? data.workflow_state = 'Awaiting Approval' : data.workflow_state = 'Draft'
+      // data.workflow_state = 'Awaiting Approval'
 
       this.db.inset_docs({data: data}).subscribe(res => {
         setTimeout(() => {
@@ -94,7 +94,7 @@ export class CreateLetterRequestComponent  implements OnInit {
           this.db.sendSuccessMessage("Letter Request created successfully!")
           // this.letterRequestDetail = res.message.data;
           // this.db.inset_docs({data: {name:res.message.data.name,workflow_state:'Pending',doctype:'Employee Letter Request'}}).subscribe(r => {
-          //   this.modalCtrl.dismiss(res.message.data);
+            this.modalCtrl.dismiss(res.message.data);
           // })
         }else{
           if(res._server_messages){

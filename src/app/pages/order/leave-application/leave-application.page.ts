@@ -37,6 +37,7 @@ export class LeaveApplicationPage implements OnInit {
   mandatory_condition:any;
   is_mandatory:any;
   is_image_mandatory:any;
+  remaining_balance:any;
   constructor(public loadingCtrl:LoadingController,public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
       // employee_id: new FormControl('', [Validators.required]),
@@ -255,30 +256,73 @@ export class LeaveApplicationPage implements OnInit {
   async sure_submit() {
     this.submitted = true;
     if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
-      const alert = await this.alertController.create({
-        header: 'Approval',
-        message: 'Are you sure do you want to Send for Approval..?',
-        buttons: [
-          {
-            text: 'Cancel',
-            handler: () => {
-              this.alertController.dismiss();
-            },
-          },
-          {
-            text: 'Ok',
-            handler: () => {
-              this.submit();
-            },
-          },
-        ],
-      });
-      if(this.is_maternity || this.is_paternity || this.is_special_leave || this.is_miscarriage_leave || this.is_image_mandatory){
-        this.file_url ? await alert.present() : this.db.sendErrorMessage('Please select the image');  
+      // Check if any item in leave_preview has is_current_date = 1
+      if (this.leave_preview && this.leave_preview.length > 0) {
+        const currentDateItems = this.leave_preview.filter(item => item.is_current_date === 1);
+        
+        if (currentDateItems.length > 0) {
+          // Format the dates
+          const dateStrings = currentDateItems.map(item => {
+            const date = new Date(item.date);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+          });
+          
+          const dateList = dateStrings.join(', ');
+          
+          const currentDateAlert = await this.alertController.create({
+            header: 'Attendance Already Marked',
+            message: `Attendance is already marked as 'Present' for the following date(s): ${dateList}.\n\nAre you sure you want to apply leave for these date(s)?`,
+            buttons: [
+              {
+                text: 'Cancel',
+                handler: () => {
+                  return;
+                },
+              },
+              {
+                text: 'Yes',
+                handler: async () => {
+                  await this.showApprovalAlert();
+                },
+              },
+            ],
+          });
+          await currentDateAlert.present();
+          return;
+        }
       }
-      else    
-        await alert.present();
+      
+      await this.showApprovalAlert();
     }
+  }
+  
+  async showApprovalAlert() {
+    const alert = await this.alertController.create({
+      header: 'Approval',
+      message: 'Are you sure do you want to Send for Approval..?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            this.alertController.dismiss();
+          },
+        },
+        {
+          text: 'Ok',
+          handler: () => {
+            this.submit();
+          },
+        },
+      ],
+    });
+    if(this.is_maternity || this.is_paternity || this.is_special_leave || this.is_miscarriage_leave || this.is_image_mandatory){
+      this.file_url ? await alert.present() : this.db.sendErrorMessage('Please select the image');  
+    }
+    else    
+      await alert.present();
   }
 
   async submit() {
@@ -291,9 +335,13 @@ export class LeaveApplicationPage implements OnInit {
         }
 
         if(this.leave_preview && this.leave_preview.length != 0 && (!this.is_paternity && !this.is_special_leave)){
-          datas['leave_preview'] = this.leave_preview;
+          // datas['leave_preview'] = this.leave_preview;
+          datas['leave_preview'] = this.leave_preview.map(item => ({
+                ...item,
+                reason: this.leave_form.get('reason').value
+              }));
         }
-
+        
         datas = {...datas, ...this.leave_form.value}
 
         if(this.leave_detail && this.leave_detail.name){
@@ -308,7 +356,7 @@ export class LeaveApplicationPage implements OnInit {
         this.is_special_leave ? datas['is_allocate_and_apply'] = this.is_special_leave : ''
         this.is_maternity ? datas['is_maternity'] = this.is_maternity : ''
         this.file_url ? datas['attach_file'] = this.file_url : ''
-
+        datas['leave_balance'] = this.remaining_balance;
         datas['docstatus'] = 0;
         this.res_name = undefined
         datas['workflow_state'] = 'Draft';
@@ -396,6 +444,7 @@ export class LeaveApplicationPage implements OnInit {
   console.log(val)
   if(val && val.data){
     this.leave_form.get('leave_type').setValue(val.data.name)
+    this.remaining_balance = val.data.remaining_balance ? val.data.remaining_balance : 0;
     this.is_maternity = val.data.is_maternity ? val.data.is_maternity : 0;
     this.is_special_leave = val.data.is_special_leave ? val.data.is_special_leave : 0;
     this.is_paternity = val.data.is_paternity ? val.data.is_paternity : 0;

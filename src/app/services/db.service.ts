@@ -2631,7 +2631,6 @@ export class DbService {
   }
 
   check_role(role,emp){
-    // console.log(emp)
     let check = this.roles.find(obj => obj.role == role)
     return emp == '' ? check ? true : false : check && emp != localStorage['employee_id'] ? true : false
   }

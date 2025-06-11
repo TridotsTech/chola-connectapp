@@ -2428,6 +2428,8 @@ export class SalesOrderListPage implements OnInit, OnChanges, OnDestroy {
     });
     await modal.present();
     const val = await modal.onWillDismiss();
+    if(val)
+      this.get_tempate_and_datas(this.doc_type)
   }
 
   async openleavewithdraw(data) {
