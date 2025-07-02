@@ -46,6 +46,3 @@ project(':capacitor-razorpay').projectDir = new File('../node_modules/capacitor-
 
 include ':capacitor-secure-storage-plugin'
 project(':capacitor-secure-storage-plugin').projectDir = new File('../node_modules/capacitor-secure-storage-plugin/android')
-
-include ':capacitor-ssl-pinning'
-project(':capacitor-ssl-pinning').projectDir = new File('../node_modules/capacitor-ssl-pinning/android')

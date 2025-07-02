@@ -41,8 +41,8 @@ export class NormalLoginComponent implements OnInit {
     })
 
     // this.sitename_data = 'dev-chola.tridotstech.com'
-    // this.sitename_data = 'uat01-cholahrms.frappe.cloud'
-    this.sitename_data = 'stage-hrms.frappe.cloud'
+    this.sitename_data = 'uat01-cholahrms.frappe.cloud'
+    // this.sitename_data = 'stage-hrms.frappe.cloud'
 
   } 
 

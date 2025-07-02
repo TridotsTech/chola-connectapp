@@ -81,3 +81,49 @@
     padding: 10px;
     background: #fff;
 }
+
+// Table styling from payroll component
+.table {
+    width: 100%;
+    overflow-y: hidden;
+    margin-bottom: 10px;
+}
+
+.table::-webkit-scrollbar {
+    display: none !important;
+}
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr {
+    th {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--gray-color);
+        background: #f1f1f1;
+        width: 50%;
+    }
+
+    td {
+        font-size: 13px;
+        font-weight: 500;
+        width: 50%;
+    }
+
+    td:nth-child(1) {
+        text-transform: none;
+        font-weight: 400;
+        color: var(--gray-color);
+    }
+}
+
+td,
+th {
+    border: 1px solid var(--border-col);
+    text-align: left;
+    padding: 8px;
+}

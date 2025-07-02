@@ -9,7 +9,7 @@
             <div class="d__flex just-s mb-5">
                 <p class="m-0 fnt-14 d__flex gap-10 fnt_w500"><ion-icon class="fnt-20" src="/assets/Employee Transfer/man.svg"></ion-icon> {{item.name}}</p>
                 <div class="d__flex">
-                    <app-status [reverse]="true" [status]="item.status ? item.status : 'Pending'"></app-status>
+                    <app-status [reverse]="true" [status]="item.workflow_state ? item.workflow_state : 'Pending'"></app-status>
                 </div>
             </div>
             <div class="d__flex just-s mb-5">

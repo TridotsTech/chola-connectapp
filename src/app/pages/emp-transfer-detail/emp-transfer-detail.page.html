@@ -11,23 +11,41 @@
           <div class="d__flex just-s">
             <p class="m-0 fnt-15 fnt_w500">{{transter_info.employee_name}}</p>
   
-            <div *ngIf="db.employee_img" class="d__flex">
-              <app-status [reverse]="true" [status]="db.employee_img.status"></app-status>
+            <div class="d__flex">
+              <app-status [reverse]="true" [status]="transter_info.workflow_state"></app-status>
             </div>
           </div>
-          <p *ngIf="db.employee_img" class="m-0 fnt-14 d__flex gap-10"> <ion-icon src="/assets/Employee Transfer/designation.svg"></ion-icon> {{db.employee_img.designation}}</p>
+          <!-- <p *ngIf="db.employee_img" class="m-0 fnt-14 d__flex gap-10"> <ion-icon src="/assets/Employee Transfer/designation.svg"></ion-icon> {{db.employee_img.designation}}</p> -->
         </div>
       </div>
-      <div *ngIf="db.employee_img" class="sec2 d__flex just-s">
+      <!-- <div *ngIf="db.employee_img" class="sec2 d__flex just-s">
         <p class="m-0 fnt-14 fnt_w500"></p>
         <p class="m-0 fnt-14 fnt_w500 d__flex gap-10"> <ion-icon class="fnt-18" src="/assets/Employee Transfer/medal.svg"></ion-icon> {{db.employee_img.grade}}</p>
-      </div>
+      </div> -->
     </div>
 
     <h5 class="m-0 fnt-14 mb-10 gray_clr">TRANSFER DETAIL</h5>
 
     <div class="transfer_detail mb-10">
       <!-- <p class="m-0 fnt-12 mb-10">{{'For Database Migration and cloud Data Monitoring'}}</p> border-t-->
+
+      <div class="mb-10">
+        <div class="d__flex align-center gap-10">
+          <ion-checkbox [checked]="transter_info.is_temporary_transfer" disabled></ion-checkbox>
+          <p class="m-0 fnt-14">Temporary Transfer</p>
+        </div>
+      </div>
+
+      <div class="d__flex just-s mb-10">
+        <div>
+          <p class="m-0 fnt-12 gray_clr">Transfer Type</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.transfer_type || '-'}}</p>
+        </div>
+        <div>
+          <p class="m-0 fnt-12 gray_clr">Initiated By</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.initiated_by || '-'}}</p>
+        </div>
+      </div>
 
       <div class="d__flex just-s mb-10 pt-10 ">
         <div>
@@ -40,9 +58,20 @@
         </div>
       </div>
 
-      <div class="mb-10">
+      <div *ngIf="transter_info.approvalrejection_date" class="mb-10">
         <p class="m-0 fnt-12 gray_clr">Approval/Rejection Date</p>
         <p class="m-0 fnt-14 fnt_w500">{{transter_info.approvalrejection_date | date}}</p>
+      </div>
+
+      <div *ngIf="transter_info.is_temporary_transfer" class="d__flex just-s mb-10">
+        <div>
+          <p class="m-0 fnt-12 gray_clr">Start Date</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.start_date | date}}</p>
+        </div>
+        <div>
+          <p class="m-0 fnt-12 gray_clr">End Date</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.end_date | date}}</p>
+        </div>
       </div>
 
       <h5 class="m-0 fnt-14 mb-10 gray_clr">CURRENT</h5>
@@ -55,10 +84,6 @@
         <div class="mb-10">
           <p class="m-0 fnt-12 gray_clr">Current L1 Manager</p>
           <p class="m-0 fnt-14 fnt_w500">{{transter_info.current_l1_manager_name}}</p>
-        </div>
-        <div *ngIf="transter_info.is_temporary_transfer" class="mb-10">
-          <p class="m-0 fnt-12 gray_clr">Start Date</p>
-          <p class="m-0 fnt-14 fnt_w500">{{transter_info.start_date}}</p>
         </div>
         <div class="mb-10">
           <p class="m-0 fnt-12 gray_clr">Current RHR</p>
@@ -77,15 +102,45 @@
           <p class="m-0 fnt-12 gray_clr">New L1 Manager</p>
           <p class="m-0 fnt-14 fnt_w500">{{transter_info.new_l1_manager}}</p>
         </div>
-        <div *ngIf="transter_info.is_temporary_transfer" class="mb-10">
-          <p class="m-0 fnt-12 gray_clr">End Date</p>
-          <p class="m-0 fnt-14 fnt_w500">{{transter_info.end_date}}</p>
-        </div>
         <div class="mb-10">
           <p class="m-0 fnt-12 gray_clr">Current RHR</p>
           <p class="m-0 fnt-14 fnt_w500">{{transter_info.new_rhr}}</p>
         </div>
       </div>
+      
+      <h5 class="m-0 fnt-14 mb-10 gray_clr">COMPANY</h5>
+
+      <div class="current_detail">
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Company</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.company || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Company Code</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.company_code || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Branch</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.branch || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Branch Code</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.branch_code || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">SBU</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.sbu || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">SBU Code</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.sbu_code || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Functional Designation</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.functional_designation || '-'}}</p>
+        </div>
+      </div>
+
       <h5 class="m-0 fnt-14 mb-10 gray_clr">Organisation Level</h5>
 
       <div class="new_detail">
@@ -115,7 +170,59 @@
           <p class="m-0 fnt-14 fnt_w500">{{transter_info.product}}</p>
         </div>
       </div>
+
+      <h5 class="m-0 fnt-14 mb-10 gray_clr">WORKSITE LEVEL</h5>
+
+      <div class="current_detail">
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Continent</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.continent || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">State</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.state || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Country</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.country || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">State BU</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.state_bu || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Zone</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.zone || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Region</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.region || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Sub Zone</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.sub_zone || '-'}}</p>
+        </div>
+        <div class="mb-10">
+          <p class="m-0 fnt-12 gray_clr">Area</p>
+          <p class="m-0 fnt-14 fnt_w500">{{transter_info.area || '-'}}</p>
+        </div>
+      </div>
       
+      <div *ngIf="enterprise_data && enterprise_data.length > 0" class="mb-10">
+        <h5 class="m-0 fnt-14 mb-10 gray_clr">Old Enterprise Record</h5>
+        <div class="table">
+          <table>
+            <tr>
+              <th>Field</th>
+              <th>Current Value</th>
+            </tr>
+            <tr *ngFor="let item of enterprise_data">
+              <td>{{ item.field }}</td>
+              <td>{{ item.value || '-' }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
 
       <!-- <h5 class="m-0 fnt-14 mb-10 gray_clr">NEW WORK LOCATION DETAILS</h5>
       <div class="location_detail">
