@@ -1,0 +1,76 @@
+<app-header title="Employee Referral" [model]="false"></app-header>
+
+<ion-content [fullscreen]="true" style="--overflow: hidden;">
+  
+  <div *ngIf="!skeleton" class="d__flex search_sec">
+    <div class="text_srch">
+      <app-common-search [placeholder]="'Search by name'" (call_clear_txt)="clear_txt($event)" [noFilter]="true" (search_txt_value)="searchPro($event)"></app-common-search>
+    </div>
+  </div>
+
+  <div class="p-0-10">
+    <div *ngIf="employeeReferralList && employeeReferralList.length != 0" class="referral_list" (scroll)="load_more($event)">
+      <div *ngFor="let item of employeeReferralList" class="boxes_" (click)="openReferralDetail(item)">
+        <div class="sec1">
+          <div class="d__flex just-s mb-10">
+            <p class="m-0 fnt-14 fnt_w600 webkit-text" [style.--line]="1">{{item.full_name || 'N/A'}}</p>
+            <div class="status-badge" [style.background-color]="getStatusColor(item.status)">
+              <p class="m-0 fnt-12 fnt_w500 text-white">{{item.status || 'Pending'}}</p>
+            </div>
+          </div>
+          <div class="d__flex just-s mb-10">
+            <p class="m-0 fnt-13 fnt_w400 webkit-text" [style.--line]="1">{{item.for_designation || 'N/A'}}</p>
+            <ion-icon class="fnt-18 flex-auto" src="/assets/icon/Vector.svg"></ion-icon>
+          </div>
+          <div class="d__flex just-s mb-10">
+            <p class="m-0 fnt-13 fnt_w400 gray_clr webkit-text" [style.--line]="1">{{item.email || 'N/A'}}</p>
+            <p class="m-0 fnt-13 fnt_w400 gray_clr flex-auto">{{item.contact_no || 'N/A'}}</p>
+          </div>
+        </div>
+        <div class="sec2">
+          <div class="mb-10" *ngIf="item.custom_date_of_birth">
+            <p class="m-0 fnt-13 fnt_w400 d__flex gap-5">
+              <ion-icon name="calendar-outline"></ion-icon> 
+              DOB: {{getFormattedDate(item.custom_date_of_birth)}}
+            </p>
+          </div>
+          <div class="d__flex just-s">
+            <p class="m-0 fnt-13 gray_clr fnt_w400 d__flex gap-5" 
+               [class.clickable]="item.resume" 
+               (click)="item.resume && viewResume($event, item)">
+              <ion-icon name="document-text-outline"></ion-icon> 
+              Resume: <span [style.color]="item.resume ? '#007bff' : ''" 
+                           [style.text-decoration]="item.resume ? 'underline' : ''">
+                {{item.resume ? 'Available' : 'Not Available'}}
+              </span>
+            </p>
+            <p class="m-0 fnt-13 gray_clr fnt_w400 d__flex gap-5 flex-auto">
+              <ion-icon name="person-outline"></ion-icon> 
+              ID: {{item.name}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="normalSketon" *ngIf="skeleton">
+      <div class="divF d__flex gap-5 just-s" *ngFor="let val of [1,2,3,4,5,6,7,8,9,10,11,1,1,1,1]">
+        <div class="b-1">
+            <ion-skeleton-text [animated]="true" style="width:90%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width:70%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+  
+        <div class="b-2">
+          <ion-skeleton-text [animated]="true" style="width: 65%;height:18px;margin:0 0 8px 0;border-radius: 5px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:45%;height:16px;border-radius: 5px;"></ion-skeleton-text>
+        </div>
+  
+       </div>
+    </div>
+  
+    <app-no-record-found [height]="'calc(100vh - 90px)'"
+      *ngIf="!skeleton && employeeReferralList && employeeReferralList.length == 0" [column]="true"
+      [heading]="'No employee referrals found'" [image]="'assets/icon/empty.svg'"></app-no-record-found>
+
+  </div>
+</ion-content>

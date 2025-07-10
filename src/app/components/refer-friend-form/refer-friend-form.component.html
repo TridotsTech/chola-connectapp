@@ -110,6 +110,18 @@
       <p class="error" *ngIf="contact_number.errors.required">Contact Number is required</p>
     </div>
 
+    <div class="pb-10">
+      <p class="title">Date of Birth <span class="impt-star"> *</span></p>
+      <div class="custom-input">
+        <ion-input type="date" placeholder="Date of Birth" formControlName="date_of_birth" name="date_of_birth" [max]="maxDate"></ion-input>
+      </div>
+    </div>
+
+    <div *ngIf="submitted && !date_of_birth?.valid">
+      <p class="error" *ngIf="date_of_birth.errors?.required">Date of Birth is required</p>
+      <p class="error" *ngIf="date_of_birth.errors?.underage">Must be at least 18 years old</p>
+    </div>
+
     <div class="input-item image-input">
       <h6 class="gray_clr m-0 fnt-12 fnt_w500">Upload Resume</h6>
       <input #file_upload (change)="changeListener($event)" type="file" class="image-d" name="friend_image" formControlName="friend_image" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx">

@@ -2164,6 +2164,16 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  // tripartite_download(Info): Observable<any> {
+    
+  //   return this.postmethod(this.baseMethod + endpoint, Info);
+  // }
+
+  transfer_download(Info,type): Observable<any> {
+    let endpoint = type == 'tripartite' ? 'go1_elc.go1_elc.doctype.employee_transfers.employee_transfers.download_pdf': 'go1_elc.go1_elc.doctype.employee_transfers.employee_transfers.download_transfer_pdf';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   get_employee_details(Info): Observable<any> {
     let endpoint = 'td_payroll.apis.payroll_api.get_employee_details';
     return this.postmethod(this.baseMethod + endpoint, Info);

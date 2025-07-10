@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 
@@ -15,10 +15,33 @@ submitted = false;
 categoryfile: any;
 categoryimagedata: any;
 multiple_array: any = {};
+maxDate: string = '';
   constructor(public modalCntrl: ModalController,private formBuilder: FormBuilder,public loadingCtrl: LoadingController,public db: DbService) { }
+
+  // Custom validator to check if person is at least 18 years old
+  ageValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null; // Don't validate if empty (required validator will handle this)
+    }
+    
+    const birthDate = new Date(control.value);
+    const today = new Date();
+    const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    
+    if (birthDate > eighteenYearsAgo) {
+      return { underage: true };
+    }
+    
+    return null;
+  }
 
   ngOnInit() {
     console.log(this.jobReferralDetail,'this.jobReferralDetail')
+    
+    // Calculate max date (18 years ago from today)
+    const today = new Date();
+    const maxDateObj = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    this.maxDate = maxDateObj.toISOString().split('T')[0];
 
     this.refer_form = this.formBuilder.group({
       // reference_type: new FormControl('', Validators.required),
@@ -28,6 +51,7 @@ multiple_array: any = {};
       // relationship: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
       contact_number: new FormControl('', Validators.required),
+      date_of_birth: new FormControl('', [Validators.required, this.ageValidator]),
       friend_image: new FormControl(''),
     })
   }
@@ -58,6 +82,10 @@ multiple_array: any = {};
 
   get contact_number(){
     return this.refer_form.get('contact_number')
+  }
+
+  get date_of_birth(){
+    return this.refer_form.get('date_of_birth')
   }
 
   get friend_image(){
@@ -126,7 +154,7 @@ multiple_array: any = {};
             file_name: this.categoryfile,
             content: this.categoryimagedata,
           };
-          this.multiple_array = img_data;
+          // this.multiple_array = img_data;
           this.upload_file(img_data);
         } else if (file_size > 2000000) {
           this.loadingCtrl.dismiss();
@@ -154,6 +182,7 @@ multiple_array: any = {};
     this.db.inset_docs({ data: data }).subscribe((res) => {
       this.loadingCtrl.dismiss();
       if (res && res.message && res.message.status == 'Success') {
+        this.multiple_array = res.message.data
         this.db.sendSuccessMessage('Image Uploaded Successfully')
       } else {
         this.db.alert('Something went wrong try again later');
@@ -172,7 +201,8 @@ multiple_array: any = {};
           last_name: this.refer_form.value.last_name,
           email: this.refer_form.value.email,
           contact_no: this.refer_form.value.contact_number,
-          resume: this.multiple_array.file_name
+          custom_date_of_birth: this.refer_form.value.date_of_birth,
+          resume: this.multiple_array.file_url
         }
       }
       this.db.create_referral_entry(data).subscribe(res => {
@@ -180,7 +210,9 @@ multiple_array: any = {};
         if(res && res.message && res.message.status == 'success'){
           this.modalCntrl.dismiss();
           this.db.sendSuccessMessage('Referral Sent Successfully')
-        }else{
+        }else if(res && res.message && res.message.status == 'failed')
+          this.db.alert(res.message.message)
+        else{
           this.db.alert('Something went wrong try again later')
         }
       },error => {

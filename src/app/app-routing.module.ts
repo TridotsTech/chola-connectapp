@@ -352,9 +352,16 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path: 'employee-referral',
+    loadChildren: () => import('./pages/employee-referral/employee-referral.module').then( m => m.EmployeeReferralPageModule),
+    canActivate:[AuthGuard]
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+  
+
  
 
 

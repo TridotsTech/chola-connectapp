@@ -197,7 +197,19 @@ export class LeavePreviewWithdrawFormComponent implements OnInit {
 
   letter_req_save(){
     let flag = 0;
-    this.editFormValues.name == 'Visa Letter' ? this.editFormValues.country ? flag = 1: this.db.sendErrorMessage('Please enter the Country') : flag = 1;
+    if(this.editFormValues.name == 'Visa Letter'){
+      if(!this.editFormValues.country)
+        this.db.sendErrorMessage('Please enter the Country');
+      else if(!this.editFormValues.from_date)
+        this.db.sendErrorMessage('Please enter the Leave From');
+      else if(!this.editFormValues.to_date)
+        this.db.sendErrorMessage('Please enter the Leave To ');
+      else
+        flag = 1;
+    } else {
+      flag = 1;
+    }
+    
     if(flag == 1){
       if (this.editFormValues.remarks)
         this.modalCntrl.dismiss(this.editFormValues);

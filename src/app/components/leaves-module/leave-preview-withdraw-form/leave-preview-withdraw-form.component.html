@@ -153,11 +153,11 @@
 <div class="p-10 overflow_auto" *ngIf="type == 'letterrequest'">
   <div *ngIf="editFormValues.name == 'Visa Letter'" class="d__flex gap-10">
     <div class="pb-10 f_50">
-      <label class="pb-10">From Date</label>
+      <label class="pb-10">Leave From <span class="red"> *</span></label>
       <app-custom-calendar format="Date" [selectedDate]="editFormValues.from_date" (onChange)="datePickerChange('from_date',$event)"></app-custom-calendar>
     </div>
     <div class="pb-10 f_50">
-      <label for="filter_end_date" class="pb-10">To Date</label>
+      <label for="filter_end_date" class="pb-10">Leave To <span class="red"> *</span></label>
       <app-custom-calendar format="Date" [right]="true" [selectedDate]="editFormValues.to_date " (onChange)="datePickerChange('end_date',$event)"></app-custom-calendar>
     </div>
   </div>

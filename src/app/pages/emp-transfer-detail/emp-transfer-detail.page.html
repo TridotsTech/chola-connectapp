@@ -9,12 +9,12 @@
         </div>
         <div class="w-100">
           <div class="d__flex just-s">
-            <p class="m-0 fnt-15 fnt_w500">{{transter_info.employee_name}}</p>
-  
-            <div class="d__flex">
-              <app-status [reverse]="true" [status]="transter_info.workflow_state"></app-status>
-            </div>
+            <p class="m-0 fnt-15 fnt_w500 w200">{{transter_info.employee_name}}</p>
+            <ion-icon *ngIf="transter_info && transter_info.workflow_state == 'Transfer Completed'" class="fnt-18" (click)="downloadAndOpenPDF(transter_info,'')" src="assets/Employee-Home/download.svg"></ion-icon>
           </div>
+          <div class="d__flex">
+          <app-status [reverse]="true" [status]="transter_info.workflow_state"></app-status>
+        </div>
           <!-- <p *ngIf="db.employee_img" class="m-0 fnt-14 d__flex gap-10"> <ion-icon src="/assets/Employee Transfer/designation.svg"></ion-icon> {{db.employee_img.designation}}</p> -->
         </div>
       </div>
@@ -33,6 +33,12 @@
         <div class="d__flex align-center gap-10">
           <ion-checkbox [checked]="transter_info.is_temporary_transfer" disabled></ion-checkbox>
           <p class="m-0 fnt-14">Temporary Transfer</p>
+        </div>
+      </div>
+      <div class="mb-10">
+        <div class="d__flex align-center gap-10">
+          <ion-checkbox [checked]="transter_info.is_esi_applicable" disabled></ion-checkbox>
+          <p class="m-0 fnt-14">Is ESI Applicable</p>
         </div>
       </div>
 
@@ -238,9 +244,15 @@
     </div> -->
   </div>
 </ion-content>
-<ion-footer *ngIf="transter_info && transter_info.transfer_type == 'Group' && !transter_info.aadhaar_verified" class="f_cls">
+<ion-footer *ngIf="transter_info && transter_info.transfer_type == 'Group'" class="f_cls">
   <div class="buttons_sec">
-    <ion-button fill="clear" class="verfiyOTP fnt_w500" (click)="openOtp()">Send OTP</ion-button>
+    <ion-button *ngIf="!transter_info.aadhaar_verified" fill="clear" class="verfiyOTP fnt_w500" (click)="openOtp()">Send OTP</ion-button>
+    <ion-button fill="clear" class="verfiyOTP fnt_w500" (click)="downloadAndOpenPDF(transter_info,'tripartite')">Tripartite Download</ion-button>
   </div>
 </ion-footer>
+<!-- <ion-footer *ngIf="transter_info && transter_info.transfer_type == 'Group' && transter_info.workflow_state == 'Transfer Completed'" class="f_cls">
+  <div class="buttons_sec">
+    <ion-button fill="clear" class="verfiyOTP fnt_w500" (click)="downloadAndOpenPDF(transter_info,'tripartite')">Tripartite Download</ion-button>
+  </div>
+</ion-footer> -->
 
