@@ -81,7 +81,7 @@ export class NormalLoginComponent implements OnInit {
           if(data.message.status == "Success"){
             if(data.message.employee_id){
               if(data.message.roles){
-                let check = data.message.roles.map(res=> {return res.role == 'HR Manager' || res.role == 'L1 Manager' || res.role == 'L2 Manager'})
+                let check = data.message.roles.map(res=> {return res.role == 'HR Manager' || res.role == 'L1 Manager' || res.role == 'L2 Manager' || res.role == 'Regional HR' || res.role == 'Regional HR Manager'})
                 if(check){
                   data.message.roles = data.message.roles.filter(res=> {return res.role != 'Employee'})
                 }

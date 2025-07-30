@@ -661,7 +661,8 @@ export class DbService {
         this.check_project_manager(res.roles);
         this.enable_call_dash_data = true;
         this.call_dashboard_data.next('Success');
-        localStorage['reportView'] =res.reporting_person
+        localStorage['reportView'] = res.reporting_person
+        localStorage['reportView'] ? this.reportView = true : false;
         this.roles = res.roles;
         // this.check_project_manager(this.permission_details);
         this.checkMobileMenu();
@@ -2164,6 +2165,11 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  get_options_dynamically(Info): Observable<any> {
+    let endpoint = 'go1_elc.go1_elc.doctype.probation_evaluation.probation_evaluation.get_options_dynamically';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   // tripartite_download(Info): Observable<any> {
     
   //   return this.postmethod(this.baseMethod + endpoint, Info);
@@ -2657,7 +2663,7 @@ export class DbService {
     localStorage['selfView'] ? this.selfView = true : false;
 
     if (this.app_name == 'Go1 HR') {
-      let check = permission.find(obj => obj.role == 'HR Manager' || obj.role == 'HR User' || obj.role == 'L1 Manager' || obj.role == 'L2 Manager')
+      let check = permission.find(obj => obj.role == 'HR Manager' || obj.role == 'HR User' || obj.role == 'L1 Manager' || obj.role == 'L2 Manager' || obj.role == 'Regional HR' || obj.role == 'Regional HR Manager' || obj.role.includes('RHR') || obj.role.includes('ZHR') || obj.role.includes('CHR'))
       let check_team = permission.find(obj => obj.role == 'L1 Manager' || obj.role == 'L2 Manager')
       check_team ? this.reportView = true : this.reportView = false
       if (check && this.app_name == 'Go1 HR') {

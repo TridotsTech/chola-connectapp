@@ -57,6 +57,7 @@ export class PerformanceEvaluationPage implements OnInit {
         employee_name: res.label
       });
       this.getEmployee_detail(res.name);
+      this.getProbationTypeOptions();
     });
 
     this.evaluation_form.patchValue({
@@ -107,6 +108,7 @@ export class PerformanceEvaluationPage implements OnInit {
           console.log(this.evaluationDetails)
           if(this.performanceDetails.workflow_state == 'Draft')
             this.save_only = true;
+          this.getProbationTypeOptions();
         }
       }
     })
@@ -157,10 +159,18 @@ export class PerformanceEvaluationPage implements OnInit {
     return this.evaluation_form.get('no_more_extention');
   }
 
-  probationType = [
-    {name: 'Yes'},
-    {name: 'No'}
-  ]
+  probationType: any = [];
+
+  getProbationTypeOptions() {
+    let args = {
+      employee_id: this.evaluation_form.get('employee_id')?.value
+    };
+    this.db.get_options_dynamically(args).subscribe(res => {
+      if (res && res.message) {
+        this.probationType = res.message.options;
+      }
+    });
+  }
 
   async open_dropdown() {
     const modal = await this.modalCntrl.create({
@@ -182,6 +192,7 @@ export class PerformanceEvaluationPage implements OnInit {
         this.evaluation_form.get('band').setValue(val.data.custom_band)
         this.evaluation_form.get('confirmation_due_date').setValue(val.data.custom_confirmation_due_date)
         this.evaluation_form.get('probation_days').setValue(val.data.custom_probation_days)
+        this.getProbationTypeOptions();
         // this.evaluation_form.get('total_capitalized_value').setValue(val.data.custom_probation_extension_end_date)
         // this.evaluation_form.get('total_capitalized_value').setValue(val.data.custom_probation_extension_start_date)
       }

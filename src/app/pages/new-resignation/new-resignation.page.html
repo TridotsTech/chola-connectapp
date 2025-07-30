@@ -37,12 +37,91 @@
           <h4 *ngIf="resignation_form.value.band" class="values m-0  mb-5">{{resignation_form.value.band}}</h4>
           <h4 *ngIf="resignation_form.value.confirmation_due_date" class="values m-0">Confirmation Due Date</h4>
           <h4 *ngIf="resignation_form.value.confirmation_due_date" class="values m-0  mb-5">{{resignation_form.value.confirmation_due_date}}</h4>
-          <h4 *ngIf="resignation_form.value.custom_l1_manager_name" class="values m-0">L1 Manager</h4>
-          <h4 *ngIf="resignation_form.value.custom_l1_manager_name" class="values m-0  mb-5">{{resignation_form.value.custom_l1_manager_name}}</h4>
-          <h4 *ngIf="resignation_form.value.custom_l2_manager_name" class="values m-0">L2 Manager</h4>
-          <h4 *ngIf="resignation_form.value.custom_l2_manager_name" class="values m-0  mb-5">{{resignation_form.value.custom_l2_manager_name}}</h4>
+          <div class="d__flex just-s">
+            <div class="flex-50">
+            <h4 *ngIf="resignation_form.value.custom_l1_manager" class="values m-0">L1 Manager</h4>
+            <h4 *ngIf="resignation_form.value.custom_l1_manager" class="values m-0  mb-5">{{resignation_form.value.custom_l1_manager}}</h4>
+          </div>
+          <div class="flex-50">
+            <h4 *ngIf="resignation_form.value.custom_l1_manager_name" class="values m-0">L1 Manager Name</h4>
+            <h4 *ngIf="resignation_form.value.custom_l1_manager_name" class="values m-0  mb-5">{{resignation_form.value.custom_l1_manager_name}}</h4>
+          </div>
+        </div>
+        <div class="d__flex just-s">
+          <div class="flex-50">
+            <h4 *ngIf="resignation_form.value.custom_l2_manager" class="values m-0">L2 Manager </h4>
+            <h4 *ngIf="resignation_form.value.custom_l2_manager" class="values m-0  mb-5">{{resignation_form.value.custom_l2_manager}}</h4>
+          </div>
+          <div class="flex-50">
+            <h4 *ngIf="resignation_form.value.custom_l2_manager_name" class="values m-0">L2 Manager Name</h4>
+            <h4 *ngIf="resignation_form.value.custom_l2_manager_name" class="values m-0  mb-5">{{resignation_form.value.custom_l2_manager_name}}</h4>
+          </div>
+        </div>
+        <div class="d__flex just-s">
+          <div class="flex-50"> 
+            <h4 *ngIf="resignation_form.value.custom_hr_manager" class="values m-0">HR Manager </h4>
+            <h4 *ngIf="resignation_form.value.custom_hr_manager" class="values m-0  mb-5">{{resignation_form.value.custom_hr_manager}}</h4>
+          </div>
+          <div class="flex-50">
+            <h4 *ngIf="resignation_form.value.custom_hr_manager_name" class="values m-0">HR Manager Name</h4>
+            <h4 *ngIf="resignation_form.value.custom_hr_manager_name" class="values m-0  mb-5">{{resignation_form.value.custom_hr_manager_name}}</h4>
+          </div>
+        </div>
+          <h4 *ngIf="resignation_form.value.custom_notice_period" class="values m-0">Notice Period</h4>
+          <h4 *ngIf="resignation_form.value.custom_notice_period" class="values m-0  mb-5">{{resignation_form.value.custom_notice_period}}</h4>
+          <h4 *ngIf="resignation_form.value.custom_official_email_id" class="values m-0">Company Email ID</h4>
+          <h4 *ngIf="resignation_form.value.custom_official_email_id" class="values m-0  mb-5">{{resignation_form.value.custom_official_email_id}}</h4>
+          <h4 *ngIf="resignation_form.value.custom_relieving_date_as_per_policy" class="values m-0">Relieving Date As Per Policy</h4>
+          <h4 *ngIf="resignation_form.value.custom_relieving_date_as_per_policy" class="values m-0  mb-5">{{resignation_form.value.custom_relieving_date_as_per_policy}}</h4>
           <h4 *ngIf="resignation_form.value.custom_total_working_days" class="values m-0">Total Working Days</h4>
           <h4 *ngIf="resignation_form.value.custom_total_working_days" class="values m-0  mb-5">{{resignation_form.value.custom_total_working_days}}</h4>
+        </div>
+      </div>
+      <div class="p-10">
+        <div class="pb-10">
+          <p class="title">Date Of Resignation <span class="impt-star"> *</span></p>
+          <div class="custom-input">
+            <ion-input type="date" placeholder="Date Of Resignation" formControlName="custom_date_of_resignation_hr" name="custom_date_of_resignation_hr"></ion-input>
+          </div>
+        </div>
+
+        <div *ngIf="submitted && !custom_date_of_resignation_hr?.valid">
+          <p class="error" *ngIf="custom_date_of_resignation_hr.errors.required">Date Of Resignation is required</p>
+        </div>
+
+        <div class="pb-10">
+          <p class="title">Reason For Leaving <span class="impt-star"> *</span></p>
+          <div class="custom-input">
+            <ion-select interface="popover" placeholder="Reason For Leaving" formControlName="custom_reason_for_leaving" name="custom_reason_for_leaving">
+              <ion-select-option value="Career Growth">Career Growth</ion-select-option>
+              <ion-select-option value="Compensation">Compensation</ion-select-option>
+              <ion-select-option value="Family Situation">Family Situation</ion-select-option>
+              <ion-select-option value="Government Job">Government Job</ion-select-option>
+              <ion-select-option value="Health Problems">Health Problems</ion-select-option>
+              <ion-select-option value="Higher Studies">Higher Studies</ion-select-option>
+              <ion-select-option value="Location Constraints">Location Constraints</ion-select-option>
+              <ion-select-option value="Marriage">Marriage</ion-select-option>
+              <ion-select-option value="Others">Others</ion-select-option>
+              <ion-select-option value="Overseas Opportunity">Overseas Opportunity</ion-select-option>
+              <ion-select-option value="Personal">Personal</ion-select-option>
+            </ion-select>
+          </div>
+        </div>
+
+        <div *ngIf="submitted && !custom_reason_for_leaving?.valid">
+          <p class="error" *ngIf="custom_reason_for_leaving.errors.required">Reason For Leaving is required</p>
+        </div>
+
+        <div class="input-item image-input pb-10">
+          <p class="title">Upload Attachment</p>
+          <input #file_upload (change)="changeListener($event)" type="file" class="image-d" name="custom_attachment" formControlName="custom_attachment" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx">
+          <div class="custom-image" (click)="file_upload.click()">
+            <ion-icon class="fnt-24" src="/assets/job-referral/cloud.svg"></ion-icon>
+            <div>
+              <p class="m-0 fnt-14 webkit-text" [style.--line]="1">{{(attachment_file && attachment_file.file_name) ? attachment_file.file_name.replaceAll('/files/', '') : 'Upload Attachment'}}</p>
+              <p class="m-0 fnt-12 webkit-text gray_clr" [style.--line]="1" *ngIf="!attachment_file || !attachment_file.file_name">Supports: .jpg, .jpeg, .png, .pdf, .doc, .docx</p>
+            </div>
+          </div>
         </div>
       </div>  
      
@@ -50,3 +129,7 @@
   </div>
 
 </ion-content>
+
+<div class="submitBtn">
+  <ion-button fill="clear" (click)="submit()">Save</ion-button>
+</div>

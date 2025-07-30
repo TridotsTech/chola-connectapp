@@ -29,6 +29,7 @@ import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
     AppVersion,
     FileOpener,
     File,
-    LocationAccuracy
+    LocationAccuracy,
+    InAppBrowser
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

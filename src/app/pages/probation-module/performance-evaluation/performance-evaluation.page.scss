@@ -8,8 +8,8 @@
 }
 
 .form_Height {
-    height: calc(100vh - 60px);
-    overflow: auto;
+    // height: calc(100vh - 60px);
+    // overflow: auto;
 
     &::-webkit-scrollbar {
         display: none;
@@ -219,4 +219,8 @@ ion-checkbox::part(container) {
       font-weight: 500;
       margin: 5px 0 15px 0;
     }
+  }
+
+  .mb55{
+    margin-bottom:55px;
   }

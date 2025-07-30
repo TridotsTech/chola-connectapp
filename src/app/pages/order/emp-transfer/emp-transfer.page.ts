@@ -25,7 +25,8 @@ export class EmpTransferPage implements OnInit {
     let data = {
       employee_id: localStorage['employee_id'],
       page_no: this.page_no,
-      page_length:this.page_length
+      page_length:this.page_length,
+      type: !this.db.show_selfView || this.db.selfView ? 'self' : 'Team'
     }
     this.db.get_employee_transfers(data).subscribe(res => {
       // console.log(res)

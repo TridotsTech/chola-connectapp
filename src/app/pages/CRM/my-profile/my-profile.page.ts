@@ -7,6 +7,8 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import { BeforeSlideDetail } from 'lightgallery/lg-events';
 // import { title } from 'process';
 import { DownloadElvluationComponent } from 'src/app/components/download-elvluation/download-elvluation.component';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 @Component({
   selector: 'app-my-profile',
@@ -31,7 +33,7 @@ export class MyProfilePage implements OnInit {
   new_dashboard_values:any;
   is_probation:any = [];  
 
-  constructor(public db:DbService, private router: Router, public loadingCtrl: LoadingController, public modalCtrl : ModalController, public alertCtrl: AlertController) { }
+  constructor(private iab: InAppBrowser,public db:DbService, private router: Router, public loadingCtrl: LoadingController, public modalCtrl : ModalController, public alertCtrl: AlertController) { }
 
   ngOnInit() {
     // this.db.get_employee_detail()
@@ -189,6 +191,124 @@ export class MyProfilePage implements OnInit {
     if(data && data.data && data.data == "delete"){
       this.sure_delete()
     }
+  }
+
+  // Generate one-time login token for secure authentication
+  generateLoginToken(authToken: string, baseUrl: string, userEmail: string): Promise<string | null> {
+    return new Promise((resolve, reject) => {
+      // Make API call to generate login token
+      fetch(`${baseUrl}api/method/frappe.auth.get_logged_user`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `token ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.message) {
+          // If user is authenticated, generate login token
+          return fetch(`${baseUrl}api/method/frappe.utils.generate_hash`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `token ${authToken}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'txt': userEmail + Date.now().toString()
+            })
+          });
+        } else {
+          throw new Error('Authentication failed');
+        }
+      })
+      .then(response => response.json())
+      .then(hashData => {
+        if (hashData && hashData.message) {
+          resolve(hashData.message);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(error => {
+        console.error('Token generation failed:', error);
+        resolve(null);
+      });
+    });
+  }
+
+  approval(){
+    
+        
+        
+        // Generate one-time login token using secure method
+        const authToken = `${this.db.api_key}:${this.db.api_secret}`;
+        const baseUrl = this.db.baseUrl;
+        const userEmail = localStorage.getItem('customerRefId') || '';
+        
+        // First, generate a one-time login token
+        this.generateLoginToken(authToken, baseUrl, userEmail).then((loginToken) => {
+          if (loginToken) {
+            // Use secure token-based login URL
+            const loginUrl = `${baseUrl}login/token?token=${loginToken}`;
+            const browser = this.iab.create(loginUrl, '_blank', {
+              location: 'yes',
+              toolbar: 'yes',
+              zoom: 'no',
+              hardwareback: 'yes',
+              clearcache: 'yes',
+              clearsessioncache: 'yes',
+              useWideViewPort: 'yes',
+              mediaPlaybackRequiresUserAction: 'yes',
+              enableViewportScale: 'no',
+              javascript: 'yes',
+              closebuttoncaption: 'Close',
+              closebuttoncolor: '#0000ff'
+            });
+
+            // After successful token login, redirect to app
+            browser.on('loadstop').subscribe(() => {
+              // Check if login was successful and redirect to app
+              setTimeout(() => {
+                browser.executeScript({
+                  code: `window.location.href = '${baseUrl}app';`
+                });
+              }, 2000);
+            });
+
+            // Listen for URL changes to detect successful login
+            browser.on('loadstart').subscribe((event: any) => {
+              const eventUrl = event.url;
+              
+              // // Check if successfully redirected to app
+              // if (eventUrl.includes(`${baseUrl}app`)) {
+              //   // Successfully in the app, close browser after delay
+              //   setTimeout(() => {
+              //     browser.close();
+              //     this.router.navigateByUrl('/dashboard');
+              //   }, 2000);
+              // }
+               
+              // Handle login errors
+              if (eventUrl.includes('login_failed') || eventUrl.includes('error')) {
+                browser.close();
+                this.db.alert('Login failed. Please try again.');
+              }
+            });
+
+            // Handle browser close event
+            browser.on('exit').subscribe(() => {
+              console.log('Browser closed by user');
+            });
+
+          } else {
+            // Token generation failed, show error
+            this.db.alert('Failed to generate login token. Please try again.');
+          }
+        }).catch((error) => {
+          console.error('Login token generation error:', error);
+          this.db.alert('Authentication failed. Please try again.');
+        });
   }
 
   async sure_delete(){

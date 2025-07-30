@@ -220,3 +220,17 @@ ion-checkbox::part(container) {
       margin: 5px 0 15px 0;
     }
   }
+
+  .submitBtn{
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    z-index: 99999;
+    border-top: 1px solid var(--border-col);
+    ion-button{
+        width: 100%;
+    }
+  }
