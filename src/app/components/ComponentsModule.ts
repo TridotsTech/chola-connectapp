@@ -110,6 +110,7 @@ import { EmployeeTransferOtpComponent } from './employee-transfer-otp/employee-t
 import { CreateLtaRequestComponent } from './create-lta-request/create-lta-request.component';
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { CreateNpsRequestComponent } from './create-nps-request/create-nps-request.component';
+import { WishesComponent } from './wishes/wishes.component';
 
 @NgModule({
   declarations: [
@@ -212,7 +213,8 @@ import { CreateNpsRequestComponent } from './create-nps-request/create-nps-reque
     MyslipDownloadComponent,
     EmployeeTransferOtpComponent,
     CreateLtaRequestComponent,
-    CreateNpsRequestComponent
+    CreateNpsRequestComponent,
+    WishesComponent
   ],
   imports: [
     CommonModule,
@@ -328,7 +330,8 @@ import { CreateNpsRequestComponent } from './create-nps-request/create-nps-reque
     MyslipDownloadComponent,
     EmployeeTransferOtpComponent,
     CreateLtaRequestComponent,
-    CreateNpsRequestComponent
+    CreateNpsRequestComponent,
+    WishesComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

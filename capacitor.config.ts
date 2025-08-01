@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.cholahr.android',
-  appName: 'Chola HR',
+  appId: 'com.cholaconnect',
+  appName: 'Chola Connect',
   webDir: 'www',
   server: {
     androidScheme: 'https'

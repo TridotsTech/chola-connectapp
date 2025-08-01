@@ -193,122 +193,143 @@ export class MyProfilePage implements OnInit {
     }
   }
 
-  // Generate one-time login token for secure authentication
-  generateLoginToken(authToken: string, baseUrl: string, userEmail: string): Promise<string | null> {
-    return new Promise((resolve, reject) => {
-      // Make API call to generate login token
-      fetch(`${baseUrl}api/method/frappe.auth.get_logged_user`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `token ${authToken}`,
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.message) {
-          // If user is authenticated, generate login token
-          return fetch(`${baseUrl}api/method/frappe.utils.generate_hash`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `token ${authToken}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              'txt': userEmail + Date.now().toString()
-            })
-          });
-        } else {
-          throw new Error('Authentication failed');
-        }
-      })
-      .then(response => response.json())
-      .then(hashData => {
-        if (hashData && hashData.message) {
-          resolve(hashData.message);
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(error => {
-        console.error('Token generation failed:', error);
-        resolve(null);
-      });
+  // Simple method to create authenticated session
+  async createAuthenticatedUrl(): Promise<string> {
+    const baseUrl = this.db.baseUrl;
+    const userEmail = localStorage.getItem('customerRefId') || '';
+    
+    // Create URL with API key parameters for Frappe to handle
+    const authParams = new URLSearchParams({
+      usr: userEmail,
+      api_key: this.db.api_key,
+      api_secret: this.db.api_secret,
+      redirect: '/app'
     });
+    
+    return `${baseUrl}login?${authParams.toString()}`;
   }
 
-  approval(){
-    
-        
-        
-        // Generate one-time login token using secure method
-        const authToken = `${this.db.api_key}:${this.db.api_secret}`;
-        const baseUrl = this.db.baseUrl;
-        const userEmail = localStorage.getItem('customerRefId') || '';
-        
-        // First, generate a one-time login token
-        this.generateLoginToken(authToken, baseUrl, userEmail).then((loginToken) => {
-          if (loginToken) {
-            // Use secure token-based login URL
-            const loginUrl = `${baseUrl}login/token?token=${loginToken}`;
-            const browser = this.iab.create(loginUrl, '_blank', {
-              location: 'yes',
-              toolbar: 'yes',
-              zoom: 'no',
-              hardwareback: 'yes',
-              clearcache: 'yes',
-              clearsessioncache: 'yes',
-              useWideViewPort: 'yes',
-              mediaPlaybackRequiresUserAction: 'yes',
-              enableViewportScale: 'no',
-              javascript: 'yes',
-              closebuttoncaption: 'Close',
-              closebuttoncolor: '#0000ff'
-            });
-
-            // After successful token login, redirect to app
-            browser.on('loadstop').subscribe(() => {
-              // Check if login was successful and redirect to app
-              setTimeout(() => {
-                browser.executeScript({
-                  code: `window.location.href = '${baseUrl}app';`
+  async approval(){
+    try {
+      // Show loading
+      const loader = await this.loadingCtrl.create({ message: 'Opening...' });
+      await loader.present();
+      
+      const baseUrl = this.db.baseUrl;
+      const userEmail = localStorage.getItem('customerRefId') || '';
+      
+      // Get the authenticated URL
+      const authUrl = await this.createAuthenticatedUrl();
+      
+      const browser = this.iab.create(authUrl, '_blank', {
+        location: 'yes',
+        toolbar: 'yes',
+        zoom: 'no',
+        hardwareback: 'yes',
+        clearcache: 'yes',
+        clearsessioncache: 'yes',
+        useWideViewPort: 'yes',
+        mediaPlaybackRequiresUserAction: 'yes',
+        enableViewportScale: 'no',
+        closebuttoncaption: 'Close',
+        closebuttoncolor: '#0000ff'
+      });
+      
+      loader.dismiss();
+      
+      // Handle authentication via JavaScript injection
+      browser.on('loadstop').subscribe(() => {
+        browser.executeScript({
+          code: `
+            setTimeout(() => {
+              // Check if we're on the login page
+              if (window.location.pathname.includes('/login')) {
+                // Try standard Frappe login method
+                fetch('${baseUrl}api/method/login', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    usr: '${userEmail}',
+                    pwd: '${this.db.api_secret}' // Use API secret as password
+                  }),
+                  credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.message === 'Logged In' || data.message === 'success') {
+                    window.location.href = '${baseUrl}app';
+                  } else {
+                    // Fallback: Auto-fill the login form
+                    const usernameField = document.querySelector('input[name="usr"]') || 
+                                         document.querySelector('#login_email') ||
+                                         document.querySelector('input[type="email"]');
+                    const passwordField = document.querySelector('input[name="pwd"]') || 
+                                         document.querySelector('#login_password') ||
+                                         document.querySelector('input[type="password"]');
+                    const loginBtn = document.querySelector('.btn-login') || 
+                                    document.querySelector('button[type="submit"]') ||
+                                    document.querySelector('.login-btn');
+                    
+                    if (usernameField && passwordField && loginBtn) {
+                      usernameField.value = '${userEmail}';
+                      passwordField.value = '${this.db.api_secret}';
+                      
+                      // Trigger input events to ensure the form recognizes the values
+                      usernameField.dispatchEvent(new Event('input', { bubbles: true }));
+                      passwordField.dispatchEvent(new Event('input', { bubbles: true }));
+                      
+                      // Submit the form
+                      setTimeout(() => {
+                        loginBtn.click();
+                      }, 500);
+                    }
+                  }
+                })
+                .catch(error => {
+                  console.error('Login failed:', error);
+                  // Still try to auto-fill form as fallback
+                  const usernameField = document.querySelector('input[name="usr"]') || 
+                                       document.querySelector('#login_email') ||
+                                       document.querySelector('input[type="email"]');
+                  const passwordField = document.querySelector('input[name="pwd"]') || 
+                                       document.querySelector('#login_password') ||
+                                       document.querySelector('input[type="password"]');
+                  const loginBtn = document.querySelector('.btn-login') || 
+                                  document.querySelector('button[type="submit"]') ||
+                                  document.querySelector('.login-btn');
+                  
+                  if (usernameField && passwordField && loginBtn) {
+                    usernameField.value = '${userEmail}';
+                    passwordField.value = '${this.db.api_secret}';
+                    usernameField.dispatchEvent(new Event('input', { bubbles: true }));
+                    passwordField.dispatchEvent(new Event('input', { bubbles: true }));
+                  }
                 });
-              }, 2000);
-            });
-
-            // Listen for URL changes to detect successful login
-            browser.on('loadstart').subscribe((event: any) => {
-              const eventUrl = event.url;
-              
-              // // Check if successfully redirected to app
-              // if (eventUrl.includes(`${baseUrl}app`)) {
-              //   // Successfully in the app, close browser after delay
-              //   setTimeout(() => {
-              //     browser.close();
-              //     this.router.navigateByUrl('/dashboard');
-              //   }, 2000);
-              // }
-               
-              // Handle login errors
-              if (eventUrl.includes('login_failed') || eventUrl.includes('error')) {
-                browser.close();
-                this.db.alert('Login failed. Please try again.');
               }
-            });
-
-            // Handle browser close event
-            browser.on('exit').subscribe(() => {
-              console.log('Browser closed by user');
-            });
-
-          } else {
-            // Token generation failed, show error
-            this.db.alert('Failed to generate login token. Please try again.');
-          }
-        }).catch((error) => {
-          console.error('Login token generation error:', error);
-          this.db.alert('Authentication failed. Please try again.');
+            }, 2000);
+          `
         });
+      });
+      
+      // Handle successful navigation to app
+      browser.on('loadstart').subscribe((event: any) => {
+        const eventUrl = event.url;
+        if (eventUrl.includes(`${baseUrl}app`) || eventUrl.includes('/desk')) {
+          console.log('Successfully logged in to Frappe');
+        }
+      });
+      
+      browser.on('exit').subscribe(() => {
+        console.log('Browser closed by user');
+      });
+      
+    } catch (error) {
+      console.error('Error opening Frappe app:', error);
+      this.db.alert('Failed to open application. Please try again.');
+    }
   }
 
   async sure_delete(){

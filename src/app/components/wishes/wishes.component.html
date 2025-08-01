@@ -1,0 +1,72 @@
+<div class="wishes-container">
+  <div class="wishes-header">
+    <h5 class="m-0 fnt-14">Wishes</h5>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="wishes-tabs">
+    <div 
+      class="tab-item" 
+      [class.active]="activeTab === 'birthday'"
+      (click)="selectTab('birthday')">
+      <span>Birthdays</span>
+    </div>
+    <div 
+      class="tab-item" 
+      [class.active]="activeTab === 'anniversaries'"
+      (click)="selectTab('anniversaries')">
+      <span>Anniversaries</span>
+    </div>
+    <div 
+      class="tab-item" 
+      [class.active]="activeTab === 'new-joiners'"
+      (click)="selectTab('new-joiners')">
+      <span>New Joiners</span>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="wishes-content">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <ion-skeleton-text animated style="width: 100%; height: 60px; margin-bottom: 10px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 60px; margin-bottom: 10px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 60px;"></ion-skeleton-text>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && wishesData && wishesData.length == 0" class="empty-state">
+      <p class="m-0 fnt-12 text-center gray_clr">No {{getDisplayName().toLowerCase()}} to show</p>
+    </div>
+
+    <!-- Wishes List -->
+    <div *ngIf="!loading && wishesData.length > 0" class="wishes-list">
+      <div 
+        *ngFor="let person of wishesData" 
+        class="wish-item">
+        <div class="wish-avatar">
+          <img 
+            [src]="person.image ? db.product_img(person.image) : '/assets/icon/profile-owner.svg'" 
+            alt="{{person.name}}"
+            class="avatar-img">
+        </div>
+        
+        <div class="wish-content">
+          <div class="wish-info">
+            <span class="wish-icon" *ngIf="activeTab != 'anniversaries'">{{person.symbol ? person.symbol : getWishIcon(activeTab)}}</span>
+            <span class="person-name">{{person.employee_name || person.name}} {{person.bullotin ? person.bullotin : ''}} {{person.name ? person.name : ''}} <span class="year_passed" *ngIf="person.year_passed">{{person.symbol ? person.symbol : getWishIcon(activeTab)}} {{person.year_passed}} yr</span></span>
+          </div>
+          <div class="wish-details" *ngIf="person.designation">
+            <p class="m-0 fnt-11 gray_clr">{{person.designation}}</p>
+          </div>
+          <div class="wish-details" *ngIf="person.date">
+            <p class="m-0 fnt-11 gray_clr">{{person.date | date: 'MMM dd'}}</p>
+          </div>
+          <div class="wish-details" *ngIf="person.joining_date && activeTab === 'new-joiners'">
+            <p class="m-0 fnt-11 gray_clr">Joined: {{person.joining_date | date: 'MMM dd, yyyy'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

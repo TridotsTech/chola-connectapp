@@ -1142,6 +1142,11 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  get_wishes(Info: any): Observable<any> {
+    let endpoint = 'td_dashboard_data.td_dashboard_data.api.get_wishes';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   get_master_values(Info: any): Observable<any> {
     let endpoint = this.go1_apps_api + 'get_master_values';
     return this.postmethod(this.baseMethod + endpoint, Info);

@@ -1,0 +1,148 @@
+PODS:
+  - AparajitaCapacitorBiometricAuth (8.0.2):
+    - Capacitor
+  - Capacitor (6.0.0):
+    - CapacitorCordova
+  - CapacitorApp (6.0.0):
+    - Capacitor
+  - CapacitorCordova (6.0.0)
+  - CapacitorDevice (6.0.2):
+    - Capacitor
+  - CapacitorFilesystem (5.2.1):
+    - Capacitor
+  - CapacitorGeolocation (5.0.7):
+    - Capacitor
+  - CapacitorHaptics (6.0.1):
+    - Capacitor
+  - CapacitorKeyboard (6.0.2):
+    - Capacitor
+  - CapacitorNativeSettings (5.0.1):
+    - Capacitor
+  - CapacitorNetwork (6.0.3):
+    - Capacitor
+  - CapacitorRazorpay (1.2.0):
+    - Capacitor
+    - razorpay-pod
+  - CapacitorScreenOrientation (6.0.3):
+    - Capacitor
+  - CapacitorSecureStoragePlugin (0.10.0):
+    - Capacitor
+    - SwiftKeychainWrapper
+  - CapacitorShare (6.0.2):
+    - Capacitor
+  - CapacitorSplashScreen (7.0.1):
+    - Capacitor
+  - CapacitorStatusBar (6.0.1):
+    - Capacitor
+  - CordovaPlugins (6.1.2):
+    - CapacitorCordova
+  - CordovaPluginsStatic (6.1.2):
+    - CapacitorCordova
+    - OneSignalXCFramework (= 3.12.10)
+  - OneSignalXCFramework (3.12.10):
+    - OneSignalXCFramework/OneSignalCore (= 3.12.10)
+    - OneSignalXCFramework/OneSignalExtension (= 3.12.10)
+    - OneSignalXCFramework/OneSignalOutcomes (= 3.12.10)
+  - OneSignalXCFramework/OneSignalCore (3.12.10)
+  - OneSignalXCFramework/OneSignalExtension (3.12.10):
+    - OneSignalXCFramework/OneSignalCore
+    - OneSignalXCFramework/OneSignalOutcomes
+  - OneSignalXCFramework/OneSignalOutcomes (3.12.10):
+    - OneSignalXCFramework/OneSignalCore
+  - razorpay-pod (1.4.0)
+  - SwiftKeychainWrapper (4.0.1)
+
+DEPENDENCIES:
+  - "AparajitaCapacitorBiometricAuth (from `../../node_modules/@aparajita/capacitor-biometric-auth`)"
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
+  - "CapacitorFilesystem (from `../../node_modules/@capacitor/filesystem`)"
+  - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
+  - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
+  - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
+  - CapacitorNativeSettings (from `../../node_modules/capacitor-native-settings`)
+  - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
+  - CapacitorRazorpay (from `../../node_modules/capacitor-razorpay`)
+  - "CapacitorScreenOrientation (from `../../node_modules/@capacitor/screen-orientation`)"
+  - CapacitorSecureStoragePlugin (from `../../node_modules/capacitor-secure-storage-plugin`)
+  - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
+  - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
+  - CordovaPluginsStatic (from `../capacitor-cordova-ios-plugins`)
+
+SPEC REPOS:
+  trunk:
+    - OneSignalXCFramework
+    - razorpay-pod
+    - SwiftKeychainWrapper
+
+EXTERNAL SOURCES:
+  AparajitaCapacitorBiometricAuth:
+    :path: "../../node_modules/@aparajita/capacitor-biometric-auth"
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorApp:
+    :path: "../../node_modules/@capacitor/app"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorDevice:
+    :path: "../../node_modules/@capacitor/device"
+  CapacitorFilesystem:
+    :path: "../../node_modules/@capacitor/filesystem"
+  CapacitorGeolocation:
+    :path: "../../node_modules/@capacitor/geolocation"
+  CapacitorHaptics:
+    :path: "../../node_modules/@capacitor/haptics"
+  CapacitorKeyboard:
+    :path: "../../node_modules/@capacitor/keyboard"
+  CapacitorNativeSettings:
+    :path: "../../node_modules/capacitor-native-settings"
+  CapacitorNetwork:
+    :path: "../../node_modules/@capacitor/network"
+  CapacitorRazorpay:
+    :path: "../../node_modules/capacitor-razorpay"
+  CapacitorScreenOrientation:
+    :path: "../../node_modules/@capacitor/screen-orientation"
+  CapacitorSecureStoragePlugin:
+    :path: "../../node_modules/capacitor-secure-storage-plugin"
+  CapacitorShare:
+    :path: "../../node_modules/@capacitor/share"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
+  CapacitorStatusBar:
+    :path: "../../node_modules/@capacitor/status-bar"
+  CordovaPlugins:
+    :path: "../capacitor-cordova-ios-plugins"
+  CordovaPluginsStatic:
+    :path: "../capacitor-cordova-ios-plugins"
+
+SPEC CHECKSUMS:
+  AparajitaCapacitorBiometricAuth: 3057403ee3e9e390e57bfb92b576f439157951b8
+  Capacitor: 559d073c4ca6c27f8e7002c807eea94c3ba435a9
+  CapacitorApp: 9d53aec7101f7b030a950c5bdc4df8612576b279
+  CapacitorCordova: 8c4bfdf69368512e85b1d8b724dd7546abeb30af
+  CapacitorDevice: 1a215717f0b5061503b21a03508b0ec458a57d78
+  CapacitorFilesystem: 9f3e3c7fea2fff12f46dd5b07a2914f2103e4cfc
+  CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
+  CapacitorHaptics: fe689ade56ef20ec9b041a753c6da70c5d8ec9a9
+  CapacitorKeyboard: 2700f9b18687be021e28b5a09b59eb151a46d5e0
+  CapacitorNativeSettings: 6e94ed3c0465206756f320df18efc52f053ce3c7
+  CapacitorNetwork: da96b5fff8d05b67f4658503aabb22f65bda2c0f
+  CapacitorRazorpay: ba6b49ddac76e4daed37501d336adda44abe7e9c
+  CapacitorScreenOrientation: 3bb823f5d265190301cdc5d58a568a287d98972a
+  CapacitorSecureStoragePlugin: ced6025438fbbdbfb9fffec4398e748572fc147b
+  CapacitorShare: 591ae4693d85686ceb590db8e8b44aa014ec6490
+  CapacitorSplashScreen: 19cd3573e57507e02d6f34597a8c421e00931487
+  CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
+  CordovaPlugins: aaf67a13bfc183700334be0dca3bd4d216fd7042
+  CordovaPluginsStatic: 663b032d09896593ecfbb5208be959d65744398f
+  OneSignalXCFramework: e458f7a374192598a1d66418e1b61481c3cdf0e9
+  razorpay-pod: cb5b5439697bdda9c57d68a92b3e5b0ce1d2f2f3
+  SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
+
+PODFILE CHECKSUM: e56457bc32a0bdc7479eb2ffe75d916767119e13
+
+COCOAPODS: 1.16.2

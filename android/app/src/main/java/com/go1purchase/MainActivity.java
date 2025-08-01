@@ -1,4 +1,4 @@
-package com.cholahr.android;
+package com.cholaconnect;
 
 import com.getcapacitor.BridgeActivity;
 

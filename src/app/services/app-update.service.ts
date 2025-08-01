@@ -75,7 +75,7 @@ export class AppUpdateService {
 
   private showUpdatePopup(newVersion: string, currentVersion: string, force: boolean, platform: 'android' | 'ios') {
     const storeUrl = platform === 'android' 
-      ? 'https://play.google.com/store/apps/details?id=com.cholahr.android'
+      ? 'https://play.google.com/store/apps/details?id=com.cholaconnect'
       : 'https://apps.apple.com/us/app/chola-hr/id6742024031';
 
     this.updatePopupState.next({
