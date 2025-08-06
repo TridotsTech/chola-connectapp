@@ -100,7 +100,10 @@ export class ApprovalsPage implements OnInit {
         this.page_no = 1;
         this.getApprovalsList();
       }
+    }else if(item.reference_doctype == 'Salary Fitment'){
+      this.db.approval('app/salary-fitment/'+item.reference_name)
     }
+
 
   }
 

@@ -37,6 +37,7 @@ export class LeaveApplicationPage implements OnInit {
   mandatory_condition:any;
   is_mandatory:any;
   is_image_mandatory:any;
+  max_continuous_days_allowed:any;
   remaining_balance:any;
   constructor(public loadingCtrl:LoadingController,public modalCtrl:ModalController, public db: DbService, private route: ActivatedRoute, public router: Router, private formBuilder: FormBuilder,private nav:NavController,public alertController: AlertController) {
     this.leave_form = this.formBuilder.group({
@@ -294,6 +295,11 @@ export class LeaveApplicationPage implements OnInit {
           return;
         }
       }
+      // console.log(this.leave_form.get('total_leave_days').value,this.max_continuous_days_allowed)
+      if(this.max_continuous_days_allowed != 0 && this.max_continuous_days_allowed > 0 && this.leave_form.get('total_leave_days').value > this.max_continuous_days_allowed){
+        this.db.alert(this.leave_form.get('leave_type').value + 'cannot be longer than ' + this.max_continuous_days_allowed + ' days')
+        return;
+      }
       
       await this.showApprovalAlert();
     }
@@ -451,6 +457,7 @@ export class LeaveApplicationPage implements OnInit {
     this.total_allocation = val.data.total_allocation ? val.data.total_allocation : 0;
     this.is_miscarriage_leave = val.data.is_miscarriage_leave ? val.data.is_miscarriage_leave : 0;
     this.is_mandatory = val.data.is_doc_mandatory ? val.data.is_doc_mandatory : 0;
+    this.max_continuous_days_allowed = val.data.max_continuous_days_allowed ? val.data.max_continuous_days_allowed : 0;
     if(this.is_mandatory){
       this.mandatory_condition = val.data.doc_mandatory_condition ? val.data.doc_mandatory_condition : 0;
       this.mandatory_days = val.data.doc_mandatory_days ? val.data.doc_mandatory_days : 0;
@@ -713,6 +720,10 @@ export class LeaveApplicationPage implements OnInit {
           }
           else
             this.continuous_leaves(this.fromDate,type)
+          
+        }
+        else if(this.max_continuous_days_allowed != 0 && this.max_continuous_days_allowed > 0 && res.message.total_leave_days > this.max_continuous_days_allowed){
+          this.db.alert(type + ' cannot be longer than '+this.max_continuous_days_allowed+' days')
           
         }
       })

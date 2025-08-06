@@ -21,6 +21,7 @@ import { DetailComponentComponent } from '../components/customer-details/detail-
 import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import OneSignal from 'onesignal-cordova-plugin';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -258,6 +259,7 @@ export class DbService {
     public loadingCtrl: LoadingController,
     public menuCtrl: MenuController,
     private locationAccuracy: LocationAccuracy,
+    private iab: InAppBrowser
   ) {
     const now = new Date();
     const year = now.getFullYear();
@@ -3180,6 +3182,170 @@ export class DbService {
 
   getNotFoundImage(doctype){
     return `assets/not-found/${doctype}.svg`
+  }
+
+  async approval(redirect_url:any){
+    try {
+      // Show loading
+      const loader = await this.loadingCtrl.create({ message: 'Authenticating...' });
+      await loader.present();
+
+      // Get user credentials
+      const baseUrl = this.baseUrl;
+      const userEmail = localStorage.getItem('customerRefId') || '';
+
+      // Get password from secure storage
+      let userPassword = '';
+      try {
+        const pwdResult = await SecureStoragePlugin.get({ key: 'CustomerPwd' });
+        userPassword = pwdResult.value;
+      } catch (error) {
+        console.log('Password not found in secure storage, trying cap_sec_CustomerPwd');
+        try {
+          const pwdResult = await SecureStoragePlugin.get({ key: 'cap_sec_CustomerPwd' });
+          userPassword = pwdResult.value;
+        } catch (error2) {
+          loader.dismiss();
+          this.alert('Password not found. Please login again.');
+          return;
+        }
+      }
+
+      if (!userEmail || !userPassword) {
+        loader.dismiss();
+        this.alert('Credentials not found. Please login again.');
+        return;
+      }
+
+      // Step 1: Login via API to create session
+      try {
+        const loginResponse = await fetch(`${baseUrl}api/method/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            usr: userEmail,
+            pwd: userPassword
+          }),
+          credentials: 'include'
+        });
+
+        const loginData = await loginResponse.json();
+        console.log('Login response:', loginData);
+
+        if (loginData.message === 'Logged In' || loginData.full_name) {
+          // Login successful, now open browser
+          loader.message = 'Opening application...';
+
+          // Extract session ID from cookies or response
+          let sessionId = '';
+          
+          // Note: Browser fetch API doesn't expose set-cookie headers for security reasons
+          // We'll need to rely on the response data or let the browser handle cookies
+          
+          // If no session ID in headers, check response data
+          if (!sessionId && loginData.sid) {
+            sessionId = loginData.sid;
+          }
+          
+          // Also check for session_data in response
+          if (!sessionId && loginData.session_data && loginData.session_data.sid) {
+            sessionId = loginData.session_data.sid;
+          }
+
+          // Add small delay to ensure session is properly set on server
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+          // Direct URL to /app - session should already be created from login API
+          const appUrl = `${baseUrl}${redirect_url}`;
+          
+          console.log('Opening app URL:', appUrl);
+
+          // Create browser
+          const browser = this.iab.create(appUrl, '_blank', {
+            location: 'yes',
+            toolbar: 'yes',
+            zoom: 'no',
+            hardwareback: 'yes',
+            clearcache: 'no',
+            clearsessioncache: 'no',
+            useWideViewPort: 'yes',
+            enableViewportScale: 'no',
+            closebuttoncaption: 'Close',
+            closebuttoncolor: '#0000ff'
+          });
+
+          loader.dismiss();
+
+          // Handle browser events
+          browser.on('loadstart').subscribe((event: any) => {
+            console.log('Loading:', event.url);
+            
+            // If loading login page or home page, immediately redirect to app
+            if (event.url.includes('/login') || event.url === baseUrl || event.url === baseUrl.slice(0, -1)) {
+              console.log('Intercepting and redirecting to app...');
+              browser.executeScript({
+                code: `window.location.href = '${baseUrl}${redirect_url}';`
+              });
+            }
+          });
+
+          browser.on('loadstop').subscribe((event: any) => {
+            console.log('Loaded:', event.url);
+
+            // Check if we're on the app page
+            if (event.url.includes(redirect_url) || event.url.includes('/desk')) {
+              console.log('Successfully loaded app page');
+              return;
+            }
+
+            // If redirected to login, immediately redirect to /app
+            if (event.url.includes('/login') || event.url === baseUrl || event.url === baseUrl.slice(0, -1)) {
+              browser.executeScript({
+                code: `
+                  console.log('Redirecting to app...');
+                  // Since we already logged in via API, just navigate to app
+                  window.location.href = '${baseUrl}${redirect_url}';
+                `
+              });
+            }
+            
+            // If on any other page, also try to redirect to app
+            else if (!event.url.includes(redirect_url)) {
+              setTimeout(() => {
+                browser.executeScript({
+                  code: `
+                    if (!window.location.href.includes('${redirect_url}')) {
+                      console.log('Forcing redirect to app...');
+                      window.location.href = '${baseUrl}${redirect_url}';
+                    }
+                  `
+                });
+              }, 500);
+            }
+          });
+
+          browser.on('exit').subscribe(() => {
+            console.log('Browser closed');
+          });
+
+        } else {
+          loader.dismiss();
+          this.alert('Login failed. Please check your credentials.');
+        }
+
+      } catch (error) {
+        loader.dismiss();
+        console.error('Login error:', error);
+        this.alert('Failed to authenticate. Please try again.');
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.alert('Failed to open application.');
+    }
   }
 
 }

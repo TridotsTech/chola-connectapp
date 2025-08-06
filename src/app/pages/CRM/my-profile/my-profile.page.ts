@@ -5,7 +5,6 @@ import { AlertController, ModalController, LoadingController} from '@ionic/angul
 import { ShowImageComponent } from 'src/app/components/show-image/show-image.component';
 import lgZoom from 'lightgallery/plugins/zoom';
 import { BeforeSlideDetail } from 'lightgallery/lg-events';
-// import { title } from 'process';
 import { DownloadElvluationComponent } from 'src/app/components/download-elvluation/download-elvluation.component';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
@@ -36,9 +35,6 @@ export class MyProfilePage implements OnInit {
   constructor(private iab: InAppBrowser,public db:DbService, private router: Router, public loadingCtrl: LoadingController, public modalCtrl : ModalController, public alertCtrl: AlertController) { }
 
   ngOnInit() {
-    // this.db.get_employee_detail()
-    // console.log(this.settings)
-    // console.log(this.onBeforeSlide)
   }
 
   ionViewWillEnter(){
@@ -193,142 +189,168 @@ export class MyProfilePage implements OnInit {
     }
   }
 
-  // Simple method to create authenticated session
-  async createAuthenticatedUrl(): Promise<string> {
-    const baseUrl = this.db.baseUrl;
-    const userEmail = localStorage.getItem('customerRefId') || '';
-    
-    // Create URL with API key parameters for Frappe to handle
-    const authParams = new URLSearchParams({
-      usr: userEmail,
-      api_key: this.db.api_key,
-      api_secret: this.db.api_secret,
-      redirect: '/app'
-    });
-    
-    return `${baseUrl}login?${authParams.toString()}`;
-  }
 
   async approval(){
     try {
       // Show loading
-      const loader = await this.loadingCtrl.create({ message: 'Opening...' });
+      const loader = await this.loadingCtrl.create({ message: 'Authenticating...' });
       await loader.present();
-      
+
+      // Get user credentials
       const baseUrl = this.db.baseUrl;
       const userEmail = localStorage.getItem('customerRefId') || '';
-      
-      // Get the authenticated URL
-      const authUrl = await this.createAuthenticatedUrl();
-      
-      const browser = this.iab.create(authUrl, '_blank', {
-        location: 'yes',
-        toolbar: 'yes',
-        zoom: 'no',
-        hardwareback: 'yes',
-        clearcache: 'yes',
-        clearsessioncache: 'yes',
-        useWideViewPort: 'yes',
-        mediaPlaybackRequiresUserAction: 'yes',
-        enableViewportScale: 'no',
-        closebuttoncaption: 'Close',
-        closebuttoncolor: '#0000ff'
-      });
-      
-      loader.dismiss();
-      
-      // Handle authentication via JavaScript injection
-      browser.on('loadstop').subscribe(() => {
-        browser.executeScript({
-          code: `
-            setTimeout(() => {
-              // Check if we're on the login page
-              if (window.location.pathname.includes('/login')) {
-                // Try standard Frappe login method
-                fetch('${baseUrl}api/method/login', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    usr: '${userEmail}',
-                    pwd: '${this.db.api_secret}' // Use API secret as password
-                  }),
-                  credentials: 'include'
-                })
-                .then(response => response.json())
-                .then(data => {
-                  if (data.message === 'Logged In' || data.message === 'success') {
-                    window.location.href = '${baseUrl}app';
-                  } else {
-                    // Fallback: Auto-fill the login form
-                    const usernameField = document.querySelector('input[name="usr"]') || 
-                                         document.querySelector('#login_email') ||
-                                         document.querySelector('input[type="email"]');
-                    const passwordField = document.querySelector('input[name="pwd"]') || 
-                                         document.querySelector('#login_password') ||
-                                         document.querySelector('input[type="password"]');
-                    const loginBtn = document.querySelector('.btn-login') || 
-                                    document.querySelector('button[type="submit"]') ||
-                                    document.querySelector('.login-btn');
-                    
-                    if (usernameField && passwordField && loginBtn) {
-                      usernameField.value = '${userEmail}';
-                      passwordField.value = '${this.db.api_secret}';
-                      
-                      // Trigger input events to ensure the form recognizes the values
-                      usernameField.dispatchEvent(new Event('input', { bubbles: true }));
-                      passwordField.dispatchEvent(new Event('input', { bubbles: true }));
-                      
-                      // Submit the form
-                      setTimeout(() => {
-                        loginBtn.click();
-                      }, 500);
-                    }
-                  }
-                })
-                .catch(error => {
-                  console.error('Login failed:', error);
-                  // Still try to auto-fill form as fallback
-                  const usernameField = document.querySelector('input[name="usr"]') || 
-                                       document.querySelector('#login_email') ||
-                                       document.querySelector('input[type="email"]');
-                  const passwordField = document.querySelector('input[name="pwd"]') || 
-                                       document.querySelector('#login_password') ||
-                                       document.querySelector('input[type="password"]');
-                  const loginBtn = document.querySelector('.btn-login') || 
-                                  document.querySelector('button[type="submit"]') ||
-                                  document.querySelector('.login-btn');
-                  
-                  if (usernameField && passwordField && loginBtn) {
-                    usernameField.value = '${userEmail}';
-                    passwordField.value = '${this.db.api_secret}';
-                    usernameField.dispatchEvent(new Event('input', { bubbles: true }));
-                    passwordField.dispatchEvent(new Event('input', { bubbles: true }));
-                  }
-                });
-              }
-            }, 2000);
-          `
-        });
-      });
-      
-      // Handle successful navigation to app
-      browser.on('loadstart').subscribe((event: any) => {
-        const eventUrl = event.url;
-        if (eventUrl.includes(`${baseUrl}app`) || eventUrl.includes('/desk')) {
-          console.log('Successfully logged in to Frappe');
+
+      // Get password from secure storage
+      let userPassword = '';
+      try {
+        const pwdResult = await SecureStoragePlugin.get({ key: 'CustomerPwd' });
+        userPassword = pwdResult.value;
+      } catch (error) {
+        console.log('Password not found in secure storage, trying cap_sec_CustomerPwd');
+        try {
+          const pwdResult = await SecureStoragePlugin.get({ key: 'cap_sec_CustomerPwd' });
+          userPassword = pwdResult.value;
+        } catch (error2) {
+          loader.dismiss();
+          this.db.alert('Password not found. Please login again.');
+          return;
         }
-      });
-      
-      browser.on('exit').subscribe(() => {
-        console.log('Browser closed by user');
-      });
-      
+      }
+
+      if (!userEmail || !userPassword) {
+        loader.dismiss();
+        this.db.alert('Credentials not found. Please login again.');
+        return;
+      }
+
+      // Step 1: Login via API to create session
+      try {
+        const loginResponse = await fetch(`${baseUrl}api/method/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            usr: userEmail,
+            pwd: userPassword
+          }),
+          credentials: 'include'
+        });
+
+        const loginData = await loginResponse.json();
+        console.log('Login response:', loginData);
+
+        if (loginData.message === 'Logged In' || loginData.full_name) {
+          // Login successful, now open browser
+          loader.message = 'Opening application...';
+
+          // Extract session ID from cookies or response
+          let sessionId = '';
+          
+          // Note: Browser fetch API doesn't expose set-cookie headers for security reasons
+          // We'll need to rely on the response data or let the browser handle cookies
+          
+          // If no session ID in headers, check response data
+          if (!sessionId && loginData.sid) {
+            sessionId = loginData.sid;
+          }
+          
+          // Also check for session_data in response
+          if (!sessionId && loginData.session_data && loginData.session_data.sid) {
+            sessionId = loginData.session_data.sid;
+          }
+
+          // Add small delay to ensure session is properly set on server
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+          // Direct URL to /app - session should already be created from login API
+          const appUrl = `${baseUrl}app`;
+          
+          console.log('Opening app URL:', appUrl);
+
+          // Create browser
+          const browser = this.iab.create(appUrl, '_blank', {
+            location: 'no',
+            toolbar: 'yes',
+            zoom: 'no',
+            hardwareback: 'yes',
+            clearcache: 'no',
+            clearsessioncache: 'no',
+            useWideViewPort: 'yes',
+            enableViewportScale: 'no',
+            closebuttoncaption: 'Close',
+            closebuttoncolor: '#0000ff'
+          });
+
+          loader.dismiss();
+
+          // Handle browser events
+          browser.on('loadstart').subscribe((event: any) => {
+            console.log('Loading:', event.url);
+            
+            // If loading login page or home page, immediately redirect to app
+            if (event.url.includes('/login') || event.url === baseUrl || event.url === baseUrl.slice(0, -1)) {
+              console.log('Intercepting and redirecting to app...');
+              browser.executeScript({
+                code: `window.location.href = '${baseUrl}app';`
+              });
+            }
+          });
+
+          browser.on('loadstop').subscribe((event: any) => {
+            console.log('Loaded:', event.url);
+
+            // Check if we're on the app page
+            if (event.url.includes('/app') || event.url.includes('/desk')) {
+              console.log('Successfully loaded app page');
+              return;
+            }
+
+            // If redirected to login, immediately redirect to /app
+            if (event.url.includes('/login') || event.url === baseUrl || event.url === baseUrl.slice(0, -1)) {
+              browser.executeScript({
+                code: `
+                  console.log('Redirecting to app...');
+                  // Since we already logged in via API, just navigate to app
+                  window.location.href = '${baseUrl}app';
+                `
+              });
+            }
+            
+            // If on any other page, also try to redirect to app
+            else if (!event.url.includes('/app')) {
+              setTimeout(() => {
+                browser.executeScript({
+                  code: `
+                    if (!window.location.href.includes('/app')) {
+                      console.log('Forcing redirect to app...');
+                      window.location.href = '${baseUrl}app';
+                    }
+                  `
+                });
+              }, 500);
+            }
+          });
+
+          browser.on('exit').subscribe(() => {
+            console.log('Browser closed');
+          });
+
+        } else {
+          loader.dismiss();
+          this.db.alert('Login failed. Please check your credentials.');
+        }
+
+      } catch (error) {
+        loader.dismiss();
+        console.error('Login error:', error);
+        this.db.alert('Failed to authenticate. Please try again.');
+      }
+
     } catch (error) {
-      console.error('Error opening Frappe app:', error);
-      this.db.alert('Failed to open application. Please try again.');
+      console.error('Error:', error);
+      this.db.alert('Failed to open application.');
     }
   }
 

@@ -424,23 +424,23 @@ export class MobileMenuComponent implements OnInit {
   async goto_login(data) {
     this.loader_1 = await this.loadingCtrl.create({ message: 'Please Wait...' });
     await this.loader_1.present();
-    if (data == "Go1 Hr") {
-      this.login('sriramhr@gmail.com', 'Test@123')
-    } else if (data == "Go1 Onsite") {
-      this.login('projectmanager@mail.com', 'Test@123')
-    } else if (data == "Go1 CRM") {
-      this.login('salesmanger@gmail.com', 'Test@123')
-    } else if (data == "Go1 Purchase") {
-      this.login('pm3@gmail.com', 'Test@123')
-    } else if (data == "Meena Gas") {
-      this.login('meenagas@gmail.com', 'Test@123')
-    }else if (data == "Go1 Business") {
-      this.login('go1business@gmail.com', 'Test@123')
-    }else if (data == "Go1 Sales") {
-      this.login('salesexecutive@gmail.com', 'Test@123')
-    }else if (data == "Go1 Employee") {
-      this.login('sriramemployee@1.in', 'Test@123')
-    }
+    // if (data == "Go1 Hr") {
+    //   this.login('sriramhr@gmail.com', 'Test@123')
+    // } else if (data == "Go1 Onsite") {
+    //   this.login('projectmanager@mail.com', 'Test@123')
+    // } else if (data == "Go1 CRM") {
+    //   this.login('salesmanger@gmail.com', 'Test@123')
+    // } else if (data == "Go1 Purchase") {
+    //   this.login('pm3@gmail.com', 'Test@123')
+    // } else if (data == "Meena Gas") {
+    //   this.login('meenagas@gmail.com', 'Test@123')
+    // }else if (data == "Go1 Business") {
+    //   this.login('go1business@gmail.com', 'Test@123')
+    // }else if (data == "Go1 Sales") {
+    //   this.login('salesexecutive@gmail.com', 'Test@123')
+    // }else if (data == "Go1 Employee") {
+    //   this.login('sriramemployee@1.in', 'Test@123')
+    // }
     this.menuCtrl.close()
     this.loader_1.dismiss()
   }
@@ -454,7 +454,7 @@ export class MobileMenuComponent implements OnInit {
       this.loader_1.dismiss()
       if (data.message.status == "Success") {
         this.db.side_menu_show = true;
-        localStorage['CustomerPwd'] = login_pwd;
+        // localStorage['CustomerPwd'] = login_pwd;
         data.message.full_name = data.full_name ? data.full_name : '';
         this.db.store_customer_info(data.message);
         this.router.navigateByUrl('/dashboard');
