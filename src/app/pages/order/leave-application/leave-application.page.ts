@@ -297,7 +297,7 @@ export class LeaveApplicationPage implements OnInit {
       }
       // console.log(this.leave_form.get('total_leave_days').value,this.max_continuous_days_allowed)
       if(this.max_continuous_days_allowed != 0 && this.max_continuous_days_allowed > 0 && this.leave_form.get('total_leave_days').value > this.max_continuous_days_allowed){
-        this.db.alert(this.leave_form.get('leave_type').value + 'cannot be longer than ' + this.max_continuous_days_allowed + ' days')
+        this.db.alert(this.leave_form.get('leave_type').value + ' cannot be longer than ' + this.max_continuous_days_allowed + ' days')
         return;
       }
       

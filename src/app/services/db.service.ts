@@ -3265,7 +3265,7 @@ export class DbService {
 
           // Create browser
           const browser = this.iab.create(appUrl, '_blank', {
-            location: 'yes',
+            location: 'no',
             toolbar: 'yes',
             zoom: 'no',
             hardwareback: 'yes',
@@ -3273,8 +3273,8 @@ export class DbService {
             clearsessioncache: 'no',
             useWideViewPort: 'yes',
             enableViewportScale: 'no',
-            closebuttoncaption: 'Close',
-            closebuttoncolor: '#0000ff'
+            // closebuttoncaption: 'Close',
+            // closebuttoncolor: '#0000ff'
           });
 
           loader.dismiss();

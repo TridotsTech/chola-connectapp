@@ -61,11 +61,36 @@
             </div>
           <h4 *ngIf="evaluation_form.value.band" class="values m-0">Band</h4>
           <h4 *ngIf="evaluation_form.value.band" class="values m-0  mb-5">{{evaluation_form.value.band}}</h4>
+          <div  class="d__flex just-s mb-5">
+          <div class="flex-65">
           <h4 *ngIf="evaluation_form.value.confirmation_due_date" class="values m-0">Confirmation Due Date</h4>
           <h4 *ngIf="evaluation_form.value.confirmation_due_date" class="values m-0  mb-5">{{evaluation_form.value.confirmation_due_date}}</h4>
+        </div>
+        <div class="flex-35">
+          <h4 *ngIf="evaluation_form.value.evaluation_date" class="values m-0">Evaluation Date</h4>
+          <h4 *ngIf="evaluation_form.value.evaluation_date" class="values m-0  mb-5">{{evaluation_form.value.evaluation_date}}</h4>
+          </div>
+        </div>
+        <div  class="d__flex just-s mb-5">
+          <div class="flex-65">
           <h4 *ngIf="evaluation_form.value.probation_days" class="values m-0">Probation Days</h4>
           <h4 *ngIf="evaluation_form.value.probation_days" class="values m-0  mb-5">{{evaluation_form.value.probation_days}}</h4>
-         
+          </div>
+          <div *ngIf="performanceDetails && performanceDetails.name" class="flex-35">
+            <h4 *ngIf="performanceDetails.name" class="values m-0">Evaluator ID</h4>
+            <h4 *ngIf="performanceDetails.name" class="values m-0  mb-5">{{performanceDetails.name}}</h4>
+          </div>
+          </div>
+          <div  class="d__flex just-s mb-5">
+            <div class="flex-65">
+          <h4 *ngIf="performanceDetails && performanceDetails.probation_extended" class="values m-0">Confirmation Status</h4>
+          <h4 *ngIf="performanceDetails && performanceDetails.probation_extended" class="values m-0  mb-5">{{performanceDetails.probation_extended}}</h4>
+          </div>
+          <div *ngIf="performanceDetails && performanceDetails.actual_days" class="flex-35">
+            <h4 *ngIf="performanceDetails.actual_days" class="values m-0">Actual Days</h4>
+            <h4 *ngIf="performanceDetails.actual_days" class="values m-0  mb-5">{{performanceDetails.actual_days}}</h4>
+          </div>
+          </div>
         </div>
       </div>
 
@@ -79,7 +104,7 @@
         <p class="impt-star pt-5" *ngIf="submitted && !probation_extended.valid && probation_extended.errors.required">Probation Extended is required</p>
       </div> -->
 
-      <div class="pb-10 mt-5">
+      <div *ngIf="!performanceDetails" class="pb-10 mt-5">
         <p class="title">Confirmation Status <span class="impt-star"> *</span></p> 
         <div class="custom-input d__flex">
           <!-- <img src="/assets/leaves/type.svg" alt=""> -->
@@ -108,7 +133,7 @@
 
       <!-- <ion-checkbox class="mb-10 fnt-14" formControlName="no_more_extention" name="no_more_extention" (ionChange)="changeExtension($event)" labelPlacement="end">No More Extention</ion-checkbox> -->
 
-      <h5 *ngIf="evaluationDetails && evaluationDetails.length != 0" class="fnt-14 fnt_w500 mb-10 m-0">Evaluation Details</h5>
+      <h5 *ngIf="evaluationDetails && evaluationDetails.length != 0" [ngClass]="performanceDetails ? 'mt-10':''" class="fnt-14 fnt_w500 mb-10 m-0">Evaluation Details</h5>
 
       <div *ngIf="evaluationDetails && evaluationDetails.length != 0" class="evaluationMain mb-10">
         <div class="title">
@@ -147,7 +172,7 @@
     <div *ngIf="db.check_role('L1 Manager','') && performanceDetails && performanceDetails.workflow_state == 'Draft'" class="submit-btn">
       <ion-button (click)="submit()" fill="clear">{{!save_only ? 'Save' : 'Send For Approval'}}</ion-button>
     </div>
-    <div *ngIf="db.check_role('L2 Manager','') && performanceDetails && performanceDetails.workflow_state == 'Awaiting Approval'" class="submit-btn btn">
+    <div *ngIf="db.check_role('L2 Manager','') && workflow_list.length > 0 && performanceDetails.workflow_state == 'Awaiting Approval'" class="submit-btn btn">
       <ion-button class="btn1" (click)="submit_approval('Rejected')" fill="clear">Reject</ion-button>
       <ion-button class="btn2" (click)="submit_approval('Approved')" fill="clear">Approve</ion-button>
     </div>

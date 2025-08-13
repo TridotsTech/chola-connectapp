@@ -36,8 +36,14 @@ export class ApprovalsPage implements OnInit {
       page_size : 20,
       filters : { 
         reference_doctype : 
-        ['Like' , '%' + (this.searchDoctypeTest ? this.searchDoctypeTest : '') + '%' ],
-        
+        // ['Like' , '%' + (this.searchDoctypeTest ? this.searchDoctypeTest : '') + '%' ],
+        ["in", [
+          "Job Requisition",
+          "Salary Fitment",
+          "Leave Withdrawal",
+          "Leave Request",
+          "Employee Letter Request"
+        ]],
         status:'Open'
       }
     }
@@ -102,9 +108,12 @@ export class ApprovalsPage implements OnInit {
       }
     }else if(item.reference_doctype == 'Salary Fitment'){
       this.db.approval('app/salary-fitment/'+item.reference_name)
+    }else if(item.reference_doctype == 'Job Requisition'){
+      this.db.approval('app/job-requisition/'+item.reference_name)
     }
-
-
+    // else if(item.reference_doctype == 'Job Offer'){
+    //   this.db.approval('app/job-offer/'+item.reference_name)
+    // }
   }
 
   getLeaveReqDetails(id){

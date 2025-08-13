@@ -1,7 +1,7 @@
 <app-header title="Resignation" [model]="false"></app-header>
 
 <ion-content [fullscreen]="true">
-  <div class="p-10" [ngClass]="workflow_list.length == 0 ? 'form_Height':'formHeight'">
+  <div class="p-10" [ngClass]="resignationDetails && resignationDetails.docstatus == 1 ?'formHeight':'form_Height'">
     <form [formGroup]="resignation_form">   
       <div *ngIf="resignationDetails" class="employee_det">
         <div class="sec-2">
@@ -13,18 +13,28 @@
             </div>
           </div>
           <div class="flex-auto d__flex">
-            <app-status [reverse]="true" [status]="resignationDetails.workflow_state"></app-status>
+            <app-status [reverse]="true" [status]="resignationDetails.custom_confirmation_status"></app-status>
           </div>
         </div>
       </div>
       <div  *ngIf="resignation_form.value.employee" class="detailSec">
         <div class="section-p">
+          <div  class="d__flex just-s mb-5">
+            <div class="flex-65">
           <h4 *ngIf="resignation_form.value.employee_name && !resignationDetails" class="values m-0">Employee Name</h4>
           <h4 *ngIf="resignation_form.value.employee_name && !resignationDetails" class="values m-0  mb-5">{{resignation_form.value.employee_name}}</h4>
+            </div>
+            <div class="flex-35">
+          <h4 *ngIf="resignation_form.value.employee && !resignationDetails" class="values m-0">Employee Id</h4>
+          <h4 *ngIf="resignation_form.value.employee && !resignationDetails" class="values m-0  mb-5">{{resignation_form.value.employee}}</h4>
+            </div>
+          </div>
+          <h4 *ngIf="resignation_form.value.designation" class="values m-0">Designation</h4>
+          <h4 *ngIf="resignation_form.value.designation" class="values m-0  mb-5">{{resignation_form.value.designation}}</h4>
            <div  class="d__flex just-s mb-5">
             <div class="flex-65">
           <h4 class="values m-0">Grade</h4>
-          <h4 class="values m-0  mb-5">{{resignation_form.value.employee_grade ? resignation_form.value.employee_grade
+          <h4 class="values m-0  mb-5">{{resignation_form.value.employee_grade_id ? resignation_form.value.employee_grade_id
             :'-'}}</h4>
             </div>
             <div class="flex-35">
@@ -33,6 +43,8 @@
                 {{resignation_form.value.custom_date_of_joining ? resignation_form.value.custom_date_of_joining: '-'}}</h4>
             </div>
             </div>
+            <h4 *ngIf="resignation_form.value.company" class="values m-0">Company</h4>
+          <h4 *ngIf="resignation_form.value.company" class="values m-0  mb-5">{{resignation_form.value.company}}</h4>
           <h4 *ngIf="resignation_form.value.band" class="values m-0">Band</h4>
           <h4 *ngIf="resignation_form.value.band" class="values m-0  mb-5">{{resignation_form.value.band}}</h4>
           <h4 *ngIf="resignation_form.value.confirmation_due_date" class="values m-0">Confirmation Due Date</h4>
@@ -73,15 +85,15 @@
           <h4 *ngIf="resignation_form.value.custom_official_email_id" class="values m-0  mb-5">{{resignation_form.value.custom_official_email_id}}</h4>
           <h4 *ngIf="resignation_form.value.custom_relieving_date_as_per_policy" class="values m-0">Relieving Date As Per Policy</h4>
           <h4 *ngIf="resignation_form.value.custom_relieving_date_as_per_policy" class="values m-0  mb-5">{{resignation_form.value.custom_relieving_date_as_per_policy}}</h4>
-          <h4 *ngIf="resignation_form.value.custom_total_working_days" class="values m-0">Total Working Days</h4>
-          <h4 *ngIf="resignation_form.value.custom_total_working_days" class="values m-0  mb-5">{{resignation_form.value.custom_total_working_days}}</h4>
+          <!-- <h4 *ngIf="resignation_form.value.custom_total_working_days" class="values m-0">Total Working Days</h4>
+          <h4 *ngIf="resignation_form.value.custom_total_working_days" class="values m-0  mb-5">{{resignation_form.value.custom_total_working_days}}</h4> -->
         </div>
       </div>
       <div class="p-10">
         <div class="pb-10">
           <p class="title">Date Of Resignation <span class="impt-star"> *</span></p>
           <div class="custom-input">
-            <ion-input type="date" placeholder="Date Of Resignation" formControlName="custom_date_of_resignation_hr" name="custom_date_of_resignation_hr"></ion-input>
+            <ion-input type="date" placeholder="Date Of Resignation" formControlName="custom_date_of_resignation_hr" name="custom_date_of_resignation_hr" (ionInput)="onResignationDateChange()"></ion-input>
           </div>
         </div>
 
@@ -112,7 +124,74 @@
           <p class="error" *ngIf="custom_reason_for_leaving.errors.required">Reason For Leaving is required</p>
         </div>
 
-        <div class="input-item image-input pb-10">
+        <!-- Attachment Section - Show for both new and existing resignations -->
+        <div class="attachment-section pb-10">
+          <h6 class="gray_clr m-0 fnt-12 fnt_w500 mb-10">Attachment</h6>
+          
+          <!-- Upload Section - Only for new resignations -->
+          <div *ngIf="!resignationDetails" class="input-item image-input">
+            <input #file_upload (change)="changeListener($event)" type="file" class="image-d" name="custom_attachment" formControlName="custom_attachment" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx">
+            <div class="custom-image" (click)="file_upload.click()">
+              <ion-icon class="fnt-24" src="/assets/job-referral/cloud.svg"></ion-icon>
+              <div>
+                <p class="m-0 fnt-14 webkit-text" [style.--line]="1">{{getAttachmentFileName()}}</p>
+                <p class="m-0 fnt-12 webkit-text gray_clr" [style.--line]="1" *ngIf="!hasAttachment()">Supports: .jpg, .jpeg, .png, .pdf, .doc, .docx</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- View Attachment Section - For existing resignations with attachments -->
+          <div *ngIf="resignationDetails && resignationDetails.custom_attachment" class="attachment-view-section">
+            <div class="attachment-card" (click)="viewAttachment($event)">
+              <div class="d__flex gap-10 align-center">
+                <ion-icon name="document-text-outline" class="fnt-20 primary-color"></ion-icon>
+                <div class="flex-1">
+                  <p class="m-0 fnt-14 fnt_w500 primary-color webkit-text" [style.--line]="1">
+                    {{getAttachmentFileName()}}
+                  </p>
+                  <p class="m-0 fnt-12 gray_clr">Click to view attachment</p>
+                </div>
+                <ion-icon name="eye-outline" class="fnt-18 gray_clr"></ion-icon>
+              </div>
+            </div>
+          </div>
+          
+          <!-- No Attachment Message - For existing resignations without attachments -->
+          <div *ngIf="resignationDetails && !resignationDetails.custom_attachment" class="no-attachment-section">
+            <div class="attachment-card disabled">
+              <div class="d__flex gap-10 align-center">
+                <ion-icon name="document-text-outline" class="fnt-20 gray_clr"></ion-icon>
+                <div class="flex-1">
+                  <p class="m-0 fnt-14 gray_clr">No attachment available</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pb-10 pt-5">
+          <p class="title">Resignee Comment</p>
+          <div class="custom-input">
+            <ion-textarea class="text-area" name="custom_resignee_comment" formControlName="custom_resignee_comment"
+              placeholder="Enter Your Resignee Comment Here..."></ion-textarea>
+          </div>
+        </div>
+
+        <div class="pb-10 mb55">
+          <div class="confirmation-section">
+            <ion-checkbox formControlName="custom_declaration" name="custom_declaration" (ionChange)="onDeclarationChange($event)"></ion-checkbox>
+            <div class="confirmation-text">
+              <p class="title">Confirm</p>
+              <p class="m-0 fnt-12">
+                1. I have submitted my resignation from the services of the Company without any force or coercion, which may please be accepted and relieved as per the employment terms and conditions.<br><br>
+                2. I also undertake that I will not be eligible or will demand any incentive, payable by the Company to me.<br><br>
+                3. The Company does not have any financial liability on this except my regular full and final settlement as per Exit policy.<br><br>
+                4. Further, if any misdemeanor / fraud is found / investigated during my employment period, I will fully co-operate with investigation, etc.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="input-item image-input pb-10">
           <p class="title">Upload Attachment</p>
           <input #file_upload (change)="changeListener($event)" type="file" class="image-d" name="custom_attachment" formControlName="custom_attachment" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx">
           <div class="custom-image" (click)="file_upload.click()">
@@ -122,7 +201,7 @@
               <p class="m-0 fnt-12 webkit-text gray_clr" [style.--line]="1" *ngIf="!attachment_file || !attachment_file.file_name">Supports: .jpg, .jpeg, .png, .pdf, .doc, .docx</p>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>  
      
     </form>
@@ -130,6 +209,7 @@
 
 </ion-content>
 
-<div class="submitBtn">
-  <ion-button fill="clear" (click)="submit()">Save</ion-button>
+<div class="submitBtn" [ngClass]="resignationDetails && resignationDetails.docstatus == 1 ? 'image-d':''">
+  <ion-button *ngIf="!resignationDetails" fill="clear" (click)="submit()">Save</ion-button>
+  <ion-button *ngIf="resignationDetails && resignationDetails.docstatus == 0" fill="clear" (click)="submit_data()">Submit</ion-button>
 </div>
