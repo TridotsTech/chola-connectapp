@@ -357,9 +357,17 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path: 'esi-download',
+    loadChildren: () => import('./pages/esi-download/esi-download.module').then( m => m.EsiDownloadPageModule)
+  },
+  {
       path: '**',
       redirectTo: '/page-not-found'
   },
+  
+
+  
+
   
 
  

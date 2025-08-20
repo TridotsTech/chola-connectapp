@@ -1251,6 +1251,11 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  get_request(Info): Observable<any> {
+    let endpoint = 'tdasset.tdasset.doctype.car_purchase_request.car_purchase_request.get_request';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   permission_fields(Info): Observable<any> {
     let endpoint = 'tdasset.api.permission_fields';
     return this.postmethod(this.baseMethod + endpoint, Info);
@@ -1667,6 +1672,12 @@ export class DbService {
             route: '/my-slips',
           }
 
+          let push_esi = {
+            page: 'ESI',
+            page_name: 'ESI',
+            route: '/esi-download',
+          }
+
 
           // console.log(this.side_tab_dashboard,"side_tab_dashboard before")
           this.side_tab_dashboard.map(res => {
@@ -1676,6 +1687,7 @@ export class DbService {
           })
           this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_buyback_calc) : null;
           this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_my_slip) : null;
+          // this.employee_role ? this.dashboard_values.splice(this.dashboard_values.length, 0, push_esi) : null;
           // this.hr_manager_role ? this.dashboard_values.splice(0, 0, push_employee_att) : null;
           // this.hr_manager_role ? this.side_tab_dashboard.splice(0, 0, push_employee_att) : null;
 
@@ -2177,6 +2189,21 @@ export class DbService {
     return this.postmethod(this.baseMethod + endpoint, Info);
   }
 
+  get_esi_flag(Info): Observable<any> {
+    let endpoint = 'go1_elc.utils.mobile_api.esi_insurance_sftp_card.get_esi_flag';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  get_insurance_esic_card(Info): Observable<any> {
+    let endpoint = 'go1_elc.utils.mobile_api.esi_insurance_sftp_card.get_insurance_esic_card';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
+  get_reportees_resignation(Info): Observable<any> {
+    let endpoint = 'go1_elc.utils.resignation.resignation.get_reportees_resignation';
+    return this.postmethod(this.baseMethod + endpoint, Info);
+  }
+
   // tripartite_download(Info): Observable<any> {
     
   //   return this.postmethod(this.baseMethod + endpoint, Info);
@@ -2354,6 +2381,11 @@ export class DbService {
 
   calculate_leave_preview(data: any): Observable<any> {
     let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.calculate_leave_preview';
+    return this.postmethod(this.baseMethod + endpoint, data);
+  }
+
+  validate_user(data: any): Observable<any> {
+    let endpoint = 'td_leave_management.td_leave_management.api.mobile_api.validate_user';
     return this.postmethod(this.baseMethod + endpoint, data);
   }
 

@@ -48,6 +48,7 @@ export class PerformanceEvaluationPage implements OnInit {
       confirmation_due_date: new FormControl(''),
       probation_days: new FormControl(''),
       band: new FormControl(''),
+      actual_days:new FormControl(''),
       date_of_joining: new FormControl(''),
     });
 
@@ -192,6 +193,8 @@ export class PerformanceEvaluationPage implements OnInit {
         this.evaluation_form.get('band').setValue(val.data.custom_band)
         this.evaluation_form.get('confirmation_due_date').setValue(val.data.custom_confirmation_due_date)
         this.evaluation_form.get('probation_days').setValue(val.data.custom_probation_days)
+        this.evaluation_form.get('actual_days').setValue(val.data.actual_days)
+        this.evaluation_form.get('evaluator_id').setValue(val.data.evaluator_id)
         this.getProbationTypeOptions();
         // this.evaluation_form.get('total_capitalized_value').setValue(val.data.custom_probation_extension_end_date)
         // this.evaluation_form.get('total_capitalized_value').setValue(val.data.custom_probation_extension_start_date)

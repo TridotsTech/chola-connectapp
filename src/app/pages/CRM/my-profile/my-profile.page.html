@@ -95,7 +95,7 @@
   
         <div class="main_user_detail">
           <div class="user_detail">
-            <div class="tabs" *ngFor="let item of db.permission_details.slice(0, 5)" (click)="db.doctype_select(item.page)">
+            <div class="tabs" *ngFor="let item of db.permission_details.slice(0, 4)" (click)="db.doctype_select(item.page)">
               <!-- <ion-item  button lines="none" (click)="router_(item.route)">
                 <ion-icon class="menu-icon" [src]="db.get_icon(item.page)"></ion-icon>
                 <ion-label>{{item.page_name}}</ion-label>
@@ -144,13 +144,20 @@
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
             </div> -->
-            <!-- <div class="d__flex just-s p-10-0" (click)="router_('car-purchase')">
+            <div *ngIf="car_request" class="d__flex just-s p-10-0" (click)="router_('car-purchase')">
               <div class="d__flex gap-10">
                 <ion-icon class="menu-icon" [src]="db.get_icon('document')"></ion-icon>
                 <ion-label class="fnt-14 fnt_w500">Car Purchase</ion-label>
               </div>
               <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
-            </div> -->
+            </div>
+            <div *ngIf="car_request" class="d__flex just-s p-10-0" (click)="router_('esi-download')">
+              <div class="d__flex gap-10">
+                <ion-icon class="menu-icon" [src]="db.get_icon('document')"></ion-icon>
+                <ion-label class="fnt-14 fnt_w500">ESI Download</ion-label>
+              </div>
+              <ion-icon name="chevron-forward-outline" class="arrow-icon md hydrated"></ion-icon>
+            </div>
           </div>
         </div>
       

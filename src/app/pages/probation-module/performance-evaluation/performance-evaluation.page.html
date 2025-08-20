@@ -76,19 +76,27 @@
           <h4 *ngIf="evaluation_form.value.probation_days" class="values m-0">Probation Days</h4>
           <h4 *ngIf="evaluation_form.value.probation_days" class="values m-0  mb-5">{{evaluation_form.value.probation_days}}</h4>
           </div>
-          <div *ngIf="performanceDetails && performanceDetails.name" class="flex-35">
-            <h4 *ngIf="performanceDetails.name" class="values m-0">Evaluator ID</h4>
-            <h4 *ngIf="performanceDetails.name" class="values m-0  mb-5">{{performanceDetails.name}}</h4>
+          <div *ngIf="performanceDetails && performanceDetails.evaluator_id" class="flex-35">
+            <h4 *ngIf="performanceDetails.evaluator_id" class="values m-0">Evaluator ID</h4>
+            <h4 *ngIf="performanceDetails.evaluator_id" class="values m-0  mb-5">{{performanceDetails.evaluator_id}}</h4>
+          </div>
+          <div *ngIf="!performanceDetails && evaluation_form.value && evaluation_form.value.evaluator_id" class="flex-35">
+            <h4 *ngIf="evaluation_form.value.evaluator_id" class="values m-0">Evaluator ID</h4>
+            <h4 *ngIf="evaluation_form.value.evaluator_id" class="values m-0  mb-5">{{evaluation_form.value.evaluator_id}}</h4>
           </div>
           </div>
           <div  class="d__flex just-s mb-5">
-            <div class="flex-65">
+            <div *ngIf="performanceDetails && performanceDetails.probation_extended" class="flex-65">
           <h4 *ngIf="performanceDetails && performanceDetails.probation_extended" class="values m-0">Confirmation Status</h4>
           <h4 *ngIf="performanceDetails && performanceDetails.probation_extended" class="values m-0  mb-5">{{performanceDetails.probation_extended}}</h4>
           </div>
           <div *ngIf="performanceDetails && performanceDetails.actual_days" class="flex-35">
             <h4 *ngIf="performanceDetails.actual_days" class="values m-0">Actual Days</h4>
             <h4 *ngIf="performanceDetails.actual_days" class="values m-0  mb-5">{{performanceDetails.actual_days}}</h4>
+          </div>
+          <div *ngIf="!performanceDetails && evaluation_form.value.actual_days" class="flex-35">
+            <h4 *ngIf="evaluation_form.value.actual_days" class="values m-0">Actual Days</h4>
+            <h4 *ngIf="evaluation_form.value.actual_days" class="values m-0  mb-5">{{evaluation_form.value.actual_days}}</h4>
           </div>
           </div>
         </div>
@@ -114,7 +122,7 @@
           </ion-select>
           <!-- <img src="/assets/leaves/arrow-down.svg" alt=""> -->
         </div>
-        <p class="impt-star pt-5" *ngIf="submitted && !probation_extended.valid && probation_extended.errors.required">Probation Extended is required</p>
+        <p class="impt-star pt-5" *ngIf="submitted && !probation_extended.valid && probation_extended.errors.required">Confirmation Status is required</p>
       </div>
 
       <!-- <div class="pb-10">
@@ -134,6 +142,7 @@
       <!-- <ion-checkbox class="mb-10 fnt-14" formControlName="no_more_extention" name="no_more_extention" (ionChange)="changeExtension($event)" labelPlacement="end">No More Extention</ion-checkbox> -->
 
       <h5 *ngIf="evaluationDetails && evaluationDetails.length != 0" [ngClass]="performanceDetails ? 'mt-10':''" class="fnt-14 fnt_w500 mb-10 m-0">Evaluation Details</h5>
+      <p class="elv_subtitle">(Rating Description) 5-Outstanding, 4-Exceeds Requirements, 3-Meets Requirements, 2-Improvement Needed, 1-Below Standard.      </p>
 
       <div *ngIf="evaluationDetails && evaluationDetails.length != 0" class="evaluationMain mb-10">
         <div class="title">

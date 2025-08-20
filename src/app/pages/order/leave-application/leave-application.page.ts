@@ -257,6 +257,10 @@ export class LeaveApplicationPage implements OnInit {
   async sure_submit() {
     this.submitted = true;
     if (this.submitted && this.leave_form && this.leave_form.status == "VALID") {
+      if(this.max_continuous_days_allowed != 0 && this.max_continuous_days_allowed > 0 && this.leave_form.get('total_leave_days').value > this.max_continuous_days_allowed){
+        this.db.alert(this.leave_form.get('leave_type').value + ' cannot be longer than ' + this.max_continuous_days_allowed + ' days')
+        return;
+      }
       // Check if any item in leave_preview has is_current_date = 1
       if (this.leave_preview && this.leave_preview.length > 0) {
         const currentDateItems = this.leave_preview.filter(item => item.is_current_date === 1);
@@ -296,10 +300,7 @@ export class LeaveApplicationPage implements OnInit {
         }
       }
       // console.log(this.leave_form.get('total_leave_days').value,this.max_continuous_days_allowed)
-      if(this.max_continuous_days_allowed != 0 && this.max_continuous_days_allowed > 0 && this.leave_form.get('total_leave_days').value > this.max_continuous_days_allowed){
-        this.db.alert(this.leave_form.get('leave_type').value + ' cannot be longer than ' + this.max_continuous_days_allowed + ' days')
-        return;
-      }
+      
       
       await this.showApprovalAlert();
     }

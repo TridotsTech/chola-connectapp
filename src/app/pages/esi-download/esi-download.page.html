@@ -1,0 +1,12 @@
+<app-header title="ESI Download" [showYear]="false" [model]="false"></app-header>
+
+<ion-content [fullscreen]="true">
+  <div class="p-10">
+    <div *ngIf="Is_esi && Is_esi.esi_applicable" class="headerFrame">
+      <img (click)="downloadESI('esic')" width="100%" src="/assets/salary/header-frame.svg" alt="">
+    </div>
+    <div *ngIf="Is_esi && Is_esi.health_insurance" class="headerFrame">
+      <img (click)="downloadESI('insurance')" width="100%" src="/assets/salary/header-frame.svg" alt="">
+    </div>
+  </div>
+</ion-content>

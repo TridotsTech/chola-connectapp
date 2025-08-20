@@ -5,7 +5,7 @@
     <ion-backdrop (ionBackdropTap)="db.hasClass = false" (ionBackdropTap)="fab_()"></ion-backdrop>
   </div>
 
-  <ion-fab *ngIf="db.ismobile" slot="fixed" vertical="bottom" class="fabs" #fab>
+  <ion-fab *ngIf="db.ismobile && (allow_edit || db.selfView)" slot="fixed" vertical="bottom" class="fabs" #fab>
     <ion-fab-button id="fab" (click)="nav()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

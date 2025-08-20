@@ -31,7 +31,7 @@ export class MyProfilePage implements OnInit {
 
   new_dashboard_values:any;
   is_probation:any = [];  
-
+  car_request:any =[];
   constructor(private iab: InAppBrowser,public db:DbService, private router: Router, public loadingCtrl: LoadingController, public modalCtrl : ModalController, public alertCtrl: AlertController) { }
 
   ngOnInit() {
@@ -40,6 +40,7 @@ export class MyProfilePage implements OnInit {
   ionViewWillEnter(){
     this.db.get_employee_detail()
     this.get_probation_detail()
+    this.get_request()
   }
 
   get_probation_detail() {
@@ -51,6 +52,27 @@ export class MyProfilePage implements OnInit {
       if(res.message.status != 'Failed')
         this.is_probation = res.message
       // console.log(res)
+    })
+    let data1 = {
+      user_id: localStorage['customerRefId'],
+    }
+    this.db.get_reportees_resignation(data1).subscribe(res => {
+      // if(res.)
+      // if(res.message.status != 'Failed')
+        // this.is_probation = res.message
+      console.log(res)
+    })
+  }
+
+  get_request() {
+    let data = {
+      user_id: localStorage['customerRefId'],
+    }
+    this.db.get_request(data).subscribe(res => {
+      // if(res.)
+      if(res.message.status != 'failed')
+        this.car_request = res.message
+      // console.log(this.car_request)
     })
   }
   

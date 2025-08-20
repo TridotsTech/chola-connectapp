@@ -61,6 +61,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   skeleton_value_mobile = { doc_type: "Leave Application", tabs: true, tabs_len: [0, 1, 2, 3, 4], enable_dashboard: true, dash_len: [0, 1], dashboard_count: false, filter_len: [0, 1, 2, 3, 4], search: false, month_filter: true, list: true, list_type: '3x2 col', list_len: [0, 1, 2, 3, 4], list_len_count: 10 }
 
   selectedTabSec :any;
+  allow_edit:any;
   constructor(public db: DbService, private route: ActivatedRoute, public modalCtrl: ModalController, public router: Router, public alertController: AlertController,private cdr: ChangeDetectorRef,private ngZone: NgZone) { }
 
   ngOnInit() {
@@ -93,7 +94,8 @@ export class LeaveApplicationDetailPage implements OnInit {
       this.db.leave_skeleton = true
       this.employee_id = res['id'];
         this.leave_details(res['id'])
-      this.get_employee_details(res['id'])
+      if(res['id'])  
+        this.get_employee_details(res['id'])
     })
 
     this.get_search_fields()
@@ -115,6 +117,7 @@ export class LeaveApplicationDetailPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.validate_user()
     if (this.db.ismobile) {
       this.search_data = { status: "Open" };
     } else {
@@ -156,6 +159,13 @@ export class LeaveApplicationDetailPage implements OnInit {
       } else {
         this.search_filter = res['message'];
       }
+    });
+  }
+
+  validate_user() {
+    this.db.validate_user({ username: localStorage['customerRefId'] }).subscribe((res) => {
+      console.log(res)
+      this.allow_edit = res.message.allow_edit
     });
   }
 
